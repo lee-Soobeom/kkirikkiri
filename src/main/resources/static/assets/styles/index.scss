@@ -1,0 +1,106 @@
+@import "def";
+
+#top {
+  @include flex(row, space-between, center);
+  background-color: #D2DEFF;
+  padding: 1rem 3rem;
+}
+
+#side {
+  @include flex(column, flex-start, stretch);
+  top: 0;
+  right: 0;
+  width: 20%;
+  height: 100%;
+  position: absolute;
+
+  > .hamburger-button {
+    top: 50%;
+    left: 0;
+    width: 3rem;
+    height: 3rem;
+    background-color: #828282;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    position: absolute;
+    transform: translate(-100%, -50%);
+
+    > .image {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+  }
+
+  > .user {
+    height: 40%;
+    background-color: #a8a8a8;
+  }
+
+  > .board-nav {
+    height: 60%;
+    background-color: #8a8a8a;
+  }
+}
+
+#main {
+  @include flex(column, flex-start, stretch, 2rem);
+  width: 60%;
+  align-self: center;
+  color: inherit;
+  font: inherit;
+  padding: 2rem 0;
+
+  > .adv {
+    border: 0.0625rem solid #A5BDFF;
+    padding: 0 0.75rem;
+
+    > .title-container {
+      @include flex(row, flex-start, center);
+      border-bottom: 0.0625rem solid lighten(#A5BDFF, 7.5%);
+      padding: 0.25rem 0;
+
+      > .title {
+        flex: 1 1 auto;
+        font-size: 1.375rem;
+        font-weight: 500;
+        padding-bottom: 0.125rem;
+      }
+
+      > .link {
+        flex: 0 0 auto;
+        font-size: 0.75rem;
+        font-weight: 300;
+      }
+    }
+
+    > .list {
+      padding: 0 0.125rem;
+      > .item {
+        @include flex(row, flex-start, center, 0.5rem);
+        font-size: 0.875rem;
+        font-weight: 300;
+        padding: 0.1875rem 0.25rem;
+
+        & + .item {
+          border-top: 0.0625rem solid lighten(#A5BDFF, 10%);
+        }
+
+        > .title {
+          @include flex(row, flex-start, center, 0.5rem);
+          flex: 1 1 auto;
+
+          > .view {
+            font-size: 0.6875rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+#splash {
+  height: 20rem;
+  background-color: #A5BDFF;
+}
