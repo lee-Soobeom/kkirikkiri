@@ -5,44 +5,9 @@
   @include flex(row, space-between, center);
   background-color: #D2DEFF;
   padding: 1rem 3rem;
-}
 
-#side {
-  @include flex(column, flex-start, stretch);
-  top: 0;
-  left: 0;
-  width: 20%;
-  height: 100%;
-  position: absolute;
-  transform: translateX(-100%);
-
-  > .hamburger-button {
-    top: 50%;
-    right: 0;
-    width: 3rem;
-    height: 3rem;
-    background-color: #828282;
-    border-top-right-radius: 0.25rem;
-    border-bottom-right-radius: 0.25rem;
-    position: absolute;
-    transform: translate(100%, -50%);
-
-    > .image {
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      position: absolute;
-    }
-  }
-
-  > .user {
-    height: 40%;
-    background-color: #a8a8a8;
-  }
-
-  > .board-nav {
-    height: 60%;
-    background-color: #8a8a8a;
+  > .image-wrapper {
+    line-height: 0;
   }
 }
 
@@ -75,6 +40,11 @@
       width: 8rem;
       height: 8rem;
       background-color: whitesmoke;
+
+      > .icon {
+        width: 3rem;
+        border-radius: 999rem;
+      }
     }
 
   }

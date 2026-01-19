@@ -7,44 +7,8 @@
   background-color: #D2DEFF;
   padding: 1rem 3rem;
 }
-
-#side {
-  align-items: stretch;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  justify-content: flex-start;
-  top: 0;
-  left: 0;
-  width: 20%;
-  height: 100%;
-  position: absolute;
-  transform: translateX(-100%);
-}
-#side > .hamburger-button {
-  top: 50%;
-  right: 0;
-  width: 3rem;
-  height: 3rem;
-  background-color: #828282;
-  border-top-right-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
-  position: absolute;
-  transform: translate(100%, -50%);
-}
-#side > .hamburger-button > .image {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: absolute;
-}
-#side > .user {
-  height: 40%;
-  background-color: #a8a8a8;
-}
-#side > .board-nav {
-  height: 60%;
-  background-color: #8a8a8a;
+#top > .image-wrapper {
+  line-height: 0;
 }
 
 #main {
@@ -78,6 +42,10 @@
   width: 8rem;
   height: 8rem;
   background-color: whitesmoke;
+}
+.search > .menu-container > .menu > .icon {
+  width: 3rem;
+  border-radius: 999rem;
 }
 .search > .gps-container {
   width: 100%;
