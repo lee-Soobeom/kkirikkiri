@@ -1,0 +1,138 @@
+@use "sass:color";
+@import "../def";
+
+#main {
+  top: 50%;
+  left: 50%;
+  width: 60rem;
+  height: 38rem;
+  backdrop-filter: blur(1rem);
+  background-color: #BCCEFF;
+  border-radius: 0.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  position: fixed;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+#main > .logo {
+  @include flex(row, center, center);
+  border-right: #ffffff solid 0.0625rem;
+
+  > .wrapper {
+    @include flex(row, flex-start, center, 0.125rem);
+
+
+    > .image {
+      width: 3rem;
+      height: 2rem;
+    }
+
+    > .title {
+      color: #ffffff;
+      font: inherit;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+  }
+}
+
+#main > .content {
+  @include flex(column, center, safe center);
+  overflow: hidden auto;
+  position: relative;
+
+  > .form {
+    @include flex(column, center, center, 1.25rem);
+    width: 100%;
+    max-width: 32rem;
+    height: 100%;
+    padding: 1.25rem;
+
+    > .title {
+      align-self: flex-start;
+      color: #ffffff;
+      font: inherit;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-left: 12.5%;
+    }
+
+    > .label {
+      @include flex(column, stretch, flex-start, 0.25rem);
+      width: 75%;
+      max-width: 30rem;
+
+      > .title {
+        color: #ffffff;
+        font: inherit;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+
+      > .field {
+        width: 100%;
+        border-bottom: 0.0625rem solid #ffffff;
+        color: #ffffff;
+        margin-bottom: 0.25rem;
+        padding-bottom: 0.125rem;
+      }
+
+      input::placeholder {
+        color: #FDFDFD;
+        font-size: 0.9rem;
+      }
+    }
+
+    > .checkLabel {
+      align-self: flex-start;
+      margin-left: 12.5%;
+      > .check-label {
+        color: #ffffff;
+        font-size: 1rem;
+      }
+    }
+
+    .button {
+      width: 75%;
+      background-color: #ffffff;
+      border-radius: 0.85rem;
+      color: #A5BDFF;
+      font: inherit;
+      font-size: 1.25rem;
+      font-weight: 600;
+      padding: 0.5rem 1.65rem;
+
+      &:hover {
+        background-color: lighten(#A5BDFF, 2%);
+        color: #FFFFFF;
+      }
+
+      &:hover {
+        background-color: #A5BDFF;
+        color: #FFFFFF;
+      }
+    }
+  }
+}
+
+#main > .menu {
+  @include flex(row, center, flex-end, 0.75rem);
+  margin-top: 2.5rem;
+  width: 100%;
+
+  > .register {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    &::after {
+      content: '';
+      display: inline-block;
+      width: 0.0625rem;
+      height: 0.8rem;
+      background-color: #ffffff;
+    }
+  }
+}

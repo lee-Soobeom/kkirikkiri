@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>끼리끼리</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/assets/styles/index.css">
+    <link rel="stylesheet" href="/assets/styles/user/unsigned.css">
+</head>
+<body>
+<nav id="top">
+    <span class="image-wrapper">
+        <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
+    </span>
+    <span>끼리끼리</span>
+    <div>
+        <button type="button">회원가입</button>
+        <button type="button">로그인</button>
+        <button type="button">로그아웃</button>
+    </div>
+</nav>
+<main id="main">
+    <div class="logo">
+        <div class="wrapper">
+            <img src="/assets/images/user/logoIcon.png" alt="" class="item image">
+            <span class="item title">KKIRI_KKIRI</span>
+        </div>
+    </div>
+    <div class="content">
+        <form novalidate name="loginForm" class="form login-form">
+            <h1 class="item title">LOGIN</h1>
+            <label class="label">
+                <span class="title">아이디</span>
+                <input autofocus required autocomplete="email" class="field" maxlength="50" minlength="6" name="email" spellcheck="false" placeholder="이메일을 입력해 주세요." type="email">
+            </label>
+            <label class="label">
+                <span class="title">비밀번호</span>
+                <input required autocomplete="off" class="field" maxlength="50" minlength="6" name="password" spellcheck="false" placeholder="비밀번호를 입력해 주세요." type="password">
+            </label>
+            <label class="checkLabel">
+                <input hidden name="remember" type="checkbox" class="check-box">
+                <span class="check-label">이메일을 기억할까요?</span>
+            </label>
+            <button type="submit" name="loginButton" class="button">LOGIN</button>
+            <button type="submit" name="loginButton" class="button">kakao</button>
+            <button type="submit" name="loginButton" class="button">naver</button>
+            <div class="menu">
+                <a href="#" class="caption register">회원가입</a>
+                <a href="#" class="caption find-custom">회원찾기</a>
+            </div>
+        </form>
+    </div>
+
+</main>
+</body>
+</html>
