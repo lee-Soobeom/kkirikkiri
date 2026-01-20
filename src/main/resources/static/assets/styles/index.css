@@ -4,7 +4,7 @@
   flex-direction: row;
   gap: 0;
   justify-content: space-between;
-  background-color: #D2DEFF;
+  background-color: #A5BDFF;
   padding: 1rem 3rem;
 }
 #top > .image-wrapper {
@@ -24,33 +24,103 @@
   padding: 2rem 0;
 }
 
-.search {
+#main > .search {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
 }
-.search > .menu-container {
+#main > .search > .menu-container {
   width: 100%;
   height: 100%;
-  background-color: rgb(114, 151.6, 255);
   display: grid;
   gap: 0.25rem;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 1fr 1fr;
 }
-.search > .menu-container > .menu {
-  width: 8rem;
-  height: 8rem;
-  background-color: whitesmoke;
-}
-.search > .menu-container > .menu > .icon {
-  width: 3rem;
-  border-radius: 999rem;
-}
-.search > .gps-container {
+#main > .search > .menu-container > .menu {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
-  background-color: rgb(216, 226.4, 255);
+  border: 0.0625rem solid #E9EFFF;
+  padding: 0.375rem 0;
+  position: relative;
+}
+#main > .search > .menu-container > .menu:hover {
+  background-color: #E9EFFF;
+}
+#main > .search > .menu-container > .menu > .icon {
+  width: 100%;
+}
+#main > .search > .menu-container > .menu > .caption {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+#main > .search > .search {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  justify-content: center;
+  background-color: #E9EFFF;
+}
+#main > .search > .search > .title {
+  font-size: 1.625rem;
+  font-weight: 500;
+}
+#main > .search > .search > .label {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  position: relative;
+}
+#main > .search > .search > .label > .image-wrapper {
+  top: 0;
+  left: 0;
+  line-height: 0;
+  margin-left: 0.25rem;
+  position: absolute;
+}
+#main > .search > .search > .label > .image-wrapper > .image {
+  width: 2rem;
+  height: 2rem;
+}
+#main > .search > .search > .label > .input {
+  width: 20rem;
+  height: 2rem;
+  background-color: #ffffff;
+  border-bottom: 0.0625rem solid #A5BDFF;
+  border-radius: 999rem;
+  padding-left: 2.5rem;
+}
+
+#main > .group {
+  background-color: whitesmoke;
+}
+#main > .group > .list {
+  width: 100%;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-start;
+}
+#main > .group > .list > .row {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  padding: 0.25rem 0;
+}
+#main > .group > .list > .row > .content {
+  flex: 1 1 auto;
 }
 
 /*# sourceMappingURL=index.css.map */
