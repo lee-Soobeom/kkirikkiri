@@ -101,7 +101,7 @@
 }
 
 #main > .group {
-  background-color: whitesmoke;
+  background-color: #FFFFFF;
 }
 #main > .group > .list {
   width: 100%;
@@ -112,15 +112,67 @@
   justify-content: flex-start;
 }
 #main > .group > .list > .row {
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  gap: 0.0625rem;
+  justify-content: flex-start;
+  height: 6rem;
+}
+#main > .group > .list > .row > .image-container {
+  height: 100%;
+  background-color: #E9EFFF;
+}
+#main > .group > .list > .row > .image-container > .image {
+  height: 100%;
+}
+#main > .group > .list > .row > .content-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: space-around;
+  background-color: #E9EFFF;
+  flex: 1 1 auto;
+  padding: 0.5rem 1.25rem;
+}
+#main > .group > .list > .row > .content-container > .title {
+  color: inherit;
+  font: inherit;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+#main > .group > .list > .row > .content-container > .content {
   align-items: center;
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
+  gap: 1.25rem;
   justify-content: flex-start;
-  padding: 0.25rem 0;
 }
-#main > .group > .list > .row > .content {
-  flex: 1 1 auto;
+#main > .group > .list > .row > .content-container > .content > .item {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  justify-content: flex-start;
+}
+#main > .group > .list > .row > .content-container > .content > .item > .title {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+#main > .group > .list > .row > .content-container > .content > .item > .caption {
+  font-size: 0.875rem;
+  font-weight: 300;
+}
+#main > .group > .list > .row > .member-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-start;
+  align-self: stretch;
+  background-color: #E9EFFF;
+  padding: 0.5rem 1.25rem;
 }
 
 /*# sourceMappingURL=index.css.map */

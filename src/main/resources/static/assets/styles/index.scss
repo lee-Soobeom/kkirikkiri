@@ -96,18 +96,63 @@
 }
 
 #main > .group {
-  background-color: whitesmoke;
+  background-color: #FFFFFF;
 
   > .list {
     width: 100%;
     @include flex(column, flex-start, stretch, 0.25rem);
 
     > .row {
-      @include flex(row, flex-start, center, 0.5rem);
-      padding: 0.25rem 0;
+      @include flex(row, flex-start, stretch, 0.0625rem);
+      height: 6rem;
 
-      > .content {
+      > .image-container {
+        height: 100%;
+        background-color: #E9EFFF;
+
+        > .image {
+          height: 100%;
+        }
+      }
+
+      > .content-container {
+        @include flex(column, space-around, flex-start);
+        background-color: #E9EFFF;
         flex: 1 1 auto;
+        padding: 0.5rem 1.25rem;
+
+        > .title {
+          color: inherit;
+          font: inherit;
+          font-size: 1.125rem;
+          font-weight: 700;
+        }
+
+        > .content {
+          @include flex(row, flex-start, center, 1.25rem);
+
+
+          > .item {
+            @include flex(row, flex-start, center, 0.25rem);
+
+            > .title {
+              font-size: 0.875rem;
+              font-weight: 500;
+            }
+
+            > .caption {
+              font-size: 0.875rem;
+              font-weight: 300;
+            }
+          }
+        }
+      }
+
+      > .member-container {
+        @include flex(row, flex-start, center);
+        align-self: stretch;
+        background-color: #E9EFFF;
+        padding: 0.5rem 1.25rem;
       }
     }
   }
