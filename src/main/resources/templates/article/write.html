@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>게시글 작성</title>
+    <link rel="stylesheet" href="/assets/styles/common.css" type="text/css">
+    <link rel="stylesheet" href="/article/assets/styles/write.css" type="text/css">
+</head>
+<body>
+<nav id="top">
+    <span class="image-wrapper">
+        <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
+    </span>
+    <span>끼리끼리</span>
+    <div>
+        <button type="button">회원가입</button>
+        <button type="button">로그인</button>
+        <button type="button">로그아웃</button>
+    </div>
+</nav>
+<main id="main">
+    <h1 class="title">게시글 작성</h1>
+    <h2 class="board"></h2>
+    <label>
+        <span class="caption">제목</span>
+        <input autofocus required autocomplete="off" maxlength="100" minlength="1" name="title"
+               placeholder="제목을 입력해 주세요." type="text">
+    </label>
+    <label>
+        <span class="caption">게시판 선택</span>
+        <select name="" id="">
+            <option value="group">공구 게시판</option>
+            <option value="promote">홍보 게시판</option>
+        </select>
+    </label>
+    <label class="image-upload-container">
+        <span class="caption">이미지 추가</span>
+        <div class="image-box">
+            <input hidden type="file" id="imageInput">
+            <label for="imageInput" class="upload-btn">+</label>
+        </div>
+    </label>
+    <div class="row-group">
+        <label>
+            <span class="caption">공동구매 메뉴</span>
+            <select name="menu" id="">
+                <option value="selected">메뉴를 선택해 주세요.</option>
+                <option value="chicken">치킨</option>
+                <option value="pizza">피자</option>
+                <option value="hamburger">햄버거</option>
+                <option value="stew">찜/탕</option>
+                <option value="raw">회</option>
+                <option value="japanese-food">일식</option>
+                <option value="chinese-food">중식</option>
+                <option value="western-food">양식</option>
+            </select>
+        </label>
+        <label>
+            <span class="caption">최소주문금액</span>
+            <input name="minPrice" type="text" placeholder="금액을 작성해 주세요.">
+        </label>
+        <label>
+            <span class="caption">픽업시간</span>
+            <input name="pickupTime" type="time">
+        </label>
+    </div>
+    <label>
+        <span class="caption">픽업장소</span>
+        <input type="text" placeholder="주소 찾기">
+    </label>
+    <label>
+        <span class="caption">내용</span>
+        <textarea required autocomplete="off" maxlength="10000" minlength="1" name="content" rows="20"></textarea>
+    </label>
+    <label>
+        <input type="checkbox">
+        <span class="caption">승인한 사람만 참여가능</span>
+    </label>
+    <div class="button">
+        <button name="submit" type="submit">작성하기</button>
+    </div>
+</main>
+</body>
+</html>
