@@ -11,9 +11,10 @@
 </head>
 <body>
 <nav id="top">
-    <span class="image-wrapper">
+    <label class="image-wrapper">
+        <input class="input" hidden type="checkbox">
         <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
-    </span>
+    </label>
     <span>끼리끼리</span>
     <div>
         <button type="button">회원가입</button>
@@ -21,6 +22,42 @@
         <button type="button">로그아웃</button>
     </div>
 </nav>
+<div id="my">
+    <div class="container">
+        <div class="box user">
+            <div class="image-container">
+                <img src="/assets/images/my/my.user.png" alt="user">
+            </div>
+            <div class="info">
+                <div class="nickname">0kcal</div>
+                <div class="address">대구 북구 동천동</div>
+                <div class="rank">신입회원</div>
+            </div>
+            <button class="button" type="button">마이페이지</button>
+        </div>
+        <div class="box cash-container">
+            <h2 class="title">내 지갑</h2>
+            <div class="content-container">
+                <span class="content cash">
+                    <span class="now">32000</span>
+                    <span class="won">원</span>
+                </span>
+                <button class="button" type="button">충전</button>
+            </div>
+
+        </div>
+        <div class="box review-container">
+            <h2 class="title">나의 리뷰 점수</h2>
+            <span class="content review">
+                <span class="now">4.21</span>
+                <span>/</span>
+                <span class="max">★ 4.5</span>
+            </span>
+        </div>
+        <div class="-stretch" role="none"></div>
+        <a class="link" href="#" target="_blank">고객센터</a>
+    </div>
+</div>
 <main id="main">
     <div class="search">
         <div class="menu-container">
@@ -37,16 +74,16 @@
                 <span class="caption">#햄버거</span>
             </button>
             <button class="menu" type="button" value="stew">
-                <!--                <img src="" alt="">-->
-                <span>찜/탕</span>
+                <img class="icon" src="/assets/images/main/main.menu.stew.png" alt="">
+                <span class="caption">#찜/탕</span>
             </button>
             <button class="menu" type="button" value="raw">
-                <!--                <img src="" alt="">-->
-                <span>회</span>
+                <img class="icon" src="/assets/images/main/main.menu.raw.png" alt="">
+                <span class="caption">#회</span>
             </button>
             <button class="menu" type="button" value="Japanese-food">
-                <!--                <img src="" alt="">-->
-                <span>일식</span>
+                <img class="icon" src="/assets/images/main/main.menu.jpfood.png" alt="">
+                <span class="caption">#일식</span>
             </button>
             <button class="menu" type="button" value="Chinese-food">
                 <!--                <img src="" alt="">-->
@@ -68,6 +105,28 @@
         </form>
     </div>
     <div class="group">
+        <div class="title-container">
+            <h2 class="title">게시글 목록</h2>
+            <div class="radio-container">
+                <label>
+                    <input checked type="radio" name="filter">
+                    <span>최신순</span>
+                </label>
+                <label>
+                    <input type="radio" name="filter">
+                    <span>인기순</span>
+                </label>
+                <label>
+                    <input type="radio" name="filter">
+                    <span>마감임박</span>
+                </label>
+                <label>
+                    <input type="radio" name="filter">
+                    <span>마감여유</span>
+                </label>
+            </div>
+            <a class="link" href="#" target="_blank">글쓰기</a>
+        </div>
         <ol class="list">
             <li class="row">
                 <div class="image-container">
@@ -77,29 +136,29 @@
                     <h2 class="title">푸라닭 블랙마요 나눠먹을사람</h2>
                     <div class="content">
                         <div class="item">
-                            <div class="title">주문:</div>
-                            <div class="caption">17:00</div>
+                            <span class="title">주문:</span>
+                            <span class="caption">17:00</span>
                         </div>
                         <div class="item">
-                            <div class="title">가게:</div>
-                            <div class="caption">대구 동성로점</div>
+                            <span class="title">가게:</span>
+                            <span class="caption">대구 동성로점</span>
                         </div>
                     </div>
                     <div class="content">
                         <div class="item">
-                            <div class="title">모임:</div>
-                            <div class="caption">18:00</div>
+                            <span class="title">모임:</span>
+                            <span class="caption">18:00</span>
                         </div>
                         <div class="item">
-                            <div class="title">장소:</div>
-                            <div class="caption">중앙대로 366 10층 class A</div>
+                            <span class="title">장소:</span>
+                            <span class="caption">중앙대로 366 10층 class A</span>
                         </div>
                     </div>
                 </div>
                 <div class="member-container">
-                    <div class="now">1</div>
-                    <div>/</div>
-                    <div class="max">5</div>
+                    <span class="now">1</span>
+                    <span>/</span>
+                    <span class="max">5</span>
                 </div>
             </li>
             <li class="row">
@@ -237,5 +296,19 @@
         </ol>
     </div>
 </main>
+<ol id="quick">
+    <li class="item">
+        <a class="link" href="#" target="_blank">홍보</a>
+    </li>
+    <li class="item">
+        <a class="link" href="#" target="_blank">공지사항</a>
+    </li>
+    <li class="item">
+        <label class="label">
+            <span class="caption">게시판</span>
+            <input hidden class="input" type="checkbox"/>
+        </label>
+    </li>
+</ol>
 </body>
 </html>

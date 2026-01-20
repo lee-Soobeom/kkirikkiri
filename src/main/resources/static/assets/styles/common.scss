@@ -52,3 +52,7 @@ ol, ul {
   margin-block: 0;
   padding-inline: 0;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}

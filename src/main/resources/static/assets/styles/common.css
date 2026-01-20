@@ -54,4 +54,8 @@ ol, ul {
   padding-inline: 0;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 /*# sourceMappingURL=common.css.map */
