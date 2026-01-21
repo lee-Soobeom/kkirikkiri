@@ -10,11 +10,23 @@ body:has(> #top > .image-wrapper > .input:checked) > #my {
   }
 }
 
+body:has(> #top > .image-wrapper > .input:checked) > #main,
+body:has(> #top > .image-wrapper > .input:checked) > #quick {
+  pointer-events: none;
+}
+
 #top {
   @include flex(row, space-between, center);
   background-color: #A5BDFF;
   padding: 1rem 3rem;
   z-index: 10;
+
+  > .title {
+    color: #FFFFFF;
+    font: inherit;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
 
   > .image-wrapper {
     line-height: 0;
@@ -31,7 +43,7 @@ body:has(> #top > .image-wrapper > .input:checked) > #my {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #cecece88;
+  background-color: #cdcdcd88;
   overflow: hidden;
   opacity: 0;
   position: fixed;
@@ -316,7 +328,7 @@ body:has(> #top > .image-wrapper > .input:checked) > #my {
   @include flex(column, flex-start, center, 0.5rem);
   bottom: 4rem;
   right: 4rem;
-  color: inherit;
+  color: #FFFFFF;
   font: inherit;
   position: fixed;
 
@@ -365,9 +377,11 @@ body:has(> #top > .image-wrapper > .input:checked) > #my {
       width: 100%;
       height: 100%;
       backdrop-filter: grayscale(0.9);
+      color: #4a4a4a;
 
       &:hover {
         backdrop-filter: grayscale(0);
+        color: #FFFFFF;
       }
 
       > .input {

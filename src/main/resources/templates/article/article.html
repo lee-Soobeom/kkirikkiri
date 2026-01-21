@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>끼리끼리</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/article/assets/styles/article.css">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=LIBRARY"></script>
+    <script defer type="text/javascript" src="/article/assets/scripts/article.js"></script>
+</head>
+<body>
+<nav id="top">
+    <label class="image-wrapper">
+        <input class="input" hidden type="checkbox">
+        <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
+    </label>
+    <span class="title">
+        <a class="link" href="/">끼리끼리</a>
+    </span>
+    <div class="button-container">
+        <button class="button" type="button">회원가입</button>
+        <button class="button" type="button">
+            <a class="link" href="/user/" target="_self">로그인</a>
+        </button>
+        <button class="button" type="button">로그아웃</button>
+    </div>
+</nav>
+<div id="ws">
+    <div class="room-container">
+        <div class="room">
+            <span class="message">
+                <span class="sender">user1: </span>
+                <span class="content">저는 퍽퍽살 좋아해서 다리를 바꿀 생각도 있습니다!</span>
+            </span>
+        </div>
+        <label class="label">
+            <input class="input" type="text">
+            <button class="caption" type="button">채팅 입장</button>
+        </label>
+    </div>
+    <label class="label">
+        <input hidden class="input" type="checkbox">
+        <span class="image-wrapper">
+            <img class="image" src="/article/assets/images/chat.png" alt="">
+        </span>
+    </label>
+</div>
+<main id="main">
+    <div class="container">
+        <div class="title-container">
+            <h2 class="title">푸라닭 블랙마요 나눠먹을 사람</h2>
+            <div class="user">
+                <div class="nickname">작성자</div>
+                <div class="created-at">2026-01-20 14:21:58</div>
+                <!--            <div class="is-updated">수정됨</div>-->
+                <div class="view">7</div>
+            </div>
+        </div>
+        <div class="context-container">
+            <div class="content-container">
+                <div class="menu-container">
+                    <div class="box">
+                        <div class="title">메뉴:</div>
+                        <div class="caption">블랙알리오 한마리</div>
+                    </div>
+                    <div class="box">
+                        <div class="title">금액:</div>
+                        <div class="caption">21900원</div>
+                    </div>
+                    <div class="box">
+                        <div class="title">최소주문금액:</div>
+                        <div class="caption">18000원</div>
+                    </div>
+                    <div class="box">
+                        <div class="title">배달비:</div>
+                        <div class="caption">3000원</div>
+                    </div>
+                </div>
+                <div class="order-container">
+                    <div class="box">
+                        <div class="title">주문 시간:</div>
+                        <div class="caption">17:00</div>
+                    </div>
+                    <div class="box">
+                        <div class="title">주문 가게:</div>
+                        <div class="caption">푸라닭 대구 동성로점</div>
+                    </div>
+                    <div role="none"></div>
+                    <div class="box">
+                        <div class="title">모임 시간:</div>
+                        <div class="caption">18:00</div>
+                    </div>
+                    <div class="box">
+                        <div class="title">모임 장소:</div>
+                        <div class="caption">중앙대로 366 10층 class A</div>
+                    </div>
+                </div>
+                <div class="text"> 자세한 내용은 대화를 통해 조율 가능합니다. 언제든 요청주세요! 저는 한마리 주문할 생각입니다. </div>
+            </div>
+            <div class="view-container">
+                <div class="fund-container">
+                    <div class="box fund">
+                        <h2 class="title">누적 금액</h2>
+                        <div class="value-container">
+                            <div class="value">16000</div>
+                            <div class="caption">원</div>
+                        </div>
+                    </div>
+                    <div class="box bill">
+                        <h2 class="title">보내야할 금액</h2>
+                        <div class="value-container">
+                            <div class="value">16000</div>
+                            <div class="caption">원</div>
+                        </div>
+                    </div>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th colspan="5">참여자</th>
+                        </tr>
+                        <tr class="user">
+                            <td>
+                                <img class="image" src="/article/assets/images/crown.png" alt="">
+                                <span class="caption">user1</span>
+                            </td>
+                            <td>user2</td>
+                            <td>(빈 자리)</td>
+                            <td>(빈 자리)</td>
+                            <td>(빈 자리)</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="button-container">
+                        <button class="button" type="button">참여하기</button>
+<!--                        <button class="button" type="button">계산하기</button>-->
+                    </div>
+                </div>
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>

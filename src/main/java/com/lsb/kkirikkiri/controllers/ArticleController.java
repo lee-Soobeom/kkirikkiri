@@ -10,10 +10,18 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/article")
 public class ArticleController {
+    @RequestMapping(value = "/write",
+            method = RequestMethod.GET,
+            produces = MediaType.TEXT_HTML_VALUE)
+    public String writeArticle() {
+        return "article/write";
+    }
+
     @RequestMapping(value = "/",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
-    public String getArticle() {
-        return "article/write";
+    public ModelAndView getArticle(ModelAndView modelAndView) {
+        modelAndView.setViewName("article/article");
+        return modelAndView;
     }
 }
