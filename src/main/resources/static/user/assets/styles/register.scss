@@ -1,0 +1,193 @@
+@use "sass:color";
+@import "../../../assets/styles/def";
+
+#header {
+  top: 50%;
+  left: 50%;
+  width: 60rem;
+  height: 38rem;
+  backdrop-filter: blur(1rem);
+  border: #EAEAEA solid 0.0625rem;
+  border-radius: 0.5rem;
+  display: none;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+
+  .choice-container {
+    width: 60rem;
+    height: 38rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: hidden;
+
+    > .choice {
+      @include flex(row, center, center, 0);
+      cursor: pointer;
+      position: relative;
+
+      > .box {
+        @include flex(column, center, center, 1rem);
+        width: 100%;
+        height: 100%;
+        background-color: #A5BDFD;
+        border-radius: 1.5rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: scale(97.5%);
+        z-index: 1;
+
+        .caption {
+          color: #FDFDFD;
+          font-size: 1.5rem;
+          font-weight: 700;
+        }
+      }
+
+      &:hover .box {
+        transform: scale(100%);
+        border-radius: 0;
+        background-color: #B1C6FD;
+      }
+    }
+  }
+}
+
+#main {
+  top: 50%;
+  left: 50%;
+  width: 60rem;
+  height: 47.5rem;
+  backdrop-filter: blur(1rem);
+  background-color: #4678FF;
+  border-radius: 0.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  padding: 0;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+
+  > .logo-container {
+    @include flex(row, center, center, 0.5rem);
+    height: 100%;
+    position: relative;
+
+    > .icon {
+      width: 2.5rem;
+      height: 1.5rem;
+    }
+
+    > .title {
+      color: #FFFFFF;
+      font: inherit;
+      font-size: 1.85rem;
+      font-weight: 700;
+    }
+
+    &::after {
+      top: 5%;
+      bottom: 5%;
+      right: 0;
+      border-right: #FDFDFD85 solid 0.0625rem;
+      content: "";
+      display: block;
+      position: absolute;
+    }
+  }
+
+  > .form {
+    @include flex(column, center, center, 1.2rem);
+    width: 90%;
+    height: 92%;
+    align-self: center;
+    background-color: #FDFDFDE0;
+    backdrop-filter: blur(1rem);
+    border-radius: 0.25rem;
+    color: #353535;
+    justify-self: center;
+    padding: 2rem 2rem;
+
+    > .title {
+      color: #4A4A4A;
+      font-size: 1.85rem;
+      font-weight: 700;
+      padding: 0.5rem 0.5rem;
+    }
+
+    .common-form {
+      @include flex(column, center, center, 1rem);
+      width: 100%;
+
+      .label {
+        @include flex(column, center, flex-start, 0.5rem);
+        width: 80%;
+        max-width: 35rem;
+
+        .caption {
+          font-size: 1.125rem;
+          font-weight: 500;
+        }
+
+        .row {
+          @include flex(row, stretch, center, 1rem);
+          width: 100%;
+
+          .field {
+            border-bottom: #4678FF solid 0.0625rem;
+            color: #4678FF;
+            flex: 1;
+            padding: 0.5rem 0;
+
+            &::placeholder {
+              color: #4A4A4A;
+            }
+          }
+
+          button {
+            background-color: #6992FF;
+            border: none;
+            border-radius: 1.5rem;
+            color: #FDFDFD;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 550;
+            padding: 0.695rem 1.125rem;
+            white-space: nowrap;
+
+            &:hover { background-color: #5A86FF; }
+            &:active { background-color: #507FFF; }
+          }
+        }
+
+        &[data-name="registerPassword"] {
+          .row {
+            @include flex(column, stretch, flex-start, 0.5rem);
+            width: 100%;
+
+            .field {
+              width: 100%;
+              border-bottom: 0.0625rem solid #4678FF;
+              padding: 0.5rem 0;
+            }
+          }
+        }
+
+        .count {
+          @include flex(row, flex-start, center, 0.5rem);
+          width: 100%;
+          color: #FF4646;
+          font-size: 0.85rem;
+          margin-top: 0.5rem;
+
+          .reset {
+            color: #FF4646;
+          }
+        }
+      }
+    }
+  }
+
+  > .boss-form {
+    display: none;
+  }
+}

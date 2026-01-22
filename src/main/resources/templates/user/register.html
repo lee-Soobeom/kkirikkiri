@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>끼리끼리</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/user/assets/styles/register.css">
+</head>
+<body>
+<header id="header">
+    <div class="choice-container">
+        <div class="choice common">
+            <div class="box">
+                <span class="caption">일반 회원가입</span>
+            </div>
+        </div>
+        <div class="choice boss">
+            <div class="box">
+                <span class="caption">사장님 회원가입</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main">
+    <div class="logo-container">
+        <img src="/assets/images/user/logoIcon.png" alt="icon" class="icon">
+        <h1 class="title">끼리끼리</h1>
+    </div>
+
+    <div class="form">
+        <h2 class="title">회원가입</h2>
+        <form novalidate class="common-form form" data-name="commonRegisterForm">
+            <input hidden name="emailSalt" type="hidden">
+            <label class="label" data-name="registerEmail">
+                <span class="caption">이메일</span>
+                <span class="row">
+                    <input required autocomplete="email" maxlength="50" minlength="6" name="email" spellcheck="false" placeholder="이메일을 입력해 주세요"  type="email" class="field">
+                    <button class="botton" type="button">인증번호 전송</button>
+                </span>
+            </label>
+            <label class="label" data-name="registerEmailCode">
+                <span class="caption">인증번호</span>
+                <span class="row">
+                    <input required autocomplete="off" maxlength="6" minlength="6" name="emailCode" spellcheck="false" placeholder="이메일로 전송된 인증번호를 입력해 주세요"  type="text" class="field">
+                    <button class="botton" type="button">인증번호 확인</button>
+                </span>
+                <span class="count" data-component="label.row">
+                    <span class="minute">00</span>
+                    <span class="colon">:</span>
+                    <span class="second">00</span>
+                    <a class="reset" href="#">다시 시도하기</a>
+                </span>
+            </label>
+            <label class="label" data-name="registerPassword">
+                <span class="caption">비밀번호</span>
+                <span class="row">
+                    <input required autocomplete="off" maxlength="50" minlength="6" name="password" spellcheck="false" placeholder="비밀번호를 입력해 주세요." type="password" class="field">
+                    <input required autocomplete="off" maxlength="50" minlength="6" name="passwordCheck" spellcheck="false" placeholder="비밀번호를 한 번 더 입력해 주세요." type="password" class="field">
+                </span>
+            </label>
+            <label class="label" data-name="registerNickname">
+                <span class="caption">닉네임</span>
+                <span class="row">
+                    <input required autocomplete="off" class="field -flex-stretch" maxlength="10" minlength="1" name="nickname" spellcheck="false" placeholder="닉네임을 입력해 주세요." type="text">
+                    <button name="nicknameCheck" type="button" data-object="button" data-color="simple">닉네임 중복 확인</button>
+                </span>
+            </label>
+        </form>
+    </div>
+</main>
+</body>
+</html>

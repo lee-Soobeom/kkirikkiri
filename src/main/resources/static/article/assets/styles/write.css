@@ -1,10 +1,3 @@
-html, body {
-  height: auto;
-  min-height: 100%;
-  margin: 0;
-  background-color: #ffffff;
-}
-
 #top {
   align-items: center;
   display: flex;
@@ -26,12 +19,13 @@ html, body {
   justify-content: flex-start;
   width: 60%;
   align-self: center;
+  background-color: #ffffff;
+  border: 0.0625rem solid #E9EFFF;
   color: inherit;
   font: inherit;
-  padding: 2rem 2.5rem;
-  min-height: calc(100vh - 3.75rem);
-  background-color: #ffffff;
+  margin: 1rem 0;
   overflow-y: visible;
+  padding: 2rem 2.5rem;
 }
 #main .title {
   width: 100%;
@@ -146,7 +140,7 @@ html, body {
   gap: 0;
   justify-content: flex-end;
   width: 100%;
-  padding-bottom: 5rem;
+  padding-bottom: 2rem;
 }
 #main .button button {
   background-color: #CDDAFF;
