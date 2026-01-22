@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #top {
   align-items: center;
   display: flex;
@@ -153,6 +154,41 @@
 }
 #main .button button:hover {
   background-color: #A5BDFF;
+}
+
+/* 주소 검색 전체 백드롭 */
+[data-address-dialog] {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+[data-address-dialog][data-visible] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 주소 검색 모달 */
+[data-address-modal] {
+  width: 100%;
+  max-width: 420px;
+  height: 520px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: 0.25s ease;
+}
+[data-visible] [data-address-modal] {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 /*# sourceMappingURL=write.css.map */

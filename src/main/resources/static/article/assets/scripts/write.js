@@ -1,22 +1,49 @@
+let dialogEl;
+let modalEl;
+
+function openAddressDialog(primaryInput) {
+    if (!dialogEl) {
+        dialogEl = document.createElement('div');
+        dialogEl.setAttribute('data-address-dialog', '');
+
+        modalEl = document.createElement('div');
+        modalEl.setAttribute('data-address-modal', '');
+
+        dialogEl.appendChild(modalEl);
+        document.body.appendChild(dialogEl);
+    }
+
+    dialogEl.setAttribute('data-visible', '');
+
+    new daum.Postcode({
+        oncomplete: function (data) {
+            primaryInput.value = data.address;
+            closeAddressDialog();
+        },
+        width: '100%',
+        height: '100%'
+    }).embed(modalEl);
+}
+
+function closeAddressDialog() {
+    dialogEl.removeAttribute('data-visible');
+    modalEl.innerHTML = '';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const findButton = document.querySelector('[name="findButton"]');
-    const pickupInput = document.getElementById('pickupAddress');
+    const primaryInput = document.getElementById('primaryInput');
+    const secondaryInput = document.getElementById('secondaryInput');
 
     findButton.addEventListener('click', () => {
-        const rect = findButton.getBoundingClientRect();
+        openAddressDialog(primaryInput);
+    });
 
-        const popover = new MtPopoverDialog({
-            top: rect.bottom + window.scrollY + 8,
-            left: rect.left + window.scrollX
-        });
-
-        popover.show(`<div id="postcodeContainer" style="width:360px;height:420px;"></div>`);
-
-        new daum.Postcode({
-            oncomplete: data => {
-                pickupInput.value = data.address;
-                popover.hide();
-            }
-        }).embed(document.getElementById('postcodeContainer'));
+    // 배경 클릭 시 닫기
+    document.addEventListener('click', (e) => {
+        if (e.target === dialogEl) {
+            closeAddressDialog();
+            secondaryInput.focus();
+        }
     });
 });

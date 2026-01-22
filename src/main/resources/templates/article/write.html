@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/assets/styles/common.css" type="text/css">
     <link rel="stylesheet" href="/article/assets/styles/write.css" type="text/css">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="/assets/scripts/common.js"></script>
     <script defer src="/article/assets/scripts/write.js"></script>
 </head>
 <body>
@@ -72,7 +71,14 @@
     </div>
     <label>
         <span class="caption">픽업장소</span>
-        <input id="pickupAddress" type="text" placeholder="주소 찾기" readonly>
+        <label class="label">
+            <span class="text">기본 주소</span>
+            <input readonly required class="input" id="primaryInput" maxlength="100" minlength="5" name="primary" type="text">
+        </label>
+        <label class="label">
+            <span class="text">상세 주소</span>
+            <input required class="input" id="secondaryInput" maxlength="100" minlength="5" name="secondary" placeholder="건물 명, 동, 호수 등 상세 주소를 입력해 주세요." type="text">
+        </label>
         <button class="button" name="findButton" type="button">주소찾기</button>
     </label>
     <label>
