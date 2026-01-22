@@ -1,0 +1,199 @@
+#header {
+  top: 50%;
+  left: 50%;
+  width: 60rem;
+  height: 38rem;
+  backdrop-filter: blur(1rem);
+  border: #eaeaea solid 0.0625rem;
+  border-radius: 0.5rem;
+  display: none;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+#header .choice-container {
+  width: 60rem;
+  height: 38rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
+}
+#header .choice-container > .choice {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+#header .choice-container > .choice > .box {
+  align-items: center;
+  display: flex;
+  flex-direction: coulum;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #A5BDFD;
+  border-radius: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(97.5%);
+  z-index: 1;
+}
+#header .choice-container > .choice > .box .caption {
+  color: #FDFDFD;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+#header .choice-container > .choice:hover .box {
+  transform: scale(100%);
+  border-radius: 0;
+  background-color: rgb(177.472826087, 198.1467391304, 253.277173913);
+}
+
+#main {
+  top: 50%;
+  left: 50%;
+  width: 60rem;
+  height: 47.5rem;
+  backdrop-filter: blur(1rem);
+  background-color: #4678ff;
+  border-radius: 0.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  padding: 0;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+#main > .logo-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+}
+#main > .logo-container > .icon {
+  width: 2.5rem;
+  height: 1.5rem;
+}
+#main > .logo-container > .title {
+  color: #ffffff;
+  font: inherit;
+  font-size: 1.85rem;
+  font-weight: 700;
+}
+#main > .logo-container::after {
+  top: 5%;
+  bottom: 5%;
+  right: 0;
+  border-right: rgba(253, 253, 253, 0.5215686275) solid 0.0625rem;
+  content: "";
+  display: block;
+  position: absolute;
+}
+#main > .form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  justify-content: center;
+  width: 90%;
+  height: 92%;
+  align-self: center;
+  background-color: rgba(253, 253, 253, 0.8784313725);
+  backdrop-filter: blur(1rem);
+  border-radius: 0.25rem;
+  color: #353535;
+  justify-self: center;
+  padding: 2rem 2rem;
+}
+#main > .form > .title {
+  color: #4a4a4a;
+  font-size: 1.85rem;
+  font-weight: 700;
+  padding: 0.5rem 0.5rem;
+}
+#main > .common-form > .label {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: stretch;
+  width: 80%;
+  max-width: 35rem;
+}
+#main > .common-form > .label > .caption {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+#main > .common-form > .label > .row {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: stretch;
+  width: 100%;
+}
+#main > .common-form > .label > .row > .field {
+  border-bottom: #4678ff solid 0.0625rem;
+  color: #4678ff;
+  flex: 1;
+  padding: 0.5rem 0;
+}
+#main > .common-form > .label > .row > .field::placeholder {
+  color: #4a4a4a;
+}
+#main > .common-form > .label > .row > button {
+  background-color: rgb(105.7, 146.0513513514, 255);
+  border: none;
+  border-radius: 1.5rem;
+  color: #FDFDFD;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 550;
+  padding: 0.695rem 1.125rem;
+  white-space: nowrap;
+}
+#main > .common-form > .label > .row > button:hover {
+  background-color: rgb(90.4, 134.8864864865, 255);
+  color: #FDFDFD;
+}
+#main > .common-form > .label > .row > button:active {
+  background-color: rgb(80.2, 127.4432432432, 255);
+  color: #FDFDFD;
+}
+#main > .common-form > .label[data-name=registerPassword] > .row {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: stretch;
+  width: 100%;
+}
+#main > .common-form > .label[data-name=registerPassword] > .row > .field {
+  width: 100%;
+  border-bottom: 0.0625rem solid #4678ff;
+  padding: 0.5rem 0;
+}
+#main > .common-form .count {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  width: 80%;
+  color: #ff4646;
+  font-size: 0.85rem;
+}
+#main > .common-form .count .reset {
+  color: #ff4646;
+}
+#main > .boss-form {
+  display: none;
+}
+
+/*# sourceMappingURL=register.css.map */
