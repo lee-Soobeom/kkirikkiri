@@ -2,6 +2,7 @@ package com.lsb.kkirikkiri.entities;
 
 import lombok.*;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

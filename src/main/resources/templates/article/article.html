@@ -8,10 +8,9 @@
     <title>끼리끼리</title>
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/article/assets/styles/article.css">
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=LIBRARY"></script>
     <script defer type="text/javascript" src="/article/assets/scripts/article.js"></script>
+    <script defer type="module" src="/article/assets/scripts/websocket.js"></script>
 </head>
 <body>
 <nav id="top">
@@ -31,20 +30,20 @@
     </div>
 </nav>
 <div id="ws">
-    <div class="room-container">
-        <div class="room">
-            <span class="message">
+    <form class="room-container" name="chatRoom">
+        <ol class="room">
+            <li class="message">
                 <span class="sender">user1: </span>
                 <span class="content">저는 퍽퍽살 좋아해서 다리를 바꿀 생각도 있습니다!</span>
-            </span>
-        </div>
+            </li>
+        </ol>
         <label class="label">
-            <input class="input" type="text">
-            <button class="caption" type="button">채팅 입장</button>
+            <input class="input" name="chat" type="text">
+            <button class="caption" name="entry" type="button">대화입장</button>
         </label>
-    </div>
+    </form>
     <label class="label">
-        <input hidden class="input" type="checkbox">
+        <input hidden class="input" name="connect" type="checkbox">
         <span class="image-wrapper">
             <img class="image" src="/article/assets/images/chat.png" alt="">
         </span>

@@ -10,7 +10,7 @@ public class WebSocketController {
     @MessageMapping(value = "/chat")
     @SendTo("/topic/messages")
     public WSMessage sendMessage(WSMessage message) throws Exception {
-        Thread.sleep(1000);
+        Thread.sleep(500);
         return message;
     }
 }
