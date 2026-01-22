@@ -1,13 +1,6 @@
 @use "sass:color";
 @import "../../../assets/styles/def";
 
-html, body {
-  height: auto;
-  min-height: 100%;
-  margin: 0;
-  background-color: #ffffff;
-}
-
 #top {
   @include flex(row, space-between, center);
   background-color: #A5BDFF;
@@ -23,12 +16,14 @@ html, body {
   @include flex(column, flex-start, center);
   width: 60%;
   align-self: center;
+  background-color: #ffffff;
+  border: 0.0625rem solid #E9EFFF;
   color: inherit;
   font: inherit;
-  padding: 2rem 2.5rem;
-  min-height: calc(100vh - 3.75rem);
-  background-color: #ffffff;
+  //min-height: calc(100vh - 3.75rem);
+  margin: 1rem 0;
   overflow-y: visible;
+  padding: 2rem 2.5rem;
 
   .title {
     width: 100%;
@@ -142,7 +137,7 @@ html, body {
   .button {
     @include flex(row, flex-end, center);
     width: 100%;
-    padding-bottom: 5rem;
+    padding-bottom: 2rem;
 
     button {
       background-color: #CDDAFF;
