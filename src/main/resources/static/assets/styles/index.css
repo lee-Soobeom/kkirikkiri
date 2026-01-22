@@ -34,6 +34,21 @@ body:has(> #top > .image-wrapper > .input:checked) > #quick {
 #top > .image-wrapper > .input {
   display: none;
 }
+#top > .button-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-start;
+}
+#top > .button-container > .button {
+  border: 0.0625rem solid #FFFFFF;
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
+}
+#top > .button-container > .button > .link {
+  color: #FFFFFF;
+}
 
 #my {
   top: 0;

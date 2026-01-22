@@ -36,6 +36,20 @@ body:has(> #top > .image-wrapper > .input:checked) > #quick {
       display: none;
     }
   }
+
+  > .button-container {
+    @include flex(row, flex-start, center);
+
+    > .button {
+      border: 0.0625rem solid #FFFFFF;
+      border-radius: 0.25rem;
+      padding: 0.125rem 0.25rem;
+
+      > .link {
+        color: #FFFFFF;
+      }
+    }
+  }
 }
 
 #my {

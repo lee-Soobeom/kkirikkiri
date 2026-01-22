@@ -10,6 +10,7 @@ let stompClient = null;
 let isConnected = false;
 
 wsConnectButton.addEventListener('click', () => {
+
     if (!isConnected) {
         const socket = new SockJS("/chat");
         stompClient = new Client({
@@ -21,7 +22,6 @@ wsConnectButton.addEventListener('click', () => {
             isConnected = true
             stompClient.subscribe("/topic/messages", (message) => {
                 const response = JSON.parse(message.body);
-                console.log(response.sender + ": " + response.content);
                 createMessage(response.sender, response.content);
             });
         };
@@ -35,6 +35,7 @@ wsConnectButton.addEventListener('click', () => {
 
         stompClient.activate();
     } else { // 채팅창 끌때
+        console.log("WebSocket Disconnected");
         stompClient.deactivate();
         isConnected = false;
     }
@@ -47,6 +48,7 @@ chatRoom.addEventListener('submit', (e) => {
 
 function sendMessage() {
     if (!stompClient || !stompClient.connected) {
+        alert("대화에 입장해 주세요!");
         return;
     }
 
@@ -60,6 +62,7 @@ function sendMessage() {
 }
 
 function createMessage(messageSender, messageContent) {
+    // todo: 카톡처럼 대화형식 sender === localstorage userid? 말풍선 오른쪽 왼쪽 나누기
     const $li = document.createElement('li');
     const $sender = document.createElement('span');
     const $content = document.createElement('span');
