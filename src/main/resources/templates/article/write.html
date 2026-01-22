@@ -8,6 +8,9 @@
     <title>게시글 작성</title>
     <link rel="stylesheet" href="/assets/styles/common.css" type="text/css">
     <link rel="stylesheet" href="/article/assets/styles/write.css" type="text/css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/assets/scripts/common.js"></script>
+    <script defer src="/article/assets/scripts/write.js"></script>
 </head>
 <body>
 <nav id="top">
@@ -69,7 +72,8 @@
     </div>
     <label>
         <span class="caption">픽업장소</span>
-        <input type="text" placeholder="주소 찾기">
+        <input id="pickupAddress" type="text" placeholder="주소 찾기" readonly>
+        <button class="button" name="findButton" type="button">주소찾기</button>
     </label>
     <label>
         <span class="caption">내용</span>
