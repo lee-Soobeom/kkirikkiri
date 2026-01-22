@@ -1,0 +1,164 @@
+html, body {
+  height: auto;
+  min-height: 100%;
+  margin: 0;
+  background-color: #ffffff;
+}
+
+#top {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: space-between;
+  background-color: #A5BDFF;
+  padding: 1rem 3rem;
+}
+#top > .image-wrapper {
+  line-height: 0;
+}
+
+#main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: flex-start;
+  width: 60%;
+  align-self: center;
+  color: inherit;
+  font: inherit;
+  padding: 2rem 2.5rem;
+  min-height: calc(100vh - 3.75rem);
+  background-color: #ffffff;
+  overflow-y: visible;
+}
+#main .title {
+  width: 100%;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  color: #212121;
+}
+#main .board {
+  display: none;
+}
+#main label {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 2.5rem;
+}
+#main label .caption {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #212121;
+}
+#main label input[type=text],
+#main label input[type=time],
+#main label select {
+  height: 2.8rem;
+  border: none;
+  border-bottom: 0.0625rem solid #d2deff;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  background-color: transparent;
+  outline: none;
+}
+#main label input[type=text]::placeholder,
+#main label input[type=time]::placeholder,
+#main label select::placeholder {
+  color: #D1D5DB;
+}
+#main .row-group {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2.5rem;
+}
+#main .row-group label {
+  width: 100%;
+  margin-bottom: 0;
+}
+#main .image-upload-container .image-box {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  background-color: #E9EFFF;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  font-size: 2rem;
+  color: white;
+}
+#main label:has(textarea) textarea {
+  min-height: 22rem;
+  border: 0.0625rem solid #d2deff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: none;
+}
+#main label:has(textarea) textarea:focus {
+  border-color: #A5BDFF;
+}
+#main label:has(textarea) span:last-child {
+  font-size: 0.85rem;
+  color: #9CA3AF;
+  margin-top: 0.5rem;
+}
+#main label:has(input[type=checkbox]) {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.4;
+  justify-content: flex-end;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+#main label:has(input[type=checkbox]) input[type=checkbox] {
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: #A5BDFF;
+}
+#main label:has(input[type=checkbox]) .caption {
+  font-weight: 400;
+  color: #666666;
+}
+#main .button {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-end;
+  width: 100%;
+  padding-bottom: 5rem;
+}
+#main .button button {
+  background-color: #CDDAFF;
+  color: #ffffff;
+  padding: 0.9rem 3.5rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+#main .button button:hover {
+  background-color: #A5BDFF;
+}
+
+/*# sourceMappingURL=write.css.map */

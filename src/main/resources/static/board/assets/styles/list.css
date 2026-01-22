@@ -1,0 +1,174 @@
+#main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: flex-start;
+  width: 60%;
+  align-self: center;
+  color: inherit;
+  font: inherit;
+  padding: 2rem 2.5rem;
+  min-height: calc(100vh - 3.75rem);
+  background-color: #ffffff;
+  overflow-y: visible;
+}
+#main .content-wrapper {
+  width: 100%;
+}
+#main .content-wrapper .header {
+  margin-bottom: 1rem;
+}
+#main .content-wrapper .header .title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #212121;
+}
+#main .content-wrapper .header .sub-row {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: space-between;
+}
+#main .content-wrapper .header .caption {
+  font-size: 0.9rem;
+  color: #888;
+}
+#main .content-wrapper .header .filter {
+  font-size: 0.85rem;
+  color: #666;
+}
+#main .content-wrapper .header .filter label {
+  cursor: pointer;
+}
+#main .content-wrapper .header .filter label + label {
+  margin-left: 0.5rem;
+}
+#main .content-wrapper .header .filter input[type=checkbox] {
+  accent-color: #A5BDFF;
+}
+#main .content-wrapper .board-list {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: stretch;
+}
+#main .content-wrapper .board-item {
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: stretch;
+  width: 100%;
+  background: #f9faff;
+  padding: 1.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+#main .content-wrapper .board-item + #main .content-wrapper .board-item {
+  margin-top: 1rem;
+}
+#main .content-wrapper .board-item:hover {
+  background: #eef2ff;
+}
+#main .content-wrapper .board-item .image {
+  width: 3.5rem;
+  height: 3.5rem;
+  background-image: url("https://i.namu.wiki/i/SS3MJGd52md8QWUMqQdR_iASE0MSzaJMJpfunKqwvNOk10eaIphqeG6wUSEDf0XBOHNudZW0T6s10By2F3GmDw.webp");
+  border-radius: 0.75rem;
+  flex-shrink: 0;
+}
+#main .content-wrapper .board-item .info {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  row-gap: 0.5rem;
+}
+#main .content-wrapper .board-item .info .item-title {
+  grid-column: 1/-1;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212121;
+}
+#main .content-wrapper .board-item .info .preview {
+  grid-column: 1;
+  font-size: 0.85rem;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#main .content-wrapper .board-item .info .meta {
+  grid-column: 2;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-end;
+  font-size: 0.75rem;
+  color: #999;
+  white-space: nowrap;
+  margin-left: 1rem;
+}
+#main .content-wrapper .board-item .info .meta span + span::before {
+  content: "|";
+  margin: 0 0.25rem;
+}
+#main > .search-form {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: center;
+  align-self: center;
+  margin-top: 1rem;
+}
+#main > .page-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  justify-content: stretch;
+  align-self: center;
+  margin-top: 1.5rem;
+}
+#main > .page-container > .group {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: stretch;
+  background-color: #ffffff;
+  border: 0.0625rem solid #eef2ff;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+#main > .page-container > .group > .link {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: rgb(201.5, 201.5, 201.5);
+  text-align: center;
+  text-decoration: none;
+}
+#main > .page-container > .group > .link + .link {
+  border-left: 0.0625rem solid #eef2ff;
+}
+#main > .page-container > .group > .link:hover {
+  background-color: rgb(221.017, 229.013, 255);
+}
+#main > .page-container > .group > .link.-selected {
+  color: #4a4a4a;
+  pointer-events: none;
+}
+
+/*# sourceMappingURL=list.css.map */
