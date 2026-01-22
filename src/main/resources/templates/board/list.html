@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>게시판 목록</title>
+    <link rel="stylesheet" href="/assets/styles/common.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/index.css" type="text/css">
+    <link rel="stylesheet" href="/board/assets/styles/list.css" type="text/css">
+</head>
+<body>
+<nav id="top">
+    <span class="image-wrapper">
+        <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
+    </span>
+    <span>끼리끼리</span>
+    <div>
+        <button type="button">회원가입</button>
+        <button type="button">로그인</button>
+        <button type="button">로그아웃</button>
+    </div>
+</nav>
+<main id="main">
+    <div class="content-wrapper">
+        <div class="header">
+            <h1 class="title">홍보 게시판</h1>
+            <div class="sub-row">
+                <p class="caption">사장님들의 멋진 가게를 홍보해보세요!</p>
+                <div class="filter">
+                    <label><input type="checkbox"> 최신순</label>
+                    <label><input type="checkbox"> 인기순</label>
+                </div>
+            </div>
+        </div>
+        <ul class="board-list">
+            <li class="board-item">
+                <div class="image"></div>
+                <div class="info">
+                    <h3 class="item-title">두쫀쿠 판매 게시했습니다~ 드시러 오세요!!</h3>
+                    <p class="preview">요즘 유행하는 두쫀쿠! 저희 카페에서 드시고 가세요...</p>
+                    <div class="meta">
+                        <span class="view">조회수 71</span>
+                        <span class="nickname">유어박스</span>
+                        <span class="created_at">2026.01.16</span>
+                    </div>
+                </div>
+            </li>
+            <li class="board-item">
+                <div class="image"></div>
+                <div class="info">
+                    <h3 class="item-title">베스킨라빈스 31 OO점 오픈 이벤트 합니다.</h3>
+                    <p class="preview">겨울에 먹는 아이스크림 진짜 찐또배기인...</p>
+                    <div class="meta">
+                        <span class="view">조회수 25</span>
+                        <span class="nickname">베스킨라빈스</span>
+                        <span class="created_at">2026.01.13</span>
+                    </div>
+                </div>
+            </li>
+            <li class="board-item">
+                <div class="image"></div>
+                <div class="info">
+                    <h3 class="item-title">베스킨라빈스 31 OO점 오픈 이벤트 합니다.</h3>
+                    <p class="preview">겨울에 먹는 아이스크림 진짜 찐또배기인...</p>
+                    <div class="meta">
+                        <span class="view">조회수 25</span>
+                        <span class="nickname">베스킨라빈스</span>
+                        <span class="created_at">2026.01.13</span>
+                    </div>
+                </div>
+            </li>
+            <li class="board-item">
+                <div class="image"></div>
+                <div class="info">
+                    <h3 class="item-title">베스킨라빈스 31 OO점 오픈 이벤트 합니다.</h3>
+                    <p class="preview">겨울에 먹는 아이스크림 진짜 찐또배기인...</p>
+                    <div class="meta">
+                        <span class="view">조회수 25</span>
+                        <span class="nickname">베스킨라빈스</span>
+                        <span class="created_at">2026.01.13</span>
+                    </div>
+                </div>
+            </li>
+            <li class="board-item">
+                <div class="image"></div>
+                <div class="info">
+                    <h3 class="item-title">베스킨라빈스 31 OO점 오픈 이벤트 합니다.</h3>
+                    <p class="preview">겨울에 먹는 아이스크림 진짜 찐또배기인...</p>
+                    <div class="meta">
+                        <span class="view">조회수 25</span>
+                        <span class="nickname">베스킨라빈스</span>
+                        <span class="created_at">2026.01.13</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <form novalidate class="search-form" name="searchForm">
+        <input hidden name="id" type="hidden">
+        <label>
+            <select name="by">
+                <option selected value="titleContent">제목 + 내용</option>
+                <option value="title">제목</option>
+                <option value="nickname">작성자</option>
+            </select>
+        </label>
+        <label>
+            <input maxlength="25" minlength="0" name="keyword" placeholder="검색어를 입력해 주세요." type="text">
+        </label>
+        <button class="button" type="submit">검색</button>
+    </form>
+    <div class="page-container">
+        <div class="group">
+            <a href="#" class="link">&lt;&lt;</a>
+            <a href="#" class="link">&lt;</a>
+        </div>
+        <div class="group">
+            <a href="#"></a>
+        </div>
+        <div class="group">
+            <a href="#" class="link">&gt;&gt;</a>
+            <a href="#" class="link">&gt;</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

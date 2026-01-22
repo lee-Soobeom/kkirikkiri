@@ -1,0 +1,133 @@
+@use "sass:color";
+@import "../../../assets/styles/def"; // 기존 def 파일 경로 유지
+
+#main {
+  top: 50%;
+  left: 50%;
+  width: 60rem;
+  height: 38rem;
+  backdrop-filter: blur(1rem);
+  background-color: #BCCEFF;
+  border-radius: 0.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  position: fixed;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+
+  > .logo {
+    @include flex(row, center, center, 0); // Mixin 적용
+    border-right: #ffffff solid 0.0625rem;
+
+    > .wrapper {
+      @include flex(row, flex-start, center, 0.125rem); // Mixin 적용
+
+      > .image {
+        width: 2.5rem;
+        height: 1.5rem;
+      }
+
+      > .title {
+        color: #ffffff;
+        font: inherit;
+        font-size: 1.85rem;
+        font-weight: 700;
+      }
+    }
+  }
+
+  > .content {
+    @include flex(column, center, safe center, 0); // Mixin 적용
+    overflow: hidden auto;
+    position: relative;
+
+    > .form {
+      @include flex(column, center, center, 1.25rem); // Mixin 적용
+      width: 100%;
+      max-width: 32rem;
+      height: 100%;
+      padding: 1.25rem;
+
+      > .title {
+        align-self: flex-start;
+        color: #ffffff;
+        font: inherit;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-left: 12.5%;
+      }
+
+      > .label {
+        @include flex(column, stretch, flex-start, 0.25rem); // Mixin 적용
+        width: 75%;
+        max-width: 30rem;
+
+        > .title {
+          color: #ffffff;
+          font: inherit;
+          font-size: 1rem;
+          font-weight: 500;
+        }
+
+        > .field {
+          width: 100%;
+          border-bottom: 0.0625rem solid #ffffff;
+          color: #ffffff;
+          margin-bottom: 0.25rem;
+          padding-bottom: 0.125rem;
+        }
+
+        input::placeholder {
+          color: #FDFDFD;
+          font-size: 0.9rem;
+        }
+      }
+
+      > .checkLabel {
+        align-self: flex-start;
+        margin-left: 12.5%;
+
+        > .check-label {
+          color: #ffffff;
+          font-size: 1rem;
+        }
+      }
+
+      .button {
+        width: 75%;
+        background-color: #ffffff;
+        border-radius: 0.85rem;
+        color: #A5BDFF;
+        font: inherit;
+        font-size: 1.25rem;
+        font-weight: 600;
+        padding: 0.5rem 1.65rem;
+
+        &:hover {
+          background-color: rgb(175.2, 196.48, 255);
+          color: #FFFFFF;
+        }
+
+        &:active {
+          background-color: #A5BDFF;
+          color: #FFFFFF;
+        }
+      }
+
+      .menu {
+        @include flex(row, center, flex-end, 1.25rem); // Mixin 적용
+
+        > .caption {
+          color: #FFFFFF;
+          font: inherit;
+          font-size: 0.85rem;
+          font-weight: 500;
+
+          &:hover {
+            border-bottom: #FFFFFF solid 0.0625rem;
+          }
+        }
+      }
+    }
+  }
+}

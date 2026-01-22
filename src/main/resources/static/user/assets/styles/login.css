@@ -12,7 +12,6 @@
   transform: translate(-50%, -50%);
   z-index: 1;
 }
-
 #main > .logo {
   align-items: center;
   display: flex;
@@ -38,7 +37,6 @@
   font-size: 1.85rem;
   font-weight: 700;
 }
-
 #main > .content {
   align-items: safe center;
   display: flex;
