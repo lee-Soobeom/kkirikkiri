@@ -61,27 +61,63 @@
   background-color: #4678FF;
   border-radius: 0.5rem;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  grid-template-columns: 1fr 1.8fr;
   padding: 0;
   position: fixed;
   transform: translate(-50%, -50%);
   z-index: 1;
 
   > .logo-container {
-    @include flex(row, center, center, 0.5rem);
+    @include flex(column, center, center, 0.5rem);
     height: 100%;
     position: relative;
 
-    > .icon {
-      width: 2.5rem;
-      height: 1.5rem;
+    .logo-wrapper {
+      @include flex(row, center, center, 0.5rem); // 로고 아이콘과 타이틀 가로 정렬
+
+      .icon {
+        width: 2.5rem;
+        height: 1.5rem;
+      }
+
+      .title {
+        color: #FFFFFF;
+        font-size: 1.85rem;
+        font-weight: 700;
+      }
     }
 
-    > .title {
-      color: #FFFFFF;
-      font: inherit;
-      font-size: 1.85rem;
-      font-weight: 700;
+    // [추가] 스위치 컨테이너 디자인
+    .switch-container {
+      @include flex(row, center, center, 0);
+      background-color: rgba(255, 255, 255, 0.2); // 투명한 배경
+      border-radius: 2rem;
+      padding: 0.25rem;
+      width: 16rem;
+
+      .switch-btn {
+        flex: 1;
+        padding: 0.75rem 0;
+        border: none;
+        border-radius: 1.75rem;
+        background: none;
+        color: #FFFFFF;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        // 활성화된 버튼 스타일
+        &.active {
+          background-color: #FFFFFF;
+          color: #4678FF; // 테마색으로 반전
+          box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+        }
+
+        &:hover:not(.active) {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+      }
     }
 
     &::after {
@@ -95,28 +131,40 @@
     }
   }
 
-  > .form {
-    @include flex(column, center, center, 1.2rem);
-    width: 90%;
+  > .content {
+    @include flex(column, center, center, 0);
+    width: 92%;
     height: 92%;
     align-self: center;
+    justify-self: center;
     background-color: #FDFDFDE0;
     backdrop-filter: blur(1rem);
     border-radius: 0.25rem;
-    color: #353535;
-    justify-self: center;
-    padding: 2rem 2rem;
+    overflow: hidden;
+    margin-right: 1%;
 
-    > .title {
-      color: #4A4A4A;
-      font-size: 1.85rem;
-      font-weight: 700;
-      padding: 0.5rem 0.5rem;
-    }
+    .form {
+      // [보정] data-visible 속성이 있을 때만 레이아웃 적용
+      display: none;
 
-    .common-form {
-      @include flex(column, center, center, 1rem);
-      width: 100%;
+      &[data-visible] {
+        @include flex(column, flex-start, center, 1.2rem);
+        display: flex;
+        width: 100%;
+        height: 100%;
+        padding: 2rem;
+        box-sizing: border-box;
+        color: #353535;
+      }
+
+      > .title {
+        color: #4A4A4A;
+        font-size: 1.85rem;
+        font-weight: 700;
+        padding: 0.5rem 0;
+        margin-bottom: 0.5rem;
+        align-self: center;
+      }
 
       .label {
         @include flex(column, center, flex-start, 0.5rem);
@@ -144,7 +192,8 @@
           }
 
           button {
-            background-color: #6992FF;
+            // [복구] 원래 색상 스타일 적용
+            background-color: lighten(#6992FF, 4%);
             border: none;
             border-radius: 1.5rem;
             color: #FDFDFD;
@@ -154,8 +203,13 @@
             padding: 0.695rem 1.125rem;
             white-space: nowrap;
 
-            &:hover { background-color: #5A86FF; }
-            &:active { background-color: #507FFF; }
+            &:hover {
+              background-color: lighten(#6992FF, 2%);
+            }
+
+            &:active {
+              background-color: #6992FF;
+            }
           }
         }
 
@@ -184,10 +238,68 @@
           }
         }
       }
-    }
-  }
 
-  > .boss-form {
-    display: none;
+      // [복구] 하단 버튼 컨테이너 및 버튼 색상
+      .button-container {
+        @include flex(row, center, center, 0.75rem);
+        width: 80%;
+        max-width: 35rem;
+        margin-top: 1rem;
+
+        .button {
+          background-color: lighten(#6992FF, 4%);
+          border: none;
+          border-radius: 0.5rem;
+          color: #FDFDFD;
+          cursor: pointer;
+          flex: 1;
+          font-size: 1.2rem;
+          font-weight: 700;
+          padding: 1rem;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: lighten(#6992FF, 2%);
+          }
+
+          &:active {
+            background-color: #6992FF;
+          }
+
+          &[name="cancel"] {
+            // 취소 버튼 색상 (기존 요청하셨던 붉은 계열 유지 혹은 기본 색상)
+            background-color: lighten(#FF4646, 4%);
+
+            &:hover {
+              background-color: lighten(#FF4646, 2%);
+            }
+
+            &:active {
+              background-color: #FF4646;
+            }
+          }
+        }
+      }
+
+      &.boss-form {
+        overflow-y: auto;
+        padding-right: 0.5rem;
+
+        &::-webkit-scrollbar {
+          width: 0.25rem;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #4678FF80;
+          border-radius: 0.25rem;
+        }
+
+        .button-container {
+          margin-top: 1rem;
+          margin-bottom: 2rem;
+          flex-shrink: 0;
+        }
+      }
+    }
   }
 }
