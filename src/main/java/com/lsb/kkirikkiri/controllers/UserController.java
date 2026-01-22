@@ -6,17 +6,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getLogin(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser) {
         if (sessionUser != null) {
             return "redirect:/user/";
         }
 
-        return "user/unsigned";
+        return "user/login";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getRegister(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser) {
+        if (sessionUser != null) {
+            return "redirect:/user/";
+        }
+
+        return "user/register";
     }
 }
