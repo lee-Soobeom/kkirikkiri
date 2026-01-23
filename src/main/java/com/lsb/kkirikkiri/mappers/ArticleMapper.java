@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface ArticleMapper {
     int insert(@Param(value = "article") ArticleEntity articleEntity);
+
+    ArticleEntity selectById(@Param(value = "id") int id);
 }

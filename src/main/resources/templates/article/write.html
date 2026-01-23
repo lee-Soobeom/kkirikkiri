@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -12,17 +12,7 @@
     <script defer src="/article/assets/scripts/write.js"></script>
 </head>
 <body>
-<nav id="top">
-    <span class="image-wrapper">
-        <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
-    </span>
-    <span>끼리끼리</span>
-    <div>
-        <button type="button">회원가입</button>
-        <button type="button">로그인</button>
-        <button type="button">로그아웃</button>
-    </div>
-</nav>
+<th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
 <main id="main">
     <form novalidate class="form" name="writeForm">
         <h2 class="title">게시글 작성</h2>
@@ -31,7 +21,7 @@
             <span class="caption">게시판 선택</span>
             <select name="boardId" class="input">
                 <option selected value="-1">게시판을 선택해 주세요.</option>
-                <option value="group">공구 게시판</option>
+                <option value="share">공구 게시판</option>
                 <option value="promote">홍보 게시판</option>
             </select>
         </label>
@@ -82,7 +72,7 @@
         <div class="row-group">
             <label class="column">
                 <span class="caption">주문시간</span>
-                <input class="input" name="orderTime" type="time">
+                <input class="input" name="orderTime" type="datetime-local">
             </label>
             <label class="column">
                 <span class="caption">주문가게</span>
@@ -90,7 +80,7 @@
             </label>
             <label class="column">
                 <span class="caption">픽업시간</span>
-                <input class="input" name="pickupTime" type="time">
+                <input class="input" name="pickupTime" type="datetime-local">
             </label>
         </div>
         <div class="address-container">

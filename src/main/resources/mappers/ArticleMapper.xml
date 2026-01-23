@@ -33,4 +33,26 @@
                 #{article.createdAt},
                 #{article.updatedAt})
     </insert>
+    <select id="selectById"
+            resultType="com.lsb.kkirikkiri.entities.ArticleEntity">
+        SELECT `id`                AS `id`,
+               `board_id`          AS `boardId`,
+               `title`             AS `title`,
+               `menu`              AS `menu`,
+               `min_order_price`   AS `minOrderPrice`,
+               `order_price`       AS `orderPrice`,
+               `delivery_price`    AS `deliveryPrice`,
+               `order_time`        AS `orderTime`,
+               `restaurant`        AS `restaurant`,
+               `pickup_time`       AS `pickupTime`,
+               `address_postal`    AS `addressPostal`,
+               `address_primary`   AS `addressPrimary`,
+               `address_secondary` AS `addressSecondary`,
+               `content`           AS `content`,
+               `created_at`        AS `createdAt`,
+               `updated_at`        AS `updatedAt`
+        FROM `kkirikkiri`.`articles`
+        WHERE id = #{id}
+        LIMIT 1
+    </select>
 </mapper>

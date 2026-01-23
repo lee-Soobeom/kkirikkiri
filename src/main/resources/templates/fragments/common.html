@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
+    <link rel="stylesheet" href="/assets/styles/index.css" type="text/css">
 </head>
 <body>
-<nav id="top">
+<nav id="top" th:fragment="topNavigator" th:with="isSigned = ${ session.sessionUser != null }">
     <label class="image-wrapper">
         <input class="input" hidden type="checkbox">
         <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
@@ -16,17 +17,20 @@
     <span class="title">
         <a class="link" href="/">끼리끼리</a>
     </span>
-    <div class="button-container">
-        <button class="button" type="button">
+    <ol class="button-container">
+        <li class="button">
             <a class="link" href="/user/register" target="_self">회원가입</a>
-        </button>
-        <button class="button" type="button">
+        </li>
+        <li class="button" th:if=" ${isSigned == false }">
             <a class="link" href="/user/login" target="_self">로그인</a>
-        </button>
-        <button class="button" type="button">로그아웃</button>
-    </div>
+        </li>
+        <li class="button" th:if=" ${isSigned == true }">
+            <a class="link" href="/user/logout" target="_self">로그아웃</a>
+        </li>
+    </ol>
 </nav>
-<div id="my">
+<div id="my" th:fragment="sideMypage(user)" th:with="isSigned = ${ session.sessionUser != null }">
+<!--    로그인상태에 따라 보여줄 요소 다르게 해야함-->
     <div class="container">
         <div class="box user">
             <div class="image-container">

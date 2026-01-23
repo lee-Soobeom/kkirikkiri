@@ -6,10 +6,7 @@ import com.lsb.kkirikkiri.services.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -20,10 +17,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ArticleController {
     private final ArticleService articleService;
+
     @RequestMapping(value = "/write",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getWrite (ModelAndView modelAndView) {
+    public ModelAndView getWrite(ModelAndView modelAndView) {
         modelAndView.setViewName("article/write");
         return modelAndView;
     }
@@ -31,15 +29,16 @@ public class ArticleController {
     @RequestMapping(value = "/",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getArticle(ModelAndView modelAndView) {
+    public ModelAndView getArticle(int articleId, ModelAndView modelAndView) {
+        modelAndView.addObject("article", this.articleService.getArticleById(articleId));
         modelAndView.setViewName("article/article");
         return modelAndView;
     }
 
     @RequestMapping(value = "/modify",
-    method = RequestMethod.GET,
-    produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getModify (ModelAndView modelAndView) {
+            method = RequestMethod.GET,
+            produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getModify(ModelAndView modelAndView) {
         modelAndView.setViewName("article/modify");
         return modelAndView;
     }
@@ -47,10 +46,12 @@ public class ArticleController {
     @RequestMapping(value = "/write",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> write(ArticleEntity articleEntity) {
-        Map<String, Object> response = new HashMap<>();
+    @ResponseBody
+    public Map<String, Object> postWrite(ArticleEntity articleEntity) {
         CommonResult result = this.articleService.write(articleEntity);
+        Map<String, Object> response = new HashMap<>();
         response.put("result", result.name());
+        System.out.println(response);
         return response;
     }
 }

@@ -1,21 +1,6 @@
 /** @type {HTMLFormElement} */
 const $writeForm = document.forms['writeForm'];
 
-const boardId = $writeForm['boardId'].value;
-const title = $writeForm['title'].value;
-const menu = $writeForm['menu'].value;
-const minOrderPrice = $writeForm['minOrderPrice'].value;
-const orderPrice = $writeForm['orderPrice'].value;
-const deliveryPrice = $writeForm['deliveryPrice'].value;
-const orderTime = $writeForm['orderTime'].value;
-const restaurant = $writeForm['restaurant'].value;
-const pickupTime = $writeForm['pickupTime'].value;
-const addressPostal = $writeForm['addressPostal'].value;
-const addressPrimary = $writeForm['addressPrimary'].value;
-const addressSecondary = $writeForm['addressSecondary'].value;
-const content = $writeForm['content'].value;
-
-
 let dialogEl;
 let modalEl;
 
@@ -91,12 +76,6 @@ $writeForm.addEventListener('submit', (e) => {
         $writeForm['orderTime'].focus();
         return;
     }
-    if (!/^\d{2}:\d{2}$/g.test($writeForm['orderTime'].value)) {
-        alert("시간");
-        $writeForm['orderTime'].focus();
-        $writeForm['orderTime'].select();
-        return;
-    }
 
     // restaurant
     if ($writeForm['restaurant'].value === '') {
@@ -115,12 +94,6 @@ $writeForm.addEventListener('submit', (e) => {
     if ($writeForm['pickupTime'].value === '') {
         alert("나눔시간 써라");
         $writeForm['pickupTime'].focus();
-        return;
-    }
-    if (!/^\d{2}:\d{2}$/g.test($writeForm['pickupTime'].value)) {
-        alert("1 ~ 99,999,999원 금액만");
-        $writeForm['pickupTime'].focus();
-        $writeForm['pickupTime'].select();
         return;
     }
 
@@ -149,7 +122,6 @@ $writeForm.addEventListener('submit', (e) => {
         $writeForm['content'].select();
         return;
     }
-
     const xhr = new XMLHttpRequest();
     const formData = new FormData();
     formData.append('boardId', $writeForm['boardId'].value);
@@ -173,7 +145,28 @@ $writeForm.addEventListener('submit', (e) => {
             return;
         }
         const response = JSON.parse(xhr.responseText);
-        console.log(response);
+        switch (response.result) {
+            case 'SUCCESS':
+                $writeForm['boardId'].value = '';
+                $writeForm['title'].value = '';
+                $writeForm['menu'].value = '';
+                $writeForm['minOrderPrice'].value = '';
+                $writeForm['orderPrice'].value = '';
+                $writeForm['deliveryPrice'].value = '';
+                $writeForm['orderTime'].value = '';
+                $writeForm['restaurant'].value = '';
+                $writeForm['pickupTime'].value = '';
+                $writeForm['addressSecondary'].value = '';
+                $writeForm['content'].value = '';
+                location.href = `/article/id=${response.articleId}`
+                break;
+            case 'FAILURE':
+                break;
+            case 'FAILURE_SESSION':
+                break;
+            default:
+                break;
+        }
     };
     xhr.open('POST', '/article/write');
     xhr.send(formData);
