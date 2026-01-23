@@ -1,3 +1,17 @@
+@charset "UTF-8";
+#main > .error {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  padding: 2.5rem 0;
+}
+#main > .error > .title {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
 #main {
   align-items: center;
   display: flex;
@@ -15,6 +29,7 @@
 }
 #main .content-wrapper {
   width: 100%;
+  /* ================= header ================= */
 }
 #main .content-wrapper .header {
   margin-bottom: 1rem;
@@ -49,75 +64,74 @@
 #main .content-wrapper .header .filter input[type=checkbox] {
   accent-color: #A5BDFF;
 }
-#main .content-wrapper .board-list {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  justify-content: stretch;
+#main .content-wrapper {
+  /* ================= board table ================= */
 }
-#main .content-wrapper .board-item {
-  align-items: stretch;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  justify-content: stretch;
+#main .content-wrapper .board-table {
   width: 100%;
-  background: #f9faff;
-  padding: 1.5rem;
-  margin-bottom: 0.5rem;
+  border-collapse: separate;
+  border-spacing: 0 0.75rem;
+}
+#main .content-wrapper .board-table thead {
+  display: none;
+}
+#main .content-wrapper .board-table tbody .row {
+  background-color: #f9faff;
   border-radius: 0.75rem;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
-#main .content-wrapper .board-item + #main .content-wrapper .board-item {
-  margin-top: 1rem;
+#main .content-wrapper .board-table tbody .row:hover {
+  background-color: #eef2ff;
 }
-#main .content-wrapper .board-item:hover {
-  background: #eef2ff;
+#main .content-wrapper .board-table tbody .row .cell {
+  padding: 1rem 0.75rem;
+  border: none;
+  vertical-align: top;
 }
-#main .content-wrapper .board-item .image {
-  width: 3.5rem;
-  height: 3.5rem;
-  background-image: url("https://i.namu.wiki/i/SS3MJGd52md8QWUMqQdR_iASE0MSzaJMJpfunKqwvNOk10eaIphqeG6wUSEDf0XBOHNudZW0T6s10By2F3GmDw.webp");
-  border-radius: 0.75rem;
-  flex-shrink: 0;
+#main .content-wrapper .board-table tbody .row.id {
+  display: none;
 }
-#main .content-wrapper .board-item .info {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto;
-  row-gap: 0.5rem;
+#main .content-wrapper .board-table tbody .row.title {
+  padding-left: 1.5rem;
+  border-top-left-radius: 0.75rem;
+  border-bottom-left-radius: 0.75rem;
 }
-#main .content-wrapper .board-item .info .item-title {
-  grid-column: 1/-1;
+#main .content-wrapper .board-table tbody .row.title .link {
+  display: block;
   font-size: 1rem;
   font-weight: 600;
   color: #212121;
+  text-decoration: none;
+  margin-bottom: 0.4rem;
 }
-#main .content-wrapper .board-item .info .preview {
-  grid-column: 1;
+#main .content-wrapper .board-table tbody .row.title .preview {
   font-size: 0.85rem;
   color: #666;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 34rem;
 }
-#main .content-wrapper .board-item .info .meta {
-  grid-column: 2;
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: flex-end;
+#main .content-wrapper .board-table tbody .row.nickname, #main .content-wrapper .board-table tbody .row.view, #main .content-wrapper .board-table tbody .row.created_at {
   font-size: 0.75rem;
   color: #999;
   white-space: nowrap;
-  margin-left: 1rem;
+  padding-top: 2.4rem;
 }
-#main .content-wrapper .board-item .info .meta span + span::before {
-  content: "|";
-  margin: 0 0.25rem;
+#main .content-wrapper .board-table tbody .row.created_at {
+  padding-right: 1.5rem;
+  text-align: center;
+}
+#main .content-wrapper .board-table tbody {
+  /* 카드 라운드 유지 */
+}
+#main .content-wrapper .board-table tbody .cell:last-child {
+  border-top-right-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+}
+#main {
+  /* ================= search ================= */
 }
 #main > .search-form {
   align-items: center;
@@ -127,6 +141,9 @@
   justify-content: center;
   align-self: center;
   margin-top: 1rem;
+}
+#main {
+  /* ================= pagination ================= */
 }
 #main > .page-container {
   align-items: center;

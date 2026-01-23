@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>게시글 수정</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/assets/styles/index.css">
+    <link rel="stylesheet" href="/article/assets/styles/modify.css">
+</head>
+<body>
+<nav id="top">
+    <span class="image-wrapper">
+        <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
+    </span>
+    <span>끼리끼리</span>
+    <div>
+        <button type="button">회원가입</button>
+        <button type="button">로그인</button>
+        <button type="button">로그아웃</button>
+    </div>
+</nav>
+<main id="main">
+    <div class="error not-found">
+        <h1 class="title">게시글 수정</h1>
+        <span class="message">존재하지 않는 게시글 입니다. 주소를 다시 확인해 주세요.</span>
+        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
+    </div>
+    <div class="error empty-session">
+        <h1 class="title">게시글 수정</h1>
+        <span class="message">게시글은 회원만 수정할 수 있습니다. <a href="/user/login" target="_self">로그인</a>해 주세요.</span>
+        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
+    </div>
+    <div class="error invalid-session">
+        <h1 class="title">게시글 수정</h1>
+        <span class="message">해당 게시글에 수정할 권한이 없습니다.</span>
+        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
+    </div>
+    <form novalidate class="modify-form" name="modifyForm">
+        <h1 class="title">게시글 수정</h1>
+        <h2 class="board"></h2>
+        <label data-object="label" data-name="modifyTitleLabel">
+            <span data-component="label.caption">제목</span>
+            <input autofocus required autocomplete="off" maxlength="100" minlength="1" name="title" type="text" data-object="input" data-component="label.field">
+            <span data-component="label.messageWrapper label.warningMessage">
+                <span data-component="label.messageIcon"></span>
+                <span data-component="label.messageCaption">제목을 입력해 주세요.</span>
+            </span>
+        </label>
+        <label data-object="label" data-name="modifyContentLabel">
+            <span data-component="label.caption">내용</span>
+            <textarea required autocomplete="off" maxlength="50000" minlength="1" name="content" rows="15" data-object="input" data-component="label.field" data-resize="vertical"></textarea>
+            <span data-component="label.messageWrapper label.warningMessage">
+                <span data-component="label.messageIcon"></span>
+                <span data-component="label.messageCaption">내용을 입력해 주세요.</span>
+            </span>
+        </label>
+        <div class="button-container">
+            <button name="cancel" type="button" data-object="button" data-color="red">취소</button>
+            <span class="-flex-stretch"></span>
+            <button name="submit" type="submit" data-object="button" data-color="concept">수정</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

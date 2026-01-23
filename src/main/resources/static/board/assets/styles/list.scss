@@ -1,6 +1,16 @@
 @use "sass:color";
 @import "../../../assets/styles/def";
 
+#main > .error {
+  @include flex(column, center, center, 1rem);
+  padding: 2.5rem 0;
+
+  > .title {
+    font-size: 1.5rem;
+    font-weight: 300;
+  }
+}
+
 #main {
   @include flex(column, flex-start, center);
   width: 60%;
@@ -14,6 +24,8 @@
 
   .content-wrapper {
     width: 100%;
+
+    /* ================= header ================= */
 
     .header {
       margin-bottom: 1rem;
@@ -52,80 +64,97 @@
       }
     }
 
-    .board-list {
-      @include flex(column, stretch, flex-start);
-    }
+    /* ================= board table ================= */
 
-    .board-item {
-      @include flex(row, stretch, stretch, 1rem);
+    .board-table {
       width: 100%;
-      background: #f9faff;
-      padding: 1.5rem;
-      margin-bottom: 0.5rem;
-      border-radius: 0.75rem;
-      cursor: pointer;
+      border-collapse: separate;
+      border-spacing: 0 0.75rem;
 
-      & + & {
-        margin-top: 1rem;
+      thead {
+        display: none; // 사진처럼 헤더 숨김
       }
 
-      &:hover {
-        background: #eef2ff;
-      }
+      tbody {
+        .row {
+          background-color: #f9faff;
+          border-radius: 0.75rem;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
 
-      .image {
-        width: 3.5rem;
-        height: 3.5rem;
-        background-image: url("https://i.namu.wiki/i/SS3MJGd52md8QWUMqQdR_iASE0MSzaJMJpfunKqwvNOk10eaIphqeG6wUSEDf0XBOHNudZW0T6s10By2F3GmDw.webp");
-        border-radius: 0.75rem;
-        flex-shrink: 0;
-      }
+          &:hover {
+            background-color: #eef2ff;
+          }
 
-      .info {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr auto;
-        grid-template-rows: auto auto;
-        row-gap: 0.5rem;
+          .cell {
+            padding: 1rem 0.75rem;
+            border: none;
+            vertical-align: top;
+          }
 
-        .item-title {
-          grid-column: 1 / -1;
-          font-size: 1rem;
-          font-weight: 600;
-          color: #212121;
-        }
+          &.id {
+              display: none;
+            }
 
-        .preview {
-          grid-column: 1;
-          font-size: 0.85rem;
-          color: #666;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
+            &.title {
+              padding-left: 1.5rem;
+              border-top-left-radius: 0.75rem;
+              border-bottom-left-radius: 0.75rem;
 
-        .meta {
-          grid-column: 2;
-          @include flex(row, flex-end, center);
-          font-size: 0.75rem;
-          color: #999;
-          white-space: nowrap;
-          margin-left: 1rem;
 
-          span + span::before {
-            content: "|";
-            margin: 0 0.25rem;
+              .link {
+                display: block;
+                font-size: 1rem;
+                font-weight: 600;
+                color: #212121;
+                text-decoration: none;
+                margin-bottom: 0.4rem;
+              }
+
+              .preview {
+                font-size: 0.85rem;
+                color: #666;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 34rem;
+              }
+            }
+
+            &.nickname,
+            &.view,
+            &.created_at {
+              font-size: 0.75rem;
+              color: #999;
+              white-space: nowrap;
+              padding-top: 2.4rem;
+            }
+
+            &.created_at {
+              padding-right: 1.5rem;
+              text-align: center;
+            }
+          }
+
+          /* 카드 라운드 유지 */
+          .cell:last-child {
+            border-top-right-radius: 0.75rem;
+            border-bottom-right-radius: 0.75rem;
           }
         }
       }
     }
-  }
+
+
+  /* ================= search ================= */
 
   > .search-form {
     @include flex(row, center, center, 0.5rem);
     align-self: center;
     margin-top: 1rem;
   }
+
+  /* ================= pagination ================= */
 
   > .page-container {
     @include flex(row, stretch, center, 1.5rem);

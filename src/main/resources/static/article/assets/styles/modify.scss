@@ -1,0 +1,52 @@
+@use "sass:color";
+@import "../../../assets/styles/def";
+
+#main {
+  @include flex(column, flex-start, center, 1rem);
+  flex-grow: 1;
+  flex-shrink: 1;
+
+  > .error {
+    @include flex(column, center, center, 1rem);
+    padding: 2.5rem 0;
+
+    > .title {
+      font-size: 1.5rem;
+      font-weight: 300;
+    }
+  }
+
+  > .modify-form {
+    @include flex(column, stretch, flex-start, 0.5rem);
+    width: 40rem;
+
+    > [data-name="modifyContentLabel"] {
+      h1, h2, h3, h4, h5, h6 {
+        font: revert;
+        margin-block: revert;
+        margin-inline: revert;
+      }
+
+      ol, ul {
+        list-style-type: revert;
+        margin-block: revert;
+        padding-inline: revert;
+      }
+    }
+
+    .title {
+      font-size: 1.125rem;
+      font-weight: 300;
+    }
+
+    > .board {
+      font-size: 1.125rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    > .button-container {
+      @include flex(row, stretch, flex-start, 0.5rem);
+    }
+  }
+}

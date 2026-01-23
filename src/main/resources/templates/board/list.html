@@ -23,80 +23,48 @@
     </div>
 </nav>
 <main id="main">
+    <div class="error not-found">
+        <h1 class="title">게시판</h1>
+        <span class="message">존재하지 않는 게시판입니다. 주소를 다시 확인해 주세요.</span>
+        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
+    </div>
     <div class="content-wrapper">
         <div class="header">
             <h1 class="title">홍보 게시판</h1>
             <div class="sub-row">
-                <p class="caption">사장님들의 멋진 가게를 홍보해보세요!</p>
+                <h2 class="caption">사장님들의 멋진 가게를 홍보해보세요!</h2>
                 <div class="filter">
                     <label><input type="checkbox"> 최신순</label>
                     <label><input type="checkbox"> 인기순</label>
                 </div>
             </div>
         </div>
-        <ul class="board-list">
-            <li class="board-item">
-                <div class="image"></div>
-                <div class="info">
-                    <h3 class="item-title">두쫀쿠 판매 게시했습니다~ 드시러 오세요!!</h3>
+
+        <table class="table board-table">
+            <thead class="section">
+            <tr class="row">
+                <th class="cell" scope="col">번호</th>
+                <th class="cell -stretch" scope="col">제목</th>
+                <th class="cell" scope="col">작성자</th>
+                <th class="cell" scope="col">조회수</th>
+                <th class="cell" scope="col">날짜</th>
+            </tr>
+            </thead>
+            <tbody class="section">
+            <tr class="row">
+                <th class="cell id" scope="row">1</th>
+                <td class="cell title">
+                    <a href="#" class="link">두쫀쿠 판매 게시했습니다~ 드시러 오세요!!</a>
                     <p class="preview">요즘 유행하는 두쫀쿠! 저희 카페에서 드시고 가세요...</p>
-                    <div class="meta">
-                        <span class="view">조회수 71</span>
-                        <span class="nickname">유어박스</span>
-                        <span class="created_at">2026.01.16</span>
-                    </div>
-                </div>
-            </li>
-            <li class="board-item">
-                <div class="image"></div>
-                <div class="info">
-                    <h3 class="item-title">베스킨라빈스 31 OO점 오픈 이벤트 합니다.</h3>
-                    <p class="preview">겨울에 먹는 아이스크림 진짜 찐또배기인...</p>
-                    <div class="meta">
-                        <span class="view">조회수 25</span>
-                        <span class="nickname">베스킨라빈스</span>
-                        <span class="created_at">2026.01.13</span>
-                    </div>
-                </div>
-            </li>
-            <li class="board-item">
-                <div class="image"></div>
-                <div class="info">
-                    <h3 class="item-title">베스킨라빈스 31 OO점 오픈 이벤트 합니다.</h3>
-                    <p class="preview">겨울에 먹는 아이스크림 진짜 찐또배기인...</p>
-                    <div class="meta">
-                        <span class="view">조회수 25</span>
-                        <span class="nickname">베스킨라빈스</span>
-                        <span class="created_at">2026.01.13</span>
-                    </div>
-                </div>
-            </li>
-            <li class="board-item">
-                <div class="image"></div>
-                <div class="info">
-                    <h3 class="item-title">베스킨라빈스 31 OO점 오픈 이벤트 합니다.</h3>
-                    <p class="preview">겨울에 먹는 아이스크림 진짜 찐또배기인...</p>
-                    <div class="meta">
-                        <span class="view">조회수 25</span>
-                        <span class="nickname">베스킨라빈스</span>
-                        <span class="created_at">2026.01.13</span>
-                    </div>
-                </div>
-            </li>
-            <li class="board-item">
-                <div class="image"></div>
-                <div class="info">
-                    <h3 class="item-title">베스킨라빈스 31 OO점 오픈 이벤트 합니다.</h3>
-                    <p class="preview">겨울에 먹는 아이스크림 진짜 찐또배기인...</p>
-                    <div class="meta">
-                        <span class="view">조회수 25</span>
-                        <span class="nickname">베스킨라빈스</span>
-                        <span class="created_at">2026.01.13</span>
-                    </div>
-                </div>
-            </li>
-        </ul>
+                </td>
+                <td class="cell nickname">유어박스</td>
+                <td class="cell view">71</td>
+                <td class="cell created_at">2026-01-16</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
+
     <form novalidate class="search-form" name="searchForm">
         <input hidden name="id" type="hidden">
         <label>
