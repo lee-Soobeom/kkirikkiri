@@ -12,7 +12,7 @@ let isConnected = false;
 wsConnectButton.addEventListener('click', () => {
 
     if (!isConnected) {
-        const socket = new SockJS("/chat");
+        const socket = new SockJS("/article-chat");
         stompClient = new Client({
             webSocketFactory: () => socket
         });
@@ -20,9 +20,10 @@ wsConnectButton.addEventListener('click', () => {
         stompClient.onConnect = () => {
             console.log("WebSocket Connected");
             isConnected = true
-            stompClient.subscribe("/topic/messages", (message) => {
+            stompClient.subscribe(`/topic/message/${1}`, (message) => {
                 const response = JSON.parse(message.body);
                 createMessage(response.sender, response.content);
+                wsContainer.querySelector('[name="chat"]').value = '';
             });
         };
         stompClient.onWebSocketError = (error) => {
@@ -53,7 +54,7 @@ function sendMessage() {
     }
 
     stompClient.publish({
-        destination: "/app/chat",
+        destination: `/app/chat/${1}`,
         body: JSON.stringify({
             sender: "me",
             content: wsContainer.querySelector('[name="chat"]').value

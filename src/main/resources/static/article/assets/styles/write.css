@@ -13,88 +13,166 @@
 }
 
 #main {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  justify-content: flex-start;
-  width: 60%;
-  align-self: center;
-  background-color: #ffffff;
-  color: inherit;
-  font: inherit;
-  overflow-y: visible;
-  padding: 2rem 2.5rem;
-}
-#main .title {
-  width: 100%;
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 3rem;
-  color: #212121;
-}
-#main .board {
-  display: none;
-}
-#main label {
   align-items: stretch;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  justify-content: flex-start;
-  width: 100%;
-  margin-bottom: 2.5rem;
+  gap: 0;
+  justify-content: center;
+  width: 60%;
+  align-self: center;
+  color: inherit;
+  flex: 1 1 auto;
+  font: inherit;
+  margin-top: 1rem;
+  overflow-y: visible;
 }
-#main label .caption {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #212121;
-}
-#main label input[type=text],
-#main label input[type=time],
-#main label select {
-  height: 2.8rem;
-  border: none;
-  border-bottom: 0.0625rem solid #d2deff;
-  padding: 0.5rem 0;
-  font-size: 1rem;
-  background-color: transparent;
-  outline: none;
-}
-#main label input[type=text]::placeholder,
-#main label input[type=time]::placeholder,
-#main label select::placeholder {
-  color: #D1D5DB;
-}
-#main .row-group {
-  align-items: flex-start;
+#main > .form {
+  align-items: stretch;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 2rem;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 2.5rem;
+  justify-content: flex-start;
+  background-color: #ffffff;
+  border: 0.0625rem solid #d2deff;
+  padding: 0 2.5rem;
 }
-#main .row-group label {
-  width: 100%;
-  margin-bottom: 0;
+#main > .form > .title {
+  color: #212121;
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 2rem 0;
 }
-#main .image-upload-container .image-box {
+#main > .form > .board {
+  display: none;
+}
+#main > .form label.column {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-start;
+}
+#main > .form label.row {
   align-items: center;
   display: flex;
   flex-direction: row;
-  gap: 0;
-  justify-content: center;
+  gap: 0.25rem;
+  justify-content: flex-start;
+}
+#main > .form label.row > .caption {
+  width: 4.5rem;
+}
+#main > .form label.row > .input {
+  flex: 1 1 auto;
+}
+#main > .form label.row > .button {
+  background-color: #CDDAFF;
+  color: #ffffff;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+}
+#main > .form label.row > .button:hover {
+  background-color: #A5BDFF;
+}
+#main > .form label.end {
+  align-self: end;
+  cursor: pointer;
+}
+#main > .form label.end > [name=entryCheck] {
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: #A5BDFF;
+}
+#main > .form label.end .text {
+  font-weight: 400;
+  color: #666666;
+}
+#main > .form label > .caption {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212121;
+}
+#main > .form label > .input {
+  height: 2rem;
+  border: 0.0625rem solid #d2deff;
+  font-size: 1rem;
+  padding-left: 0.25rem;
+}
+#main > .form label > .input::placeholder {
+  color: #D1D5DB;
+}
+#main > .form > .row-group {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+#main > .form > .row-group > .column {
+  width: 100%;
+}
+#main > .form > .share-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+#main > .form > .share-container > .title {
+  width: 4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212121;
+}
+#main > .form > .address-container {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+#main > .form > .address-container > .caption {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #212121;
+}
+#main > .form > .image-upload-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-start;
+}
+#main > .form > .image-upload-container .image-wrapper {
   width: 5rem;
   height: 5rem;
   background-color: #E9EFFF;
   border-radius: 0.75rem;
   cursor: pointer;
-  margin-top: 0.5rem;
-  font-size: 2rem;
-  color: white;
+  overflow: hidden;
 }
-#main label:has(textarea) textarea {
+#main > .form > .image-upload-container .image-wrapper:hover {
+  background-color: #A5BDFF;
+}
+#main > .form > .image-upload-container .image-wrapper > [name=advImage] {
+  display: none;
+}
+#main > .form > .image-upload-container .image-wrapper > .caption {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 2rem;
+}
+#main > .form label:has(textarea) textarea {
   min-height: 22rem;
   border: 0.0625rem solid #d2deff;
   border-radius: 0.75rem;
@@ -103,45 +181,23 @@
   line-height: 1.5;
   resize: none;
 }
-#main label:has(textarea) textarea:focus {
+#main > .form label:has(textarea) textarea:focus {
   border-color: #A5BDFF;
 }
-#main label:has(textarea) span:last-child {
+#main > .form label:has(textarea) span:last-child {
   font-size: 0.85rem;
   color: #9CA3AF;
   margin-top: 0.5rem;
 }
-#main label:has(input[type=checkbox]) {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0.4;
-  justify-content: flex-end;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.4rem;
-  cursor: pointer;
-}
-#main label:has(input[type=checkbox]) input[type=checkbox] {
-  width: 1.2rem;
-  height: 1.2rem;
-  accent-color: #A5BDFF;
-}
-#main label:has(input[type=checkbox]) .caption {
-  font-weight: 400;
-  color: #666666;
-}
-#main .button {
+#main > .form > .button {
   align-items: center;
   display: flex;
   flex-direction: row;
   gap: 0;
   justify-content: flex-end;
   width: 100%;
-  padding-bottom: 2rem;
 }
-#main .button button {
+#main > .form > .button button {
   background-color: #CDDAFF;
   color: #ffffff;
   padding: 0.9rem 3.5rem;
@@ -150,7 +206,7 @@
   font-size: 1rem;
   cursor: pointer;
 }
-#main .button button:hover {
+#main > .form > .button button:hover {
   background-color: #A5BDFF;
 }
 

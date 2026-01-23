@@ -15,7 +15,6 @@ body:has(> #top > .image-wrapper > .input:checked) > #ws {
   pointer-events: none;
 }
 
-
 #top {
   @include flex(row, space-between, center);
   background-color: #A5BDFF;
@@ -278,12 +277,12 @@ body:has(> #top > .image-wrapper > .input:checked) > #ws {
 }
 
 #main {
-  @include flex(column, flex-start, stretch, 0.5rem);
+  @include flex(column, flex-start, stretch);
   width: 60%;
   align-self: center;
   color: inherit;
-  font: inherit;
   flex: 1 1 auto;
+  font: inherit;
   padding: 2rem 0;
 }
 

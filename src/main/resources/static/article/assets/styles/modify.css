@@ -1,0 +1,57 @@
+#main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: flex-start;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#main > .error {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  padding: 2.5rem 0;
+}
+#main > .error > .title {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+#main > .modify-form {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: stretch;
+  width: 40rem;
+}
+#main > .modify-form > [data-name=modifyContentLabel] h1, #main > .modify-form > [data-name=modifyContentLabel] h2, #main > .modify-form > [data-name=modifyContentLabel] h3, #main > .modify-form > [data-name=modifyContentLabel] h4, #main > .modify-form > [data-name=modifyContentLabel] h5, #main > .modify-form > [data-name=modifyContentLabel] h6 {
+  font: revert;
+  margin-block: revert;
+  margin-inline: revert;
+}
+#main > .modify-form > [data-name=modifyContentLabel] ol, #main > .modify-form > [data-name=modifyContentLabel] ul {
+  list-style-type: revert;
+  margin-block: revert;
+  padding-inline: revert;
+}
+#main > .modify-form .title {
+  font-size: 1.125rem;
+  font-weight: 300;
+}
+#main > .modify-form > .board {
+  font-size: 1.125rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+#main > .modify-form > .button-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: stretch;
+}
+
+/*# sourceMappingURL=modify.css.map */
