@@ -284,13 +284,13 @@ body:has(> #top > .image-wrapper > .input:checked) > #ws {
   align-items: stretch;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0;
   justify-content: flex-start;
   width: 60%;
   align-self: center;
   color: inherit;
-  font: inherit;
   flex: 1 1 auto;
+  font: inherit;
   padding: 2rem 0;
 }
 
