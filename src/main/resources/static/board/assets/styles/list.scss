@@ -25,7 +25,7 @@
   .content-wrapper {
     width: 100%;
 
-    /* ================= header ================= */
+    // header
 
     .header {
       margin-bottom: 1rem;
@@ -64,7 +64,7 @@
       }
     }
 
-    /* ================= board table ================= */
+    // board table
 
     .board-table {
       width: 100%;
@@ -72,7 +72,7 @@
       border-spacing: 0 0.75rem;
 
       thead {
-        display: none; // 사진처럼 헤더 숨김
+        display: none;
       }
 
       tbody {
@@ -87,20 +87,38 @@
           }
 
           .cell {
-            padding: 1rem 0.75rem;
+            padding: 1.5rem 0.75rem;
             border: none;
             vertical-align: top;
-          }
 
-          &.id {
-              display: none;
-            }
+            // title + thumbnail
 
             &.title {
               padding-left: 1.5rem;
               border-top-left-radius: 0.75rem;
               border-bottom-left-radius: 0.75rem;
 
+              .title-inner {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+              }
+
+              .thumbnail {
+                width: 3.5rem;   // 썸네일 크기 조절
+                height: 3.5rem;
+                border-radius: 0.75rem;
+                flex-shrink: 0;
+
+                background-color: #e5ebff;
+                background-image: url("https://i.namu.wiki/i/SS3MJGd52md8QWUMqQdR_iASE0MSzaJMJpfunKqwvNOk10eaIphqeG6wUSEDf0XBOHNudZW0T6s10By2F3GmDw.webp");
+                background-size: cover;
+                background-position: center;
+              }
+
+              .text {
+                min-width: 0; // 말줄임 필수
+              }
 
               .link {
                 display: block;
@@ -121,6 +139,8 @@
               }
             }
 
+            // meta
+
             &.nickname,
             &.view,
             &.created_at {
@@ -133,20 +153,15 @@
             &.created_at {
               padding-right: 1.5rem;
               text-align: center;
+              border-top-right-radius: 0.75rem;
+              border-bottom-right-radius: 0.75rem;
             }
-          }
-
-          /* 카드 라운드 유지 */
-          .cell:last-child {
-            border-top-right-radius: 0.75rem;
-            border-bottom-right-radius: 0.75rem;
           }
         }
       }
     }
-
-
-  /* ================= search ================= */
+  }
+  // search
 
   > .search-form {
     @include flex(row, center, center, 0.5rem);
@@ -154,7 +169,7 @@
     margin-top: 1rem;
   }
 
-  /* ================= pagination ================= */
+  // pagination
 
   > .page-container {
     @include flex(row, stretch, center, 1.5rem);

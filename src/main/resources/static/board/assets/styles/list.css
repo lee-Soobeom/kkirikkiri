@@ -1,4 +1,3 @@
-@charset "UTF-8";
 #main > .error {
   align-items: center;
   display: flex;
@@ -29,7 +28,6 @@
 }
 #main .content-wrapper {
   width: 100%;
-  /* ================= header ================= */
 }
 #main .content-wrapper .header {
   margin-bottom: 1rem;
@@ -64,9 +62,6 @@
 #main .content-wrapper .header .filter input[type=checkbox] {
   accent-color: #A5BDFF;
 }
-#main .content-wrapper {
-  /* ================= board table ================= */
-}
 #main .content-wrapper .board-table {
   width: 100%;
   border-collapse: separate;
@@ -85,19 +80,34 @@
   background-color: #eef2ff;
 }
 #main .content-wrapper .board-table tbody .row .cell {
-  padding: 1rem 0.75rem;
+  padding: 1.5rem 0.75rem;
   border: none;
   vertical-align: top;
 }
-#main .content-wrapper .board-table tbody .row.id {
-  display: none;
-}
-#main .content-wrapper .board-table tbody .row.title {
+#main .content-wrapper .board-table tbody .row .cell.title {
   padding-left: 1.5rem;
   border-top-left-radius: 0.75rem;
   border-bottom-left-radius: 0.75rem;
 }
-#main .content-wrapper .board-table tbody .row.title .link {
+#main .content-wrapper .board-table tbody .row .cell.title .title-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+#main .content-wrapper .board-table tbody .row .cell.title .thumbnail {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.75rem;
+  flex-shrink: 0;
+  background-color: #e5ebff;
+  background-image: url("https://i.namu.wiki/i/SS3MJGd52md8QWUMqQdR_iASE0MSzaJMJpfunKqwvNOk10eaIphqeG6wUSEDf0XBOHNudZW0T6s10By2F3GmDw.webp");
+  background-size: cover;
+  background-position: center;
+}
+#main .content-wrapper .board-table tbody .row .cell.title .text {
+  min-width: 0;
+}
+#main .content-wrapper .board-table tbody .row .cell.title .link {
   display: block;
   font-size: 1rem;
   font-weight: 600;
@@ -105,7 +115,7 @@
   text-decoration: none;
   margin-bottom: 0.4rem;
 }
-#main .content-wrapper .board-table tbody .row.title .preview {
+#main .content-wrapper .board-table tbody .row .cell.title .preview {
   font-size: 0.85rem;
   color: #666;
   white-space: nowrap;
@@ -113,25 +123,17 @@
   text-overflow: ellipsis;
   max-width: 34rem;
 }
-#main .content-wrapper .board-table tbody .row.nickname, #main .content-wrapper .board-table tbody .row.view, #main .content-wrapper .board-table tbody .row.created_at {
+#main .content-wrapper .board-table tbody .row .cell.nickname, #main .content-wrapper .board-table tbody .row .cell.view, #main .content-wrapper .board-table tbody .row .cell.created_at {
   font-size: 0.75rem;
   color: #999;
   white-space: nowrap;
   padding-top: 2.4rem;
 }
-#main .content-wrapper .board-table tbody .row.created_at {
+#main .content-wrapper .board-table tbody .row .cell.created_at {
   padding-right: 1.5rem;
   text-align: center;
-}
-#main .content-wrapper .board-table tbody {
-  /* 카드 라운드 유지 */
-}
-#main .content-wrapper .board-table tbody .cell:last-child {
   border-top-right-radius: 0.75rem;
   border-bottom-right-radius: 0.75rem;
-}
-#main {
-  /* ================= search ================= */
 }
 #main > .search-form {
   align-items: center;
@@ -141,9 +143,6 @@
   justify-content: center;
   align-self: center;
   margin-top: 1rem;
-}
-#main {
-  /* ================= pagination ================= */
 }
 #main > .page-container {
   align-items: center;
