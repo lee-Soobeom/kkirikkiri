@@ -1,5 +1,9 @@
 package com.lsb.kkirikkiri.controllers;
 
+import com.lsb.kkirikkiri.entities.ArticleEntity;
+import com.lsb.kkirikkiri.results.CommonResult;
+import com.lsb.kkirikkiri.services.ArticleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,9 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @RequestMapping(value = "/article")
+@RequiredArgsConstructor
 public class ArticleController {
+    private final ArticleService articleService;
     @RequestMapping(value = "/write",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
@@ -33,5 +42,15 @@ public class ArticleController {
     public ModelAndView getModify (ModelAndView modelAndView) {
         modelAndView.setViewName("article/modify");
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/write",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> write(ArticleEntity articleEntity) {
+        Map<String, Object> response = new HashMap<>();
+        CommonResult result = this.articleService.write(articleEntity);
+        response.put("result", result.name());
+        return response;
     }
 }

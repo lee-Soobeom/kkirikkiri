@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lsb.kkirikkiri.mappers.ArticleMapper">
+    <insert id="insert">
+        INSERT INTO `kkirikkiri`.`articles` (`board_id`,
+                                             `title`,
+                                             `menu`,
+                                             `min_order_price`,
+                                             `order_price`,
+                                             `delivery_price`,
+                                             `order_time`,
+                                             `restaurant`,
+                                             `pickup_time`,
+                                             `address_postal`,
+                                             `address_primary`,
+                                             `address_secondary`,
+                                             `content`,
+                                             `created_at`,
+                                             `updated_at`)
+        VALUES (#{article.boardId},
+                #{article.title},
+                #{article.menu},
+                #{article.minOrderPrice},
+                #{article.orderPrice},
+                #{article.deliveryPrice},
+                #{article.orderTime},
+                #{article.restaurant},
+                #{article.pickupTime},
+                #{article.addressPostal},
+                #{article.addressPrimary},
+                #{article.addressSecondary},
+                #{article.content},
+                #{article.createdAt},
+                #{article.updatedAt})
+    </insert>
+</mapper>
