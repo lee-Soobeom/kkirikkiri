@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
        for (let i = currentYear; i >= 1950; i--) {
            const option = document.createElement('option');
            option.value = i;
-           option.textContent = i;
+           option.textContent = `${i}년`;
            select.append(option);
        }
     });

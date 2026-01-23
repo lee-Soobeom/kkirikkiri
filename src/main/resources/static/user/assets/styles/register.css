@@ -164,6 +164,51 @@
   font-size: 1.125rem;
   font-weight: 500;
 }
+#main > .content .form .label [data-component~="label.message"] {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: stretch;
+  width: 100%;
+  border-radius: 0.15rem;
+  display: none;
+  font-size: 0.875rem;
+  font-weight: 450;
+  opacity: 0;
+  padding: 0.5rem 0.75rem;
+  transition-duration: 175ms;
+  transition-property: opacity;
+}
+#main > .content .form .label [data-component~="label.message"][data-visible] {
+  opacity: 1;
+}
+#main > .content .form .label [data-component~="label.message"][data-message=info] {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  background-color: rgb(104.8, 145.5685714286, 255);
+  color: #FDFDFD;
+}
+#main > .content .form .label [data-component~="label.message"][data-message=info] > .infoIcon {
+  width: 1rem;
+  height: 1rem;
+}
+#main > .content .form .label [data-component~="label.message"][data-message=warning] {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  background-color: rgb(232.1178082192, 84.3369863014, 69.0821917808);
+  color: #FDFDFD;
+}
+#main > .content .form .label [data-component~="label.message"][data-message=warning] > .warningIcon {
+  width: 1rem;
+  height: 1rem;
+}
 #main > .content .form .label .row {
   align-items: center;
   display: flex;
