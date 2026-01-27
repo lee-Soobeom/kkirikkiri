@@ -12,6 +12,16 @@
   margin-top: 1rem;
   overflow-y: visible;
 
+  > .error {
+    @include flex(column, center, center, 1rem);
+    padding: 2.5rem 0;
+
+    > .title {
+      font-size: 1.5rem;
+      font-weight: 300;
+    }
+  }
+
   > .form {
     @include flex(column, flex-start, stretch, 2rem);
     background-color: #ffffff;
@@ -47,17 +57,11 @@
         }
 
         > .button {
-          background-color: #CDDAFF;
-          color: #ffffff;
           padding: 0.5rem 1.5rem;
           border-radius: 0.25rem;
           font-weight: 500;
           font-size: 1rem;
           cursor: pointer;
-
-          &:hover {
-            background-color: #A5BDFF;
-          }
         }
       }
 
@@ -91,6 +95,10 @@
 
         &::placeholder {
           color: #D1D5DB;
+        }
+
+        &:focus {
+          border-color: #A5BDFF;
         }
       }
     }
@@ -183,17 +191,11 @@
       width: 100%;
 
       button {
-        background-color: #CDDAFF;
-        color: #ffffff;
         padding: 0.9rem 3.5rem;
         border-radius: 0.5rem;
         font-weight: 700;
         font-size: 1rem;
         cursor: pointer;
-
-        &:hover {
-          background-color: #A5BDFF;
-        }
       }
     }
   }

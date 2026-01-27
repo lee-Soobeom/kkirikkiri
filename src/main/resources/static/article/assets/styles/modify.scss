@@ -1,10 +1,26 @@
 @use "sass:color";
 @import "../../../assets/styles/def";
 
+#top {
+  @include flex(row, space-between, center);
+  background-color: #A5BDFF;
+  padding: 1rem 3rem;
+
+  > .image-wrapper {
+    line-height: 0;
+  }
+}
+
+// 메인 영역
 #main {
-  @include flex(column, flex-start, center, 1rem);
-  flex-grow: 1;
-  flex-shrink: 1;
+  @include flex(column, center, stretch);
+  width: 60%;
+  align-self: center;
+  color: inherit;
+  flex: 1 1 auto;
+  font: inherit;
+  margin-top: 1rem;
+  overflow-y: visible;
 
   > .error {
     @include flex(column, center, center, 1rem);
@@ -16,37 +32,220 @@
     }
   }
 
-  > .modify-form {
-    @include flex(column, stretch, flex-start, 0.5rem);
-    width: 40rem;
+  > .form {
+    @include flex(column, flex-start, stretch, 2rem);
+    background-color: #ffffff;
+    border: 0.0625rem solid #d2deff;
+    padding: 0 2.5rem;
 
-    > [data-name="modifyContentLabel"] {
-      h1, h2, h3, h4, h5, h6 {
-        font: revert;
-        margin-block: revert;
-        margin-inline: revert;
-      }
-
-      ol, ul {
-        list-style-type: revert;
-        margin-block: revert;
-        padding-inline: revert;
-      }
-    }
-
-    .title {
-      font-size: 1.125rem;
-      font-weight: 300;
+    > .title {
+      color: #212121;
+      font-size: 2rem;
+      font-weight: 700;
+      padding: 2rem 0;
     }
 
     > .board {
-      font-size: 1.125rem;
-      font-weight: 300;
-      margin-bottom: 1rem;
+      display: none;
     }
 
-    > .button-container {
-      @include flex(row, stretch, flex-start, 0.5rem);
+    // 공통 라벨 및 입력창 스타일
+    label {
+      &.column {
+        @include flex(column, flex-start, stretch, 0.25rem);
+      }
+
+      &.row {
+        @include flex(row, flex-start, center, 0.25rem);
+
+        > .caption {
+          width: 4.5rem;
+        }
+
+        > .input {
+          flex: 1 1 auto;
+        }
+
+        > .button {
+          padding: 0.5rem 1rem;
+          border-radius: 0.25rem;
+          font-weight: 500;
+          font-size: 1rem;
+          cursor: pointer;
+        }
+      }
+
+      &.end {
+        align-self: end;
+        cursor: pointer;
+
+        > [name="entryCheck"] {
+          width: 1.2rem;
+          height: 1.2rem;
+          accent-color: #A5BDFF;
+        }
+
+        .text {
+          font-weight: 400;
+          color: #666666;
+        }
+      }
+
+      > .caption {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212121;
+      }
+
+      > .input {
+        height: 2rem;
+        border: 0.0625rem solid #d2deff;
+        font-size: 1rem;
+        padding-left: 0.25rem;
+
+        &::placeholder {
+          color: #D1D5DB;
+        }
+
+        &:focus {
+          border-color: #A5BDFF;
+        }
+      }
     }
+
+    > .row-group {
+      @include flex(row, flex-start, center, 0.5rem);
+
+      > .column {
+        width: 100%;
+      }
+    }
+
+    > .share-container {
+      @include flex(row, flex-start, center, 1rem);
+
+      > .title {
+        width: 4rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212121;
+      }
+
+    }
+
+    > .address-container {
+      @include flex(column, flex-start, stretch, 0.5rem);
+      > .caption {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #212121;
+      }
+    }
+
+    //이미지 추가
+    > .image-upload-container {
+      @include flex(column, flex-start, flex-start, 0.25rem);
+
+      .image-wrapper {
+        width: 5rem;
+        height: 5rem;
+        background-color: #E9EFFF;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        overflow: hidden;
+
+        &:hover {
+          background-color: #A5BDFF;
+        }
+
+
+        > [name="advImage"] {
+          display: none;
+        }
+
+        > .caption {
+          @include flex(row, center, center);
+          width: 100%;
+          height: 100%;
+          color: #FFFFFF;
+          font-weight: 700;
+          font-size: 2rem;
+        }
+      }
+    }
+
+    // 내용
+    label:has(textarea) {
+      textarea {
+        min-height: 22rem;
+        border: 0.0625rem solid #d2deff;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        resize: none;
+        &:focus {
+          border-color: #A5BDFF;
+        }
+      }
+
+      span:last-child {
+        font-size: 0.85rem;
+        color: #9CA3AF;
+        margin-top: 0.5rem;
+      }
+    }
+
+    > .button {
+      @include flex(row, flex-end, center);
+      width: 100%;
+
+      button {
+        padding: 0.9rem 3.5rem;
+        border-radius: 0.5rem;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+/* 주소 검색 전체 백드롭 */
+[data-address-dialog] {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+
+  &[data-visible] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* 주소 검색 모달 */
+[data-address-modal] {
+  width: 100%;
+  max-width: 420px;
+  height: 520px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+
+  transform: translateY(20px);
+  opacity: 0;
+  transition: .25s ease;
+
+  [data-visible] & {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
