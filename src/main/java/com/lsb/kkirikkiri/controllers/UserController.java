@@ -1,11 +1,10 @@
 package com.lsb.kkirikkiri.controllers;
 
-import com.lsb.kkirikkiri.entities.UserEntity;
+import com.lsb.kkirikkiri.entities.user.UserEntity;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -27,4 +26,14 @@ public class UserController {
 
         return "user/register";
     }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody // 리턴하는 문자열이 '파일명'이 아니라 '데이터'임을 알려줍니다.
+    public String postRegister(HttpServletRequest request) {
+        // 가입 처리 로직 (생략)
+
+        // JS의 fetch().then()에서 받을 JSON 데이터
+        return "{\"result\": \"SUCCESS\"}";
+    }
+
 }

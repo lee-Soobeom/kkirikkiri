@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>끼리끼리</title>
+    <title>끼리끼리 - 회원가입</title>
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/user/assets/styles/register.css">
     <script defer src="/user/assets/scripts/register.js"></script>
@@ -39,7 +39,8 @@
                     성함을 입력해 주세요.</span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    실명을 입력해 주세요.</span>
+                    <span class="text">실명을 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label">
@@ -59,7 +60,8 @@
                     </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    생년월일을 입력해 주세요.</span>
+                    <span class="text">생년월일을 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label">
@@ -76,7 +78,8 @@
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    올바른 정보를 입력해 주세요.</span>
+                    <span class="text">올바른 전화번호를 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label" data-name="registerEmail">
@@ -91,7 +94,8 @@
                     6자 이상 50자 이하의 유효한 형식의 이메일을 입력해 주세요.</span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    올바른 이메일을 입력해 주세요.</span>
+                    <span class="text">올바른 이메일을 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label">
@@ -105,7 +109,8 @@
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    주소를 입력해 주세요.</span>
+                    <span class="text">올바른 주소를 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label" data-name="registerPassword">
@@ -121,22 +126,24 @@
                     6자 이상 50자 이하의 유효한 형식의 비밀번호를 입력해 주세요.</span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    비밀번호를 입력해 주세요.</span>
+                    <span class="text">올바른 형식으로 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label" data-name="registerNickname">
                 <span class="caption">닉네임</span>
                 <span class="row">
-                  <input required autocomplete="off" class="field" maxlength="10" minlength="1"
+                  <input required autocomplete="off" class="field" maxlength="10" minlength="2"
                          name="nickname" spellcheck="false" placeholder="닉네임을 입력해 주세요." type="text">
                   <button name="nicknameCheck" type="button">닉네임 중복 확인</button>
                 </span>
                 <span data-component="label.message" data-message="info" data-visible>
                     <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
-                    1자 이상 10자 이하의 닉네임을 입력해 주세요.</span>
+                    2자 이상 10자 이하의 닉네임을 입력해 주세요.</span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    닉네임을 입력해 주세요.</span>
+                    <span class="text">닉네임을 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="term" name="privacyTerm">
@@ -158,17 +165,18 @@
             </div>
         </form>
 
-        <form novalidate class="form boss-form" data-type="boss" data-name="bossForm">
+        <form novalidate class="form boss-form" data-type="boss" data-name="bossForm" enctype="multipart/form-data">
             <h2 class="title">사장님 가입</h2>
 
             <label class="label">
-                <span class="caption">상호(가게명)</span>
+                <span class="caption">가게 이름</span>
                 <span class="row">
                     <input type="text" name="storeName" class="field" placeholder="가게 이름을 입력해 주세요." required>
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    가게 이름을 입력해 주세요.</span>
+                    <span class="text">가게 이름을 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label">
@@ -182,7 +190,8 @@
                     사업자 등록번호 10자리를 입력해 주세요.</span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    사업자 등록번호를 입력해 주세요.</span>
+                    <span class="text">사업자 등록 번호를 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label">
@@ -195,7 +204,8 @@
                     사장님 성함을 입력해 주세요.</span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    사장님 성함을 입력해 주세요.</span>
+                    <span class="text">사장님 성함을 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label">
@@ -212,7 +222,8 @@
                  </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    전화번호를 입력해 주세요.</span>
+                    <span class="text">전화번호를 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label">
@@ -226,7 +237,8 @@
                     6자 이상 50자 이하의 유효한 형식의 이메일을 입력해 주세요.</span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    이메일을 입력해 주세요.</span>
+                    <span class="text">이메일을 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label" data-name="registerPassword">
@@ -237,7 +249,8 @@
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    비밀번호를 입력해 주세요.</span>
+                    <span class="text">비밀번호를 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label">
@@ -247,34 +260,64 @@
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    업종을 입력해 주세요.</span>
+                    <span class="text">업종을 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label">
-                <span class="caption">매장 주소</span>
+                <span class="caption">가게 주소</span>
                 <span class="row">
                     <input type="text" name="address" class="field" placeholder="주소 찾기를 이용해 주세요." readonly required>
                     <button type="button">주소 찾기</button>
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    매장 주소를 입력해 주세요.</span>
+                    <span class="text">가게 주소를 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label">
-                <span class="caption">매장 전화번호</span>
+                <span class="caption">가게 전화번호</span>
                 <span class="row">
                     <input required type="tel" name="storeContact" class="field" placeholder="가게 전화번호를 입력해 주세요.">
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    가게 전화번호를 입력해 주세요.</span>
+                    <span class="text">가게 전화번호를 입력해 주세요.</span>
+                </span>
             </label>
 
             <label class="label">
                 <span class="caption">운영 시간</span>
                 <span class="row">
                     <input type="text" name="operatingHours" class="field" placeholder="예: 평일 09:00 ~ 21:00">
+                </span>
+            </label>
+            <label class="label">
+                <span class="caption">사업자 등록증 사본</span>
+                <span class="row">
+                    <input required type="file" name="businessLicense" class="field" accept="image/*, .pdf">
+                </span>
+                <span class="preview-container" id="licensePreview"></span>
+                <span data-component="label.message" data-message="info" data-visible>
+                    <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
+                    이미지 파일 또는 PDF를 업로드해 주세요.</span>
+                <span data-component="label.message" data-message="warning">
+                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
+                    <span class="text">이미지 파일 또는 PDF를 업로드 해주세요.</span>
+                </span>
+            </label>
+            <label class="label">
+                <span class="caption">영업 신고증 사본</span>
+                <span class="row">
+                    <input required type="file" name="businessLicense" class="field" accept="image/*, .pdf">
+                </span>
+                <span data-component="label.message" data-message="info" data-visible>
+                    <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
+                    이미지 파일 또는 PDF를 업로드해 주세요.</span>
+                <span data-component="label.message" data-message="warning">
+                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
+                    <span class="text">이미지 파일 또는 PDF를 업로드 해주세요.</span>
                 </span>
             </label>
             <label class="term" name="privacyTerm">

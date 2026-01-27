@@ -156,6 +156,7 @@
   justify-content: center;
   width: 80%;
   max-width: 35rem;
+  margin-bottom: 1rem;
 }
 #main > .content .form .label .row + .row {
   margin-top: 0.5rem;
@@ -172,7 +173,7 @@
   justify-content: stretch;
   width: 100%;
   border-radius: 0.15rem;
-  display: none;
+  display: none !important;
   font-size: 0.875rem;
   font-weight: 450;
   opacity: 0;
@@ -181,6 +182,7 @@
   transition-property: opacity;
 }
 #main > .content .form .label [data-component~="label.message"][data-visible] {
+  display: flex !important;
   opacity: 1;
 }
 #main > .content .form .label [data-component~="label.message"][data-message=info] {
@@ -191,6 +193,9 @@
   justify-content: flex-start;
   background-color: rgb(104.8, 145.5685714286, 255);
   color: #FDFDFD;
+}
+#main > .content .form .label [data-component~="label.message"][data-message=info]:has(~ [data-message=warning][data-visible]) {
+  display: none !important;
 }
 #main > .content .form .label [data-component~="label.message"][data-message=info] > .infoIcon {
   width: 1rem;
@@ -253,6 +258,27 @@
   transition: background-color 0.2s;
 }
 #main > .content .form .label .row button:hover {
+  background-color: #6E91FF;
+}
+#main > .content .form .label input[type=file].field {
+  border: none;
+  color: #4678ff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.5rem 0;
+}
+#main > .content .form .label input[type=file].field::file-selector-button {
+  background-color: #7D9DFF;
+  border: none;
+  border-radius: 0.25rem;
+  color: #FFFFFF;
+  cursor: pointer;
+  margin-right: 1rem;
+  padding: 0.3rem 0.6rem;
+  transition-duration: 0.2s;
+  transition-property: background-color;
+}
+#main > .content .form .label input[type=file].field::file-selector-button:hover {
   background-color: #6E91FF;
 }
 #main > .content .form .label[data-name=registerPassword] .row {

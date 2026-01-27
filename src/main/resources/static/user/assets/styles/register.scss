@@ -150,6 +150,7 @@
         @include flex(column, center, flex-start, 0.5rem);
         width: 80%;
         max-width: 35rem;
+        margin-bottom: 1rem;
 
         .row + .row {
           margin-top: 0.5rem;
@@ -166,7 +167,7 @@
           @include flex(column, stretch, flex-start, $gap);
           width: 100%;
           border-radius: 0.15rem;
-          display: none;
+          display: none !important;
           font-size: 0.875rem;
           font-weight: 450;
           opacity: 0;
@@ -175,6 +176,7 @@
           transition-property: opacity;
 
           &[data-visible] {
+            display: flex !important;
             opacity: 1;
           }
 
@@ -182,6 +184,10 @@
             @include flex(row, flex-start, center, 0.5rem);
             background-color: darken($global-color-highlight, 2%);
             color: #FDFDFD;
+
+            &:has(~ [data-message="warning"][data-visible]) {
+              display: none !important;
+            }
 
             > .infoIcon {
               width: 1rem;
@@ -243,6 +249,29 @@
             white-space: nowrap;
             cursor: pointer;
             transition: background-color 0.2s;
+
+            &:hover {
+              background-color: #6E91FF;
+            }
+          }
+        }
+        input[type="file"].field {
+          border: none;
+          color: #4678ff;
+          cursor: pointer;
+          font-size: 0.9rem;
+          padding: 0.5rem 0;
+
+          &::file-selector-button {
+            background-color: #7D9DFF;
+            border: none;
+            border-radius: 0.25rem;
+            color: #FFFFFF;
+            cursor: pointer;
+            margin-right: 1rem;
+            padding: 0.3rem 0.6rem;
+            transition-duration: 0.2s;
+            transition-property: background-color;
 
             &:hover {
               background-color: #6E91FF;
