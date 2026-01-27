@@ -1,16 +1,6 @@
 @use "sass:color";
 @import "../../../assets/styles/def";
 
-#top {
-  @include flex(row, space-between, center);
-  background-color: #A5BDFF;
-  padding: 1rem 3rem;
-
-  > .image-wrapper {
-    line-height: 0;
-  }
-}
-
 // 메인 영역
 #main {
   @include flex(column, center, stretch);

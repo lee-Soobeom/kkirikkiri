@@ -6,7 +6,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
-    <link rel="stylesheet" href="/assets/styles/index.css" type="text/css">
 </head>
 <body>
 <nav id="top" th:fragment="topNavigator" th:with="isSigned = ${ session.sessionUser != null }">
@@ -14,9 +13,7 @@
         <input class="input" hidden type="checkbox">
         <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
     </label>
-    <span class="title">
-        <a class="link" href="/">끼리끼리</a>
-    </span>
+    <a class="title" href="/">끼리끼리</a>
     <ol class="button-container">
         <li class="button">
             <a class="link" href="/user/register" target="_self">회원가입</a>

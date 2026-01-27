@@ -9,4 +9,6 @@ public interface ArticleMapper {
     int insert(@Param(value = "article") ArticleEntity articleEntity);
 
     ArticleEntity selectById(@Param(value = "id") int id);
+
+    int update(@Param(value = "article")  ArticleEntity articleEntity);
 }

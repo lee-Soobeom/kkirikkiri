@@ -31,6 +31,19 @@ $writeForm.addEventListener('submit', (e) => {
         return;
     }
 
+    // menuName
+    if ($writeForm['menuName'].value === '') {
+        alert("메뉴이름");
+        $writeForm['menuName'].focus();
+    }
+
+    if (!/^[\da-zA-Z가-힣`~!@#$%^&*()\-_=+\[{\]}\\|;:'",<.>/? ]{1,50}$/g.test($writeForm['menuName'].value)) {
+        alert("제대로된 메뉴이름");
+        $writeForm['menuName'].focus();
+        $writeForm['menuName'].select();
+        return;
+    }
+
     // minOrderPrice
     if ($writeForm['minOrderPrice'].value === '') {
         alert("최소주문금액 써라");
@@ -83,7 +96,7 @@ $writeForm.addEventListener('submit', (e) => {
         $writeForm['restaurant'].focus();
         return;
     }
-    if (!/^.{1,100}$/g.test($writeForm['restaurant'].value)) {
+    if (!/^[\da-zA-Z가-힣`~!@#$%^&*()\-_=+\[{\]}\\|;:'",<.>/? ]{1,100}$/g.test($writeForm['restaurant'].value)) {
         alert("1 ~ 100자");
         $writeForm['restaurant'].focus();
         $writeForm['restaurant'].select();
@@ -103,7 +116,7 @@ $writeForm.addEventListener('submit', (e) => {
         $writeForm['addressSecondary'].focus();
         return;
     }
-    if (!/^.{1,100}$/g.test($writeForm['addressSecondary'].value)) {
+    if (!/^[\da-zA-Z가-힣`~!@#$%^&*()\-_=+\[{\]}\\|;:'",<.>/? ]{1,100}$/g.test($writeForm['addressSecondary'].value)) {
         alert("1 ~ 100자");
         $writeForm['addressSecondary'].focus();
         $writeForm['addressSecondary'].select();
@@ -122,11 +135,13 @@ $writeForm.addEventListener('submit', (e) => {
         $writeForm['content'].select();
         return;
     }
+
     const xhr = new XMLHttpRequest();
     const formData = new FormData();
     formData.append('boardId', $writeForm['boardId'].value);
     formData.append('title', $writeForm['title'].value);
     formData.append('menu', $writeForm['menu'].value);
+    formData.append('menuName', $writeForm['menuName'].value);
     formData.append('minOrderPrice', $writeForm['minOrderPrice'].value);
     formData.append('orderPrice', $writeForm['orderPrice'].value);
     formData.append('deliveryPrice', $writeForm['deliveryPrice'].value);
@@ -150,6 +165,7 @@ $writeForm.addEventListener('submit', (e) => {
                 $writeForm['boardId'].value = '';
                 $writeForm['title'].value = '';
                 $writeForm['menu'].value = '';
+                $writeForm['menuName'].value = '';
                 $writeForm['minOrderPrice'].value = '';
                 $writeForm['orderPrice'].value = '';
                 $writeForm['deliveryPrice'].value = '';
@@ -158,13 +174,16 @@ $writeForm.addEventListener('submit', (e) => {
                 $writeForm['pickupTime'].value = '';
                 $writeForm['addressSecondary'].value = '';
                 $writeForm['content'].value = '';
-                location.href = `/article/id=${response.articleId}`
+                location.href = `/article/?id=${response.id}`;
                 break;
             case 'FAILURE':
+                alert('failure');
                 break;
             case 'FAILURE_SESSION':
+                alert('failure_session');
                 break;
             default:
+                alert('default ???');
                 break;
         }
     };

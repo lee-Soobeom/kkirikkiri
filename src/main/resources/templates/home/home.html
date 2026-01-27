@@ -1,31 +1,17 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>끼리끼리</title>
-    <link rel="stylesheet" href="/assets/styles/common.css">
-    <link rel="stylesheet" href="/assets/styles/index.css">
+    <link rel="stylesheet" href="/assets/styles/common.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/fragments.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/index.css" type="text/css">
 </head>
 <body>
-<nav id="top">
-    <label class="image-wrapper">
-        <input class="input" hidden type="checkbox">
-        <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
-    </label>
-    <span class="title">끼리끼리</span>
-    <div class="button-container">
-        <button class="button" type="button">
-            <a class="link" href="/user/register" target="_self">회원가입</a>
-        </button>
-        <button class="button" type="button">
-            <a class="link" href="/user/login" target="_self">로그인</a>
-        </button>
-        <button class="button" type="button">로그아웃</button>
-    </div>
-</nav>
+<th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
 <div id="my">
     <div class="container">
         <div class="box user">

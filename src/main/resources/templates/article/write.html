@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>게시글 작성</title>
     <link rel="stylesheet" href="/assets/styles/common.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/fragments.css" type="text/css">
     <link rel="stylesheet" href="/article/assets/styles/write.css" type="text/css">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script defer src="/article/assets/scripts/write.js"></script>
@@ -46,16 +47,22 @@
                 </select>
             </label>
             <label class="column">
+                <span class="caption">메뉴이름</span>
+                <input class="input" maxlength="50" minlength="1" name="menuName" type="text" placeholder="금액을 입력해 주세요.">
+            </label>
+        </div>
+        <div class="row-group">
+            <label class="column">
                 <span class="caption">최소주문금액</span>
-                <input class="input" name="minOrderPrice" type="text" placeholder="금액을 입력해 주세요.">
+                <input class="input" name="minOrderPrice" maxlength="7" minlength="1" type="text" placeholder="금액을 입력해 주세요.">
             </label>
             <label class="column">
                 <span class="caption">주문금액</span>
-                <input class="input" name="orderPrice" type="text" placeholder="금액을 입력해 주세요.">
+                <input class="input" name="orderPrice" maxlength="7" minlength="1" type="text" placeholder="금액을 입력해 주세요.">
             </label>
             <label class="column">
                 <span class="caption">배달비</span>
-                <input class="input" name="deliveryPrice" type="text" placeholder="금액을 입력해 주세요.">
+                <input class="input" name="deliveryPrice" maxlength="7" minlength="1" type="text" placeholder="금액을 입력해 주세요.">
             </label>
         </div>
         <div class="share-container">

@@ -1,5 +1,4 @@
 package com.lsb.kkirikkiri.entities;
-
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -15,9 +14,10 @@ public class ArticleEntity {
     private String boardId;
     private String title;
     private String menu;
-    private int minOrderPrice;
-    private int orderPrice;
-    private int deliveryPrice;
+    private String menuName;
+    private String minOrderPrice;
+    private String orderPrice;
+    private String deliveryPrice;
     private LocalDateTime orderTime;
     private String restaurant;
     private LocalDateTime pickupTime;
@@ -25,6 +25,7 @@ public class ArticleEntity {
     private String addressPrimary;
     private String addressSecondary;
     private String content;
+    private int view;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -7,28 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>끼리끼리</title>
     <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/assets/styles/fragments.css">
     <link rel="stylesheet" href="/article/assets/styles/article.css">
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=LIBRARY"></script>
     <script defer type="text/javascript" src="/article/assets/scripts/article.js"></script>
     <script defer type="module" src="/article/assets/scripts/websocket.js"></script>
 </head>
 <body>
-<nav id="top">
-    <label class="image-wrapper">
-        <input class="input" hidden type="checkbox">
-        <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
-    </label>
-    <span class="title">
-        <a class="link" href="/">끼리끼리</a>
-    </span>
-    <div class="button-container">
-        <button class="button" type="button">회원가입</button>
-        <button class="button" type="button">
-            <a class="link" href="/user/" target="_self">로그인</a>
-        </button>
-        <button class="button" type="button">로그아웃</button>
-    </div>
-</nav>
+<th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
 <div id="my">
     <div class="container">
         <div class="box user">
@@ -74,7 +60,7 @@
             </li>
         </ol>
         <label class="label">
-            <input class="input" name="chat" type="text" placeholder="enter키를 눌러 대화해 보세요.">
+            <input disabled class="input" name="chat" type="text" placeholder="enter키를 눌러 대화해 보세요.">
             <button class="entry" name="entry" type="button">대화입장</button>
         </label>
     </form>
@@ -88,54 +74,53 @@
 <main id="main">
     <div class="container">
         <div class="title-container">
-            <h2 class="title">푸라닭 블랙마요 나눠먹을 사람</h2>
+            <h2 class="title" th:text=" ${article.title} ">푸라닭 블랙마요 나눠먹을 사람</h2>
             <div class="user">
                 <div class="nickname">작성자</div>
-                <div class="created-at">2026-01-20 14:21:58</div>
+                <div class="created-at" th:text=" ${ #temporals.format(article.getCreatedAt(), 'yyyy-MM-dd HH:mm')} "></div>
                 <!--            <div class="is-updated">수정됨</div>-->
-                <div class="view">7</div>
+                <div class="view" th:text=" ${article.view} "></div>
             </div>
         </div>
         <div class="context-container">
             <div class="content-container">
                 <div class="menu-container">
                     <div class="box">
-                        <div class="title">메뉴:</div>
-                        <div class="caption">블랙알리오 한마리</div>
+                        <div class="title">메뉴</div>
+                        <div class="caption" th:text=" ${article.menuName} "></div>
                     </div>
                     <div class="box">
-                        <div class="title">금액:</div>
-                        <div class="caption">21900원</div>
+                        <div class="title">금액</div>
+                        <div class="caption" th:text=" ${article.orderPrice} "></div>
                     </div>
                     <div class="box">
-                        <div class="title">최소주문금액:</div>
-                        <div class="caption">18000원</div>
+                        <div class="title">최소주문금액</div>
+                        <div class="caption" th:text=" ${article.minOrderPrice} "></div>
                     </div>
                     <div class="box">
-                        <div class="title">배달비:</div>
-                        <div class="caption">3000원</div>
+                        <div class="title">배달비</div>
+                        <div class="caption" th:text=" ${article.deliveryPrice} "></div>
                     </div>
                 </div>
                 <div class="order-container">
                     <div class="box">
-                        <div class="title">주문 시간:</div>
-                        <div class="caption">17:00</div>
+                        <div class="title">주문 시간</div>
+                        <div class="caption" th:text=" ${#temporals.format(article.getOrderTime(), 'yyyy-MM-dd HH:mm')} "></div>
                     </div>
                     <div class="box">
-                        <div class="title">주문 가게:</div>
-                        <div class="caption">푸라닭 대구 동성로점</div>
-                    </div>
-                    <div role="none"></div>
-                    <div class="box">
-                        <div class="title">모임 시간:</div>
-                        <div class="caption">18:00</div>
+                        <div class="title">주문 가게</div>
+                        <div class="caption" th:text=" ${article.restaurant} "></div>
                     </div>
                     <div class="box">
-                        <div class="title">모임 장소:</div>
-                        <div class="caption">중앙대로 366 10층 class A</div>
+                        <div class="title">모임 시간</div>
+                        <div class="caption" th:text=" ${#temporals.format(article.getPickupTime(), 'yyyy-MM-dd HH:mm')} "></div>
+                    </div>
+                    <div class="box">
+                        <div class="title">모임 장소</div>
+                        <div class="caption" th:text=" ${article.addressSecondary} "></div>
                     </div>
                 </div>
-                <div class="text"> 자세한 내용은 대화를 통해 조율 가능합니다. 언제든 요청주세요! 저는 한마리 주문할 생각입니다. </div>
+                <div class="text" th:text=" ${article.content} "></div>
             </div>
             <div class="view-container">
                 <div class="fund-container">

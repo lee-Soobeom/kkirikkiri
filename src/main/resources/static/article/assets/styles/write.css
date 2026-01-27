@@ -1,17 +1,4 @@
 @charset "UTF-8";
-#top {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: space-between;
-  background-color: #A5BDFF;
-  padding: 1rem 3rem;
-}
-#top > .image-wrapper {
-  line-height: 0;
-}
-
 #main {
   align-items: stretch;
   display: flex;
