@@ -38,12 +38,13 @@
       }
 
       .sub-row {
-        @include flex(row, space-between, flex-end);
+        @include flex(row, space-between, center);
       }
 
-      .caption {
-        font-size: 0.9rem;
-        color: #888;
+      .board {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: #212121;
       }
 
       .filter {
@@ -150,6 +151,11 @@
               vertical-align: middle;
               text-align: center;
             }
+
+            &.created_at {
+              border-top-right-radius: 0.75rem;
+              border-bottom-right-radius: 0.75rem;
+            }
           }
         }
       }
@@ -173,7 +179,7 @@
     > .group {
       @include flex(row, stretch, flex-start);
       background-color: #ffffff;
-      border: 0.0625rem solid #eef2ff;
+      border: 0.0625rem solid $global-border-color;
       border-radius: 0.25rem;
       overflow: hidden;
 
@@ -181,20 +187,22 @@
         @include flex(row, center, center);
         width: 2rem;
         height: 2rem;
-        color: lighten(#4a4a4a, 50%);
+        color: lighten($global-text-color, 50%);
         text-align: center;
         text-decoration: none;
 
         + .link {
-          border-left: 0.0625rem solid #eef2ff;
+          border-left: 0.0625rem solid $global-border-color;
         }
 
         &:hover {
-          background-color: darken(#eef2ff, 3.33%);
+          background-color: darken($global-color-concept, 3.33%);
+          color: #ffffff;
         }
 
         &.-selected {
-          color: #4a4a4a;
+          background-color: $global-color-concept;
+          color: #ffffff;
           pointer-events: none;
         }
       }

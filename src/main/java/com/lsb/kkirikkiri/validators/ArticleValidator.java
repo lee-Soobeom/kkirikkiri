@@ -12,9 +12,6 @@ import java.time.LocalDateTime;
 public class ArticleValidator {
     private static final String TITLE_REGEX = "^[\\s\\S]{1,100}$";
     private static final String MENU_NAME_REGEX = "^[\\da-zA-Z가-힣`~!@#$%^&*()_=+\\[\\]{}\\\\|;:'\",<.>/? -]{1,50}$";
-    private static final String MIN_ORDER_PRICE_REGEX = "^(\\d{1,7})$";
-    private static final String ORDER_PRICE_REGEX = "^(\\d{1,7})$";
-    private static final String DELIVERY_PRICE_REGEX = "^(\\d{1,7})$";
     private static final String RESTAURANT_REGEX = "^[\\da-zA-Z가-힣`~!@#$%^&*()_=+\\[\\]{}\\\\|;:'\",<.>/? -]{1,100}$";
     private static final String ADDRESS_SECONDARY_REGEX = "^[\\da-zA-Z가-힣`~!@#$%^&*()_=+\\[\\]{}\\\\|;:'\",<.>/? -]{1,100}$";
     private static final String CONTENT_REGEX = "^[\\s\\S]{1,10000}$";
@@ -79,30 +76,30 @@ public class ArticleValidator {
         return validateMenuName(articleEntity.getMenuName());
     }
 
-    public boolean validateMinOrderPrice(String minOrderPrice) {
+    public boolean validateMinOrderPrice(Integer minOrderPrice) {
         return minOrderPrice != null
-                && minOrderPrice.matches(MIN_ORDER_PRICE_REGEX)
-                && isLengthBetween(minOrderPrice.length(), 1, 7);
+                && minOrderPrice >= 0
+                && minOrderPrice <= 9_999_999;
     }
 
     public boolean validateMinOrderPrice(@NonNull ArticleEntity articleEntity) {
         return validateMinOrderPrice(articleEntity.getMinOrderPrice());
     }
 
-    public boolean validateOrderPrice(String orderPrice) {
+    public boolean validateOrderPrice(Integer orderPrice) {
         return orderPrice != null
-                && orderPrice.matches(ORDER_PRICE_REGEX)
-                && isLengthBetween(orderPrice.length(), 1, 7);
+                && orderPrice >= 0
+                && orderPrice <= 9_999_999;
     }
 
     public boolean validateOrderPrice(@NonNull ArticleEntity articleEntity) {
         return validateOrderPrice(articleEntity.getOrderPrice());
     }
 
-    public boolean validateDeliveryPrice(String deliveryPrice) {
+    public boolean validateDeliveryPrice(Integer deliveryPrice) {
         return deliveryPrice != null
-                && deliveryPrice.matches(DELIVERY_PRICE_REGEX)
-                && isLengthBetween(deliveryPrice.length(), 1, 7);
+                && deliveryPrice >= 0
+                && deliveryPrice <= 9_999_999;
     }
 
     public boolean validateDeliveryPrice(@NonNull ArticleEntity articleEntity) {

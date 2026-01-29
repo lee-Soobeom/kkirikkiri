@@ -78,204 +78,207 @@
             accent-color: #4678FF;
           }
 
-        .text {
-          color: #666666;
-          font-size: 1rem;
-          font-weight: 400;
-        }
-      }
-
-      > .caption {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #212121;
-      }
-
-      > .input {
-        height: 2rem;
-        border: 0.0625rem solid #A5BDFF;
-        font-size: 1rem;
-        padding-left: 0.25rem;
-
-        &::placeholder {
-          color: #D1D5DB;
-        }
-
-        &:focus {
-          border-color: #A5BDFF;
-        }
-      }
-    }
-
-    > .row-group {
-      @include flex(row, flex-start, center, 0.5rem);
-
-      > .column {
-        width: 100%;
-      }
-    }
-
-    > .share-container {
-      @include flex(row, flex-start, center, 1rem);
-
-      > .title {
-        width: 4rem;
-        font-size: 1rem;
-        font-weight: 600;
-        color: #212121;
-      }
-
-    }
-
-    > .address-container {
-      @include flex(column, flex-start, stretch, 0.5rem);
-      > .caption {
-        font-size: 1.125rem;
-        font-weight: 700;
-        color: #212121;
-      }
-    }
-
-    //이미지 추가
-    > .image-upload-container {
-      @include flex(column, flex-start, flex-start, 0.25rem);
-
-      > .image-wrapper {
-        width: 5rem;
-        height: 5rem;
-        background-color: #A5BDFF;
-        border-radius: 0.75rem;
-        cursor: pointer;
-        overflow: hidden;
-
-        &:hover {
-          background-color: #4678FF;
-        }
-
-        > [name="files"] {
-          display: none;
+          .text {
+            color: #666666;
+            font-size: 1rem;
+            font-weight: 400;
+          }
         }
 
         > .caption {
-          @include flex(row, center, center);
-          width: 100%;
-          height: 100%;
-          color: #FFFFFF;
-          font-weight: 700;
-          font-size: 2rem;
-        }
-      }
-
-      > .list {
-        @include flex(row, flex-start, center, 0.75rem);
-        width: 100%;
-        height: 15rem;
-        overflow-x: scroll;
-        padding-bottom: 0.25rem;
-
-        &::-webkit-scrollbar {
-          height: 0.5rem;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #212121;
         }
 
-        &::-webkit-scrollbar-thumb {
-          background-color: #A5BDFF;
-          border-radius: 999rem;
-        }
+        > .input {
+          height: 2rem;
+          border: 0.0625rem solid #A5BDFF;
+          font-size: 1rem;
+          padding-left: 0.25rem;
 
-        &::-webkit-scrollbar-track {
-          background-color: #E9EFFF;
-          border-radius: 999rem;
-        }
+          &::placeholder {
+            color: #D1D5DB;
+          }
 
-        > .item {
-          @include flex(row, center, center);
-          min-width: 10rem;
-          height: 100%;
-          background-color: #E9EFFF;
-          color: #999;
-          flex-shrink: 0;
-          font-size: 0.75rem;
-          font-weight: 300;
-
-          > .image {
-            height: 100%;
+          &:focus {
+            border-color: #A5BDFF;
           }
         }
       }
-    }
 
-    // 내용
-    label:has(textarea) {
-      textarea {
-        min-height: 22rem;
-        border: 0.0625rem solid #d2deff;
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        resize: none;
-        &:focus {
-          border-color: #A5BDFF;
+      > .row-group {
+        @include flex(row, flex-start, center, 0.5rem);
+
+        > .column {
+          width: 100%;
         }
       }
 
-      span:last-child {
-        font-size: 0.85rem;
-        color: #9CA3AF;
-        margin-top: 0.5rem;
+      > .share-container {
+        @include flex(row, flex-start, center, 1rem);
+
+        > .title {
+          width: 4rem;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #212121;
+        }
+
       }
-    }
 
-    > .button {
-      @include flex(row, flex-end, center);
-      width: 100%;
+      > .address-container {
+        @include flex(column, flex-start, stretch, 0.5rem);
 
-      button {
-        padding: 0.9rem 3.5rem;
-        border-radius: 0.5rem;
-        font-weight: 700;
-        font-size: 1rem;
-        cursor: pointer;
+        > .caption {
+          font-size: 1.125rem;
+          font-weight: 700;
+          color: #212121;
+        }
+      }
+
+      //이미지 추가
+      > .image-upload-container {
+        @include flex(column, flex-start, flex-start, 0.25rem);
+
+        > .image-wrapper {
+          width: 5rem;
+          height: 5rem;
+          background-color: #A5BDFF;
+          border-radius: 0.75rem;
+          cursor: pointer;
+          overflow: hidden;
+
+          &:hover {
+            background-color: #4678FF;
+          }
+
+          > [name="files"] {
+            display: none;
+          }
+
+          > .caption {
+            @include flex(row, center, center);
+            width: 100%;
+            height: 100%;
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 2rem;
+          }
+        }
+
+        > .list {
+          @include flex(row, flex-start, center, 0.75rem);
+          width: 100%;
+          height: 15rem;
+          overflow-x: scroll;
+          padding-bottom: 0.25rem;
+
+          &::-webkit-scrollbar {
+            height: 0.5rem;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background-color: #A5BDFF;
+            border-radius: 999rem;
+          }
+
+          &::-webkit-scrollbar-track {
+            background-color: #E9EFFF;
+            border-radius: 999rem;
+          }
+
+          > .item {
+            @include flex(row, center, center);
+            min-width: 10rem;
+            height: 100%;
+            background-color: #E9EFFF;
+            color: #999;
+            flex-shrink: 0;
+            font-size: 0.75rem;
+            font-weight: 300;
+
+            > .image {
+              height: 100%;
+            }
+          }
+        }
+      }
+
+      // 내용
+      label:has(textarea) {
+        textarea {
+          min-height: 22rem;
+          border: 0.0625rem solid #d2deff;
+          border-radius: 0.75rem;
+          padding: 1.5rem;
+          font-size: 1rem;
+          line-height: 1.5;
+          resize: none;
+
+          &:focus {
+            border-color: #A5BDFF;
+          }
+        }
+
+        span:last-child {
+          font-size: 0.85rem;
+          color: #9CA3AF;
+          margin-top: 0.5rem;
+        }
+      }
+
+      > .button {
+        @include flex(row, flex-end, center);
+        width: 100%;
+
+        button {
+          padding: 0.9rem 3.5rem;
+          border-radius: 0.5rem;
+          font-weight: 700;
+          font-size: 1rem;
+          cursor: pointer;
+        }
       }
     }
   }
-}
 
-/* 주소 검색 전체 백드롭 */
-[data-address-dialog] {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  /* 주소 검색 전체 백드롭 */
+  [data-address-dialog] {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s ease;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
 
-  &[data-visible] {
-    opacity: 1;
-    pointer-events: auto;
+    &[data-visible] {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
-}
 
-/* 주소 검색 모달 */
-[data-address-modal] {
-  width: 100%;
-  max-width: 420px;
-  height: 520px;
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
+  /* 주소 검색 모달 */
+  [data-address-modal] {
+    width: 100%;
+    max-width: 420px;
+    height: 520px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
 
-  transform: translateY(20px);
-  opacity: 0;
-  transition: .25s ease;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: .25s ease;
 
-  [data-visible] & {
-    transform: translateY(0);
-    opacity: 1;
+    [data-visible] & {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 }

@@ -1,9 +1,10 @@
 package com.lsb.kkirikkiri.entities;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -15,9 +16,9 @@ public class ArticleEntity {
     private String title;
     private String menu;
     private String menuName;
-    private String minOrderPrice;
-    private String orderPrice;
-    private String deliveryPrice;
+    private Integer minOrderPrice;
+    private Integer orderPrice;
+    private Integer deliveryPrice;
     private LocalDateTime orderTime;
     private String restaurant;
     private LocalDateTime pickupTime;
@@ -25,6 +26,7 @@ public class ArticleEntity {
     private String addressPrimary;
     private String addressSecondary;
     private String content;
+    private String nickname;
     private int view;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -11,11 +11,8 @@ import java.time.LocalDateTime;
 @Setter
 @EqualsAndHashCode(of = "id")
 public class BoardEntity {
-    private long id;
+    private String id;
     private String displayText;
-    private String boardType;
-    private boolean isAdminOnly;
-    private Integer sortOrder;
+    private int sortOrder;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

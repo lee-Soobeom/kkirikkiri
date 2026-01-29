@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -20,13 +20,13 @@
         <span class="message">존재하지 않는 게시판입니다. 주소를 다시 확인해 주세요.</span>
         <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
     </div>
-    <div class="content-wrapper">  <!--th:if="${board != null}"-->
+    <div class="content-wrapper" th:if="${board != null}">
         <div class="header">
             <h1 class="title">게시판</h1>
             <h2 class="board"></h2>
             <div class="sub-row">
-                <h2 class="caption">사장님들의 멋진 가게를 홍보해보세요!</h2>
-                <div class="filter">
+                <h2 class="board" th:text="${board.getDisplayText()}"></h2>
+                <div class="filter ">
                     <label><input type="checkbox"> 최신순</label>
                     <label><input type="checkbox"> 인기순</label>
                 </div>
@@ -44,36 +44,32 @@
             </tr>
             </thead>
             <tbody class="section">
-                <tr class="row">
-                    <td class="cell title">
-                        <div class="title-inner">
-                            <div class="thumbnail"></div>
-                            <div class="text">
-                                <a href="#" class="link">두쫀쿠 판매 게시했습니다~ 드시러 오세요!!</a>
-                                <p class="preview">요즘 유행하는 두쫀쿠! 저희 카페에서 드시고 가세요...</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="cell nickname">유어박스</td>
-                    <td class="cell view">71</td>
-                    <td class="cell created_at">2026-01-16</td>
-                </tr>
-            </tbody>
-            <tbody class="section">
-            <tr class="row">
+            <tr class="row" th:each="article : ${articles}">
                 <td class="cell title">
                     <div class="title-inner">
                         <div class="thumbnail">
-                            <img
-                                    src="/board/assets/images/icons8-airplane-50.png"
-                                    alt="게시글 썸네일">
-                                 <!--   th:src="${article.thumbnailUrl}" -->
+                            <img src="/board/assets/images/icons8-airplane-50.png" alt="썸네일">
                         </div>
                         <div class="text">
-                            <a href="#" class="link">두쫀쿠 판매 게시했습니다~ 드시러 오세요!!</a>
-                            <p class="preview">요즘 유행하는 두쫀쿠! 저희 카페에서 드시고 가세요! 너무 맛있어서 소문 난 카페입니다! 다른 메뉴도 맛있으니 놀러오세요!</p>
+                            <a class="link"
+                            th:href="@{/article(id=${article.id})}"
+                            th:text="${article.title}">
+                                제목
+                            </a>
+                            <p class="preview" th:text="${#strings.abbreviate(article.content, 50)}">
+                                미리보기
+                            </p>
                         </div>
                     </div>
+                </td>
+                <td class="cell nickname" th:text="${article.nickname}"></td>
+                <td class="cell view" th:text="${article.view}"></td>
+                <td class="cell created_at"
+                th:text="${#temporals.format(article.createdAt, 'yyyy-MM-dd')}"></td>
+            </tr>
+            <tr th:if="${articles == null || #arrays.isEmpty(articles)}">
+                <td colspan="5" class="cell empty">
+                    작성된 글이 없습니다.
                 </td>
                 <td class="cell nickname">유어박스</td>
                 <td class="cell view">71</td>
@@ -84,7 +80,7 @@
     </div>
 
     <form novalidate class="search-form" name="searchForm">
-        <input hidden name="id" type="hidden">
+        <input hidden name="id" type="hidden" th:value="${board.getId()}">
         <label data-object="label" data-name="searchByLabel">
             <select required name="by" data-object="input" data-component="label.field">
                 <option selected value="titleContent">제목 + 내용</option>
@@ -93,21 +89,42 @@
             </select>
         </label>
         <label data-object="label">
-            <input maxlength="25" minlength="0" name="keyword" placeholder="검색어를 입력해 주세요." type="text" data-object="input" data-component="label.field">
+            <input maxlength="25" minlength="0" name="keyword" placeholder="검색어를 입력해 주세요." data-object="input" data-component="label.field"
+                   th:value="${boardSearchVo.getKeyword() != null ? boardSearchVo.getKeyword() : ''}">
         </label>
         <button class="button" type="submit" data-object="button" data-color="concept">검색</button>
     </form>
-    <div class="page-container">
-        <div class="group">
-            <a href="#" class="link">&lt;&lt;</a>
-            <a href="#" class="link">&lt;</a>
+    <div class="page-container" th:if="${boardSearchVo.getBy() == null || boardSearchVo.getKeyword() == null}">
+        <div class="group" th:if="${boardPageVo.requestPage > boardPageVo.minPage}">
+            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.minPage})}">&lt;&lt;</a>
+            <a class="link" th:if="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.requestPage - 1})}">&lt;</a>
         </div>
         <div class="group">
-            <a href="#"></a>
+            <a th:each="page : ${#numbers.sequence(boardPageVo.startPage, boardPageVo.endPage)}"
+            th:text="${page}"
+            th:href="@{'/board/list' (id = ${board.id}, page = ${page})}"
+            th:class="${page == boardPageVo.requestPage ? 'link -selexted' : 'link'}"></a>
+        </div>
+        <div class="group" th:if="${boardPageVo.requestPage < boardPageVo.maxPage}">
+            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.maxPage})}">&gt;&gt;</a>
+            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.requestPage + 1})}">&gt;</a>
+        </div>
+    </div>
+    <div class="page-container" th:if="${boardSearchVo.getBy() != null || boardSearchVo.getKeyword() != null}">
+        <div class="group" th:if="${boardPageVo.requestPage > boardPageVo.minPage}">
+            <a class="link"
+               th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.minPage}, by = ${boardSearchVo.by}, keyword = ${boardSearchVo.keyword})}">&lt;&lt;</a>
+            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.requestPage - 1}, by = ${boardSearchVo.by}, keyword = ${boardSearchVo.keyword})}">&lt;</a>
         </div>
         <div class="group">
-            <a href="#" class="link">&gt;&gt;</a>
-            <a href="#" class="link">&gt;</a>
+            <a th:each="page : ${#numbers.sequence(boardPageVo.startPage, boardPageVo.endPage)}"
+               th:text="${page}"
+               th:href="@{'/board/list' (id = ${board.id}, page = ${page}, by = ${boardSearchVo.by}, keyword = ${boardSearchVo.keyword})}"
+               th:class="${page == boardPageVo.requestPage ? 'link -selected' : 'link'}"></a>
+        </div>
+        <div class="group" th:if="${boardPageVo.requestPage < boardPageVo.maxPage}">
+            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.maxPage}, by = ${boardSearchVo.by}, keyword = ${boardSearchVo.keyword})}">&gt;&gt;</a>
+            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.requestPage + 1}, by = ${boardSearchVo.by}, keyword = ${boardSearchVo.keyword})}">&gt;</a>
         </div>
     </div>
 </main>

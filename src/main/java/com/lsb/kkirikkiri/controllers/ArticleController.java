@@ -18,7 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ArticleController {
     private final ArticleService articleService;
-
+    // 글 작성 페이지
     @RequestMapping(value = "/write",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
@@ -26,7 +26,7 @@ public class ArticleController {
         modelAndView.setViewName("article/write");
         return modelAndView;
     }
-
+    // 게시글 조회
     @RequestMapping(value = "/",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
@@ -35,7 +35,7 @@ public class ArticleController {
         modelAndView.setViewName("article/article");
         return modelAndView;
     }
-
+    // 게시글 수정
     @RequestMapping(value = "/modify",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
@@ -43,12 +43,14 @@ public class ArticleController {
         modelAndView.setViewName("article/modify");
         return modelAndView;
     }
-
+    // 글 작성 처리
     @RequestMapping(value = "/write",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map<String, Object> postWrite(ArticleEntity articleEntity) {
+        // 임시 닉네임
+        articleEntity.setNickname("testUser");
         Pair<CommonResult, ArticleEntity> result = this.articleService.write(articleEntity);
         Map<String, Object> response = new HashMap<>();
         response.put("result", result.getLeft().name());

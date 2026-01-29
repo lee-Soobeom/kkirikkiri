@@ -5,6 +5,13 @@ import com.lsb.kkirikkiri.services.ServiceService;
 import com.lsb.kkirikkiri.vos.ServiceBoardPageVo;
 import com.lsb.kkirikkiri.vos.ServiceVo;
 import lombok.RequiredArgsConstructor;
+import com.lsb.kkirikkiri.entities.BoardEntity;
+import com.lsb.kkirikkiri.services.ArticleService;
+import com.lsb.kkirikkiri.services.BoardService;
+import com.lsb.kkirikkiri.vos.ArticleVo;
+import com.lsb.kkirikkiri.vos.BoardPageVo;
+import com.lsb.kkirikkiri.vos.BoardSearchVo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +27,31 @@ import java.util.Objects;
 public class BoardController {
     private final ServiceService serviceService;
 
+    private final ArticleService articleService;
+    private final BoardService boardService;
+
     @RequestMapping(value = "/list",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getBoard(ModelAndView modelAndView) {
+    public ModelAndView getList(@RequestParam(value = "id", required = false) String id,
+                                @RequestParam(value = "page", defaultValue = "1") int requestPage,
+                                @RequestParam(value = "sort", required = false) String sort, BoardSearchVo boardSearchVo, ModelAndView modelAndView) {
+        BoardEntity board = this.boardService.getBoardById(id);
+        modelAndView.addObject("board", board);
+        if (board != null) {
+            boolean isSearching = boardSearchVo.getBy() != null && boardSearchVo.getKeyword() != null;
+            int totalCount = isSearching
+                    ? this.articleService.getCountByBoardSearch(boardSearchVo)
+                    : this.articleService.getCountByBoardId(id);
+            BoardPageVo boardPageVo = new BoardPageVo(requestPage, totalCount, sort);
+            ArticleVo[] articles = isSearching
+                    ? this.articleService.getAllBoardSearch(boardPageVo, boardSearchVo)
+                    : this.articleService.getAllByBoardId(boardPageVo, id);
+
+            modelAndView.addObject("boardPageVo", boardPageVo);
+            modelAndView.addObject("boardSearchVo", boardSearchVo);
+            modelAndView.addObject("articles", articles);
+        }
         modelAndView.setViewName("board/list");
         return modelAndView;
     }

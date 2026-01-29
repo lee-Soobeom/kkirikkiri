@@ -13,17 +13,7 @@
     <script defer src="/article/assets/scripts/modify.js"></script>
 </head>
 <body>
-<nav id="top">
-    <span class="image-wrapper">
-        <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
-    </span>
-    <span>끼리끼리</span>
-    <div>
-        <button type="button">회원가입</button>
-        <button type="button">로그인</button>
-        <button type="button">로그아웃</button>
-    </div>
-</nav>
+<th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
 <main id="main">
     <div class="error not-found">
         <h1 class="title">게시글 수정</h1>
