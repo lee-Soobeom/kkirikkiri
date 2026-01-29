@@ -16,8 +16,9 @@ body:has(> #top > .image-wrapper > .input:checked) > #quick {
 
 #top {
   @include flex(row, space-between, center);
-  background-color: #A5BDFF;
+  background-color: #3A6FFF;
   padding: 1rem 3rem;
+  position: relative;
   z-index: 10;
 
   > .image-wrapper {
@@ -29,11 +30,15 @@ body:has(> #top > .image-wrapper > .input:checked) > #quick {
     }
   }
 
-  > .title {
+  > .link {
+    top: 50%;
+    left: 50%;
     color: #FFFFFF;
     font: inherit;
     font-size: 1.25rem;
     font-weight: 700;
+    position: absolute;
+    transform: translate(-50%, -50%);
   }
 
   > .button-container {
@@ -79,79 +84,76 @@ body:has(> #top > .image-wrapper > .input:checked) > #quick {
     transition-duration: 150ms;
     transition-property: pointer-events, transform;
 
-    > .user {
-      @include flex(column, space-around, center, 0.5rem);
-
-      > .image-container {
-        border: 0.0625rem solid #E9EFFF;
-        border-radius: 999rem;
-        overflow: hidden;
-      }
-
-      > .info {
-        @include flex(column, flex-stert, center, 0.125rem);
-
-        > .nickname {
-          color: #232323;
-          font-size: 1.375rem;
-          font-weight: 700;
-        }
-
-        > .address {
-          color: #ababab;
-          font-size: 0.75rem;
-          font-weight: 300;
-        }
-
-        > .rank {
-          color: inherit;
-          font-size: 0.875rem;
-          font-weight: 300;
-        }
-      }
-
-      > .button {
-        width: 80%;
-        align-self: center;
-        background-color: #D2DEFF;
-        border-radius: 1rem;
-        padding: 0.375rem 0;
-      }
-    }
-
     > .box {
+      @include flex(column, flex-start, stretch, 0.5rem);
       background-color: #FFFFFF;
       border-radius: 0.5rem;
       padding: 1.5rem 1.75rem;
 
-      > .title {
-        color: inherit;
-        font-size: 1.5rem;
-        font-weight: 700;
-      }
-    }
+      &.user {
+        @include flex(column, space-around, center, 0.5rem);
 
-    > .cash-container {
-      @include flex(column, flex-start, flex-start, 0.5rem);
+        > .image-container {
+          border: 0.0625rem solid #E9EFFF;
+          border-radius: 999rem;
+          overflow: hidden;
+        }
 
-      > .content-container {
-        @include flex(row, space-between, center);
-        width: 100%;
-        padding: 0 0.5rem;
+        > .info {
+          @include flex(column, flex-stert, center, 0.125rem);
+
+          > .nickname {
+            color: #232323;
+            font-size: 1.375rem;
+            font-weight: 700;
+          }
+
+          > .address {
+            color: #ababab;
+            font-size: 0.75rem;
+            font-weight: 300;
+          }
+
+          > .rank {
+            color: inherit;
+            font-size: 0.875rem;
+            font-weight: 300;
+          }
+        }
 
         > .button {
+          width: 80%;
+          align-self: center;
           background-color: #D2DEFF;
           border-radius: 1rem;
-          padding: 0.375rem 1.25rem;
+          padding: 0.375rem 0;
         }
       }
-    }
 
-    > .review-container {
-      @include flex(column, flex-start, flex-start, 0.5rem);
+      &.point-container > .title{
+        align-self: flex-start;
+      }
+
+      > .title {
+        color: inherit;
+        font-size: 1.25rem;
+        font-weight: 300;
+      }
 
       > .content {
+        @include flex(row, center, center, 0.75rem);
         align-self: center;
+        color: inherit;
+
+        > .value {
+          font-size: 1.75rem;
+          font-weight: 700;
+        }
+
+        > .caption {
+          font-size: 1.5rem;
+          font-weight: 400;
+        }
       }
     }
 

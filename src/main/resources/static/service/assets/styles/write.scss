@@ -1,0 +1,76 @@
+@use "sass:color";
+@import "../../../assets/styles/def";
+
+#main {
+  @include flex(column, flex-start, stretch);
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  background-color: #E9EFFF;
+  color: inherit;
+  font: inherit;
+  padding: 1rem 1.5rem;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+#main > .serviceForm {
+  @include flex(column, flex-start, stretch, 1rem);
+
+  > .title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    padding-bottom: 1rem;
+  }
+
+  > .label {
+    @include flex(row, flex-start, center, 0.75rem);
+
+    > .caption {
+      color: inherit;
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    > .-stretch {
+      background-color: #FFFFFF;
+      flex: 1 1 auto;
+
+      &.input {
+        height: 2rem;
+        padding-left: 0.5rem;
+      }
+
+      &.text {
+        resize: none;
+        padding: 0.5rem;
+      }
+
+      &.select {
+        height: 2rem;
+        padding-left: 0.5rem;
+      }
+    }
+  }
+
+  > .button-container {
+    @include flex(row, flex-end, center);
+
+    > .button {
+      background-color: #A5BDFF;
+      border-radius: 0.25rem;
+      color: #FFFFFF;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 1rem 2rem;
+
+      &:hover {
+        background-color: #4678FF;
+      }
+
+      &:active{
+       background-color: #3A6FFF;
+      }
+    }
+  }
+}

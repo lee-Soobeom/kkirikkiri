@@ -1,8 +1,31 @@
 /** @type {HTMLFormElement} */
 const $writeForm = document.forms['writeForm'];
 
+const $fileList = $writeForm.querySelectorAll(':scope > .image-upload-container > .list > .item');
+
 let dialogEl;
 let modalEl;
+
+$writeForm['files'].addEventListener('input', () => {
+    const filesArray = $writeForm['files'].files;
+
+    if (filesArray.length === 0) {
+        return;
+    }
+    for (let i = 0; i < filesArray.length; i++) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            $fileList[i].innerHTML = `
+                <img class="image" alt="" src="${reader.result}">
+            `;
+        }
+        reader.onerror = () => {
+            alert('파일을 가져오는데 실패했습니다.');
+        }
+        reader.readAsDataURL(filesArray[i]);
+    }
+});
+
 
 $writeForm.addEventListener('submit', (e) => {
     e.preventDefault();

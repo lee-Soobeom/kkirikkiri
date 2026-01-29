@@ -8,20 +8,19 @@
   width: 60%;
   align-self: center;
   color: inherit;
-  flex: 1 1 auto;
   font: inherit;
-  margin-top: 1rem;
   overflow-y: visible;
+  padding: 1rem 0;
 }
 #main > .form {
   align-items: stretch;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.75rem;
   justify-content: flex-start;
   background-color: #ffffff;
-  border: 0.0625rem solid #d2deff;
-  padding: 0 2.5rem;
+  border: 0.0625rem solid #A5BDFF;
+  padding: 0 2.5rem 2rem 2.5rem;
 }
 #main > .form > .title {
   color: #212121;
@@ -53,7 +52,7 @@
   flex: 1 1 auto;
 }
 #main > .form label.row > .button {
-  background-color: #CDDAFF;
+  background-color: #A5BDFF;
   color: #ffffff;
   padding: 0.5rem 1.5rem;
   border-radius: 0.25rem;
@@ -62,20 +61,41 @@
   cursor: pointer;
 }
 #main > .form label.row > .button:hover {
-  background-color: #A5BDFF;
+  background-color: #4678FF;
 }
 #main > .form label.end {
   align-self: end;
   cursor: pointer;
 }
-#main > .form label.end > [name=entryCheck] {
-  width: 1.2rem;
-  height: 1.2rem;
-  accent-color: #A5BDFF;
+#main > .form label.end > .check-wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  padding: 0.25rem 0;
 }
-#main > .form label.end .text {
-  font-weight: 400;
+#main > .form label.end > .check-wrapper > [name=entryCheck] {
+  width: 1.125rem;
+  height: 1.125rem;
+  accent-color: #4678FF;
+}
+#main > .form label.end > .check-wrapper > .text {
   color: #666666;
+  font-size: 1rem;
+  font-weight: 400;
+}
+#main > .form label.end > .button {
+  background-color: #A5BDFF;
+  color: #ffffff;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+#main > .form label.end > .button:hover {
+  background-color: #4678FF;
 }
 #main > .form label > .caption {
   font-size: 1rem;
@@ -84,7 +104,7 @@
 }
 #main > .form label > .input {
   height: 2rem;
-  border: 0.0625rem solid #d2deff;
+  border: 0.0625rem solid #A5BDFF;
   font-size: 1rem;
   padding-left: 0.25rem;
 }
@@ -122,7 +142,7 @@
   justify-content: flex-start;
 }
 #main > .form > .address-container > .caption {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 700;
   color: #212121;
 }
@@ -133,21 +153,21 @@
   gap: 0.25rem;
   justify-content: flex-start;
 }
-#main > .form > .image-upload-container .image-wrapper {
+#main > .form > .image-upload-container > .image-wrapper {
   width: 5rem;
   height: 5rem;
-  background-color: #E9EFFF;
+  background-color: #A5BDFF;
   border-radius: 0.75rem;
   cursor: pointer;
   overflow: hidden;
 }
-#main > .form > .image-upload-container .image-wrapper:hover {
-  background-color: #A5BDFF;
+#main > .form > .image-upload-container > .image-wrapper:hover {
+  background-color: #4678FF;
 }
-#main > .form > .image-upload-container .image-wrapper > [name=advImage] {
+#main > .form > .image-upload-container > .image-wrapper > [name=files] {
   display: none;
 }
-#main > .form > .image-upload-container .image-wrapper > .caption {
+#main > .form > .image-upload-container > .image-wrapper > .caption {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -159,9 +179,48 @@
   font-weight: 700;
   font-size: 2rem;
 }
+#main > .form > .image-upload-container > .list {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  justify-content: flex-start;
+  width: 100%;
+  height: 15rem;
+  overflow-x: scroll;
+  padding-bottom: 0.25rem;
+}
+#main > .form > .image-upload-container > .list::-webkit-scrollbar {
+  height: 0.5rem;
+}
+#main > .form > .image-upload-container > .list::-webkit-scrollbar-thumb {
+  background-color: #A5BDFF;
+  border-radius: 999rem;
+}
+#main > .form > .image-upload-container > .list::-webkit-scrollbar-track {
+  background-color: #E9EFFF;
+  border-radius: 999rem;
+}
+#main > .form > .image-upload-container > .list > .item {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  min-width: 10rem;
+  height: 100%;
+  background-color: #E9EFFF;
+  color: #999;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 300;
+}
+#main > .form > .image-upload-container > .list > .item > .image {
+  height: 100%;
+}
 #main > .form label:has(textarea) textarea {
   min-height: 22rem;
-  border: 0.0625rem solid #d2deff;
+  border: 0.0625rem solid #A5BDFF;
   border-radius: 0.75rem;
   padding: 1.5rem;
   font-size: 1rem;
@@ -175,26 +234,6 @@
   font-size: 0.85rem;
   color: #9CA3AF;
   margin-top: 0.5rem;
-}
-#main > .form > .button {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: flex-end;
-  width: 100%;
-}
-#main > .form > .button button {
-  background-color: #CDDAFF;
-  color: #ffffff;
-  padding: 0.9rem 3.5rem;
-  border-radius: 0.5rem;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-}
-#main > .form > .button button:hover {
-  background-color: #A5BDFF;
 }
 
 /* 주소 검색 전체 백드롭 */

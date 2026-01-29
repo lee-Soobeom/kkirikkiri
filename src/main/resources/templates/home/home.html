@@ -12,42 +12,7 @@
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
-<div id="my">
-    <div class="container">
-        <div class="box user">
-            <div class="image-container">
-                <img src="/assets/images/my/my.user.png" alt="user">
-            </div>
-            <div class="info">
-                <div class="nickname">0kcal</div>
-                <div class="address">대구 북구 동천동</div>
-                <div class="rank">신입회원</div>
-            </div>
-            <button class="button" type="button">마이페이지</button>
-        </div>
-        <div class="box cash-container">
-            <h2 class="title">내 지갑</h2>
-            <div class="content-container">
-                <span class="content cash">
-                    <span class="now">32000</span>
-                    <span class="won">원</span>
-                </span>
-                <button class="button" type="button">충전</button>
-            </div>
-
-        </div>
-        <div class="box review-container">
-            <h2 class="title">나의 리뷰 점수</h2>
-            <span class="content review">
-                <span class="now">4.21</span>
-                <span>/</span>
-                <span class="max">★ 4.5</span>
-            </span>
-        </div>
-        <div class="-stretch" role="none"></div>
-        <a class="link" href="#" target="_blank">고객센터</a>
-    </div>
-</div>
+<th:block th:replace="~{/fragments/common.html :: sideMypage(user)}"></th:block>
 <main id="main">
     <div class="search">
         <div class="menu-container">
@@ -288,10 +253,10 @@
 </main>
 <ol id="quick">
     <li class="item">
-        <a class="link" href="#" target="_blank">홍보</a>
+        <a class="link" href="#" target="_self">홍보</a>
     </li>
     <li class="item">
-        <a class="link" href="#" target="_blank">공지사항</a>
+        <a class="link" href="#" target="_self">공지사항</a>
     </li>
     <li class="item">
         <label class="label">

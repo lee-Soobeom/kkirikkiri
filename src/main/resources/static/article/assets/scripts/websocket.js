@@ -18,6 +18,7 @@ $wsConnectButton.addEventListener('click', () => {
         stompClient.onConnect = () => {
             $chatroom.querySelector('[name="chat"]').disabled = false;
             createSystemMessage('대화방에 입장하였습니다.');
+            $wsConnectButton.innerText = '대화퇴장';
             isConnected = true
             stompClient.subscribe(`/topic/message/${new URL(location.href).searchParams.get('id')}`, (message) => {
                 const response = JSON.parse(message.body);
@@ -36,7 +37,8 @@ $wsConnectButton.addEventListener('click', () => {
         stompClient.activate();
     } else { // 채팅창 끌때
         $chatroom.querySelector('[name="chat"]').disabled = true;
-        createUserMessage('system', '대화방을 퇴장하였습니다.')
+        createSystemMessage('대화방을 퇴장하였습니다.');
+        $wsConnectButton.innerText = '대화입장';
         stompClient.deactivate();
         isConnected = false;
     }
@@ -54,7 +56,7 @@ function sendMessage() {
     }
 
     stompClient.publish({
-        destination: `/app/chat/${1}`,
+        destination: `/app/chat/${new URL(location.href).searchParams.get('id')}`,
         body: JSON.stringify({
             sender: "me",
             content: $wsContainer.querySelector('[name="chat"]').value
@@ -75,10 +77,10 @@ function createUserMessage(messageSender, messageContent) {
     $li.append($sender);
     $li.append($content);
     $room.append($li);
+    $room.scrollTop = $room.scrollHeight;
 }
 
 function createSystemMessage(message) {
-    // todo: 카톡처럼 대화형식 sender === localstorage userid? 말풍선 오른쪽 왼쪽 나누기
     const $li = document.createElement('li');
     const $sender = document.createElement('span');
     const $content = document.createElement('span');
@@ -90,4 +92,5 @@ function createSystemMessage(message) {
     $li.append($sender);
     $li.append($content);
     $room.append($li);
+    $room.scrollTop = $room.scrollHeight;
 }

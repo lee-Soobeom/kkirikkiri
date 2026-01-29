@@ -13,6 +13,9 @@
   cursor: pointer;
   position: fixed;
 }
+#ws:hover {
+  background-color: #4678FF;
+}
 #ws > .room-container {
   align-items: stretch;
   display: flex;
@@ -46,7 +49,11 @@
   justify-content: flex-start;
   background-color: #FFFFFF;
   flex: 1 1 auto;
+  overflow-y: scroll;
   padding: 0.5rem 0.375rem;
+}
+#ws > .room-container > .room::-webkit-scrollbar {
+  display: none;
 }
 #ws > .room-container > .room > .message {
   align-items: start;
@@ -136,22 +143,25 @@
   flex-direction: column;
   gap: 0;
   justify-content: flex-start;
-  border: 0.0625rem solid #E9EFFF;
+  border: 0.0625rem solid #A5BDFF;
   flex: 1 1 auto;
   padding: 1rem;
 }
 #main > .container > .title-container {
-  align-items: flex-start;
+  align-items: stretch;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0;
   justify-content: flex-start;
+  padding-bottom: 0.25rem;
 }
 #main > .container > .title-container > .title {
+  border-bottom: 0.0625rem solid #E9EFFF;
   color: inherit;
   font: inherit;
   font-size: 1.375rem;
   font-weight: 700;
+  padding-bottom: 0.25rem;
 }
 #main > .container > .title-container > .user {
   align-items: center;
@@ -159,19 +169,20 @@
   flex-direction: row;
   gap: 1rem;
   justify-content: flex-start;
+  border-bottom: 0.0625rem solid #E9EFFF;
   color: #7d7d7d;
   font-size: 0.875rem;
   font-weight: 300;
-  padding: 0 0.125rem;
+  padding: 0.25rem 0.125rem;
 }
 #main > .container > .context-container {
   display: grid;
   flex: 1 1 auto;
+  gap: 0.75rem;
   grid-template-columns: 2fr 1fr;
 }
 #main > .container > .context-container > .content-container {
   display: grid;
-  gap: 1rem;
   grid-template-columns: 1fr 2fr;
   grid-template-rows: 1fr 1fr;
 }
@@ -208,10 +219,10 @@
   font-weight: 300;
 }
 #main > .container > .context-container > .content-container > .text {
-  border: 0.0625rem solid #A5BDFF;
+  border-top: 0.0625rem solid #E9EFFF;
+  border-bottom: 0.0625rem solid #E9EFFF;
   grid-row: 2/3;
   grid-column: 1/3;
-  margin-right: 1rem;
   padding: 0.5rem;
 }
 #main > .container > .context-container > .view-container {
@@ -285,14 +296,17 @@
   width: 80%;
   background-color: #FFFFFF;
   border-radius: 0.5rem;
+  color: inherit;
   padding: 0.625rem 1rem;
 }
 #main > .container > .context-container > .view-container > .fund-container > .button-container > .button:hover {
-  background-color: #F8F8F8;
+  background-color: #4678FF;
+  color: #FFFFFF;
   font-weight: 400;
 }
 #main > .container > .context-container > .view-container > .fund-container > .button-container > .button:active {
-  background-color: #F0F0F0;
+  background-color: #3A6FFF;
+  color: #FFFFFF;
   font-weight: 500;
 }
 #main > .container > .context-container > .view-container > #map {

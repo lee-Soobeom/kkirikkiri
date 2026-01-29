@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>끼리끼리 - 고객센터</title>
+    <link rel="stylesheet" href="/assets/styles/common.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/fragments.css" type="text/css">
+    <link rel="stylesheet" href="/service/assets/styles/service.css" type="text/css">
+    <script defer src="/board/assets/scripts/service.js" type="text/javascript"></script>
+</head>
+<body>
+<th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
+<th:block th:replace="~{/fragments/common.html :: sideMypage(user)}"></th:block>
+<main id="main">
+    <h2 class="title">고객센터</h2>
+    <div class="created-at">작성일: <span th:text="${#temporals.format(service.createdAt, 'yyyy-MM-dd')}"></span></div>
+    <span class="question">Q. <span th:text="${service.question}"></span></span>
+    <p class="answer" th:text="${service.answer}"></p>
+    <div class="link-container">
+        <a href="/board/service" class="link">목록</a>
+        <a href="#" class="link">질문 작성하기</a>
+    </div>
+</main>
+</body>
+</html>

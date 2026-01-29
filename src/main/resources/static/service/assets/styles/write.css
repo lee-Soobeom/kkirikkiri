@@ -1,0 +1,80 @@
+#main {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: flex-start;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  background-color: #E9EFFF;
+  color: inherit;
+  font: inherit;
+  padding: 1rem 1.5rem;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+#main > .serviceForm {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+#main > .serviceForm > .title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  padding-bottom: 1rem;
+}
+#main > .serviceForm > .label {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  justify-content: flex-start;
+}
+#main > .serviceForm > .label > .caption {
+  color: inherit;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+#main > .serviceForm > .label > .-stretch {
+  background-color: #FFFFFF;
+  flex: 1 1 auto;
+}
+#main > .serviceForm > .label > .-stretch.input {
+  height: 2rem;
+  padding-left: 0.5rem;
+}
+#main > .serviceForm > .label > .-stretch.text {
+  resize: none;
+  padding: 0.5rem;
+}
+#main > .serviceForm > .label > .-stretch.select {
+  height: 2rem;
+  padding-left: 0.5rem;
+}
+#main > .serviceForm > .button-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-end;
+}
+#main > .serviceForm > .button-container > .button {
+  background-color: #A5BDFF;
+  border-radius: 0.25rem;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 1rem 2rem;
+}
+#main > .serviceForm > .button-container > .button:hover {
+  background-color: #4678FF;
+}
+#main > .serviceForm > .button-container > .button:active {
+  background-color: #3A6FFF;
+}
+
+/*# sourceMappingURL=write.css.map */

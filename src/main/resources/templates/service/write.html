@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>끼리끼리 - 고객센터</title>
+    <link rel="stylesheet" href="/assets/styles/common.css" type="text/css">
+    <link rel="stylesheet" href="/service/assets/styles/write.css" type="text/css">
+    <script defer src="/service/assets/scripts/write.js" type="text/javascript"></script>
+</head>
+<body>
+<main id="main">
+    <form novalidate class="serviceForm" name="serviceForm">
+        <h2 class="title">고객센터 질문 등록</h2>
+        <label class="label">
+            <span class="caption">질문</span>
+            <input class="-stretch input" autocomplete="off" spellcheck="false" maxlength="50" minlength="1"
+                   name="question" type="text" placeholder="등록할 질문내용을 입력해 주세요.">
+        </label>
+        <label class="label">
+            <span class="caption">답변</span>
+            <textarea class="-stretch text" autocomplete="off" spellcheck="false" maxlength="1000" minlength="1"
+                      name="answer" rows="20" placeholder="등록할 질문 답변을 입력해 주세요."></textarea>
+        </label>
+        <label class="label">
+            <span class="caption">필터</span>
+            <select class="-stretch select" name="filter">
+                <option disabled hidden selected value="-1">등록할 질문의 필터를 선택해 주세요</option>
+                <option value="pay">결제/환불</option>
+                <option value="user">사용자 계정/프로필</option>
+                <option value="event">이벤트/혜택</option>
+                <option value="restrict">이용제한</option>
+            </select>
+        </label>
+        <div class="button-container">
+            <button class="button" type="submit">질문 작성</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

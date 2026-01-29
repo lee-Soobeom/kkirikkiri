@@ -93,16 +93,11 @@
         <div class="address-container">
             <span class="caption">픽업장소</span>
             <label class="row">
-                <span class="caption">우편번호</span>
-                <input readonly class="input" maxlength="5" minlength="5" name="addressPostal" placeholder="우편번호"
-                       type="text">
-                <button class="button" name="findButton" type="button">주소찾기</button>
-            </label>
-            <label class="row">
                 <span class="caption text">기본 주소</span>
                 <input readonly class="input" maxlength="100" minlength="5" name="addressPrimary"
                        placeholder="기본 주소('주소찾기' 버튼을 클릭해 주세요.)"
                        type="text">
+                <button class="button" name="findButton" type="button">주소찾기</button>
             </label>
             <label class="row">
                 <span class="caption text">상세 주소</span>
@@ -114,22 +109,34 @@
         <div class="image-upload-container">
             <span class="caption">이미지 추가</span>
             <label class="image-wrapper">
-                <input hidden type="file" name="advImage">
+                <input hidden multiple accept="image/*" type="file" name="files">
                 <span class="caption">+</span>
             </label>
+            <ol class="list">
+                <li class="item">사진을 추가해 주세요.</li>
+                <li class="item">사진을 추가해 주세요.</li>
+                <li class="item">사진을 추가해 주세요.</li>
+                <li class="item">사진을 추가해 주세요.</li>
+                <li class="item">사진을 추가해 주세요.</li>
+                <li class="item">사진을 추가해 주세요.</li>
+                <li class="item">사진을 추가해 주세요.</li>
+                <li class="item">사진을 추가해 주세요.</li>
+                <li class="item">사진을 추가해 주세요.</li>
+                <li class="item">사진을 추가해 주세요.</li>
+            </ol>
         </div>
         <label class="column">
             <span class="caption">내용</span>
             <textarea required autocomplete="off" spellcheck="false" maxlength="10000" minlength="1" name="content"
                       rows="20"></textarea>
         </label>
-        <label class="row end">
-            <input name="entryCheck" type="checkbox">
-            <span class="text">승인한 사람만 참여가능</span>
+        <label class="column end">
+            <span class="check-wrapper">
+                <input name="entryCheck" type="checkbox">
+                <span class="text">승인한 사람만 참여가능</span>
+            </span>
+            <button class="button" name="submit" type="submit">작성하기</button>
         </label>
-        <div class="button">
-            <button name="submit" type="submit">작성하기</button>
-        </div>
     </form>
 </main>
 </body>

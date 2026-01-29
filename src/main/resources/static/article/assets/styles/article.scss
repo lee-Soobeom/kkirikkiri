@@ -12,6 +12,10 @@
   cursor: pointer;
   position: fixed;
 
+  &:hover {
+    background-color: #4678FF;
+  }
+
   > .room-container {
     @include flex(column, flex-start, stretch, 0.5rem);
     top: 0;
@@ -38,7 +42,12 @@
       @include flex(column, flex-start, stretch, 0.375rem);
       background-color: #FFFFFF;
       flex: 1 1 auto;
+      overflow-y: scroll;
       padding: 0.5rem 0.375rem;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
       > .message {
         @include flex(column, flex-start, start, 0.125rem);
@@ -126,37 +135,41 @@
 
 #main > .container {
   @include flex(column, flex-start, stretch);
-  border: 0.0625rem solid #E9EFFF;
+  border: 0.0625rem solid #A5BDFF;
   flex: 1 1 auto;
   padding: 1rem;
 
   > .title-container {
-    @include flex(column, flex-start, flex-start, 0.25rem);
+    @include flex(column, flex-start, stretch);
+    padding-bottom: 0.25rem;
 
     > .title {
+      border-bottom: 0.0625rem solid #E9EFFF;
       color: inherit;
       font: inherit;
       font-size: 1.375rem;
       font-weight: 700;
+      padding-bottom: 0.25rem;
     }
 
     > .user {
       @include flex(row, flex-start, center, 1rem);
+      border-bottom: 0.0625rem solid #E9EFFF;
       color: lighten(#4a4a4a, 20%);
       font-size: 0.875rem;
       font-weight: 300;
-      padding: 0 0.125rem;
+      padding: 0.25rem 0.125rem;
     }
   }
 
   > .context-container {
     display: grid;
     flex: 1 1 auto;
+    gap: 0.75rem;
     grid-template-columns: 2fr 1fr;
 
     > .content-container {
       display: grid;
-      gap: 1rem;
       grid-template-columns: 1fr 2fr;
       grid-template-rows: 1fr 1fr;
 
@@ -186,10 +199,10 @@
       }
 
       > .text {
-        border: 0.0625rem solid #A5BDFF;
+        border-top: 0.0625rem solid #E9EFFF;
+        border-bottom: 0.0625rem solid #E9EFFF;
         grid-row: 2 / 3;
         grid-column: 1 / 3;
-        margin-right: 1rem;
         padding: 0.5rem;
 
       }
@@ -259,15 +272,18 @@
             width: 80%;
             background-color: #FFFFFF;
             border-radius: 0.5rem;
+            color: inherit;
             padding: 0.625rem 1rem;
 
             &:hover {
-              background-color: #F8F8F8;
+              background-color: #4678FF;
+              color: #FFFFFF;
               font-weight: 400;
             }
 
             &:active {
-              background-color: #F0F0F0;
+              background-color: #3A6FFF;
+              color: #FFFFFF;
               font-weight: 500;
             }
           }

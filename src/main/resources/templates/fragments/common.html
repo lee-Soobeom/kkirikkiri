@@ -13,7 +13,7 @@
         <input class="input" hidden type="checkbox">
         <img class="image" src="/assets/images/nav/nav.hamburger.button.png" alt="menu">
     </label>
-    <a class="title" href="/">끼리끼리</a>
+    <a class="link" href="/">끼리끼리</a>
     <ol class="button-container">
         <li class="button">
             <a class="link" href="/user/register" target="_self">회원가입</a>
@@ -27,7 +27,7 @@
     </ol>
 </nav>
 <div id="my" th:fragment="sideMypage(user)" th:with="isSigned = ${ session.sessionUser != null }">
-<!--    로그인상태에 따라 보여줄 요소 다르게 해야함-->
+    <!--    로그인상태에 따라 보여줄 요소 다르게 해야함-->
     <div class="container">
         <div class="box user">
             <div class="image-container">
@@ -38,29 +38,24 @@
                 <div class="address">대구 북구 동천동</div>
                 <div class="rank">신입회원</div>
             </div>
-            <button class="button" type="button">마이페이지</button>
+            <button class="button" type="button">회원정보 수정</button>
         </div>
-        <div class="box cash-container">
+        <div class="box point-container">
             <h2 class="title">내 지갑</h2>
-            <div class="content-container">
-                <span class="content cash">
-                    <span class="now">32000</span>
-                    <span class="won">원</span>
-                </span>
-                <button class="button" type="button">충전</button>
+            <div class="content">
+                <span class="value">2000</span>
+                <span class="caption">P</span>
             </div>
-
         </div>
-        <div class="box review-container">
+        <div class="box">
             <h2 class="title">나의 리뷰 점수</h2>
-            <span class="content review">
-                <span class="now">4.21</span>
-                <span>/</span>
-                <span class="max">★ 4.5</span>
-            </span>
+            <div class="content">
+                <span class="value">4.21 </span>
+                <span class="caption">/ ★ 5.0</span>
+            </div>
         </div>
         <div class="-stretch" role="none"></div>
-        <a class="link" href="#" target="_blank">고객센터</a>
+        <a class="link" href="/board/service" target="_self">고객센터</a>
     </div>
 </div>
 </body>

@@ -33,12 +33,13 @@
   justify-content: flex-start;
   width: 100%;
   height: 100%;
+  background-color: #A5BDFF;
   border: 0.0625rem solid #E9EFFF;
   padding: 0.375rem 0;
   position: relative;
 }
 #main > .search > .menu-container > .menu:hover {
-  background-color: #E9EFFF;
+  background-color: #4678FF;
 }
 #main > .search > .menu-container > .menu > .icon {
   width: 100%;
@@ -53,7 +54,7 @@
   flex-direction: column;
   gap: 1.25rem;
   justify-content: center;
-  background-color: #E9EFFF;
+  background-color: #A5BDFF;
 }
 #main > .search > .search > .title {
   font-size: 1.625rem;
@@ -133,7 +134,7 @@
 }
 #main > .group > .list > .row > .image-container {
   height: 100%;
-  background-color: #E9EFFF;
+  background-color: #A5BDFF;
 }
 #main > .group > .list > .row > .image-container > .image {
   height: 100%;
@@ -144,7 +145,7 @@
   flex-direction: column;
   gap: 0;
   justify-content: space-around;
-  background-color: #E9EFFF;
+  background-color: #A5BDFF;
   flex: 1 1 auto;
   padding: 0.5rem 1.25rem;
 }
@@ -183,7 +184,7 @@
   gap: 0;
   justify-content: flex-start;
   align-self: stretch;
-  background-color: #E9EFFF;
+  background-color: #A5BDFF;
   padding: 0.5rem 1.25rem;
 }
 
@@ -195,8 +196,6 @@
   justify-content: flex-start;
   bottom: 4rem;
   right: 4rem;
-  color: #FFFFFF;
-  font: inherit;
   position: fixed;
 }
 #quick > .item {
@@ -209,7 +208,15 @@
   height: 4rem;
   background-color: #A5BDFF;
   border-radius: 999rem;
+  color: #4a4a4a;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
   overflow: hidden;
+}
+#quick > .item:hover {
+  background-color: #4678FF;
+  color: #FFFFFF;
 }
 #quick > .item:nth-child(1), #quick > .item:nth-child(2) {
   opacity: 0;
@@ -230,6 +237,13 @@
   pointer-events: auto;
 }
 #quick > .item > .link {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
   color: inherit;
   cursor: pointer;
   font: inherit;
@@ -244,12 +258,6 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  backdrop-filter: grayscale(0.9);
-  color: #4a4a4a;
-}
-#quick > .item > .label:hover {
-  backdrop-filter: grayscale(0);
-  color: #FFFFFF;
 }
 #quick > .item > .label > .input {
   display: none;

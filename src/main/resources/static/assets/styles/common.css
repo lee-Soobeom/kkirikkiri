@@ -23,6 +23,11 @@ body {
   margin: 0;
   overflow: hidden scroll;
   position: relative;
+  user-select: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 button, input, select, textarea {
@@ -53,10 +58,6 @@ ol, ul {
   list-style-type: none;
   margin-block: 0;
   padding-inline: 0;
-}
-
-::-webkit-scrollbar {
-  display: none;
 }
 
 input:-webkit-autofill,

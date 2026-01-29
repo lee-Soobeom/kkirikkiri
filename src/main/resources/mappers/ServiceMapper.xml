@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lsb.kkirikkiri.mappers.ServiceMapper">
+    <insert id="insert">
+        INSERT INTO `kkirikkiri`.`services` (`question`, `answer`, `filter`,`created_at`)
+        VALUES (#{service.question},
+                #{service.answer},
+                #{service.filter},
+                #{service.createdAt})
+
+    </insert>
+    <select id="getAllServices"
+            resultType="com.lsb.kkirikkiri.vos.ServiceVo">
+        SELECT `t1`.`id`         AS `id`,
+               `t1`.`question`   AS `question`,
+               `t1`.`answer`     AS `answer`,
+               `t1`.`filter`     AS `filter`,
+               `t1`.`created_at` AS `createdAt`,
+               `t1`.`updated_at` AS `updatedAt`,
+               `t2`.`display_text`       AS `filterDisplayText`
+        FROM `kkirikkiri`.`services` AS `t1`
+                 LEFT JOIN `kkirikkiri`.`service_filter` AS `t2` ON `t2`.`code` = `t1`.`filter`
+        LIMIT #{boardPage.rowCount} OFFSET #{boardPage.dbOffset}
+    </select>
+    <select id="getAllCount" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM `kkirikkiri`.`services`
+    </select>
+    <select id="getAllServicesByFilter"
+            resultType="com.lsb.kkirikkiri.vos.ServiceVo">
+        SELECT `t1`.`id`         AS `id`,
+               `t1`.`question`   AS `question`,
+               `t1`.`answer`     AS `answer`,
+               `t1`.`filter`     AS `filter`,
+               `t1`.`created_at` AS `createdAt`,
+               `t1`.`updated_at` AS `updatedAt`,
+               `t2`.`display_text`       AS `filterDisplayText`
+        FROM `kkirikkiri`.`services` AS `t1`
+                 LEFT JOIN `kkirikkiri`.`service_filter` AS `t2` ON `t2`.`code` = `t1`.`filter`
+        WHERE `filter` = #{filter}
+        LIMIT #{boardPage.rowCount} OFFSET #{boardPage.dbOffset}
+    </select>
+    <select id="getAllCountByFilter"
+            resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM `kkirikkiri`.`services`
+        WHERE `filter` = #{filter}
+    </select>
+    <select id="getServiceById"
+            resultType="com.lsb.kkirikkiri.entities.ServiceEntity">
+        SELECT `id`         AS `id`,
+               `question`   AS `question`,
+               `answer`     AS `answer`,
+               `filter`     AS `filter`,
+               `created_at` AS `createdAt`,
+               `updated_at` AS `updatedAt`
+        FROM `kkirikkiri`.`services`
+        WHERE `id` = #{id}
+        LIMIT 1
+    </select>
+</mapper>

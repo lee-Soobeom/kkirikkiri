@@ -1,0 +1,175 @@
+@use "sass:color";
+@import "../../../assets/styles/def";
+
+#main {
+  @include flex(column, flex-start, stretch);
+  width: 60%;
+  align-self: center;
+  background-color: #E9EFFF;
+  color: inherit;
+  flex: 1 1 auto;
+  font: inherit;
+  margin: 0.5rem 0;
+  overflow-y: visible;
+  padding: 1rem;
+
+}
+
+#main > .title {
+  align-self: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  padding: 0.25rem 0 1.25rem 0;
+}
+
+#main > .search {
+  @include flex(row, center, center);
+  width: 60%;
+  align-self: center;
+  padding: 0.75rem 0;
+
+  > .label {
+    @include flex(row, center, center);
+    width: 100%;
+    position: relative;
+
+    > .input {
+      height: 2.25rem;
+      background-color: #FFFFFF;
+      border-top: 0.0625rem solid #4678FF;
+      border-bottom: 0.0625rem solid #4678FF;
+      border-left: 0.0625rem solid #4678FF;
+      flex: 1 1 auto;
+      line-height: 2;
+      padding-left: 0.5rem;
+      padding-right: 2.75rem;
+    }
+
+    > .button {
+      @include flex(row, center, center);
+      right: 0;
+      width: 2.25rem;
+      height: 2.25rem;
+      background-color: #FFFFFF;
+      border-top: 0.0625rem solid #4678FF;
+      border-right: 0.0625rem solid #4678FF;
+      border-bottom: 0.0625rem solid #4678FF;
+      cursor: pointer;
+      position: absolute;
+    }
+  }
+}
+
+#main > .filter-container {
+  @include flex(row, space-between, cente);
+  width: 60%;
+  align-self: center;
+  padding: 1rem 0;
+
+  > .filter {
+    background-color: #A5BDFF;
+    border-radius: 0.25rem;
+    color: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    overflow: hidden;
+
+    &:hover {
+      background-color: #4678FF;
+      color: #FFFFFF;
+    }
+
+    &:active {
+      background-color: #3A6FFF;
+      color: #FFFFFF;
+    }
+
+    &:has(> .-selected) {
+      background-color: #3A6FFF;
+      color: #FFFFFF;
+    }
+
+    > .link {
+      width: 100%;
+      height: 100%;
+      color: inherit;
+      display: inline-block;
+      font: inherit;
+      padding: 0.375rem 0.75rem;
+    }
+  }
+}
+
+#main > .link {
+  align-self: end;
+  text-decoration: underline;
+  color: #FF1122;
+
+  display: none;
+
+  padding: 0.25rem 0;
+}
+
+#main > .question-container {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr;
+  padding: 0.75rem;
+
+  > .question{
+    @include flex(column, flex-start, flex-start);
+    width: 100%;
+    height: 8rem;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    padding: 0.75rem 0.5rem;
+
+    > .title {
+      flex: 1 1 auto;
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    > .filter {
+      background-color: #E9EFFF;
+      border-radius: 0.25rem;
+      padding: 0.25rem 0.5rem;
+    }
+
+  }
+}
+
+#main > .page-container {
+  @include flex(row, center, center, 1rem);
+  flex: 1 1 auto;
+
+  > .group {
+    @include flex(row, center, center, 0.25rem);
+    background-color: transparent;
+
+    > .link {
+      @include flex(row, center, center);
+      width: 2.5rem;
+      height: 2.5rem;
+      background-color: #FFFFFF;
+      border-radius: 0.25rem;
+      color: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.5rem;
+
+      &.-disabled {
+        cursor: none;
+        background-color: darken(#FFFFFF, 10%);
+        pointer-events: none;
+      }
+
+      &.-selected {
+        background-color: #A5BDFF;
+        color: #FFFFFF;
+        text-decoration: underline;
+      }
+    }
+  }
+}
