@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lsb.kkirikkiri.mappers.UserMapper">
+    <insert id="insert">
+        INSERT INTO `kkirikkiri`.`users` (
+            `email`, `password`, `nickname`, `name`, `birth`, `contact`, `address_primary`, `address_secondary`, `is_admin`, `is_boss`, `status`, `created_at`, `updated_at`
+        ) VALUES (
+                  #{user.email},
+                  #{user.password},
+                  #{user.nickname},
+                  #{user.name},
+                  #{user.birth},
+                  #{user.contact},
+                  #{user.addressPrimary},
+                  #{user.addressSecondary},
+                  #{user.isAdmin},
+                  #{user.isBoss},
+                  #{user.status},
+                  #{user.createdAt},
+                  #{user.updatedAt}
+
+                  )
+    </insert>
+    <select id="selectByEmail" resultType="com.lsb.kkirikkiri.entities.user.UserEntity">
+        SELECT `email`             AS `email`,
+               `password`          AS `password`,
+               `nickname`          AS `nickname`,
+               `name`              AS `name`,
+               `birth`             AS `birth`,
+               `contact`           AS `contact`,
+               `address_primary`   AS `addressPrimary`,
+               `address_secondary` AS `addressSecondary`,
+               `is_admin`          AS `isAdmin`,
+               `is_boss`           AS `isBoss`,
+               `status`            AS `status`,
+               `created_at`        AS `createdAt`,
+               `updated_at`        AS `updatedAt`
+        FROM `kkirikkiri`.`users`
+        WHERE `email` = #{email}
+        LIMIT 1
+    </select>
+</mapper>

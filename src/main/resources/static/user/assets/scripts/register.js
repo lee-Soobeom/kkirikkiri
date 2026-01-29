@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const birthMonthSelects = document.querySelectorAll('select[name="birthMonth"]');
     const birthDaySelects = document.querySelectorAll('select[name="birthDay"]');
     const currentYear = new Date().getFullYear();
-    const $commonRegisterForm = document.forms['commonRegisterForm'];
-    const $bossRegisterForm = document.forms['bossForm'];
 
     birthYearSelects.forEach(select => {
        for (let i = currentYear; i >= 1950; i--) {
@@ -237,7 +235,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(`요청을 전송하는 도중 오류가 발생했습니다. (${error})`);
                 });
             });
-        })
+        });
+
+        const addressButtons = document.querySelectorAll('button[name="addressButton"]');
+
+        addressButtons.forEach(button => {
+           button.addEventListener('click', () => {
+              const currentForm = button.closest('.form');
+              const addressInput = currentForm.querySelector('input[name="address"]');
+              const detailInput = currentForm.querySelector('input[name="addressDetail"]');
+
+              new daum.Postcode({
+                  oncomplete: function (data) {
+                      let addr = '';
+                      let extraAddr = '';
+
+                      if (data.userSelectedType === 'R') {
+                          addr = data.roadAddress;
+                      } else {
+                          addr = data.jibunAddress;
+                      }
+
+                      addressInput.value = addr;
+                      toggleMessage(addressInput.closest('.label'), false);
+
+                      if (detailInput) {
+                          detailInput.focus();
+                      }
+                  }
+              }).open();
+           });
+        });
+
+
     });
 
 

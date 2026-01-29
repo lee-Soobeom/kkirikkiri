@@ -1,7 +1,6 @@
 package com.lsb.kkirikkiri.results;
 
-public enum CommonResult {
+public enum CommonResult implements Result{
     FAILURE,
-    FAILURE_SESSION,
-    SUCCESS,
+    SUCCESS
 }

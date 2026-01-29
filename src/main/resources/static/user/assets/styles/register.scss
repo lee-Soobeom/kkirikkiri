@@ -214,12 +214,19 @@
           .field {
             border-bottom: #4678FF solid 0.0625rem;
             background: none;
+            box-sizing: border-box;
             color: #4678FF;
-            flex: 1;
+            flex: 2.5;
             padding: 0.5rem 0;
 
             &::placeholder {
               color: #4A4A4A;
+            }
+
+            &[name="telecom"] {
+              flex: 1;
+              padding-left: 0.25rem;
+              text-align: left;
             }
 
             select.field {

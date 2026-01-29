@@ -1,13 +1,22 @@
 package com.lsb.kkirikkiri.entities.user;
 
+import lombok.*;
+
 import java.time.LocalDateTime;
 
-public class CeoEntity {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+public class StoreEntity {
     private String email;
     private String businessNumber;
     private String storeName;
     private String businessType;
-    private String storeAddress;
+    private String addressPrimary;
+    private String addressSecondary;
     private String storeContact;
     private String operatingHours;
     private String licenseUrl;

@@ -1,26 +1,27 @@
 @use "sass:color";
-@import "../../../assets/styles/def"; // 기존 def 파일 경로 유지
+@import "../../../assets/styles/def";
 
 #main {
   top: 50%;
   left: 50%;
   width: 60rem;
-  height: 38rem;
+  height: 47.5rem;
   backdrop-filter: blur(1rem);
-  background-color: #BCCEFF;
+  background-color: #4678FF;
   border-radius: 0.5rem;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  grid-template-columns: 1fr 1.8fr;
+  padding: 0;
   position: fixed;
   transform: translate(-50%, -50%);
   z-index: 1;
 
   > .logo {
-    @include flex(row, center, center, 0); // Mixin 적용
-    border-right: #ffffff solid 0.0625rem;
+    @include flex(row, center, center, 0.5rem);
+    position: relative;
 
     > .wrapper {
-      @include flex(row, flex-start, center, 0.125rem); // Mixin 적용
+      @include flex(row, flex-start, center, 0.5rem);
 
       > .image {
         width: 2.5rem;
@@ -34,15 +35,33 @@
         font-weight: 700;
       }
     }
+
+    &::after {
+      top: 5%;
+      bottom: 5%;
+      right: 0;
+      border-right: #FDFDFD85 solid 0.0625rem;
+      content: "";
+      display: block;
+      position: absolute;
+    }
   }
 
   > .content {
-    @include flex(column, center, safe center, 0); // Mixin 적용
-    overflow: hidden auto;
+    @include flex(column, center, safe center, 1rem);
+    width: 92%;
+    height: 92%;
+    align-self: center;
+    background-color: #FDFDFDE0;
+    backdrop-filter: blur(1rem);
+    border-radius: 0.25rem;
+    justify-self: center;
+    margin-right: 0.985%;
+    overflow: hidden;
     position: relative;
 
     > .form {
-      @include flex(column, center, center, 1.25rem); // Mixin 적용
+      @include flex(column, center, center);
       width: 100%;
       max-width: 32rem;
       height: 100%;
@@ -50,20 +69,22 @@
 
       > .title {
         align-self: flex-start;
-        color: #ffffff;
+        color: #4a4a4a;
         font: inherit;
         font-size: 2rem;
         font-weight: 600;
         margin-left: 12.5%;
+        margin-bottom: 2.5rem;
       }
 
       > .label {
-        @include flex(column, stretch, flex-start, 0.25rem); // Mixin 적용
+        @include flex(column, stretch, flex-start, 0.25rem);
         width: 75%;
         max-width: 30rem;
+        margin-bottom: 1.5rem;
 
         > .title {
-          color: #ffffff;
+          color: #4a4a4a;
           font: inherit;
           font-size: 1rem;
           font-weight: 500;
@@ -71,60 +92,102 @@
 
         > .field {
           width: 100%;
-          border-bottom: 0.0625rem solid #ffffff;
-          color: #ffffff;
+          border-bottom: 0.0625rem solid #4a4a4a;
+          color: #4a4a4a;
           margin-bottom: 0.25rem;
-          padding-bottom: 0.125rem;
+          padding: 0.6rem 0;
         }
 
         input::placeholder {
-          color: #FDFDFD;
+          color: #6a6a6a;
           font-size: 0.9rem;
+        }
+
+        [data-component~="label.message"] {
+          $caption-text-color: lighten($global-text-color, 40%);
+          $gap: 0.25rem;
+          @include flex(column, stretch, flex-start, $gap);
+          width: 100%;
+          border-radius: 0.15rem;
+          display: none !important;
+          font-size: 0.875rem;
+          font-weight: 450;
+          opacity: 0;
+          padding: 0.5rem 0.75rem;
+          transition-duration: 175ms;
+          transition-property: opacity;
+
+          &.visible {
+            display: flex !important;
+            opacity: 1;
+          }
+
+
+          &[data-message="warning"] {
+            @include flex(row, flex-start, center, 0.5rem);
+            background-color: lighten($global-color-warning, 2%);
+            color: #FDFDFD;
+
+            > .warningIcon {
+              width: 1rem;
+              height: 1rem;
+            }
+          }
         }
       }
 
       > .checkLabel {
-        align-self: flex-start;
-        margin-left: 12.5%;
+        @include flex(row, flex-start, center, 0.5rem);
+        width: 75%;
+        margin-top: 0.5rem;
+        margin-bottom: 2rem;
 
-        > .check-label {
-          color: #ffffff;
-          font-size: 1rem;
+        input[type="checkbox"] {
+          width: 1.1rem;
+          height: 1.1rem;
+          accent-color: #4678FF;
+          position: relative;
+          transition: all 175ms;
         }
+
+
       }
 
       .button {
         width: 75%;
-        background-color: #ffffff;
+        background-color: lighten(#4678ff, 4%);
         border-radius: 0.85rem;
-        color: #A5BDFF;
+        color: #FDFDFD;
         font: inherit;
         font-size: 1.25rem;
         font-weight: 600;
+        margin-bottom: 0.75rem;
         padding: 0.5rem 1.65rem;
 
         &:hover {
-          background-color: rgb(175.2, 196.48, 255);
+          background-color: lighten(#4678ff, 2%);
           color: #FFFFFF;
         }
 
         &:active {
-          background-color: #A5BDFF;
+          background-color: #4678ff;
           color: #FFFFFF;
         }
       }
 
       .menu {
-        @include flex(row, center, flex-end, 1.25rem); // Mixin 적용
+        @include flex(row, center, flex-end, 3.5rem);
+        margin-top: 1.5rem;
 
         > .caption {
-          color: #FFFFFF;
+          color: #4678FF;
           font: inherit;
-          font-size: 0.85rem;
+          font-size: 0.95rem;
           font-weight: 500;
+          position: relative;
 
           &:hover {
-            border-bottom: #FFFFFF solid 0.0625rem;
+            border-bottom: #4678FF solid 0.0625rem;
           }
         }
       }

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/assets/styles/index.css">
     <link rel="stylesheet" href="/user/assets/styles/login.css">
+    <script defer src="/user/assets/scripts/login.js"></script>
 </head>
 <body>
 <main id="main">
@@ -21,23 +22,31 @@
     <div class="content">
         <form novalidate name="loginForm" class="form login-form">
             <h1 class="item title">LOGIN</h1>
-            <label class="label">
+            <label class="label" data-name="loginEmail">
                 <span class="title">아이디</span>
                 <input autofocus required autocomplete="email" class="field" maxlength="50" minlength="6" name="email" spellcheck="false" placeholder="이메일을 입력해 주세요." type="email">
+                <span data-component="label.message" data-message="warning">
+                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
+                    <span class="text">이메일을 입력해 주세요.</span>
+                </span>
             </label>
-            <label class="label">
+            <label class="label" data-name="loginPassword">
                 <span class="title">비밀번호</span>
                 <input required autocomplete="off" class="field" maxlength="50" minlength="6" name="password" spellcheck="false" placeholder="비밀번호를 입력해 주세요." type="password">
+                <span data-component="label.message" data-message="warning">
+                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
+                    <span class="text">비밀번호를 입력해 주세요.</span>
+                </span>
             </label>
-            <label class="checkLabel">
+            <label class="checkLabel" data-name="loginRememberEmail">
                 <input name="remember" type="checkbox" class="check-box">
                 <span class="check-label">이메일을 기억할까요?</span>
             </label>
-            <button type="submit" name="loginButton" class="button">LOGIN</button>
-            <button type="submit" name="loginButton" class="button">kakao</button>
-            <button type="submit" name="loginButton" class="button">naver</button>
+            <button type="submit" name="loginButton" class="button">로그인</button>
+            <button type="button" name="loginButton" class="button">kakao</button>
+            <button type="button" name="loginButton" class="button">naver</button>
             <div class="menu">
-                <a href="#" class="caption register">회원가입</a>
+                <a href="/user/register" class="caption register">회원가입</a>
                 <a href="#" class="caption find-custom">회원찾기</a>
             </div>
         </form>

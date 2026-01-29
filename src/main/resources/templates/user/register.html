@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/user/assets/styles/register.css">
     <script defer src="/user/assets/scripts/register.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 <main id="main">
@@ -74,7 +75,6 @@
                        <option value="ETC">알뜰폰</option>
                    </select>
                     <input required type="tel" name="contact" class="field" placeholder="'-' 없이 입력해 주세요" maxlength="11">
-                    <button type="button">인증 요청</button>
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
@@ -102,7 +102,7 @@
                 <span class="caption">주소</span>
                 <span class="row">
                       <input required type="text" name="address" class="field" placeholder="주소 찾기를 이용해 주세요." readonly>
-                      <button type="button">주소 찾기</button>
+                      <button name="addressButton" type="button">주소 찾기</button>
                 </span>
                 <span class="row">
                     <input type="text" name="addressDetail" class="field" placeholder="상세 주소를 입력해 주세요.">
@@ -116,9 +116,9 @@
             <label class="label" data-name="registerPassword">
                 <span class="caption">비밀번호</span>
                 <span class="row">
-                    <input required autocomplete="off" maxlength="50" minlength="6" name="password" spellcheck="false"
+                    <input required autocomplete="off" maxlength="50" minlength="8" name="password" spellcheck="false"
                             placeholder="비밀번호를 입력해 주세요." type="password" class="field">
-                    <input required autocomplete="off" maxlength="50" minlength="6" name="passwordCheck"
+                    <input required autocomplete="off" maxlength="50" minlength="8" name="passwordCheck"
                             spellcheck="false" placeholder="비밀번호를 한 번 더 입력해 주세요." type="password" class="field">
                 </span>
                 <span data-component="label.message" data-message="info" data-visible>
@@ -218,7 +218,6 @@
                         <option value="ETC">알뜰폰</option>
                     </select>
                     <input type="tel" name="contact" class="field" placeholder="'-' 없이 입력해 주세요." required>
-                    <button type="button">인증 요청</button>
                  </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
@@ -268,8 +267,11 @@
                 <span class="caption">가게 주소</span>
                 <span class="row">
                     <input type="text" name="address" class="field" placeholder="주소 찾기를 이용해 주세요." readonly required>
-                    <button type="button">주소 찾기</button>
+                    <button name="addressButton" type="button">주소 찾기</button>
                 </span>
+<!--                <span class="row">-->
+<!--                    <input type="text" name="addressDetail" class="field" placeholder="상세 주소를 입력해 주세요.">-->
+<!--                </span>-->
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
                     <span class="text">가게 주소를 입력해 주세요.</span>
