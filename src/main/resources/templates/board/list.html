@@ -15,14 +15,15 @@
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
 <th:block th:replace="~{/fragments/common.html :: sideMypage(user)}"></th:block>
 <main id="main">
-    <div class="error not-found">
+    <div class="error not-found" th:if="${board == null}">
         <h1 class="title">게시판</h1>
         <span class="message">존재하지 않는 게시판입니다. 주소를 다시 확인해 주세요.</span>
         <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
     </div>
-    <div class="content-wrapper">
+    <div class="content-wrapper">  <!--th:if="${board != null}"-->
         <div class="header">
-            <h1 class="title">홍보 게시판</h1>
+            <h1 class="title">게시판</h1>
+            <h2 class="board"></h2>
             <div class="sub-row">
                 <h2 class="caption">사장님들의 멋진 가게를 홍보해보세요!</h2>
                 <div class="filter">
@@ -84,17 +85,17 @@
 
     <form novalidate class="search-form" name="searchForm">
         <input hidden name="id" type="hidden">
-        <label>
-            <select name="by">
+        <label data-object="label" data-name="searchByLabel">
+            <select required name="by" data-object="input" data-component="label.field">
                 <option selected value="titleContent">제목 + 내용</option>
                 <option value="title">제목</option>
                 <option value="nickname">작성자</option>
             </select>
         </label>
-        <label>
-            <input maxlength="25" minlength="0" name="keyword" placeholder="검색어를 입력해 주세요." type="text">
+        <label data-object="label">
+            <input maxlength="25" minlength="0" name="keyword" placeholder="검색어를 입력해 주세요." type="text" data-object="input" data-component="label.field">
         </label>
-        <button class="button" type="submit">검색</button>
+        <button class="button" type="submit" data-object="button" data-color="concept">검색</button>
     </form>
     <div class="page-container">
         <div class="group">

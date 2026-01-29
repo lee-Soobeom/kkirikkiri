@@ -11,6 +11,16 @@
   overflow-y: visible;
   padding: 1rem 0;
 
+  > .error {
+    @include flex(column, center, center, 1rem);
+    padding: 2.5rem 0;
+
+    > .title {
+      font-size: 1.5rem;
+      font-weight: 300;
+    }
+  }
+
   > .form {
     @include flex(column, flex-start, stretch, 1.75rem);
     background-color: #ffffff;
@@ -46,17 +56,11 @@
         }
 
         > .button {
-          background-color: #A5BDFF;
-          color: #ffffff;
           padding: 0.5rem 1.5rem;
           border-radius: 0.25rem;
           font-weight: 500;
           font-size: 1rem;
           cursor: pointer;
-
-          &:hover {
-            background-color: #4678FF;
-          }
         }
       }
 
@@ -74,25 +78,10 @@
             accent-color: #4678FF;
           }
 
-          > .text {
-            color: #666666;
-            font-size: 1rem;
-            font-weight: 400;
-          }
-        }
-
-        > .button {
-          background-color: #A5BDFF;
-          color: #ffffff;
-          padding: 0.875rem 1.5rem;
-          border-radius: 0.25rem;
-          font-weight: 500;
-          font-size: 1.25rem;
-          cursor: pointer;
-
-          &:hover {
-            background-color: #4678FF;
-          }
+        .text {
+          color: #666666;
+          font-size: 1rem;
+          font-weight: 400;
         }
       }
 
@@ -110,6 +99,10 @@
 
         &::placeholder {
           color: #D1D5DB;
+        }
+
+        &:focus {
+          border-color: #A5BDFF;
         }
       }
     }
@@ -215,7 +208,7 @@
     label:has(textarea) {
       textarea {
         min-height: 22rem;
-        border: 0.0625rem solid #A5BDFF;
+        border: 0.0625rem solid #d2deff;
         border-radius: 0.75rem;
         padding: 1.5rem;
         font-size: 1rem;
@@ -230,6 +223,19 @@
         font-size: 0.85rem;
         color: #9CA3AF;
         margin-top: 0.5rem;
+      }
+    }
+
+    > .button {
+      @include flex(row, flex-end, center);
+      width: 100%;
+
+      button {
+        padding: 0.9rem 3.5rem;
+        border-radius: 0.5rem;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
       }
     }
   }

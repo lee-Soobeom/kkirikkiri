@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/assets/styles/index.css">
     <link rel="stylesheet" href="/article/assets/styles/modify.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script defer src="/article/assets/scripts/modify.js"></script>
 </head>
 <body>
 <nav id="top">
@@ -38,29 +40,108 @@
         <span class="message">해당 게시글에 수정할 권한이 없습니다.</span>
         <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
     </div>
-    <form novalidate class="modify-form" name="modifyForm">
+    <form novalidate class="form" name="modifyForm">
         <h1 class="title">게시글 수정</h1>
         <h2 class="board"></h2>
-        <label data-object="label" data-name="modifyTitleLabel">
-            <span data-component="label.caption">제목</span>
-            <input autofocus required autocomplete="off" maxlength="100" minlength="1" name="title" type="text" data-object="input" data-component="label.field">
-            <span data-component="label.messageWrapper label.warningMessage">
-                <span data-component="label.messageIcon"></span>
-                <span data-component="label.messageCaption">제목을 입력해 주세요.</span>
-            </span>
+        <label class="column">
+            <span class="caption">게시판 선택</span>
+            <select name="boardId" class="input" data-object="input" data-component="label.field">
+                <option selected value="-1">게시판을 선택해 주세요.</option>
+                <option value="group">공구 게시판</option>
+                <option value="promote">홍보 게시판</option>
+            </select>
         </label>
-        <label data-object="label" data-name="modifyContentLabel">
-            <span data-component="label.caption">내용</span>
-            <textarea required autocomplete="off" maxlength="50000" minlength="1" name="content" rows="15" data-object="input" data-component="label.field" data-resize="vertical"></textarea>
-            <span data-component="label.messageWrapper label.warningMessage">
-                <span data-component="label.messageIcon"></span>
-                <span data-component="label.messageCaption">내용을 입력해 주세요.</span>
-            </span>
+        <label class="column">
+            <span class="caption" data-component="label.title">제목</span>
+            <input autofocus required autocomplete="off" class="input" maxlength="100" minlength="1" name="title" placeholder="제목을 입력해 주세요." type="text" data-object="input" data-component="label.field">
         </label>
-        <div class="button-container">
-            <button name="cancel" type="button" data-object="button" data-color="red">취소</button>
-            <span class="-flex-stretch"></span>
-            <button name="submit" type="submit" data-object="button" data-color="concept">수정</button>
+        <div class="row-group">
+            <label class="column">
+                <span class="caption">공동구매 메뉴</span>
+                <select name="menu" class="input" data-object="input" data-component="label.field">
+                    <option selected value="-1">메뉴를 선택해 주세요.</option>
+                    <option value="chicken">치킨</option>
+                    <option value="pizza">피자</option>
+                    <option value="hamburger">햄버거</option>
+                    <option value="stew">찜/탕</option>
+                    <option value="raw">회</option>
+                    <option value="japanese-food">일식</option>
+                    <option value="chinese-food">중식</option>
+                    <option value="western-food">양식</option>
+                </select>
+            </label>
+            <label class="column">
+                <span class="caption">최소주문금액</span>
+                <input class="input" name="minOrderPrice" type="text" placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
+            </label>
+            <label class="column">
+                <span class="caption">주문금액</span>
+                <input class="input" name="orderPrice" type="text" placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
+            </label>
+            <label class="column">
+                <span class="caption">배달비</span>
+                <input class="input" name="deliveryPrice" type="text" placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
+            </label>
+        </div>
+        <div class="share-container">
+            <span class="title">주문 종류</span>
+            <label class="row">
+                <input checked type="radio" name="shareCheck" value="each">
+                <span>1인 1메뉴</span>
+            </label>
+            <label class="row">
+                <input type="radio" name="shareCheck" value="share">
+                <span>1메뉴 n명 나누기</span>
+            </label>
+        </div>
+        <div class="row-group">
+            <label class="column">
+                <span class="caption">주문시간</span>
+                <input class="input" name="orderTime" type="time" data-object="input" data-component="label.field">
+            </label>
+            <label class="column">
+                <span class="caption">주문가게</span>
+                <input class="input" maxlength="100" minlength="1" name="restaurant" type="text" placeholder="주문할 가게이름을 입력해 주세요." data-object="input" data-component="label.field">
+            </label>
+            <label class="column">
+                <span class="caption">픽업시간</span>
+                <input class="input" name="pickupTime" type="time" data-object="input" data-component="label.field">
+            </label>
+        </div>
+        <div class="address-container">
+            <span class="caption">픽업장소</span>
+            <label class="row">
+                <span class="caption">우편번호</span>
+                <input readonly class="input" maxlength="5" minlength="5" name="addressPostal" placeholder="우편번호" type="text" data-object="input" data-component="label.field">
+                <button class="button" name="findButton" type="button" data-object="button" data-color="concept">주소찾기</button>
+            </label>
+            <label class="row">
+                <span class="caption text">기본 주소</span>
+                <input readonly class="input" maxlength="100" minlength="5" name="addressPrimary"
+                       placeholder="기본 주소('주소찾기' 버튼을 클릭해 주세요.)" type="text" data-object="input" data-component="label.field">
+            </label>
+            <label class="row">
+                <span class="caption text">상세 주소</span>
+                <input required class="input" autocomplete="off" spellcheck="false" maxlength="100" minlength="1" name="addressSecondary" placeholder="건물 명, 동, 호수 등 상세 주소를 입력해 주세요." type="text" data-object="input" data-component="label.field">
+            </label>
+        </div>
+        <div class="image-upload-container">
+            <span class="caption">이미지 추가</span>
+            <label class="image-wrapper">
+                <input hidden type="file" name="advImage">
+                <span class="caption">+</span>
+            </label>
+        </div>
+        <label class="column">
+            <span class="caption">내용</span>
+            <textarea required autocomplete="off" spellcheck="false" maxlength="10000" minlength="1" name="content" rows="20" data-object="input" data-component="label.field"></textarea>
+        </label>
+        <label class="row end">
+            <input name="entryCheck" type="checkbox">
+            <span class="text">승인한 사람만 참여가능</span>
+        </label>
+        <div class="button">
+            <button name="submit" type="submit" data-object="button" data-color="concept">작성하기</button>
         </div>
     </form>
 </main>

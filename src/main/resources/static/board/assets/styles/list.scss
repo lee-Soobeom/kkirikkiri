@@ -147,14 +147,8 @@
               font-size: 0.75rem;
               color: #999;
               white-space: nowrap;
-              padding-top: 2.4rem;
-            }
-
-            &.created_at {
-              padding-right: 1.5rem;
+              vertical-align: middle;
               text-align: center;
-              border-top-right-radius: 0.75rem;
-              border-bottom-right-radius: 0.75rem;
             }
           }
         }

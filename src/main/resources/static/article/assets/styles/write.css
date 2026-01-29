@@ -12,6 +12,18 @@
   overflow-y: visible;
   padding: 1rem 0;
 }
+#main > .error {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  padding: 2.5rem 0;
+}
+#main > .error > .title {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
 #main > .form {
   align-items: stretch;
   display: flex;
@@ -52,7 +64,7 @@
   flex: 1 1 auto;
 }
 #main > .form label.row > .button {
-  background-color: #A5BDFF;
+  background-color: #CDDAFF;
   color: #ffffff;
   padding: 0.5rem 1.5rem;
   border-radius: 0.25rem;
@@ -61,7 +73,7 @@
   cursor: pointer;
 }
 #main > .form label.row > .button:hover {
-  background-color: #4678FF;
+  background-color: #A5BDFF;
 }
 #main > .form label.end {
   align-self: end;
@@ -110,6 +122,9 @@
 }
 #main > .form label > .input::placeholder {
   color: #D1D5DB;
+}
+#main > .form label > .input:focus {
+  border-color: #A5BDFF;
 }
 #main > .form > .row-group {
   align-items: center;
@@ -234,6 +249,21 @@
   font-size: 0.85rem;
   color: #9CA3AF;
   margin-top: 0.5rem;
+}
+#main > .form > .button {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-end;
+  width: 100%;
+}
+#main > .form > .button button {
+  padding: 0.9rem 3.5rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 /* 주소 검색 전체 백드롭 */
