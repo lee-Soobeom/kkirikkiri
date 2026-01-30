@@ -214,7 +214,7 @@ $writeForm.addEventListener('submit', (e) => {
     xhr.send(formData);
 })
 
-function openAddressDialog(addressPostal, primaryInput) {
+function openAddressDialog(addressPrimary) {
     if (!dialogEl) {
         dialogEl = document.createElement('div');
         dialogEl.setAttribute('data-address-dialog', '');
@@ -230,8 +230,8 @@ function openAddressDialog(addressPostal, primaryInput) {
 
     new daum.Postcode({
         oncomplete: function (data) {
-            addressPostal.value = data.zonecode;
-            primaryInput.value = data.address;
+            // addressPostal.value = data.zonecode;
+            addressPrimary.value = data.address;
             closeAddressDialog();
         },
         width: '100%',
@@ -246,12 +246,11 @@ function closeAddressDialog() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const findButton = $writeForm["findButton"];
-    const addressPostal = $writeForm['addressPostal'];
     const addressPrimary = $writeForm['addressPrimary'];
     const addressSecondary = $writeForm['addressSecondary'];
 
     findButton.addEventListener('click', () => {
-        openAddressDialog(addressPostal, addressPrimary);
+        openAddressDialog(addressPrimary);
     });
 
     // 배경 클릭 시 닫기

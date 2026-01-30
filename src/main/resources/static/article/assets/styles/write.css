@@ -43,6 +43,113 @@
 #main > .form > .board {
   display: none;
 }
+#main > .form > .row-group {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+#main > .form > .row-group > .column {
+  width: 100%;
+}
+#main > .form > .share-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+#main > .form > .share-container > .title {
+  width: 4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212121;
+}
+#main > .form > .address-container {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+#main > .form > .address-container > .caption {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #212121;
+}
+#main > .form > .image-upload-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-start;
+}
+#main > .form > .image-upload-container > .image-wrapper {
+  width: 5rem;
+  height: 5rem;
+  background-color: #A5BDFF;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  overflow: hidden;
+}
+#main > .form > .image-upload-container > .image-wrapper:hover {
+  background-color: #4678FF;
+}
+#main > .form > .image-upload-container > .image-wrapper > [name=files] {
+  display: none;
+}
+#main > .form > .image-upload-container > .image-wrapper > .caption {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 2rem;
+}
+#main > .form > .image-upload-container > .list {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  justify-content: flex-start;
+  width: 100%;
+  height: 15rem;
+  overflow-x: scroll;
+  padding-bottom: 0.25rem;
+}
+#main > .form > .image-upload-container > .list::-webkit-scrollbar {
+  height: 0.5rem;
+}
+#main > .form > .image-upload-container > .list::-webkit-scrollbar-thumb {
+  background-color: #A5BDFF;
+  border-radius: 999rem;
+}
+#main > .form > .image-upload-container > .list::-webkit-scrollbar-track {
+  background-color: #E9EFFF;
+  border-radius: 999rem;
+}
+#main > .form > .image-upload-container > .list > .item {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  min-width: 10rem;
+  height: 100%;
+  background-color: #E9EFFF;
+  color: #999;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 300;
+}
+#main > .form > .image-upload-container > .list > .item > .image {
+  height: 100%;
+}
 #main > .form label.column {
   align-items: stretch;
   display: flex;
@@ -66,6 +173,7 @@
 #main > .form label.row > .button {
   padding: 0.5rem 1.5rem;
   border-radius: 0.25rem;
+  flex: 0 0 auto;
   font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
@@ -109,114 +217,7 @@
 #main > .form label.end > .input:focus {
   border-color: #A5BDFF;
 }
-#main > .form label > .row-group {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  justify-content: flex-start;
-}
-#main > .form label > .row-group > .column {
-  width: 100%;
-}
-#main > .form label > .share-container {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  justify-content: flex-start;
-}
-#main > .form label > .share-container > .title {
-  width: 4rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #212121;
-}
-#main > .form label > .address-container {
-  align-items: stretch;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  justify-content: flex-start;
-}
-#main > .form label > .address-container > .caption {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #212121;
-}
-#main > .form label > .image-upload-container {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  justify-content: flex-start;
-}
-#main > .form label > .image-upload-container > .image-wrapper {
-  width: 5rem;
-  height: 5rem;
-  background-color: #A5BDFF;
-  border-radius: 0.75rem;
-  cursor: pointer;
-  overflow: hidden;
-}
-#main > .form label > .image-upload-container > .image-wrapper:hover {
-  background-color: #4678FF;
-}
-#main > .form label > .image-upload-container > .image-wrapper > [name=files] {
-  display: none;
-}
-#main > .form label > .image-upload-container > .image-wrapper > .caption {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  color: #FFFFFF;
-  font-weight: 700;
-  font-size: 2rem;
-}
-#main > .form label > .image-upload-container > .list {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0.75rem;
-  justify-content: flex-start;
-  width: 100%;
-  height: 15rem;
-  overflow-x: scroll;
-  padding-bottom: 0.25rem;
-}
-#main > .form label > .image-upload-container > .list::-webkit-scrollbar {
-  height: 0.5rem;
-}
-#main > .form label > .image-upload-container > .list::-webkit-scrollbar-thumb {
-  background-color: #A5BDFF;
-  border-radius: 999rem;
-}
-#main > .form label > .image-upload-container > .list::-webkit-scrollbar-track {
-  background-color: #E9EFFF;
-  border-radius: 999rem;
-}
-#main > .form label > .image-upload-container > .list > .item {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: center;
-  min-width: 10rem;
-  height: 100%;
-  background-color: #E9EFFF;
-  color: #999;
-  flex-shrink: 0;
-  font-size: 0.75rem;
-  font-weight: 300;
-}
-#main > .form label > .image-upload-container > .list > .item > .image {
-  height: 100%;
-}
-#main > .form label label:has(textarea) textarea {
+#main > .form label:has(textarea) textarea {
   min-height: 22rem;
   border: 0.0625rem solid #d2deff;
   border-radius: 0.75rem;
@@ -225,15 +226,15 @@
   line-height: 1.5;
   resize: none;
 }
-#main > .form label label:has(textarea) textarea:focus {
+#main > .form label:has(textarea) textarea:focus {
   border-color: #A5BDFF;
 }
-#main > .form label label:has(textarea) span:last-child {
+#main > .form label:has(textarea) span:last-child {
   font-size: 0.85rem;
   color: #9CA3AF;
   margin-top: 0.5rem;
 }
-#main > .form label > .button {
+#main > .form > .button {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -241,7 +242,7 @@
   justify-content: flex-end;
   width: 100%;
 }
-#main > .form label > .button button {
+#main > .form > .button button {
   padding: 0.9rem 3.5rem;
   border-radius: 0.5rem;
   font-weight: 700;

@@ -107,13 +107,9 @@
         <div class="address-container">
             <span class="caption">픽업장소</span>
             <label class="row">
-                <span class="caption">우편번호</span>
-                <input readonly class="input" maxlength="5" minlength="5" name="addressPostal" placeholder="우편번호" type="text" data-object="input" data-component="label.field">
-                <button class="button" name="findButton" type="button" data-object="button" data-color="concept">주소찾기</button>
-            </label>
-            <label class="row">
                 <span class="caption text">기본 주소</span>
                 <input readonly class="input" maxlength="100" minlength="5" name="addressPrimary" placeholder="기본 주소('주소찾기' 버튼을 클릭해 주세요.)" type="text" data-object="input" data-component="label.field">
+                <button class="button" name="findButton" type="button" data-object="button" data-color="concept">주소찾기</button>
             </label>
             <label class="row">
                 <span class="caption text">상세 주소</span>
@@ -124,7 +120,7 @@
         <div class="image-upload-container">
             <span class="caption">이미지 추가</span>
             <label class="image-wrapper">
-                <input hidden type="file" name="advImage">
+                <input hidden class="image-wrapper" type="file" accept="image/*" name="files">
                 <span class="caption">+</span>
             </label>
         </div>

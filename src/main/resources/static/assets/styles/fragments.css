@@ -18,7 +18,7 @@ body:has(> #top > .image-wrapper > .input:checked) > #quick {
   gap: 0;
   justify-content: space-between;
   background-color: #3A6FFF;
-  padding: 1rem 3rem;
+  padding: 1.5rem 3rem;
   position: relative;
   z-index: 10;
 }
@@ -34,7 +34,7 @@ body:has(> #top > .image-wrapper > .input:checked) > #quick {
   left: 50%;
   color: #FFFFFF;
   font: inherit;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
   position: absolute;
   transform: translate(-50%, -50%);
