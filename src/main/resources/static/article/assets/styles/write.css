@@ -85,6 +85,11 @@
   gap: 0.25rem;
   justify-content: flex-start;
 }
+#main > .form > .image-upload-container > .caption {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212121;
+}
 #main > .form > .image-upload-container > .image-wrapper {
   width: 5rem;
   height: 5rem;
@@ -157,6 +162,11 @@
   gap: 0.25rem;
   justify-content: flex-start;
 }
+#main > .form label.column > .caption {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212121;
+}
 #main > .form label.row {
   align-items: center;
   display: flex;
@@ -217,6 +227,12 @@
 #main > .form label.end > .input:focus {
   border-color: #A5BDFF;
 }
+#main > .form label > .caption {
+  flex: 0 0 auto;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212121;
+}
 #main > .form label:has(textarea) textarea {
   min-height: 22rem;
   border: 0.0625rem solid #d2deff;
@@ -249,10 +265,9 @@
   font-size: 1rem;
   cursor: pointer;
 }
-#main {
-  /* 주소 검색 전체 백드롭 */
-}
-#main [data-address-dialog] {
+
+/* 주소 검색 전체 백드롭 */
+[data-address-dialog] {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -264,14 +279,13 @@
   pointer-events: none;
   transition: opacity 0.25s ease;
 }
-#main [data-address-dialog][data-visible] {
+[data-address-dialog][data-visible] {
   opacity: 1;
   pointer-events: auto;
 }
-#main {
-  /* 주소 검색 모달 */
-}
-#main [data-address-modal] {
+
+/* 주소 검색 모달 */
+[data-address-modal] {
   width: 100%;
   max-width: 420px;
   height: 520px;
@@ -282,7 +296,7 @@
   opacity: 0;
   transition: 0.25s ease;
 }
-[data-visible] #main [data-address-modal] {
+[data-address-modal][data-visible] {
   transform: translateY(0);
   opacity: 1;
 }
