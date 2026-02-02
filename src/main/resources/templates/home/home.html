@@ -282,5 +282,67 @@
         </label>
     </li>
 </ol>
+<div class="modify-content" id="modifyContent" data-visible>
+    <form class="modify-form" data-name="modifyForm" enctype="multipart/form-data">
+       <section class="header">
+           <h2 class="title">회원 정보 수정</h2>
+           <img src="/assets/images/user/closeIcon.png" alt="닫기" class="closeIcon">
+       </section>
+        <div class="profile-modify">
+            <section class="profile">
+                <span class="upload-button">
+                    <input accept="image/*" name="profileImage" type="file" class="image-change">
+                    <img src="/assets/images/user/profile-update.png" alt="" class="plus-icon">
+                </span>
+                <span class="basis-profile">
+                    <span class="title">닉네임</span>
+                    <span class="myplace">냐냥시 멍멍동</span>
+                    <span class="grade">일반회원</span>
+                </span>
+            </section>
+            <div class="change-container">
+                <label class="label">
+                    <span class="caption">닉네임 변경</span>
+                    <span class="row">
+                    <input class="input" name="nickname" type="text" placeholder="변경할 닉네임을 입력해 주세요">
+                </span>
+                </label>
+                <label class="label">
+                    <span class="caption">비밀번호 변경</span>
+                    <span class="row">
+                    <input class="input" name="password" type="password" placeholder="변경할 비밀번호를 입력해 주세요">
+                </span>
+                </label>
+                <label class="label">
+                    <span class="caption">휴대폰 번호 변경</span>
+                    <span class="row">
+                    <select name="telecom" class="field">
+                       <option value="SKT">SKT</option>
+                       <option value="KT">KT</option>
+                       <option value="LG">LG U+</option>
+                       <option value="ETC">알뜰폰</option>
+                   </select>
+                    <input required type="tel" name="contact" class="field" placeholder="'-' 없이 입력해 주세요" maxlength="11">
+                </span>
+                </label>
+                <label class="label">
+                    <span class="caption">주소지 변경</span>
+                    <span class="row">
+                        <input required type="text" name="address" class="field" placeholder="주소 찾기를 이용해 주세요." readonly>
+                        <button class="addressButton" name="addressButton" type="button">주소 찾기</button>
+                    </span>
+                    <span class="row">
+                        <input type="text" name="addressDetail" class="field" placeholder="상세 주소를 입력해 주세요.">
+                    </span>
+                </label>
+            </div>
+        </div>
+        <div class="button-container">
+            <button type="button" name="cancel" class="button">취소</button>
+            <button type="submit" name="submit" class="button">수정</button>
+        </div>
+    </form>
+
+</div>
 </body>
 </html>

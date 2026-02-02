@@ -296,7 +296,7 @@
   opacity: 0;
   transition: 0.25s ease;
 }
-[data-address-modal][data-visible] {
+[data-visible] [data-address-modal] {
   transform: translateY(0);
   opacity: 1;
 }

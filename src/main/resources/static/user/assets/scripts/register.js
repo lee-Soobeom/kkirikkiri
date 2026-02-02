@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         contact: /^010\d{8}$/,
         businessNumber: /^\d{10}$/,
         name: /^[가-힣]{2,5}$/,
+        bossName: /^[가-힣]{2,5}$/,
         nickname: /^[a-zA-Z0-9가-힣\s]{2,15}$/,
         storeName: /^[a-zA-Z0-9가-힣\s]{2,15}$/,
         storeContact: /^0\d{8,10}$/,
@@ -82,48 +83,53 @@ document.addEventListener('DOMContentLoaded', () => {
     const validateRules = {
         name: {
             regex: regexMap.name,
-            empty: "성함을 입력해 주세요.",
-            invalid: "2 ~ 5자 한글 실명을 입력해 주세요."
+            empty: "성함을 입력해 주세요",
+            invalid: "2 ~ 5자 한글 실명을 입력해 주세요"
         },
         email: {
             regex: regexMap.email,
-            empty: "이메일을 입력해 주세요.",
-            invalid: "올바른 이메일 형식이 아닙니다. 유효한 이메일 형식을 사용해 주세요."
+            empty: "이메일을 입력해 주세요",
+            invalid: "올바른 이메일 형식이 아닙니다. 유효한 이메일 형식을 사용해 주세요"
         },
         password: {
             regex: regexMap.password,
-            empty: "비밀번호를 입력해 주세요.",
-            invalid: "8글자 이상 숫자, 영문자와 특수기호 하나를 혼합하여 입력해 주세요."
+            empty: "비밀번호를 입력해 주세요",
+            invalid: "8글자 이상 숫자, 영문자와 특수기호 하나를 혼합하여 입력해 주세요"
         },
         businessNumber: {
             regex: regexMap.businessNumber,
-            empty: "사업자 등록 번호를 입력해 주세요.",
-            invalid: "숫자 10자리를 정확히 입력해 주세요."
+            empty: "사업자 등록 번호를 입력해 주세요",
+            invalid: "숫자 10자리를 정확히 입력해 주세요"
         },
         nickname: {
             regex: regexMap.nickname,
-            empty: "닉네임을 입력해 주세요.",
-            invalid: "특수문자를 제외하고 2 ~ 15자 이내로 입력해 주세요."
+            empty: "닉네임을 입력해 주세요",
+            invalid: "특수문자를 제외하고 2 ~ 15자 이내로 입력해 주세요"
         },
         storeName: {
             regex: regexMap.storeName,
-            empty: "가게 이름을 입력해 주세요.",
-            invalid: "특수문자를 제외하고 2 ~ 15자 이내로 입력해 주세요."
+            empty: "가게 이름을 입력해 주세요",
+            invalid: "특수문자를 제외하고 2 ~ 15자 이내로 입력해 주세요"
         },
         contact: {
             regex: regexMap.contact,
-            empty: "휴대폰 번호를 입력해 주세요.",
-            invalid: "'-' 없이 010으로 시작하는 11자리 숫자를 입력해 주세요."
+            empty: "휴대폰 번호를 입력해 주세요",
+            invalid: "'-' 없이 010으로 시작하는 11자리 숫자를 입력해 주세요"
         },
         storeContact: {
             regex: regexMap.storeContact,
-            empty: "가게 전화번호를 입력해 주세요.",
-            invalid: "올바른 전화번호 형식이 아닙니다. (예: 021234567)"
+            empty: "가게 전화번호를 입력해 주세요",
+            invalid: "올바른 전화번호 형식이 아닙니다 (예: 021234567)"
         },
         businessType: {
             regex: regexMap.businessType,
-            empty: "업종을 입력해 주세요.",
-            invalid: "한글 2 ~ 10자 이내로 입력해 주세요. (예: 음식점, 카페)"
+            empty: "업종을 입력해 주세요",
+            invalid: "한글 2 ~ 10자 이내로 입력해 주세요 (예: 음식점, 카페)"
+        },
+        bossName: {
+            regex: regexMap.bossName,
+            empty: "사장님 성함을 입력해 주세요",
+            invalid: "한글 2 ~ 5자 한글 실명을 입력해 주세요"
         }
     }
 
