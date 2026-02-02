@@ -71,6 +71,12 @@
     > .image-upload-container {
       @include flex(column, flex-start, flex-start, 0.25rem);
 
+      > .caption {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212121;
+      }
+
       > .image-wrapper {
         width: 5rem;
         height: 5rem;
@@ -139,6 +145,12 @@
     label {
       &.column {
         @include flex(column, flex-start, stretch, 0.25rem);
+
+        > .caption {
+          font-size: 1rem;
+          font-weight: 600;
+          color: #212121;
+        }
       }
 
       &.row {
@@ -204,6 +216,13 @@
           }
         }
       }
+
+      > .caption {
+        flex: 0 0 auto;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212121;
+      }
     }
 
     // 내용
@@ -243,7 +262,6 @@
     }
   }
 }
-
 /* 주소 검색 전체 백드롭 */
 [data-address-dialog] {
   position: fixed;
@@ -277,7 +295,7 @@
   opacity: 0;
   transition: .25s ease;
 
-  [data-visible] & {
+  &[data-visible] {
     transform: translateY(0);
     opacity: 1;
   }

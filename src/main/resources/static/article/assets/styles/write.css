@@ -85,6 +85,11 @@
   gap: 0.25rem;
   justify-content: flex-start;
 }
+#main > .form > .image-upload-container > .caption {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212121;
+}
 #main > .form > .image-upload-container > .image-wrapper {
   width: 5rem;
   height: 5rem;
@@ -157,6 +162,11 @@
   gap: 0.25rem;
   justify-content: flex-start;
 }
+#main > .form label.column > .caption {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212121;
+}
 #main > .form label.row {
   align-items: center;
   display: flex;
@@ -216,6 +226,12 @@
 }
 #main > .form label.end > .input:focus {
   border-color: #A5BDFF;
+}
+#main > .form label > .caption {
+  flex: 0 0 auto;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212121;
 }
 #main > .form label:has(textarea) textarea {
   min-height: 22rem;
@@ -280,7 +296,8 @@
   opacity: 0;
   transition: 0.25s ease;
 }
-[data-visible] [data-address-modal] {
+
+[data-address-modal][data-visible] {
   transform: translateY(0);
   opacity: 1;
 }
