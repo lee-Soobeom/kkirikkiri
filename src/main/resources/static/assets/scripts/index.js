@@ -1,9 +1,27 @@
 /** @type {HTMLElement} */
 const $main = document.getElementById('main');
 const $more = document.getElementById('more');
+const $my = document.getElementById('my');
+const $address = $my.querySelector(':scope > .container > .user > .info > .address');
 const $advertisement = $main.querySelector(':scope > .title');
 const $orderList = $main.querySelector(':scope > .group');
 const $deactivateButton = $more.querySelector('[name="deactivateButton"]');
+const geoHandler = {
+    geocoder: new kakao.maps.services.Geocoder(),
+    addressName: '',
+    addrByPosition: (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+            for(let i = 0; i < result.length; i++) {
+                if (result[i].region_type === 'H') {
+                    geoHandler.addressName = result[i].address_name;
+                    break;
+                }
+            }
+        }
+    },
+    coordsToAddr: (lng, lat) => {geoHandler.geocoder.coord2RegionCode(lng, lat, geoHandler.addrByPosition)},
+    timestamp: '',
+};
 
 $deactivateButton.addEventListener('click', () => {
     $more.classList.remove('-show');
@@ -24,11 +42,12 @@ const intersectionObserver = new IntersectionObserver((entries) => {
 intersectionObserver.observe($orderList);
 
 // todo: IP 기반 geolocation으로 사용자 위치정보 가져오기 성공 >> 리스트 가져올때 사용자 위치 기반으로 가져오기
+// todo: ip2location api 사용해서 ip로 대략적인 위치 정보 받아오기
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
-        console.log("lat " + position.coords.latitude);
-        console.log("lon " + position.coords.longitude);
-        console.log("time " + new Date(position.timestamp));
+        geoHandler.timestamp = new Date(position.timestamp);
+        geoHandler.coordsToAddr(position.coords.longitude, position.coords.latitude);
+        setTimeout(() => $address.innerText = geoHandler.addressName, 100);
     }, (error) => {
         switch (error.code) {
             case 1:
