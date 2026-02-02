@@ -19,12 +19,9 @@
   justify-content: flex-start;
   width: 60%;
   align-self: center;
-  color: inherit;
-  font: inherit;
   padding: 2rem 2.5rem;
   min-height: calc(100vh - 3.75rem);
   background-color: #ffffff;
-  overflow-y: visible;
 }
 #main .content-wrapper {
   width: 100%;
@@ -51,17 +48,24 @@
   color: #212121;
 }
 #main .content-wrapper .header .filter {
-  font-size: 0.85rem;
-  color: #666;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: center;
 }
-#main .content-wrapper .header .filter label {
-  cursor: pointer;
+#main .content-wrapper .header .filter .link {
+  padding: 0.4rem 0.8rem;
+  color: #212121;
+  font-weight: 500;
+  border-radius: 0.4rem;
 }
-#main .content-wrapper .header .filter label + label {
-  margin-left: 0.5rem;
+#main .content-wrapper .header .filter .link:hover {
+  color: #4678ff;
 }
-#main .content-wrapper .header .filter input[type=checkbox] {
-  accent-color: #A5BDFF;
+#main .content-wrapper .header .filter .link.-active {
+  color: rgb(0, 60.2702702703, 223);
+  font-weight: 700;
 }
 #main .content-wrapper .board-table {
   width: 100%;
@@ -72,18 +76,32 @@
   display: none;
 }
 #main .content-wrapper .board-table tbody .row {
+  position: relative;
   background-color: #f9faff;
   border-radius: 0.75rem;
-  cursor: pointer;
   transition: background-color 0.2s ease;
 }
 #main .content-wrapper .board-table tbody .row:hover {
   background-color: #eef2ff;
+  cursor: pointer;
+}
+#main .content-wrapper .board-table tbody .row .row-link-cell {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: none;
+}
+#main .content-wrapper .board-table tbody .row .row-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 #main .content-wrapper .board-table tbody .row .cell {
+  position: relative;
+  z-index: 2;
   padding: 1.5rem 0.75rem;
   border: none;
-  vertical-align: top;
+  vertical-align: middle;
 }
 #main .content-wrapper .board-table tbody .row .cell.title {
   padding-left: 1.5rem;
@@ -101,9 +119,6 @@
   border-radius: 0.75rem;
   flex-shrink: 0;
   background-color: #e5ebff;
-  background-image: url("https://i.namu.wiki/i/SS3MJGd52md8QWUMqQdR_iASE0MSzaJMJpfunKqwvNOk10eaIphqeG6wUSEDf0XBOHNudZW0T6s10By2F3GmDw.webp");
-  background-size: cover;
-  background-position: center;
 }
 #main .content-wrapper .board-table tbody .row .cell.title .text {
   min-width: 0;
@@ -113,7 +128,6 @@
   font-size: 1rem;
   font-weight: 600;
   color: #212121;
-  text-decoration: none;
   margin-bottom: 0.4rem;
 }
 #main .content-wrapper .board-table tbody .row .cell.title .preview {
@@ -127,13 +141,24 @@
 #main .content-wrapper .board-table tbody .row .cell.nickname, #main .content-wrapper .board-table tbody .row .cell.view, #main .content-wrapper .board-table tbody .row .cell.created_at {
   font-size: 0.75rem;
   color: #999;
-  white-space: nowrap;
-  vertical-align: middle;
   text-align: center;
+  white-space: nowrap;
 }
 #main .content-wrapper .board-table tbody .row .cell.created_at {
   border-top-right-radius: 0.75rem;
   border-bottom-right-radius: 0.75rem;
+}
+#main .content-wrapper .board-table tbody > .empty-row {
+  background: none;
+}
+#main .content-wrapper .board-table tbody > .empty-row:hover {
+  background: none;
+}
+#main .content-wrapper .board-table tbody > .empty-row .cell.empty {
+  padding: 6rem 0;
+  text-align: center;
+  font-size: 1rem;
+  color: #212121;
 }
 #main > .search-form {
   align-items: center;
@@ -141,7 +166,6 @@
   flex-direction: row;
   gap: 0.5rem;
   justify-content: center;
-  align-self: center;
   margin-top: 1rem;
 }
 #main > .page-container {
@@ -150,7 +174,6 @@
   flex-direction: row;
   gap: 1.5rem;
   justify-content: stretch;
-  align-self: center;
   margin-top: 1.5rem;
 }
 #main > .page-container > .group {
@@ -159,7 +182,6 @@
   flex-direction: row;
   gap: 0;
   justify-content: stretch;
-  background-color: #ffffff;
   border: 0.0625rem solid rgb(224.5, 230.6, 255);
   border-radius: 0.25rem;
   overflow: hidden;
@@ -173,11 +195,6 @@
   width: 2rem;
   height: 2rem;
   color: rgb(160.5, 160.5, 160.5);
-  text-align: center;
-  text-decoration: none;
-}
-#main > .page-container > .group > .link + .link {
-  border-left: 0.0625rem solid rgb(224.5, 230.6, 255);
 }
 #main > .page-container > .group > .link:hover {
   background-color: rgb(53.017, 107.607, 255);

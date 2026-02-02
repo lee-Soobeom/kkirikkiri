@@ -22,6 +22,12 @@ public interface ArticleMapper {
     ArticleVo[] selectAllByBoardSearch( @Param(value = "boardPage")BoardPageVo boardPage,
                                         @Param(value = "boardSearch")BoardSearchVo boardSearchVo);
 
+    ArticleVo[] selectAllByBoardIdOrderByCreatedAt(@Param("boardPageVo") BoardPageVo boardPageVo,
+                                                   @Param("boardId") String boardId);
+
+    ArticleVo[] selectAllByBoardIdOrderByView(@Param("boardPageVo") BoardPageVo boardPageVo,
+                                              @Param("boardId") String boardId);
+
     int selectCountByBoardId(@Param(value = "boardId") String boardId);
 
     int selectCountByBoardSearch(@Param(value = "boardSearch") BoardSearchVo boardSearchVo);

@@ -7,6 +7,7 @@ CREATE TABLE `kkirikkiri`.`boards`
     `display_text` VARCHAR(20) NOT NULL,
     `sort_order`   INT         NOT NULL DEFAULT 0,
     `created_at`   DATETIME    NOT NULL DEFAULT NOW(),
+    `is_admin_only` TINYINT(1) NOT NULL DEFAULT 0,
     CONSTRAINT PRIMARY KEY (`id`)
 );
 ```
@@ -14,7 +15,8 @@ CREATE TABLE `kkirikkiri`.`boards`
 ```mariadb
 INSERT INTO `kkirikkiri`.`boards` (`id`, `display_text`)
 VALUES ('share', '공구게시판'),
-       ('promote', '홍보게시판');
+       ('promote', '홍보게시판'),
+       ('notice','공지게시판');
 ```
 ## menu
 ```mariadb
@@ -105,7 +107,7 @@ CREATE TABLE `kkirikkiri`.`services`
     CONSTRAINT FOREIGN KEY (`filter`) REFERENCES `kkirikkiri`.`service_filter` (`code`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-)
+);
 ```
 # user
 ## socialTypes

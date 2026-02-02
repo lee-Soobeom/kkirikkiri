@@ -249,10 +249,9 @@
   font-size: 1rem;
   cursor: pointer;
 }
-#main {
-  /* 주소 검색 전체 백드롭 */
-}
-#main [data-address-dialog] {
+
+/* 주소 검색 전체 백드롭 */
+[data-address-dialog] {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -264,14 +263,13 @@
   pointer-events: none;
   transition: opacity 0.25s ease;
 }
-#main [data-address-dialog][data-visible] {
+[data-address-dialog][data-visible] {
   opacity: 1;
   pointer-events: auto;
 }
-#main {
-  /* 주소 검색 모달 */
-}
-#main [data-address-modal] {
+
+/* 주소 검색 모달 */
+[data-address-modal] {
   width: 100%;
   max-width: 420px;
   height: 520px;
@@ -282,7 +280,7 @@
   opacity: 0;
   transition: 0.25s ease;
 }
-[data-visible] #main [data-address-modal] {
+[data-visible] [data-address-modal] {
   transform: translateY(0);
   opacity: 1;
 }

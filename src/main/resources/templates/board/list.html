@@ -27,8 +27,16 @@
             <div class="sub-row">
                 <h2 class="board" th:text="${board.getDisplayText()}"></h2>
                 <div class="filter ">
-                    <label><input type="checkbox"> 최신순</label>
-                    <label><input type="checkbox"> 인기순</label>
+                    <a class="link"
+                    th:href="@{/board/list(id=${board.id}, sort='latest')}"
+                    th:classappend="${boardPageVo.sort == 'latest'} ? ' -active'">
+                        최신순
+                    </a>
+                    <a class="link"
+                    th:href="@{/board/list(id=${board.id}, sort='view')}"
+                    th:classappend="${boardPageVo.sort == 'view'} ? ' -active'">
+                        인기순
+                    </a>
                 </div>
             </div>
         </div>
@@ -36,7 +44,6 @@
         <table class="table board-table">
             <thead class="section">
             <tr class="row">
-                <th class="cell" scope="col">번호</th>
                 <th class="cell -stretch" scope="col">제목</th>
                 <th class="cell" scope="col">작성자</th>
                 <th class="cell" scope="col">조회수</th>
@@ -44,38 +51,37 @@
             </tr>
             </thead>
             <tbody class="section">
-            <tr class="row" th:each="article : ${articles}">
+            <tr class="row"
+                th:each="article : ${articles}"
+                th:onclick="|location.href='@{/article/(id=${article.id})}'|">
+
                 <td class="cell title">
                     <div class="title-inner">
                         <div class="thumbnail">
                             <img src="/board/assets/images/icons8-airplane-50.png" alt="썸네일">
                         </div>
                         <div class="text">
-                            <a class="link"
-                            th:href="@{/article(id=${article.id})}"
-                            th:text="${article.title}">
-                                제목
-                            </a>
-                            <p class="preview" th:text="${#strings.abbreviate(article.content, 50)}">
-                                미리보기
-                            </p>
+                            <span class="link" th:text="${article.title}"></span>
+                            <p class="preview"
+                               th:text="${#strings.abbreviate(article.content, 50)}"></p>
                         </div>
                     </div>
                 </td>
+
                 <td class="cell nickname" th:text="${article.nickname}"></td>
                 <td class="cell view" th:text="${article.view}"></td>
                 <td class="cell created_at"
-                th:text="${#temporals.format(article.createdAt, 'yyyy-MM-dd')}"></td>
+                    th:text="${#temporals.format(article.createdAt, 'yyyy-MM-dd')}"></td>
             </tr>
-            <tr th:if="${articles == null || #arrays.isEmpty(articles)}">
-                <td colspan="5" class="cell empty">
+
+            <tr class="row empty-row"
+                th:if="${articles == null || #arrays.isEmpty(articles)}">
+                <td colspan="4" class="cell empty">
                     작성된 글이 없습니다.
                 </td>
-                <td class="cell nickname">유어박스</td>
-                <td class="cell view">71</td>
-                <td class="cell created_at">2026-01-16</td>
             </tr>
             </tbody>
+
         </table>
     </div>
 

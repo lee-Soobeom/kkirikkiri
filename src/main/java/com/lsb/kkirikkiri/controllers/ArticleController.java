@@ -1,8 +1,11 @@
 package com.lsb.kkirikkiri.controllers;
 
 import com.lsb.kkirikkiri.entities.ArticleEntity;
+import com.lsb.kkirikkiri.entities.BoardEntity;
+import com.lsb.kkirikkiri.entities.user.UserEntity;
 import com.lsb.kkirikkiri.results.CommonResult;
 import com.lsb.kkirikkiri.services.ArticleService;
+import com.lsb.kkirikkiri.services.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.MediaType;
@@ -18,11 +21,18 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ArticleController {
     private final ArticleService articleService;
+    private final BoardService boardService;
     // 글 작성 페이지
     @RequestMapping(value = "/write",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getWrite(ModelAndView modelAndView) {
+    public ModelAndView getWrite(@RequestParam(value = "boardId", required = false) String boardId,
+                                 @SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser,
+                                 ModelAndView modelAndView) {
+        BoardEntity board = this.boardService.getBoardById(boardId);
+
+        modelAndView.addObject("board", board);
+        modelAndView.addObject("sessionUser", sessionUser);
         modelAndView.setViewName("article/write");
         return modelAndView;
     }

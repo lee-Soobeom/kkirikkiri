@@ -2,19 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lsb.kkirikkiri.mappers.BoardMapper">
     <select id="selectById" resultType="com.lsb.kkirikkiri.entities.BoardEntity">
-        SELECT
-            `id` AS id,
-            `display_text` AS displayText,
-            `sort_order` AS sortOrder,
-            `created_at` AS createdAt
+        SELECT `id`            AS id,
+               `display_text`  AS displayText,
+               `sort_order`    AS sortOrder,
+               `created_at`    AS createdAt,
+               `is_admin_only` AS isAdminOnly
         FROM `kkirikkiri`.`boards`
         WHERE `id` = #{id}
     </select>
     <select id="getAll" resultType="com.lsb.kkirikkiri.entities.BoardEntity">
-        SELECT `id`           AS id,
-               `display_text` AS displayText,
-               `sort_order`   AS sortOrder,
-               `created_at`   AS createdAt
+        SELECT `id`            AS id,
+               `display_text`  AS displayText,
+               `sort_order`    AS sortOrder,
+               `created_at`    AS createdAt,
+               `is_admin_only` AS isAdminOnly
         FROM `kkirikkiri`.`boards`
         ORDER BY `sort_order` ASC
     </select>

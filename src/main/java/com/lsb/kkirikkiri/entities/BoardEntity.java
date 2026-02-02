@@ -15,4 +15,5 @@ public class BoardEntity {
     private String displayText;
     private int sortOrder;
     private LocalDateTime createdAt;
+    private boolean isAdminOnly;
 }

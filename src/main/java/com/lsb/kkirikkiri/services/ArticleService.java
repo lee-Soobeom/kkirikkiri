@@ -31,8 +31,15 @@ public class ArticleService {
         if (boardId == null) {
             return new ArticleVo[0];
         }
-        return this.articleMapper.selectAllByBoardId(boardPageVo, boardId);
+
+        if ("view".equals(boardPageVo.getSort())) {
+            // 인기순
+            return this.articleMapper.selectAllByBoardIdOrderByView(boardPageVo, boardId);
+        }
+        // 최신순
+        return this.articleMapper.selectAllByBoardIdOrderByCreatedAt(boardPageVo, boardId);
     }
+
 
     public ArticleVo[] getAllBoardSearch(BoardPageVo boardPageVo, BoardSearchVo boardSearchVo) {
         if (boardSearchVo == null ||

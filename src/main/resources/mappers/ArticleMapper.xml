@@ -181,4 +181,58 @@
             AND `t1`.`nickname` = #{boardSearch.keyword}
         </if>
     </select>
+    <!-- 최신순 -->
+    <select id="selectAllByBoardIdOrderByCreatedAt" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
+        SELECT
+            `t1`.`id` AS `id`,
+            `t1`.`board_id` AS `boardId`,
+            `t1`.`title` AS `title`,
+            `t1`.`menu` AS `menu`,
+            `t1`.`menu_name` AS `menuName`,
+            `t1`.`min_order_price` AS `minOrderPrice`,
+            `t1`.`order_price` AS `orderPrice`,
+            `t1`.`delivery_price` AS `deliveryPrice`,
+            `t1`.`order_time` AS `orderTime`,
+            `t1`.`restaurant` AS `restaurant`,
+            `t1`.`pickup_time` AS `pickupTime`,
+            `t1`.`address_postal` AS `addressPostal`,
+            `t1`.`address_primary` AS `addressPrimary`,
+            `t1`.`address_secondary` AS `addressSecondary`,
+            `t1`.`content` AS `content`,
+            `t1`.`nickname` AS `nickname`,
+            `t1`.`created_at` AS `createdAt`,
+            `t1`.`updated_at` AS `updatedAt`,
+            `t1`.`view` AS `view`
+        FROM `kkirikkiri`.`articles` AS `t1`
+        WHERE `board_id` = #{boardId}
+        ORDER BY `created_at` DESC
+        LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
+    </select>
+    <!-- 인기순 -->
+    <select id="selectAllByBoardIdOrderByView" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
+        SELECT
+            `t1`.`id` AS `id`,
+            `t1`.`board_id` AS `boardId`,
+            `t1`.`title` AS `title`,
+            `t1`.`menu` AS `menu`,
+            `t1`.`menu_name` AS `menuName`,
+            `t1`.`min_order_price` AS `minOrderPrice`,
+            `t1`.`order_price` AS `orderPrice`,
+            `t1`.`delivery_price` AS `deliveryPrice`,
+            `t1`.`order_time` AS `orderTime`,
+            `t1`.`restaurant` AS `restaurant`,
+            `t1`.`pickup_time` AS `pickupTime`,
+            `t1`.`address_postal` AS `addressPostal`,
+            `t1`.`address_primary` AS `addressPrimary`,
+            `t1`.`address_secondary` AS `addressSecondary`,
+            `t1`.`content` AS `content`,
+            `t1`.`nickname` AS `nickname`,
+            `t1`.`created_at` AS `createdAt`,
+            `t1`.`updated_at` AS `updatedAt`,
+            `t1`.`view` AS `view`
+        FROM `kkirikkiri`.`articles` AS `t1`
+        WHERE `board_id` = #{boardId}
+        ORDER BY `view` DESC
+        LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
+    </select>
 </mapper>

@@ -242,43 +242,43 @@
       }
     }
   }
+}
 
-  /* 주소 검색 전체 백드롭 */
-  [data-address-dialog] {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+/* 주소 검색 전체 백드롭 */
+[data-address-dialog] {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .25s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
 
-    &[data-visible] {
-      opacity: 1;
-      pointer-events: auto;
-    }
+  &[data-visible] {
+    opacity: 1;
+    pointer-events: auto;
   }
+}
 
-  /* 주소 검색 모달 */
-  [data-address-modal] {
-    width: 100%;
-    max-width: 420px;
-    height: 520px;
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
+/* 주소 검색 모달 */
+[data-address-modal] {
+  width: 100%;
+  max-width: 420px;
+  height: 520px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
 
-    transform: translateY(20px);
-    opacity: 0;
-    transition: .25s ease;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: .25s ease;
 
-    [data-visible] & {
-      transform: translateY(0);
-      opacity: 1;
-    }
+  [data-visible] & {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

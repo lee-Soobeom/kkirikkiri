@@ -245,20 +245,35 @@
     <button class="button" name="deactivateButton" type="button">
         <img src="/assets/images/more/more.png" alt="">
     </button>
-    <a href="/board/list" class="link" target="_self">
+    <a th:href="@{/board/list(id='share')}" class="link" target="_self">
 <!--        <img src="/assets/images/more/more.png" alt="">-->
         더보기
     </a>
 </div>
 <ol id="quick">
     <li class="item">
-        <a class="link" href="/board/list" target="_self">공구</a>
+        <a
+                class="link"
+                th:href="@{/board/list(id='share')}"
+                target="_self">
+            공구
+        </a>
     </li>
     <li class="item">
-        <a class="link" href="/board/promote" target="_self">홍보</a>
+        <a
+                class="link"
+                th:href="@{/board/list(id='promote')}"
+                target="_self">
+            홍보
+        </a>
     </li>
     <li class="item">
-        <a class="link" href="/board/notice" target="_self">공지사항</a>
+        <a
+                class="link"
+                th:href="@{/board/list(id='notice')}"
+                target="_self">
+            공지사항
+        </a>
     </li>
     <li class="item">
         <label class="label">

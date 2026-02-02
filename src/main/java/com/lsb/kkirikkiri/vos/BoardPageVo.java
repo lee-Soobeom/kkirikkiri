@@ -19,7 +19,7 @@ public class BoardPageVo {
 
 
     public BoardPageVo(int requestPage, int totalCount, String sort) {
-        this.requestPage = requestPage;
+        this.requestPage = Math.max(requestPage, this.minPage);
         this.totalCount = totalCount;
         this.sort = (sort == null || sort.isBlank()) ? "latest" : sort;
         this.maxPage = totalCount / this.rowCount + (totalCount % this.rowCount == 0 ? 0 : 1);

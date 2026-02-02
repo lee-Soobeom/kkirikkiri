@@ -15,17 +15,13 @@
   @include flex(column, flex-start, center);
   width: 60%;
   align-self: center;
-  color: inherit;
-  font: inherit;
   padding: 2rem 2.5rem;
   min-height: calc(100vh - 3.75rem);
   background-color: #ffffff;
-  overflow-y: visible;
 
   .content-wrapper {
     width: 100%;
 
-    // header
 
     .header {
       margin-bottom: 1rem;
@@ -44,28 +40,29 @@
       .board {
         font-size: 1.5rem;
         font-weight: 500;
-        color: #212121;
+        color: $global-text-color;
       }
 
       .filter {
-        font-size: 0.85rem;
-        color: #666;
+        @include flex(row, center, center, 0.5rem);
 
-        label {
-          cursor: pointer;
-        }
+        .link {
+          padding: 0.4rem 0.8rem;
+          color: $global-text-color;
+          font-weight: 500;
+          border-radius: 0.4rem;
 
-        label + label {
-          margin-left: 0.5rem;
-        }
+          &:hover {
+            color: $global-color-concept;
+          }
 
-        input[type="checkbox"] {
-          accent-color: #A5BDFF;
+          &.-active {
+            color: darken($global-color-concept, 20%);
+            font-weight: 700;
+          }
         }
       }
     }
-
-    // board table
 
     .board-table {
       width: 100%;
@@ -78,21 +75,35 @@
 
       tbody {
         .row {
+          position: relative;
           background-color: #f9faff;
           border-radius: 0.75rem;
-          cursor: pointer;
           transition: background-color 0.2s ease;
 
           &:hover {
             background-color: #eef2ff;
+            cursor: pointer;
+          }
+
+          .row-link-cell {
+            position: absolute;
+            inset: 0;
+            padding: 0;
+            border: none;
+          }
+
+          .row-link {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
           }
 
           .cell {
+            position: relative;
+            z-index: 2;
             padding: 1.5rem 0.75rem;
             border: none;
-            vertical-align: top;
-
-            // title + thumbnail
+            vertical-align: middle;
 
             &.title {
               padding-left: 1.5rem;
@@ -106,19 +117,15 @@
               }
 
               .thumbnail {
-                width: 3.5rem;   // 썸네일 크기 조절
+                width: 3.5rem;
                 height: 3.5rem;
                 border-radius: 0.75rem;
                 flex-shrink: 0;
-
                 background-color: #e5ebff;
-                background-image: url("https://i.namu.wiki/i/SS3MJGd52md8QWUMqQdR_iASE0MSzaJMJpfunKqwvNOk10eaIphqeG6wUSEDf0XBOHNudZW0T6s10By2F3GmDw.webp");
-                background-size: cover;
-                background-position: center;
               }
 
               .text {
-                min-width: 0; // 말줄임 필수
+                min-width: 0;
               }
 
               .link {
@@ -126,7 +133,6 @@
                 font-size: 1rem;
                 font-weight: 600;
                 color: #212121;
-                text-decoration: none;
                 margin-bottom: 0.4rem;
               }
 
@@ -140,16 +146,13 @@
               }
             }
 
-            // meta
-
             &.nickname,
             &.view,
             &.created_at {
               font-size: 0.75rem;
               color: #999;
-              white-space: nowrap;
-              vertical-align: middle;
               text-align: center;
+              white-space: nowrap;
             }
 
             &.created_at {
@@ -158,27 +161,36 @@
             }
           }
         }
+
+        > .empty-row {
+          background: none;
+
+          &:hover {
+            background: none;
+          }
+
+          .cell.empty {
+            padding: 6rem 0;
+            text-align: center;
+            font-size: 1rem;
+            color: $global-text-color;
+          }
+        }
       }
     }
   }
-  // search
 
   > .search-form {
     @include flex(row, center, center, 0.5rem);
-    align-self: center;
     margin-top: 1rem;
   }
 
-  // pagination
-
   > .page-container {
     @include flex(row, stretch, center, 1.5rem);
-    align-self: center;
     margin-top: 1.5rem;
 
     > .group {
       @include flex(row, stretch, flex-start);
-      background-color: #ffffff;
       border: 0.0625rem solid $global-border-color;
       border-radius: 0.25rem;
       overflow: hidden;
@@ -188,12 +200,6 @@
         width: 2rem;
         height: 2rem;
         color: lighten($global-text-color, 50%);
-        text-align: center;
-        text-decoration: none;
-
-        + .link {
-          border-left: 0.0625rem solid $global-border-color;
-        }
 
         &:hover {
           background-color: darken($global-color-concept, 3.33%);
