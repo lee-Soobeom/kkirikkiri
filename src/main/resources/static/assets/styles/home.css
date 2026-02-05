@@ -33,7 +33,7 @@
   justify-content: flex-start;
   width: 100%;
   height: 100%;
-  border: 0.0625rem solid #E9EFFF;
+  border: 0.0625rem solid #A5BDFF;
   padding: 0.375rem 0;
   position: relative;
 }
@@ -44,7 +44,7 @@
   width: 100%;
 }
 #main > .search > .menu-container > .menu > .caption {
-  font-size: 0.75rem;
+  font-size: 0.9375rem;
   font-weight: 700;
 }
 #main > .search > .search {
@@ -53,7 +53,7 @@
   flex-direction: column;
   gap: 1.25rem;
   justify-content: center;
-  border: 0.0625rem solid #E9EFFF;
+  border: 0.0625rem solid #A5BDFF;
 }
 #main > .search > .search > .title {
   font-size: 1.625rem;
@@ -68,8 +68,8 @@
   position: relative;
 }
 #main > .search > .search > .label > .image-wrapper {
-  top: 0;
-  left: 0;
+  top: 0.25rem;
+  left: 0.25rem;
   line-height: 0;
   margin-left: 0.25rem;
   position: absolute;
@@ -79,12 +79,12 @@
   height: 2rem;
 }
 #main > .search > .search > .label > .input {
-  width: 20rem;
-  height: 2rem;
-  background-color: #ffffff;
+  width: 25rem;
+  height: 2.5rem;
+  background-color: #FFFFFF;
   border-bottom: 0.0625rem solid #A5BDFF;
   border-radius: 999rem;
-  padding-left: 2.5rem;
+  padding-left: 2.75rem;
 }
 
 #main > .title {
@@ -156,7 +156,7 @@
 }
 #main > .group > .list > .row > .image-container {
   height: 100%;
-  border: 0.0625rem solid #E9EFFF;
+  border: 0.0625rem solid #A5BDFF;
 }
 #main > .group > .list > .row > .image-container > .image {
   height: 100%;
@@ -167,7 +167,7 @@
   flex-direction: column;
   gap: 0;
   justify-content: space-around;
-  border: 0.0625rem solid #E9EFFF;
+  border: 0.0625rem solid #A5BDFF;
   flex: 1 1 auto;
   padding: 0.5rem 1.25rem;
 }
@@ -206,7 +206,7 @@
   gap: 0;
   justify-content: flex-start;
   align-self: stretch;
-  border: 0.0625rem solid #E9EFFF;
+  border: 0.0625rem solid #A5BDFF;
   padding: 0.5rem 1.25rem;
 }
 
@@ -272,6 +272,7 @@
   width: 4rem;
   height: 4rem;
   background-color: #E9EFFF;
+  border: 0.0625rem solid #A5BDFF;
   border-radius: 999rem;
   color: #4a4a4a;
   font: inherit;
@@ -280,7 +281,7 @@
   overflow: hidden;
 }
 #quick > .item:hover {
-  background-color: #4678FF;
+  background-color: #A5BDFF;
   color: #FFFFFF;
 }
 #quick > .item:hover > .link {
@@ -356,7 +357,7 @@
   flex-direction: row;
   gap: 0;
   justify-content: center;
-  background-color: #A5BDFF;
+  background-color: #E9EFFF;
   border-bottom: 0.0625rem solid #A5BDFF;
   padding: 0.25rem 0.375rem;
 }
@@ -371,8 +372,7 @@
   font-weight: 300;
 }
 #message > .content {
-  background-color: #E9EFFF;
-  border-bottom: 0.0625rem solid #A5BDFF;
+  background-color: #FFFFFF;
   flex: 1 1 auto;
   font-size: 0.875rem;
   font-weight: 400;

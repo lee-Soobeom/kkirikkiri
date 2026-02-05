@@ -6,7 +6,6 @@ import com.lsb.kkirikkiri.entities.user.UserEntity;
 import com.lsb.kkirikkiri.results.CommonResult;
 import com.lsb.kkirikkiri.services.ArticleService;
 import com.lsb.kkirikkiri.services.BoardService;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.MediaType;
