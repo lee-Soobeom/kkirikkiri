@@ -313,5 +313,9 @@
   height: 100%;
   border: 0.0625rem solid #E9EFFF;
 }
+#main > .container > .context-container > .view-container > #map > .hidden {
+  display: none;
+  pointer-events: none;
+}
 
 /*# sourceMappingURL=article.css.map */

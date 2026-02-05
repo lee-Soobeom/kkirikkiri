@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lsb.kkirikkiri.mappers.MessageMapper">
+    <select id="selectAllByEmail"
+            resultType="com.lsb.kkirikkiri.entities.MessageEntity">
+        SELECT `id`        AS `id`,
+               `sender`    AS `sender`,
+               `receiver`  AS `receiver`,
+               `content`   AS `content`,
+               `timestamp` AS `timestamp`,
+               `isChecked` AS `IsChecked`
+        FROM `kkirikkiri`.`notification`
+        WHERE `receiver` = #{email}
+          AND `isChecked` = FALSE
+    </select>
+    <select id="selectByEmail"
+            resultType="com.lsb.kkirikkiri.entities.MessageEntity">
+        SELECT `id`        AS `id`,
+               `sender`    AS `sender`,
+               `receiver`  AS `receiver`,
+               `content`   AS `content`,
+               `timestamp` AS `timestamp`,
+               `isChecked` AS `IsChecked`
+        FROM `kkirikkiri`.`notification`
+        WHERE `receiver` = #{email}
+          AND `timestamp` >= #{timestamp}
+          AND `isChecked` = FALSE
+    </select>
+</mapper>

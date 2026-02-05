@@ -10,6 +10,7 @@ import com.lsb.kkirikkiri.vos.BoardSearchVo;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
+    private final FileService fileService;
     private final ArticleMapper articleMapper;
 
     public ArticleEntity getArticleById(int id) {
@@ -39,7 +41,6 @@ public class ArticleService {
         // 최신순
         return this.articleMapper.selectAllByBoardIdOrderByCreatedAt(boardPageVo, boardId);
     }
-
 
     public ArticleVo[] getAllBoardSearch(BoardPageVo boardPageVo, BoardSearchVo boardSearchVo) {
         if (boardSearchVo == null ||
@@ -69,7 +70,7 @@ public class ArticleService {
         return this.articleMapper.selectCountByBoardSearch(boardSearchVo);
     }
 
-    public Pair<CommonResult, ArticleEntity> write(ArticleEntity articleEntity) {
+    public Pair<CommonResult, ArticleEntity> write(List<MultipartFile> files, ArticleEntity articleEntity) {
         if (articleEntity == null ||
                 !ArticleValidator.validateBoardId(articleEntity) ||
                 !ArticleValidator.validateTitle(articleEntity) ||
@@ -86,9 +87,11 @@ public class ArticleService {
             System.out.println("null or content");
             return Pair.of(CommonResult.FAILURE, null);
         }
-
         articleEntity.setCreatedAt(LocalDateTime.now());
-        return this.articleMapper.insert(articleEntity) > 0
+        int articleResult = this.articleMapper.insert(articleEntity);
+        // file upload: filesEntity + articleId + userEmail
+        CommonResult fileResult = this.fileService.postFile(files);
+        return articleResult > 0
                 ? Pair.of(CommonResult.SUCCESS, articleEntity)
                 : Pair.of(CommonResult.FAILURE, null);
     }

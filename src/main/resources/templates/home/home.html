@@ -8,23 +8,15 @@
     <title>끼리끼리</title>
     <link rel="stylesheet" href="/assets/styles/common.css" type="text/css">
     <link rel="stylesheet" href="/assets/styles/fragments.css" type="text/css">
-    <link rel="stylesheet" href="/assets/styles/index.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/home.css" type="text/css">
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=services"></script>
-    <script defer src="/assets/scripts/index.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/common.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/home.js" type="text/javascript"></script>
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
 <th:block th:replace="~{/fragments/common.html :: sideMypage(user)}"></th:block>
-<div id="dialog">
-    <div class="modal">
-        <div class="title">알림</div>
-        <div class="content">글쓰기는 로그인 후 사용할 수 있습니다.</div>
-        <div class="button-container">
-            <button class="button cancel" type="button">취소</button>
-            <button class="button confirm" type="button">확인</button>
-        </div>
-    </div>
-</div>
+<th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
 <main id="main">
     <div class="search">
         <div class="menu-container">
@@ -283,7 +275,7 @@
         </label>
     </li>
 </ol>
-<div class="modify-content" id="modifyContent" data-visible>
+<div class="modify-content" id="modifyContent">
     <form class="modify-form" data-name="modifyForm" enctype="multipart/form-data">
        <section class="header">
            <h2 class="title">회원 정보 수정</h2>
@@ -344,6 +336,13 @@
         </div>
     </form>
 
+</div>
+<div id="message">
+    <div class="title">
+        <div class="sender">${message.sender}</div>
+        <span class="created-at">10:36</span>
+    </div>
+    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
 </div>
 </body>
 </html>

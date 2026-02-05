@@ -10,10 +10,14 @@
     <link rel="stylesheet" href="/assets/styles/fragments.css" type="text/css">
     <link rel="stylesheet" href="/article/assets/styles/write.css" type="text/css">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=services"></script>
+    <script defer src="/assets/scripts/common.js"></script>
     <script defer src="/article/assets/scripts/write.js"></script>
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
+<th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
 <main id="main">
     <div class="error invalid-board">
         <h1 class="title">게시글 작성</h1>
@@ -43,7 +47,8 @@
         </label>
         <label class="column">
             <span class="caption">제목</span>
-            <input autofocus required autocomplete="off" class="input" maxlength="100" minlength="1" name="title" placeholder="제목을 입력해 주세요." type="text" data-object="input" data-component="label.field">
+            <input required autocomplete="off" class="input" maxlength="100" minlength="1" name="title"
+                   placeholder="제목을 입력해 주세요." type="text" data-object="input" data-component="label.field">
         </label>
         <div class="row-group">
             <label class="column">
@@ -62,23 +67,46 @@
             </label>
             <label class="column">
                 <span class="caption">메뉴이름</span>
-                <input class="input" maxlength="50" minlength="1" name="menuName" type="text" placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
+                <input class="input" maxlength="50" minlength="1" name="menuName" type="text" placeholder="금액을 입력해 주세요."
+                       data-object="input" data-component="label.field">
             </label>
         </div>
         <div class="row-group">
             <label class="column">
                 <span class="caption">최소주문금액</span>
-                <input class="input" name="minOrderPrice" maxlength="7" minlength="1" type="text" placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
+                <input class="input" name="minOrderPrice" maxlength="5" minlength="1" type="text"
+                       placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
             </label>
             <label class="column">
                 <span class="caption">주문금액</span>
-                <input class="input" name="orderPrice" maxlength="7" minlength="1" type="text" placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
+                <input class="input" name="orderPrice" maxlength="6" minlength="1" type="text"
+                       placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
             </label>
             <label class="column">
                 <span class="caption">배달비</span>
-                <input class="input" name="deliveryPrice" maxlength="7" minlength="1" type="text" placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
+                <input class="input" name="deliveryPrice" maxlength="5" minlength="1" type="text"
+                       placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
             </label>
         </div>
+        <div class="row-group">
+            <label class="column">
+                <span class="caption">주문시간</span>
+                <input class="input" name="orderTime" type="datetime-local" data-object="input"
+                       data-component="label.field">
+            </label>
+            <label class="column">
+                <span class="caption">나눔시간</span>
+                <input class="input" name="pickupTime" type="datetime-local" data-object="input"
+                       data-component="label.field">
+            </label>
+        </div>
+        <label class="row">
+            <span class="caption">주문가게</span>
+            <input readonly disabled class="input" maxlength="100" minlength="1" name="restaurant" type="text"
+                   placeholder="'가게찾기' 버튼을 클릭해 주세요." data-object="input" data-component="label.field">
+            <button class="button" name="restaurantButton" type="button" data-object="button" data-color="concept">가게찾기
+            </button>
+        </label>
         <div class="share-container">
             <span class="title">주문 종류</span>
             <label class="row">
@@ -90,35 +118,32 @@
                 <span>1메뉴 n명 나누기</span>
             </label>
         </div>
-        <div class="row-group">
-            <label class="column">
-                <span class="caption">주문시간</span>
-                <input class="input" name="orderTime" type="datetime-local" data-object="input" data-component="label.field">
-            </label>
-            <label class="column">
-                <span class="caption">주문가게</span>
-                <input class="input" maxlength="100" minlength="1" name="restaurant" type="text" placeholder="주문할 가게이름을 입력해 주세요." data-object="input" data-component="label.field">
-            </label>
-            <label class="column">
-                <span class="caption">픽업시간</span>
-                <input class="input" name="pickupTime" type="datetime-local" data-object="input" data-component="label.field">
-            </label>
-        </div>
         <div class="address-container">
-            <span class="caption">픽업장소</span>
+            <span class="caption">나눔장소</span>
             <label class="row">
-                <span class="caption text">기본 주소</span>
-                <input readonly class="input" maxlength="100" minlength="5" name="addressPrimary" placeholder="기본 주소('주소찾기' 버튼을 클릭해 주세요.)" type="text" data-object="input" data-component="label.field">
-                <button class="button" name="findButton" type="button" data-object="button" data-color="concept">주소찾기</button>
+                <input checked class="radio primary" type="radio" name="addressCheck" value="addressPrimary">
+                <span class="caption text">나눔주소</span>
+                <input readonly disabled class="input" maxlength="100" minlength="5" name="addressPrimary"
+                       placeholder="기본 주소('주소찾기' 버튼을 클릭해 주세요.)" type="text" data-object="input"
+                       data-component="label.field">
+                <button class="button" name="findButton" type="button" data-object="button" data-color="concept">주소찾기
+                </button>
             </label>
             <label class="row">
-                <span class="caption text">상세 주소</span>
-                <input required class="input" autocomplete="off" spellcheck="false" maxlength="100" minlength="1"
-                       name="addressSecondary" placeholder="건물 명, 동, 호수 등 상세 주소를 입력해 주세요." type="text" data-object="input" data-component="label.field">
+                <input class="radio secondary" type="radio" name="addressCheck" value="addressSecondary">
+                <span class="caption text">나눔장소</span>
+                <input class="input" autocomplete="off" spellcheck="false" maxlength="100"
+                       minlength="1" name="addressSecondary"
+                       placeholder="장소 혹은 상세 주소('장소찾기' 버튼을 클릭해 주세요.)" type="text"
+                       data-object="input"
+                       data-component="label.field">
+                <button disabled class="button" name="placeButton" type="button" data-object="button"
+                        data-color="concept">장소찾기
+                </button>
             </label>
         </div>
         <div class="image-upload-container">
-            <span class="caption">이미지 추가</span>
+            <span class="caption">이미지 추가 (<span class="count">0</span>/10)</span>
             <label class="image-wrapper">
                 <input hidden multiple class="image-wrapper" accept="image/*" name="files" type="file">
                 <span class="caption">+</span>
@@ -138,7 +163,8 @@
         </div>
         <label class="column">
             <span class="caption">내용</span>
-            <textarea required autocomplete="off" spellcheck="false" maxlength="10000" minlength="1" name="content" rows="20" data-object="input" data-component="label.field"></textarea>
+            <textarea required autocomplete="off" spellcheck="false" maxlength="10000" minlength="1" name="content"
+                      rows="20" data-object="input" data-component="label.field"></textarea>
         </label>
         <label class="row end">
             <input name="entryCheck" type="checkbox">
@@ -149,5 +175,35 @@
         </div>
     </form>
 </main>
+<div id="searchModal">
+    <form class="modal" name="searchForm">
+        <label class="label">
+            <input class="search" maxlength="20" minlength="1" name="search" type="text"
+                   placeholder="'위치 설정' 후 검색하세요.">
+            <span class="image-wrapper">
+                <img class="image" src="/assets/images/main/main.menu.search.png" alt="">
+            </span>
+        </label>
+        <div class="button-container">
+            <span class="caption">현위치:<span class="address">현 위치의 주소를 불러오는 중입니다.</span></span>
+            <button class="button" name="current" type="button">
+                <img class="image" src="/article/assets/images/write/search-modal/current.png" alt="">
+            </button>
+            <button class="button" name="select" type="button">
+                <img class="image" src="/article/assets/images/write/search-modal/select.png" alt="">
+            </button>
+        </div>
+        <div id="geoMap">
+            <button class="close" name="close" type="button">
+                <img class="image" src="/article/assets/images/write/search-modal/close.png" alt="">
+            </button>
+        </div>
+        <ol class="list">
+            <li class="empty">
+                검색결과가 없습니다.
+            </li>
+        </ol>
+    </form>
+</div>
 </body>
 </html>

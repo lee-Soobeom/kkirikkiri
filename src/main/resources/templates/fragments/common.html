@@ -15,14 +15,58 @@
     </label>
     <a class="link" href="/">끼리끼리</a>
     <ol class="button-container">
-        <li class="button">
+        <li class="button" th:if=" ${isSigned == true }">
             <a class="link" href="/user/register" target="_self">회원가입</a>
         </li>
-        <li class="button" th:if=" ${isSigned == false }">
+        <li class="button" th:if=" ${isSigned == true }">
             <a class="link" href="/user/login" target="_self">로그인</a>
         </li>
-        <li class="button" th:if=" ${isSigned == true }">
+        <li class="button" th:if=" ${isSigned == false }">
             <a class="link" href="/user/logout" target="_self">로그아웃</a>
+        </li>
+        <li class="bell" th:if=" ${isSigned == false }">
+            <label class="label">
+                <input hidden class="input" name="bell" type="checkbox">
+                <img class="image" src="/assets/images/my/my.message.box.png" alt="">
+            </label>
+            <ol class="message-list">
+                <li class="title">최근 알림</li>
+                <li class="item">
+                    <div class="title-container">
+                        <div class="sender">${message.sender}</div>
+                        <div class="created-at">2026-02-05 10:36</div>
+                    </div>
+                    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
+                </li>
+                <li class="item">
+                    <div class="title-container">
+                        <div class="sender">${message.sender}</div>
+                        <div class="created-at">2026-02-05 10:36</div>
+                    </div>
+                    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
+                </li>
+                <li class="item">
+                    <div class="title-container">
+                        <div class="sender">${message.sender}</div>
+                        <div class="created-at">2026-02-05 10:36</div>
+                    </div>
+                    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
+                </li>
+                <li class="item">
+                    <div class="title-container">
+                        <div class="sender">${message.sender}</div>
+                        <div class="created-at">2026-02-05 10:36</div>
+                    </div>
+                    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
+                </li>
+                <li class="item">
+                    <div class="title-container">
+                        <div class="sender">${message.sender}</div>
+                        <div class="created-at">2026-02-05 10:36</div>
+                    </div>
+                    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
+                </li>
+            </ol>
         </li>
     </ol>
 </nav>
@@ -68,6 +112,16 @@
         <div class="-stretch" role="none"></div>
         <a class="link" href="/board/service" target="_self">고객센터</a>
     </div>
+</div>
+<div id="dialog" th:fragment="dialog">
+    <!--    <div class="modal">-->
+    <!--        <div class="title">알림</div>-->
+    <!--        <div class="content">글쓰기는 로그인 후 사용할 수 있습니다.</div>-->
+    <!--        <div class="button-container">-->
+    <!--            <button class="button cancel" type="button">취소</button>-->
+    <!--            <button class="button confirm" type="button">확인</button>-->
+    <!--        </div>-->
+    <!--    </div>-->
 </div>
 </body>
 </html>

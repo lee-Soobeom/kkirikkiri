@@ -1,76 +1,3 @@
-body:has(> #dialog[data-visible]) {
-  overflow: hidden;
-}
-
-#dialog {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(191.25, 191.25, 191.25, 0.5333333333);
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  transition-duration: 200ms;
-  transition-property: opacity, pointer-events;
-  z-index: 15;
-}
-#dialog[data-visible] {
-  opacity: 1;
-  pointer-events: auto;
-}
-#dialog > .modal {
-  align-items: stretch;
-  display: flex;
-  flex-direction: column;
-  gap: 0.0625rem;
-  justify-content: flex-start;
-  top: 50%;
-  left: 50%;
-  width: 30rem;
-  height: 16rem;
-  background-color: #FFFFFF;
-  border-radius: 0.25rem;
-  color: inherit;
-  font: inherit;
-  overflow: hidden;
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-#dialog > .modal > .title {
-  background-color: rgb(229.5, 229.5, 229.5);
-  flex: 0 0 auto;
-  font-size: 1.125rem;
-  font-weight: 500;
-  padding: 0.75rem;
-}
-#dialog > .modal > .content {
-  flex: 1 1 auto;
-  font-size: 1rem;
-  font-weight: 300;
-  padding: 2rem 1rem;
-}
-#dialog > .modal > .button-container {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  justify-content: flex-end;
-  flex: 0 0 auto;
-  padding: 0.75rem;
-}
-#dialog > .modal > .button-container > .button {
-  border-radius: 0.25rem;
-  cursor: pointer;
-  padding: 0.75rem 1.25rem;
-}
-#dialog > .modal > .button-container > .button.confirm {
-  background-color: rgb(172, 194.4324324324, 255);
-}
-#dialog > .modal > .button-container > .button.cancel {
-  background-color: rgb(229.5, 229.5, 229.5);
-}
-
 #main {
   align-items: stretch;
   display: flex;
@@ -106,12 +33,12 @@ body:has(> #dialog[data-visible]) {
   justify-content: flex-start;
   width: 100%;
   height: 100%;
-  background-color: #E9EFFF;
+  border: 0.0625rem solid #E9EFFF;
   padding: 0.375rem 0;
   position: relative;
 }
 #main > .search > .menu-container > .menu:hover {
-  background-color: #4678FF;
+  background-color: #E9EFFF;
 }
 #main > .search > .menu-container > .menu > .icon {
   width: 100%;
@@ -126,7 +53,7 @@ body:has(> #dialog[data-visible]) {
   flex-direction: column;
   gap: 1.25rem;
   justify-content: center;
-  background-color: #E9EFFF;
+  border: 0.0625rem solid #E9EFFF;
 }
 #main > .search > .search > .title {
   font-size: 1.625rem;
@@ -218,9 +145,18 @@ body:has(> #dialog[data-visible]) {
   justify-content: flex-start;
   height: 6rem;
 }
+#main > .group > .list > .row:hover > .image-container {
+  background-color: #E9EFFF;
+}
+#main > .group > .list > .row:hover > .content-container {
+  background-color: #E9EFFF;
+}
+#main > .group > .list > .row:hover > .member-container {
+  background-color: #E9EFFF;
+}
 #main > .group > .list > .row > .image-container {
   height: 100%;
-  background-color: #E9EFFF;
+  border: 0.0625rem solid #E9EFFF;
 }
 #main > .group > .list > .row > .image-container > .image {
   height: 100%;
@@ -231,7 +167,7 @@ body:has(> #dialog[data-visible]) {
   flex-direction: column;
   gap: 0;
   justify-content: space-around;
-  background-color: #E9EFFF;
+  border: 0.0625rem solid #E9EFFF;
   flex: 1 1 auto;
   padding: 0.5rem 1.25rem;
 }
@@ -270,7 +206,7 @@ body:has(> #dialog[data-visible]) {
   gap: 0;
   justify-content: flex-start;
   align-self: stretch;
-  background-color: #E9EFFF;
+  border: 0.0625rem solid #E9EFFF;
   padding: 0.5rem 1.25rem;
 }
 
@@ -347,6 +283,9 @@ body:has(> #dialog[data-visible]) {
   background-color: #4678FF;
   color: #FFFFFF;
 }
+#quick > .item:hover > .link {
+  color: #FFFFFF;
+}
 #quick > .item:nth-child(1), #quick > .item:nth-child(2), #quick > .item:nth-child(3) {
   opacity: 0;
   pointer-events: none;
@@ -393,6 +332,52 @@ body:has(> #dialog[data-visible]) {
 }
 #quick > .item > .label > .input {
   display: none;
+}
+
+#message {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: flex-start;
+  bottom: 0.25rem;
+  left: 0.25rem;
+  width: 18rem;
+  height: 8rem;
+  border: 0.0625rem solid #A5BDFF;
+  border-radius: 0.25rem;
+  color: inherit;
+  font: inherit;
+  position: fixed;
+}
+#message > .title {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  background-color: #A5BDFF;
+  border-bottom: 0.0625rem solid #A5BDFF;
+  padding: 0.25rem 0.375rem;
+}
+#message > .title > .sender {
+  flex: 1 1 auto;
+  font-size: 1rem;
+  font-weight: 500;
+}
+#message > .title > .created-at {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  font-weight: 300;
+}
+#message > .content {
+  background-color: #E9EFFF;
+  border-bottom: 0.0625rem solid #A5BDFF;
+  flex: 1 1 auto;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.375;
+  padding: 0.75rem;
 }
 
 #modifyContent {
@@ -632,4 +617,4 @@ body:has(> #dialog[data-visible]) {
   background-color: #E63E3E;
 }
 
-/*# sourceMappingURL=index.css.map */
+/*# sourceMappingURL=home.css.map */

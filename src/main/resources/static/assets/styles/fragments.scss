@@ -14,6 +14,79 @@ body:has(> #top > .image-wrapper > .input:checked) > #quick {
   pointer-events: none;
 }
 
+body:has(> #dialog[data-visible]) {
+  overflow: hidden;
+}
+
+#dialog {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: darken(#FFFFFF88, 25%);
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  transition-duration: 200ms;
+  transition-property: opacity, pointer-events;
+  z-index: 15;
+
+  &[data-visible] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  > .modal {
+    @include flex(column, flex-start, stretch, 0.0625rem);
+    top: 50%;
+    left: 50%;
+    width: 30rem;
+    height: 16rem;
+    background-color: #FFFFFF;
+    border-radius: 0.25rem;
+    color: inherit;
+    font: inherit;
+    overflow: hidden;
+    position: fixed;
+    transform: translate(-50%, -50%);
+
+    > .title {
+      background-color: darken(#FFFFFF, 10%);
+      flex: 0 0 auto;
+      font-size: 1.125rem;
+      font-weight: 500;
+      padding: 0.75rem;
+    }
+
+    > .content {
+      flex: 1 1 auto;
+      font-size: 1rem;
+      font-weight: 300;
+      padding: 2rem 1rem;
+    }
+
+    > .button-container {
+      @include flex(row, flex-end, center, 1rem);
+      flex: 0 0 auto;
+      padding: 0.75rem;
+
+      > .button {
+        border-radius: 0.25rem;
+        cursor: pointer;
+        padding: 0.75rem 1.25rem;
+
+        &:last-child {
+          background-color: lighten(#4678FF, 20%);
+        }
+
+        &:first-child {
+          background-color: darken(#FFFFFF, 10%);
+        }
+      }
+    }
+  }
+}
+
 #top {
   @include flex(row, space-between, center);
   background-color: #E9EFFF;
@@ -46,12 +119,99 @@ body:has(> #top > .image-wrapper > .input:checked) > #quick {
     @include flex(row, flex-start, center, 0.5rem);
 
     > .button {
+      height: 2rem;
       border: 0.0625rem solid #3A6FFF;
       border-radius: 0.25rem;
-      padding: 0.25rem 0.375rem;
+      padding: 0.375rem;
 
       > .link {
         color: #3A6FFF;
+      }
+    }
+
+    > .bell {
+      @include flex(column, center, center);
+      width: 2rem;
+      height: 2rem;
+      border: 0.0625rem solid #3A6FFF;
+      border-radius: 999rem;
+      margin-left: 1.5rem;
+      position: relative;
+
+      > .label {
+        @include flex(column, center, center);
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      > .label:has(> .input[name="bell"]:checked) + .message-list {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate(2.5rem, calc(100% + 2rem));
+      }
+
+      > .message-list {
+        @include flex(column, flex-start, stretch, 0.25rem);
+        bottom: 0;
+        right: 0;
+        width: 25rem;
+        height: 30rem;
+        background-color: #E9EFFF;
+        border-bottom: none;
+        border-top-right-radius: 0.5rem;
+        border-top-left-radius: 0.5rem;
+        color: #4a4a4a;
+        opacity: 0;
+        overflow-y: auto;
+        padding: 0 0.5rem;
+        pointer-events: none;
+        position: absolute;
+        transform: translate(2.5rem, calc(100% + 1rem));
+        transition-duration: 250ms;
+        transition-property: opacity, pointer-events, transform;
+        transition-timing-function: linear;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        > .title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          padding: 1rem 0;
+          text-align: center;
+        }
+
+        > .item {
+          @include flex(column, center, stretch, 0.75rem);
+          background-color: #FFFFFF;
+          border-radius: 0.25rem;
+          padding: 1rem 1.375rem;
+
+          > .title-container {
+            @include flex(row, center, center);
+            flex: 0 0 auto;
+
+            > .sender {
+              flex: 1 1 auto;
+              font-size: 1rem;
+              font-weight: 500;
+            }
+
+            > .created-at {
+              flex: 0 0 auto;
+              font-size: 0.75rem;
+              font-weight: 300;
+            }
+          }
+
+          > .content {
+            flex: 1 1 auto;
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.375;
+          }
+        }
       }
     }
   }
@@ -93,6 +253,7 @@ body:has(> #top > .image-wrapper > .input:checked) > #quick {
 
       &.user {
         @include flex(column, space-around, center, 0.5rem);
+        position: relative;
 
         > .image-container {
           border: 0.0625rem solid #E9EFFF;
@@ -142,7 +303,7 @@ body:has(> #top > .image-wrapper > .input:checked) > #quick {
       > .title {
         color: inherit;
         font-size: 1.25rem;
-        font-weight: 300;
+        font-weight: 500;
       }
 
       > .content {

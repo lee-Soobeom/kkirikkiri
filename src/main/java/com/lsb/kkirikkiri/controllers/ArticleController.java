@@ -6,14 +6,17 @@ import com.lsb.kkirikkiri.entities.user.UserEntity;
 import com.lsb.kkirikkiri.results.CommonResult;
 import com.lsb.kkirikkiri.services.ArticleService;
 import com.lsb.kkirikkiri.services.BoardService;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -22,6 +25,7 @@ import java.util.Map;
 public class ArticleController {
     private final ArticleService articleService;
     private final BoardService boardService;
+
     // 글 작성 페이지
     @RequestMapping(value = "/write",
             method = RequestMethod.GET,
@@ -36,6 +40,7 @@ public class ArticleController {
         modelAndView.setViewName("article/write");
         return modelAndView;
     }
+
     // 게시글 조회
     @RequestMapping(value = "/",
             method = RequestMethod.GET,
@@ -45,6 +50,7 @@ public class ArticleController {
         modelAndView.setViewName("article/article");
         return modelAndView;
     }
+
     // 게시글 수정
     @RequestMapping(value = "/modify",
             method = RequestMethod.GET,
@@ -53,15 +59,17 @@ public class ArticleController {
         modelAndView.setViewName("article/modify");
         return modelAndView;
     }
+
     // 글 작성 처리
     @RequestMapping(value = "/write",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, Object> postWrite(ArticleEntity articleEntity) {
+    public Map<String, Object> postWrite(@RequestParam(value = "files", required = false) List<MultipartFile> files,
+                                         ArticleEntity articleEntity) {
         // 임시 닉네임
         articleEntity.setNickname("testUser");
-        Pair<CommonResult, ArticleEntity> result = this.articleService.write(articleEntity);
+        Pair<CommonResult, ArticleEntity> result = this.articleService.write(files, articleEntity);
         Map<String, Object> response = new HashMap<>();
         response.put("result", result.getLeft().name());
         if (result.getLeft() == CommonResult.SUCCESS) {
