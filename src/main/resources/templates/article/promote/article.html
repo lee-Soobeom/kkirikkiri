@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>홍보 게시글</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/assets/styles/fragments.css">
+    <link rel="stylesheet" href="/assets/styles/home.css" type="text/css">
+    <link rel="stylesheet" href="/article/assets/styles/article.css">
+</head>
+<body>
+
+<th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
+
+<main id="main">
+    <div class="container">
+        <!-- 제목 / 작성자 -->
+        <div class="title-container">
+            <h2 class="title" th:text="${article.title}"></h2>
+            <div class="user">
+                <div class="nickname" th:text="${article.nickname}"></div>
+                <div class="created-at"
+                     th:text="${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}"></div>
+                <div class="view" th:text="${article.view}"></div>
+            </div>
+        </div>
+
+        <!-- 홍보 정보 -->
+        <div class="context-container">
+            <div class="content-container">
+                <div class="order-card">
+                    <div class="caption">가게 정보</div>
+
+                    <div class="order-container">
+                        <div class="box">
+                            <div class="title">가게명</div>
+                            <div class="caption" th:text="${article.restaurant}"></div>
+                        </div>
+                        <div class="box">
+                            <div class="title">주소</div>
+                            <div class="caption"
+                                 th:text="${article.addressPrimary + ' ' + article.addressSecondary}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 지도 영역 (선택) -->
+            <div class="view-container">
+                <div id="map"></div>
+            </div>
+
+            <!-- 내용 -->
+            <div class="memo-card">
+                <div class="caption">소개글</div>
+                <div class="text" th:text="${article.content}"></div>
+            </div>
+        </div>
+        <th:block th:replace="~{fragments/common.html :: #quick}"></th:block>
+    </div>
+
+</main>
+
+</body>
+</html>

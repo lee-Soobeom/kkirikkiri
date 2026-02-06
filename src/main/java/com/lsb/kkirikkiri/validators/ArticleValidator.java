@@ -107,8 +107,7 @@ public class ArticleValidator {
     }
 
     public boolean validateOrderTime(LocalDateTime orderTime) {
-        return orderTime != null
-                && orderTime.isAfter(LocalDateTime.now());
+        return orderTime != null;
     }
 
     public boolean validateOrderTime(@NonNull ArticleEntity articleEntity) {
@@ -126,8 +125,7 @@ public class ArticleValidator {
     }
 
     public boolean validatePickupTime(LocalDateTime pickupTime) {
-        return pickupTime != null
-                && pickupTime.isAfter(LocalDateTime.now());
+        return pickupTime != null;
     }
 
     public boolean validatePickupTime(@NonNull ArticleEntity articleEntity) {

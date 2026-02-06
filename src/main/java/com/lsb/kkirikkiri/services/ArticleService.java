@@ -18,6 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
+
     private final FileService fileService;
     private final ArticleMapper articleMapper;
 
@@ -35,10 +36,8 @@ public class ArticleService {
         }
 
         if ("view".equals(boardPageVo.getSort())) {
-            // 인기순
             return this.articleMapper.selectAllByBoardIdOrderByView(boardPageVo, boardId);
         }
-        // 최신순
         return this.articleMapper.selectAllByBoardIdOrderByCreatedAt(boardPageVo, boardId);
     }
 
@@ -74,20 +73,42 @@ public class ArticleService {
         if (articleEntity == null ||
                 !ArticleValidator.validateBoardId(articleEntity) ||
                 !ArticleValidator.validateTitle(articleEntity) ||
-                !ArticleValidator.validateMenu(articleEntity) ||
-                !ArticleValidator.validateMenuName(articleEntity) ||
-                !ArticleValidator.validateMinOrderPrice(articleEntity) ||
-                !ArticleValidator.validateOrderPrice(articleEntity) ||
-                !ArticleValidator.validateDeliveryPrice(articleEntity) ||
-                !ArticleValidator.validateOrderTime(articleEntity) ||
-                !ArticleValidator.validateRestaurant(articleEntity) ||
-                !ArticleValidator.validatePickupTime(articleEntity) ||
-                !ArticleValidator.validateAddressSecondary(articleEntity) ||
                 !ArticleValidator.validateContent(articleEntity)) {
-            System.out.println("null or content");
             return Pair.of(CommonResult.FAILURE, null);
         }
+
+        String boardId = articleEntity.getBoardId();
+
+        // 공구 게시판 (share)
+        if ("share".equals(boardId)) {
+            if (!ArticleValidator.validateMenu(articleEntity) ||
+                    !ArticleValidator.validateMenuName(articleEntity) ||
+                    !ArticleValidator.validateMinOrderPrice(articleEntity) ||
+                    !ArticleValidator.validateOrderPrice(articleEntity) ||
+                    !ArticleValidator.validateDeliveryPrice(articleEntity) ||
+                    !ArticleValidator.validateOrderTime(articleEntity) ||
+                    !ArticleValidator.validatePickupTime(articleEntity) ||
+                    !ArticleValidator.validateRestaurant(articleEntity) ||
+                    !ArticleValidator.validateAddressSecondary(articleEntity)) {
+
+                return Pair.of(CommonResult.FAILURE, null);
+            }
+        }
+
+        // 홍보 게시판 (promote)
+        if ("promote".equals(boardId)) {
+            if (!ArticleValidator.validateRestaurant(articleEntity) ||
+                    !ArticleValidator.validateAddressSecondary(articleEntity)) {
+
+                return Pair.of(CommonResult.FAILURE, null);
+            }
+        }
+
+        // 공지 게시판 (notice)
+        // → 제목 + 내용만 있으면 OK (추가 검증 없음)
+
         articleEntity.setCreatedAt(LocalDateTime.now());
+
         int articleResult = this.articleMapper.insert(articleEntity);
         // file upload: filesEntity + articleId + userEmail
         CommonResult fileResult = this.fileService.postFile(files);

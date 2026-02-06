@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>게시글 작성</title>
+    <link rel="stylesheet" href="/assets/styles/common.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/fragments.css" type="text/css">
+    <link rel="stylesheet" href="/article/assets/styles/write.css" type="text/css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script defer src="/assets/scripts/common.js"></script>
+    <script defer src="/article/assets/scripts/write/promote.js"></script>
+</head>
+<body>
+<th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
+<main id="main">
+    <div class="error invalid-board" th:if="${board == null}">
+        <h1 class="title">게시글 작성</h1>
+        <span class="message">존재하지 않는 게시판입니다. 주소를 다시 확인해 주세요.</span>
+        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
+    </div>
+    <div class="error empty-session" th:if="${board != null && sessionUser == null}">
+        <h1 class="title">게시글 작성</h1>
+        <span class="message">게시글은 회원만 작성할 수 있습니다. <a href="/user/login" target="_self">로그인</a>해 주세요.</span>
+        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
+    </div>
+    <div class="error invalid-session" th:if="${board.adminOnly && !sessionUser.isBoss()}">
+        <h1 class="title">게시글 작성</h1>
+        <span class="message">해당 게시판에 게시글을 작성할 권한이 없습니다.</span>
+        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
+    </div>
+    <form novalidate class="form" name="writeForm" enctype="multipart/form-data" th:if="${board != null && sessionUser != null && (!board.isAdminOnly() || board.isAdminOnly && sessionUser.isBoss())}">
+        <h2 class="title">게시글 작성</h2>
+        <input type="hidden" name="boardId" value="promote">
+        <span class="board"></span>
+        <label class="column">
+            <span class="caption">제목</span>
+            <input autofocus required autocomplete="off" class="input" maxlength="100" minlength="1" name="title" placeholder="제목을 입력해 주세요." type="text" data-object="input" data-component="label.field">
+        </label>
+        <label class="column">
+            <span class="caption">가게명</span>
+            <input required
+                   class="input"
+                   maxlength="100"
+                   minlength="1"
+                   name="restaurant"
+                   placeholder="가게 이름을 입력해 주세요."
+                   type="text"
+                   data-object="input"
+                   data-component="label.field">
+        </label>
+        <div class="address-container">
+            <span class="caption">가게 주소</span>
+
+            <label class="row">
+                <span class="caption text">기본 주소</span>
+                <input readonly
+                       class="input"
+                       maxlength="100"
+                       minlength="5"
+                       name="addressPrimary"
+                       placeholder="주소찾기 버튼을 눌러주세요."
+                       type="text"
+                       data-object="input"
+                       data-component="label.field">
+                <button class="button"
+                        name="findButton"
+                        type="button"
+                        data-object="button"
+                        data-color="concept">
+                    주소찾기
+                </button>
+            </label>
+
+            <label class="row">
+                <span class="caption text">상세 주소</span>
+                <input required
+                       class="input"
+                       maxlength="100"
+                       minlength="1"
+                       name="addressSecondary"
+                       placeholder="상세 주소를 입력해 주세요."
+                       type="text"
+                       data-object="input"
+                       data-component="label.field">
+            </label>
+        </div>
+        <div class="image-upload-container">
+            <span class="caption">이미지 추가</span>
+
+            <label class="image-wrapper">
+                <input hidden
+                       multiple
+                       accept="image/*"
+                       name="files"
+                       type="file">
+                <span class="caption">+</span>
+            </label>
+
+            <ol class="list">
+                <li class="item">이미지를 업로드 해주세요.</li>
+                <li class="item">이미지를 업로드 해주세요.</li>
+                <li class="item">이미지를 업로드 해주세요.</li>
+                <li class="item">이미지를 업로드 해주세요.</li>
+                <li class="item">이미지를 업로드 해주세요.</li>
+            </ol>
+        </div>
+        <label class="column">
+            <span class="caption">내용</span>
+            <textarea required
+                      autocomplete="off"
+                      spellcheck="false"
+                      maxlength="10000"
+                      minlength="1"
+                      name="content"
+                      rows="20"
+                      data-object="input"
+                      data-component="label.field"></textarea>
+        </label>
+        <div class="button">
+            <button name="submit" type="submit" data-object="button" data-color="concept">작성하기</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>게시글 작성</title>
+    <link rel="stylesheet" href="/assets/styles/common.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/fragments.css" type="text/css">
+    <link rel="stylesheet" href="/article/assets/styles/write.css" type="text/css">
+    <script defer src="/article/assets/scripts/write/notice.js"></script>
+</head>
+<body>
+<th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
+<main id="main">
+    <div class="error invalid-board" th:if="${board == null}">
+        <h1 class="title">게시글 작성</h1>
+        <span class="message">존재하지 않는 게시판입니다. 주소를 다시 확인해 주세요.</span>
+        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
+    </div>
+    <div class="error empty-session" th:if="${board != null && sessionUser == null}">
+        <h1 class="title">게시글 작성</h1>
+        <span class="message">게시글은 회원만 작성할 수 있습니다. <a th:href="@{/user/login(redirect=${redirect})}">로그인</a>해 주세요.</span>
+        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
+    </div>
+    <div class="error invalid-session" th:if="${board.adminOnly && !sessionUser.admin}">
+        <h1 class="title">게시글 작성</h1>
+        <span class="message">해당 게시판에 게시글을 작성할 권한이 없습니다.</span>
+        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
+    </div>
+    <form novalidate class="form" name="writeForm" enctype="multipart/form-data" th:if="${board != null && sessionUser != null && (!board.isAdminOnly() || board.isAdminOnly && sessionUser.isAdmin())}">
+        <h2 class="title">게시글 작성</h2>
+        <input type="hidden" name="boardId" value="notice">
+        <span class="board"></span>
+        <label class="column">
+            <span class="caption">제목</span>
+            <input autofocus required autocomplete="off" class="input" maxlength="100" minlength="1" name="title" placeholder="제목을 입력해 주세요." type="text" data-object="input" data-component="label.field">
+        </label>
+        <label class="column">
+            <span class="caption">내용</span>
+            <textarea required
+                      autocomplete="off"
+                      spellcheck="false"
+                      maxlength="10000"
+                      minlength="1"
+                      name="content"
+                      rows="20"
+                      data-object="input"
+                      data-component="label.field"></textarea>
+        </label>
+        <div class="button">
+            <button name="submit" type="submit" data-object="button" data-color="concept">작성하기</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

@@ -257,7 +257,7 @@ CREATE TABLE `kkirikkiri`.`admins`
 
 
 ALTER TABLE `kkirikkiri`.`stores`
-    RENAME COLUMN `store_address` TO `address_primary`;
+    RENAME COLUMN address_primary TO `address_primary`;
 
 ALTER TABLE `kkirikkiri`.`stores`
     ADD COLUMN `address_secondary` VARCHAR(100) NOT NULL AFTER `address_primary`;

@@ -376,4 +376,85 @@ body:has(> #dialog[data-visible]) {
   text-decoration: none;
 }
 
+#quick {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  bottom: 4rem;
+  right: 4rem;
+  position: fixed;
+}
+#quick > .item {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  background-color: #E9EFFF;
+  border-radius: 999rem;
+  color: #4a4a4a;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  overflow: hidden;
+}
+#quick > .item:hover {
+  background-color: #4678FF;
+  color: #FFFFFF;
+}
+#quick > .item:nth-child(1), #quick > .item:nth-child(2), #quick > .item:nth-child(3), #quick > .item:nth-child(4) {
+  opacity: 0;
+  pointer-events: none;
+  transition-duration: 500ms;
+  transition-property: transform, opacity, pointer-events;
+  transition-timing-function: ease-in-out;
+}
+#quick > .item:nth-child(1) {
+  transform: translateY(calc(400% + 2rem));
+}
+#quick > .item:nth-child(2) {
+  transform: translateY(calc(300% + 1.5rem));
+}
+#quick > .item:nth-child(3) {
+  transform: translateY(calc(200% + 1rem));
+}
+#quick > .item:nth-child(4) {
+  transform: translateY(calc(100% + 0.5rem));
+}
+#quick > .item:nth-child(1):has(~ .item > .label > .input:checked), #quick > .item:nth-child(2):has(~ .item > .label > .input:checked), #quick > .item:nth-child(3):has(~ .item > .label > .input:checked), #quick > .item:nth-child(4):has(~ .item > .label > .input:checked) {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+#quick > .item > .link {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: #3A6FFF;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+#quick > .item > .label {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+#quick > .item > .label > .input {
+  display: none;
+}
+
 /*# sourceMappingURL=fragments.css.map */

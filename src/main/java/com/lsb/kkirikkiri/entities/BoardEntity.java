@@ -16,4 +16,8 @@ public class BoardEntity {
     private int sortOrder;
     private LocalDateTime createdAt;
     private boolean isAdminOnly;
+
+    public String getType() {
+        return this.id;
+    }
 }

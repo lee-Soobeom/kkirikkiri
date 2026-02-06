@@ -113,6 +113,7 @@
         <a class="link" href="/board/service" target="_self">고객센터</a>
     </div>
 </div>
+
 <div id="dialog" th:fragment="dialog">
     <!--    <div class="modal">-->
     <!--        <div class="title">알림</div>-->
@@ -123,5 +124,46 @@
     <!--        </div>-->
     <!--    </div>-->
 </div>
+<ol id="quick" th:fragment="quick(board)"
+th:with="boardId=${board != null ? board.id : null}">
+    <li class="item" th:if="${board != null}">
+        <a
+                class="link"
+                th:href="@{/article/{boardId}/write(boardId=${boardId})}">
+            게시글 작성
+        </a>
+    </li>
+
+    <li class="item">
+        <a
+                class="link"
+                th:href="@{/board/list(id='share')}"
+                target="_self">
+            공구
+        </a>
+    </li>
+    <li class="item">
+        <a
+                class="link"
+                th:href="@{/board/list(id='promote')}"
+                target="_self">
+            홍보
+        </a>
+    </li>
+    <li class="item">
+        <a
+                class="link"
+                th:href="@{/board/list(id='notice')}"
+                target="_self">
+            공지사항
+        </a>
+    </li>
+    <li class="item">
+        <label class="label">
+            <span class="caption">+</span>
+            <input hidden class="input" type="checkbox"/>
+        </label>
+    </li>
+</ol>
 </body>
 </html>

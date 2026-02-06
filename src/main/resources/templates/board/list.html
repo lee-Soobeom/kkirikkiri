@@ -53,7 +53,7 @@
             <tbody class="section">
             <tr class="row"
                 th:each="article : ${articles}"
-                th:onclick="|location.href='@{/article/(id=${article.id})}'|">
+                th:onclick="|location.href='@{/article/{boardType}(boardType=${board.id}, id=${article.id})}'|">
 
                 <td class="cell title">
                     <div class="title-inner">
@@ -84,6 +84,8 @@
 
         </table>
     </div>
+
+    <th:block th:replace="~{/fragments/common.html :: quick(${board})}"></th:block>
 
     <form novalidate class="search-form" name="searchForm">
         <input hidden name="id" type="hidden" th:value="${board.getId()}">
@@ -133,6 +135,7 @@
             <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.requestPage + 1}, by = ${boardSearchVo.by}, keyword = ${boardSearchVo.keyword})}">&gt;</a>
         </div>
     </div>
+
 </main>
 </body>
 </html>

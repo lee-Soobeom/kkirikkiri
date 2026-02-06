@@ -21,6 +21,7 @@
     </div>
     <div class="content">
         <form novalidate name="loginForm" class="form login-form">
+            <input type="hidden" name="redirect" th:value="${redirect}">
             <h1 class="item title">LOGIN</h1>
             <label class="label" data-name="loginEmail">
                 <span class="title">아이디</span>
