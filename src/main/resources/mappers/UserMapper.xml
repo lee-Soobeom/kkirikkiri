@@ -3,23 +3,28 @@
 <mapper namespace="com.lsb.kkirikkiri.mappers.UserMapper">
     <insert id="insert">
         INSERT INTO `kkirikkiri`.`users` (
-            `email`, `password`, `nickname`, `name`, `birth`, `contact`, `address_primary`, `address_secondary`, `is_admin`, `is_boss`, `status`, `created_at`, `updated_at`
+            `email`, `password`,`nickname`, `name`, `birth`, `telecom`, `contact`, `address_primary`, `address_secondary`, `is_admin`, `is_boss`, `status`, `term_policy_at`, `term_privacy_at`,`term_location_at`, `term_marketing_at`, `created_at`, `updated_at`
         ) VALUES (
-                  #{user.email},
-                  #{user.password},
-                  #{user.nickname},
-                  #{user.name},
-                  #{user.birth},
-                  #{user.contact},
-                  #{user.addressPrimary},
-                  #{user.addressSecondary},
-                  #{user.isAdmin},
-                  #{user.isBoss},
-                  #{user.status},
-                  #{user.createdAt},
-                  #{user.updatedAt}
+                     #{user.email},
+                     #{user.password},
+                     #{user.nickname},
+                     #{user.name},
+                     #{user.birth},
+                     #{user.telecom},
+                     #{user.contact},
+                     #{user.addressPrimary},
+                     #{user.addressSecondary},
+                     #{user.isAdmin},
+                     #{user.isBoss},
+                     #{user.status},
+                     #{user.termPolicyAt},
+                     #{user.termPrivacyAt},
+                     #{user.termLocationAt},
+                     #{user.termMarketingAt},
+                     #{user.createdAt},
+                     #{user.updatedAt}
 
-                  )
+                 )
     </insert>
     <select id="selectByEmail" resultType="com.lsb.kkirikkiri.entities.user.UserEntity">
         SELECT `email`             AS `email`,
@@ -27,16 +32,44 @@
                `nickname`          AS `nickname`,
                `name`              AS `name`,
                `birth`             AS `birth`,
+               `telecom`           AS `telecom`,
                `contact`           AS `contact`,
                `address_primary`   AS `addressPrimary`,
                `address_secondary` AS `addressSecondary`,
                `is_admin`          AS `isAdmin`,
                `is_boss`           AS `isBoss`,
                `status`            AS `status`,
+               `term_policy_at`    AS `termPolicyAt`,
+               `term_privacy_at`   AS `termPrivacyAt`,
+               `term_location_at`  AS `termLocaitonAt`,
+               `term_marketing_at` AS `termMarketingAt`,
                `created_at`        AS `createdAt`,
                `updated_at`        AS `updatedAt`
         FROM `kkirikkiri`.`users`
         WHERE `email` = #{email}
+        LIMIT 1
+    </select>
+    <select id="selectByNickname" resultType="com.lsb.kkirikkiri.entities.user.UserEntity">
+        SELECT `email`             AS `email`,
+               `password`          AS `password`,
+               `nickname`          AS `nickname`,
+               `name`              AS `name`,
+               `birth`             AS `birth`,
+               `telecom`           AS `telecom`,
+               `contact`           AS `contact`,
+               `address_primary`   AS `addressPrimary`,
+               `address_secondary` AS `addressSecondary`,
+               `is_admin`          AS `isAdmin`,
+               `is_boss`           AS `isBoss`,
+               `status`            AS `status`,
+               `term_policy_at`    AS `termPolicyAt`,
+               `term_privacy_at`   AS `termPrivacyAt`,
+               `term_location_at`  AS `termLocaitonAt`,
+               `term_marketing_at` AS `termMarketingAt`,
+               `created_at`        AS `createdAt`,
+               `updated_at`        AS `updatedAt`
+        FROM `kkirikkiri`.`users`
+        WHERE `nickname` = #{nickname}
         LIMIT 1
     </select>
 </mapper>

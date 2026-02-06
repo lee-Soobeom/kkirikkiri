@@ -8,10 +8,12 @@
     <title>끼리끼리 - 회원가입</title>
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/user/assets/styles/register.css">
+    <script src="/assets/scripts/common.js"></script>
     <script defer src="/user/assets/scripts/register.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
+<th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
 <main id="main">
     <div class="logo-container">
         <div class="logo-wrapper">
@@ -28,7 +30,6 @@
     <div class="content">
         <form data-visible="true" novalidate class="common-form form" data-type="common" data-name="commonRegisterForm">
             <h2 class="title">일반 가입</h2>
-            <input hidden name="emailSalt" type="hidden">
 
             <label class="label">
                 <span class="caption">성함</span>
@@ -72,7 +73,9 @@
                        <option value="SKT">SKT</option>
                        <option value="KT">KT</option>
                        <option value="LG">LG U+</option>
-                       <option value="ETC">알뜰폰</option>
+                        <option value="SKM">SKT 알뜰폰</option>
+                        <option value="KTM">KT 알뜰폰</option>
+                        <option value="LGM">LG 알뜰폰</option>
                    </select>
                     <input required type="tel" name="contact" class="field" placeholder="'-' 없이 입력해 주세요" maxlength="11">
                 </span>
@@ -81,13 +84,13 @@
                     <span class="text">올바른 전화번호를 입력해 주세요.</span>
                 </span>
             </label>
-
             <label class="label" data-name="registerEmail">
+                <input hidden name="emailSalt" type="hidden">
                 <span class="caption">이메일</span>
                 <span class="row">
                      <input required autocomplete="email" maxlength="50" minlength="6" name="email" spellcheck="false"
                             placeholder="이메일을 입력해 주세요" type="email" class="field">
-                     <button class="botton" type="button">인증번호 전송</button>
+                     <button class="botton" type="button" name="emailCodeSendButton">인증번호 전송</button>
                 </span>
                 <span data-component="label.message" data-message="info" data-visible>
                     <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
@@ -97,15 +100,26 @@
                     <span class="text">올바른 이메일을 입력해 주세요.</span>
                 </span>
             </label>
+            <label class="label">
+                <span class="caption">이메일 인증 번호</span>
+                <span class="row">
+                    <input type="text" name="emailCode" class="field" minlength="6" maxlength="50" placeholder="인증번호를 입력해 주세요." required>
+                    <button class="botton" type="button" name="emailCodeVerifyButton">인증번호 확인</button>
+                </span>
+                <span data-component="label.message" data-message="warning">
+                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
+                    <span class="text">올바른 인증번호를 입력해 주세요.</span>
+                </span>
+            </label>
 
             <label class="label">
                 <span class="caption">주소</span>
                 <span class="row">
-                      <input required type="text" name="address" class="field" placeholder="주소 찾기를 이용해 주세요." readonly>
+                      <input required type="text" name="addressPrimary" class="field" placeholder="주소 찾기를 이용해 주세요." readonly>
                       <button name="addressButton" type="button">주소 찾기</button>
                 </span>
                 <span class="row">
-                    <input type="text" name="addressDetail" class="field" placeholder="상세 주소를 입력해 주세요.">
+                    <input type="text" name="addressSecondary" class="field" placeholder="상세 주소를 입력해 주세요.">
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
@@ -117,9 +131,9 @@
                 <span class="caption">비밀번호</span>
                 <span class="row">
                     <input required autocomplete="off" maxlength="50" minlength="8" name="password" spellcheck="false"
-                            placeholder="비밀번호를 입력해 주세요." type="password" class="field">
+                           placeholder="비밀번호를 입력해 주세요." type="password" class="field">
                     <input required autocomplete="off" maxlength="50" minlength="8" name="passwordCheck"
-                            spellcheck="false" placeholder="비밀번호를 한 번 더 입력해 주세요." type="password" class="field">
+                           spellcheck="false" placeholder="비밀번호를 한 번 더 입력해 주세요." type="password" class="field">
                 </span>
                 <span data-component="label.message" data-message="info" data-visible>
                     <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
@@ -146,17 +160,21 @@
                 </span>
             </label>
 
-            <label class="term" name="privacyTerm">
-                <input required type="checkbox" class="checkbox" name="checkbox">
+            <label class="term" name="termPrivacy">
+                <input required type="checkbox" class="checkbox" name="termPrivacy">
                 <span class="caption">[필수]<a href="#">개인정보 처리방침</a>에 동의합니다.</span>
             </label>
-            <label class="term" name="policyTerm">
-                <input required type="checkbox" class="checkbox" name="checkbox">
+            <label class="term" name="termLocation">
+                <input required type="checkbox" class="checkbox" name="termLocation">
+                <span class="caption">[필수]<a href="#">위치 정보 활용</a>에 동의합니다.</span>
+            </label>
+            <label class="term" name="termPolicy">
+                <input required type="checkbox" class="checkbox" name="termPolicy">
                 <span class="caption">[필수]<a href="#">서비스 이용 약관</a>에 동의합니다.</span>
             </label>
-            <label class="term">
-                <input type="checkbox" class="checkbox" name="checkbox">
-                <span class="caption">[선택]<a href="#">마케팅 활용 동의 및 알림 수신</a>에 동의합니다.</span>
+            <label class="term" name="termMarketing">
+                <input type="checkbox" class="checkbox" name="termMarketing">
+                <span class="caption">[선택]<a href="#">마케팅 활용 동의 및 광고성 알림 수신</a>에 동의합니다.</span>
             </label>
 
             <div class="button-container">
@@ -167,6 +185,98 @@
 
         <form novalidate class="form boss-form" data-type="boss" data-name="bossForm" enctype="multipart/form-data">
             <h2 class="title">사장님 가입</h2>
+
+            <label class="label">
+                <span class="caption">사장님 성함</span>
+                <span class="row">
+                    <input type="text" name="name" class="field" placeholder="사장님 성함을 입력해 주세요." required>
+                </span>
+                <span data-component="label.message" data-message="info" data-visible>
+                    <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
+                    사장님 성함을 입력해 주세요.</span>
+                <span data-component="label.message" data-message="warning">
+                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
+                    <span class="text">사장님 성함을 입력해 주세요.</span>
+                </span>
+            </label>
+
+            <label class="label">
+                <span class="caption">사장님 휴대폰 번호</span>
+                <span class="row">
+                    <select name="telecom" class="field">
+                        <option value="SKT">SKT</option>
+                        <option value="KT">KT</option>
+                        <option value="LG">LG U+</option>
+                        <option value="SKM">SKT 알뜰폰</option>
+                        <option value="KTM">KT 알뜰폰</option>
+                        <option value="LGM">LG 알뜰폰</option>
+                    </select>
+                    <input type="tel" name="contact" class="field" placeholder="'-' 없이 입력해 주세요." required>
+                 </span>
+                <span data-component="label.message" data-message="warning">
+                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
+                    <span class="text">전화번호를 입력해 주세요.</span>
+                </span>
+            </label>
+            <label class="label" data-name="registerEmail">
+                <input hidden name="emailSalt" type="hidden">
+                <span class="caption">사장님 이메일</span>
+                <span class="row">
+                    <input type="email" name="email" class="field" minlength="6" maxlength="50" placeholder="이메일 주소를 입력해 주세요." required>
+                    <button type="button" class="button" name="emailCodeSendButton">인증번호 전송</button>
+                </span>
+                <span data-component="label.message" data-message="info" data-visible>
+                    <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
+                    6자 이상 50자 이하의 유효한 형식의 이메일을 입력해 주세요.</span>
+                <span data-component="label.message" data-message="warning">
+                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
+                    <span class="text">이메일을 입력해 주세요.</span>
+                </span>
+            </label>
+            <label class="label">
+                <span class="caption">이메일 인증 번호</span>
+                <span class="row">
+                    <input type="text" name="emailCode" class="field" minlength="6" maxlength="50" placeholder="인증번호를 입력해 주세요." required>
+                    <button type="button" class="button" name="emailCodeVerifyButton">인증번호 확인</button>
+                </span>
+                <span data-component="label.message" data-message="warning">
+                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
+                    <span class="text">올바른 인증번호를 입력해 주세요.</span>
+                </span>
+            </label>
+
+            <label class="label" data-name="registerPassword">
+                <span class="caption">비밀번호</span>
+                <span class="row">
+                    <input type="password" name="password" class="field" placeholder="비밀번호를 입력해 주세요." required>
+                    <input type="password" name="passwordCheck" class="field" placeholder="비밀번호를 한 번 더 입력해 주세요." required>
+                </span>
+                <span data-component="label.message" data-message="warning">
+                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
+                    <span class="text">비밀번호를 입력해 주세요.</span>
+                </span>
+            </label>
+
+            <label class="label">
+                <span class="caption">생년월일</span>
+                <span class="row">
+                    <select name="birthYear" class="field" required>
+                        <option value="" disabled selected>연도</option>
+                    </select>
+
+                    <select name="birthMonth" class="field" required>
+                        <option value="" disabled selected>월</option>
+                    </select>
+
+                    <select name="birthDay" class="field" required>
+                        <option value="" disabled selected>일</option>
+                    </select>
+                    </span>
+                <span data-component="label.message" data-message="warning">
+                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
+                    <span class="text">생년월일을 입력해 주세요.</span>
+                </span>
+            </label>
 
             <label class="label">
                 <span class="caption">가게 이름</span>
@@ -195,64 +305,6 @@
             </label>
 
             <label class="label">
-                <span class="caption">사장님 성함</span>
-                <span class="row">
-                    <input type="text" name="bossName" class="field" placeholder="사장님 성함을 입력해 주세요." required>
-                </span>
-                <span data-component="label.message" data-message="info" data-visible>
-                    <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
-                    사장님 성함을 입력해 주세요.</span>
-                <span data-component="label.message" data-message="warning">
-                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    <span class="text">사장님 성함을 입력해 주세요.</span>
-                </span>
-            </label>
-
-            <label class="label">
-                <span class="caption">대표자 휴대폰 번호</span>
-                <span class="row">
-                    <select name="telecom" class="field">
-                        <option value="SKT">SKT</option>
-                        <option value="KT">KT</option>
-                        <option value="LG">LG U+</option>
-                        <option value="ETC">알뜰폰</option>
-                    </select>
-                    <input type="tel" name="contact" class="field" placeholder="'-' 없이 입력해 주세요." required>
-                 </span>
-                <span data-component="label.message" data-message="warning">
-                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    <span class="text">전화번호를 입력해 주세요.</span>
-                </span>
-            </label>
-
-            <label class="label">
-                <span class="caption">사장님 이메일</span>
-                <span class="row">
-                    <input type="email" name="email" class="field" minlength="6" maxlength="50" placeholder="이메일 주소를 입력해 주세요." required>
-                    <button type="button">인증번호 전송</button>
-                </span>
-                <span data-component="label.message" data-message="info" data-visible>
-                    <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
-                    6자 이상 50자 이하의 유효한 형식의 이메일을 입력해 주세요.</span>
-                <span data-component="label.message" data-message="warning">
-                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    <span class="text">이메일을 입력해 주세요.</span>
-                </span>
-            </label>
-
-            <label class="label" data-name="registerPassword">
-                <span class="caption">비밀번호</span>
-                <span class="row">
-                    <input type="password" name="password" class="field" placeholder="비밀번호를 입력해 주세요." required>
-                    <input type="password" name="passwordCheck" class="field" placeholder="비밀번호를 한 번 더 입력해 주세요." required>
-                </span>
-                <span data-component="label.message" data-message="warning">
-                    <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    <span class="text">비밀번호를 입력해 주세요.</span>
-                </span>
-            </label>
-
-            <label class="label">
                 <span class="caption">업종</span>
                 <span class="row">
                     <input type="text" name="businessType" class="field" placeholder="예: 음식점, 카페 등" required>
@@ -266,12 +318,12 @@
             <label class="label">
                 <span class="caption">가게 주소</span>
                 <span class="row">
-                    <input type="text" name="address" class="field" placeholder="주소 찾기를 이용해 주세요." readonly required>
+                    <input type="text" name="addressPrimary" class="field" placeholder="주소 찾기를 이용해 주세요." readonly required>
                     <button name="addressButton" type="button">주소 찾기</button>
                 </span>
-<!--                <span class="row">-->
-<!--                    <input type="text" name="addressDetail" class="field" placeholder="상세 주소를 입력해 주세요.">-->
-<!--                </span>-->
+                <!--                <span class="row">-->
+                <!--                    <input type="text" name="addressDetail" class="field" placeholder="상세 주소를 입력해 주세요.">-->
+                <!--                </span>-->
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
                     <span class="text">가게 주소를 입력해 주세요.</span>
@@ -312,7 +364,7 @@
             <label class="label">
                 <span class="caption">영업 신고증 사본</span>
                 <span class="row">
-                    <input required type="file" name="businessLicense" class="field" accept="image/*, .pdf">
+                    <input required type="file" name="reportCardUrl" class="field" accept="image/*, .pdf">
                 </span>
                 <span data-component="label.message" data-message="info" data-visible>
                     <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
@@ -322,21 +374,33 @@
                     <span class="text">이미지 파일 또는 PDF를 업로드 해주세요.</span>
                 </span>
             </label>
-            <label class="term" name="privacyTerm">
-                <input required type="checkbox" class="checkbox" name="checkbox">
+            <label class="term" name="termPrivacy">
+                <input required type="checkbox" class="checkbox" name="termPrivacy">
                 <span class="caption">[필수]<a href="#">개인정보 처리방침</a>에 동의합니다.</span>
             </label>
-            <label class="term" name="policyTerm">
-                <input required type="checkbox" class="checkbox" name="checkbox">
+            <label class="term" name="termPolicy">
+                <input required type="checkbox" class="checkbox" name="termPolicy">
                 <span class="caption">[필수]<a href="#">서비스 이용 약관</a>에 동의합니다.</span>
             </label>
-            <label class="term" name="policyTerm">
-                <input required type="checkbox" class="checkbox" name="checkbox">
+            <label class="term" name="termThirdParty">
+                <input required type="checkbox" class="checkbox" name="termThirdParty">
                 <span class="caption">[필수]<a href="#">개인정보 제3자 제공 동의</a>에 동의합니다.</span>
             </label>
-            <label class="term" name="policyTerm">
-                <input required type="checkbox" class="checkbox" name="checkbox">
-                <span class="caption">[필수]<a href="#">고객확인의무(CDD) 이행 확인</a>에 동의합니다.</span>
+            <label class="term" name="termBusinessVerify">
+                <input required type="checkbox" class="checkbox" name="termBusinessVerify">
+                <span class="caption">[필수]<a href="#">사업자 정보 진위 확인</a>에 동의합니다.</span>
+            </label>
+            <label class="term" name="termStorePolicy">
+                <input required type="checkbox" class="checkbox" name="termStorePolicy">
+                <span class="caption">[필수]<a href="#">판매자 서비스 이용 약관</a>에 동의합니다.</span>
+            </label>
+            <label class="term" name="termDocSubmission">
+                <input required type="checkbox" class="checkbox" name="termDocSubmission">
+                <span class="caption">[필수]<a href="#">사업자 등록 정보 및 서류 제출 동의</a>에 동의합니다.</span>
+            </label>
+            <label class="term" name="termMarketing">
+                <input type="checkbox" class="checkbox" name="termMarketing">
+                <span class="caption">[선택]<a href="#">마케팅 및 광고성 알림 수신 동의</a>에 동의합니다.</span>
             </label>
 
             <div class="button-container">

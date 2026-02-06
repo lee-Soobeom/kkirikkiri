@@ -17,6 +17,7 @@ public class UserEntity {
     private String nickname;
     private String name;
     private LocalDate birth;
+    private String telecom;
     private String contact;
     private String addressPrimary;
     private String addressSecondary;
@@ -25,10 +26,14 @@ public class UserEntity {
     private String storeEmail;
     private int myPoint;
     private String role;
-    private String status;
+    private String status = "GENERAL";
     private int reviewTotal;
     private int reviewCount;
     private double reviewAvg;
+    private LocalDateTime termPolicyAt;
+    private LocalDateTime termPrivacyAt;
+    private LocalDateTime termLocationAt;
+    private LocalDateTime termMarketingAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String socialTypeCode;

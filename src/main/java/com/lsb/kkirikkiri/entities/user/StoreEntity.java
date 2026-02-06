@@ -21,6 +21,12 @@ public class StoreEntity {
     private String operatingHours;
     private String licenseUrl;
     private String reportCardUrl;
+    private LocalDateTime termPolicyAt;
+    private LocalDateTime termPrivacyAt;
+    private LocalDateTime termThirdParty;
+    private LocalDateTime termBusinessVerifyAt;
+    private LocalDateTime termDocSubmissionAt;
+    private LocalDateTime termMarketingAt;
     private String approvalStatus;
     private String rejectReason;
     private LocalDateTime appliedAt;

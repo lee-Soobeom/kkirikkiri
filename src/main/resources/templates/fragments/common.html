@@ -15,16 +15,16 @@
     </label>
     <a class="link" href="/">끼리끼리</a>
     <ol class="button-container">
-        <li class="button" th:if=" ${isSigned == true }">
+        <li class="button" th:if=" ${isSigned == false }">
             <a class="link" href="/user/register" target="_self">회원가입</a>
         </li>
-        <li class="button" th:if=" ${isSigned == true }">
+        <li class="button" th:if=" ${isSigned == false }">
             <a class="link" href="/user/login" target="_self">로그인</a>
         </li>
-        <li class="button" th:if=" ${isSigned == false }">
+        <li class="button" th:if=" ${isSigned == true }">
             <a class="link" href="/user/logout" target="_self">로그아웃</a>
         </li>
-        <li class="bell" th:if=" ${isSigned == false }">
+        <li class="bell" th:if=" ${isSigned == true }">
             <label class="label">
                 <input hidden class="input" name="bell" type="checkbox">
                 <img class="image" src="/assets/images/my/my.message.box.png" alt="">

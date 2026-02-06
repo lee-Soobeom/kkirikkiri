@@ -9,4 +9,6 @@ public interface UserMapper {
     int insert(@Param(value = "user") UserEntity user);
 
     UserEntity selectByEmail(@Param(value = "email") String email);
+
+    UserEntity selectByNickname(@Param(value = "nickname") String nickname);
 }
