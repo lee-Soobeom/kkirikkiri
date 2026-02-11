@@ -276,72 +276,76 @@ function checkedMessage(id) {
     xhr.send(formData);
 }
 
+function getMessages() {
+    return setInterval(() => {
+        $messageList.querySelectorAll(':scope > .item').forEach($li => $li.remove());
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
+                return;
+            }
+            if (xhr.status < 200 || xhr.status >= 400) {
+                console.log(`error: ${xhr.status}`);
+                return;
+            }
+            const response = JSON.parse(xhr.responseText);
+            for (const message of response.messages) {
+                // message === messageVo
+                console.log(message);
+                const $li = document.createElement('li');
+                $li.classList.add('item');
+                $li.dataset['usage'] = "confirm";
+                $li.dataset['articleId'] = message['articleId'];
+                const $titleContainer = document.createElement('div');
+                $titleContainer.classList.add('title-container');
+                const $sender = document.createElement('div');
+                $sender.classList.add('sender');
+                $sender.innerText = message['senderNickname'];
+                const $createdAt = document.createElement('div');
+                $createdAt.classList.add('created-at');
+                $createdAt.innerText = message['timestamp'].split('T').join(' ');
+                const $content = document.createElement('div');
+                $content.classList.add('content');
+                $content.innerText = message['content'];
+                $titleContainer.append($sender, $createdAt);
+                $li.append($titleContainer, $content);
+                $messageList.append($li);
+                $li.addEventListener('click', () => {
+                    checkedMessage(message['id']);
+                    switch ($li.dataset['usage']) {
+                        case 'confirm':
+                            dialogHandler.simpleYesNoModal('알림', `${message['content']}`, [{
+                                caption: '거절',
+                                onclick: () => denyMessage(message)
+                            }, {
+                                caption: '수락',
+                                onclick: () => confirmMessage(message)
+                            }]);
+                            break;
+                        case 'accept':
+                            dialogHandler.simpleYesNoModal('알림', `${message['content']}\n해당 게시글로 이동하시겠습니까?`, [{
+                                caption: "취소",
+                            }, {
+                                caption: "확인",
+                                onclick: () => location.href = `/article/share?=${message['articleId']}`
+                            }]);
+                            break;
+                        case 'deny':
+                            dialogHandler.simpleYesModal('알림', `${message['content']}`);
+                            break;
+                        default:
+
+                    }
+                });
+            }
+        };
+        xhr.open('GET', '/message/');
+        xhr.send();
+    }, 10000);
+}
+
 geoHandler.getGeoLocation();
 
-const messageId = setInterval(() => {
-    $messageList.querySelectorAll(':scope > .item').forEach($li => $li.remove());
-    const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState !== XMLHttpRequest.DONE) {
-            return;
-        }
-        if (xhr.status < 200 || xhr.status >= 400) {
-            console.log(`error: ${xhr.status}`);
-            return;
-        }
-        const response = JSON.parse(xhr.responseText);
-        for (const message of response.messages) {
-            // message === messageVo
-            console.log(message);
-            const $li = document.createElement('li');
-            $li.classList.add('item');
-            $li.dataset['usage'] = "confirm";
-            $li.dataset['articleId'] = message['articleId'];
-            const $titleContainer = document.createElement('div');
-            $titleContainer.classList.add('title-container');
-            const $sender = document.createElement('div');
-            $sender.classList.add('sender');
-            $sender.innerText = message['senderNickname'];
-            const $createdAt = document.createElement('div');
-            $createdAt.classList.add('created-at');
-            $createdAt.innerText = message['timestamp'].split('T').join(' ');
-            const $content = document.createElement('div');
-            $content.classList.add('content');
-            $content.innerText = message['content'];
-            $titleContainer.append($sender, $createdAt);
-            $li.append($titleContainer, $content);
-            $messageList.append($li);
-            $li.addEventListener('click', () => {
-                checkedMessage(message['id']);
-                switch ($li.dataset['usage']) {
-                    case 'confirm':
-                        dialogHandler.simpleYesNoModal('알림', `${message['content']}`, [{
-                            caption: '거절',
-                            onclick: () => denyMessage(message)
-                        }, {
-                            caption: '수락',
-                            onclick: () => confirmMessage(message)
-                        }]);
-                        break;
-                    case 'accept':
-                        dialogHandler.simpleYesNoModal('알림', `${message['content']}\n해당 게시글로 이동하시겠습니까?`, [{
-                            caption: "취소",
-                        }, {
-                            caption: "확인",
-                            onclick: () => location.href = `/article/share?=${message['articleId']}`
-                        }]);
-                        break;
-                    case 'deny':
-                        dialogHandler.simpleYesModal('알림', `${message['content']}`);
-                        break;
-                    default:
-
-                }
-            });
-        }
-    };
-    xhr.open('GET', '/message/');
-    xhr.send();
-}, 10000);
-clearInterval(messageId);
-// setTimeout(() => clearInterval(messageId), 15000);
+const messageId = $topNav.querySelector(':scope > .button-container > .bell') === null ? '' : getMessages();
+// clearInterval(messageId);
+setTimeout(() => clearInterval(messageId), 15000);

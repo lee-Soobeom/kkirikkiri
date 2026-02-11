@@ -42,26 +42,31 @@ VALUES ('chicken', '치킨'),
 
 ```
 
-## articles
+## articles (02.11)
 ```mariadb
 CREATE TABLE `kkirikkiri`.`articles`
 (
     `id`                INT UNSIGNED   NOT NULL AUTO_INCREMENT,
     `board_id`          VARCHAR(10)    NOT NULL,
+    `user_id`           VARCHAR(50)    NOT NULL,
+    `participants_id`   INT UNSIGNED   NULL DEFAULT NULL,
+    `wallet_id`         INT UNSIGNED   NULL DEFAULT NULL,
     `title`             VARCHAR(100)   NOT NULL,
-    `menu`              VARCHAR(20)    NOT NULL,
-    `menu_name`         VARCHAR(50)    NOT NULL,
-    `min_order_price`   INT UNSIGNED   NOT NULL,
-    `order_price`       INT UNSIGNED   NOT NULL,
-    `delivery_price`    INT UNSIGNED   NOT NULL,
-    `order_time`        DATETIME       NOT NULL,
-    `restaurant`        VARCHAR(50)    NOT NULL,
-    `pickup_time`       DATETIME       NOT NULL,
-    `address_postal`    VARCHAR(5)     NULL     DEFAULT NULL,
+    `menu`              VARCHAR(20)    NULL,
+    `menu_name`         VARCHAR(50)    NULL,
+    `min_order_price`   INT UNSIGNED   NULL,
+    `order_price`       INT UNSIGNED   NULL,
+    `delivery_price`    INT UNSIGNED   NULL,
+    `order_time`        DATETIME       NULL,
+    `pickup_time`       DATETIME       NULL,
+    `restaurant`        VARCHAR(50)    NULL,
+    `restaurant_lat`    VARCHAR(20)    NULL,
+    `restaurant_lng`    VARCHAR(20)    NULL,
     `address_primary`   VARCHAR(100)   NULL     DEFAULT NULL,
-    `address_secondary` VARCHAR(100)   NOT NULL,
+    `address_secondary` VARCHAR(100)   NULL     DEFAULT NULL,
     `content`           VARCHAR(10000) NULL     DEFAULT NULL,
-    `nickname`          VARCHAR(30)    NOT NULL,
+    `isShareChecked`    BOOLEAN        NOT NULL,
+    `isEntryChecked`    BOOLEAN        NOT NULL,
     `created_at`        DATETIME       NOT NULL DEFAULT NOW(),
     `updated_at`        DATETIME       Null     DEFAULT Null,
     `view`              INT UNSIGNED   NOT NULL DEFAULT 0,
@@ -69,9 +74,78 @@ CREATE TABLE `kkirikkiri`.`articles`
     CONSTRAINT FOREIGN KEY (`board_id`) REFERENCES `kkirikkiri`.`boards` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `kkirikkiri`.`users` (`email`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT FOREIGN KEY (`menu`) REFERENCES `kkirikkiri`.`menus` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
+);
+```
+
+## participants (02.11)
+```mariadb
+CREATE TABLE `kkirikkiri`.`participants`
+(
+    `id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `article_id`   INT UNSIGNED NOT NULL,
+    `leader`       VARCHAR(20)  NOT NULL,
+    `participants` VARCHAR(210) NULL     DEFAULT NULL,
+    `count`        INT UNSIGNED NOT NULL DEFAULT 1,
+    CONSTRAINT PRIMARY KEY (`id`),
+    CONSTRAINT FOREIGN KEY (`article_id`) REFERENCES `kkirikkiri`.`articles` (`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT FOREIGN KEY (`leader`) REFERENCES `kkirikkiri`.`users` (`email`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+```
+
+## files (02.11)
+````mariadb
+CREATE TABLE `kkirikkiri`.`files`
+(
+    `id`                INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_id`           VARCHAR(20)  NOT NULL,
+    `article_id`        INT UNSIGNED NOT NULL,
+    `original_filename` VARCHAR(50)  NOT NULL,
+    `saved_name`        VARCHAR(50)  NOT NULL,
+    `saved_filename`    VARCHAR(100) NOT NULL,
+    `size`              INT UNSIGNED NOT NULL,
+    CONSTRAINT PRIMARY KEY (`id`),
+    CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `kkirikkiri`.`users` (`email`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (`article_id`) REFERENCES `kkirikkiri`.`articles` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+
+);
+````
+
+## messages (02.11)
+```mariadb
+CREATE TABLE `kkirikkiri`.`messages`
+(
+    `id`        INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `sender`    VARCHAR(20)  NOT NULL,
+    `receiver`  VARCHAR(20)  NOT NULL,
+    `content`   VARCHAR(300) NOT NULL,
+    `timestamp` DATETIME     NOT NULL DEFAULT NOW(),
+    `isChecked` BOOLEAN      NOT NULL DEFAULT FALSE,
+    `article_id` INT UNSIGNED NULL,
+    `usage`     VARCHAR(10)  NULL,
+    CONSTRAINT PRIMARY KEY (`id`),
+    FOREIGN KEY (`sender`) REFERENCES `kkirikkiri`.`users` (`email`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (`receiver`) REFERENCES `kkirikkiri`.`users` (`email`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (`article_id`) REFERENCES `kkirikkiri`.`articles` (`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 ```
 
