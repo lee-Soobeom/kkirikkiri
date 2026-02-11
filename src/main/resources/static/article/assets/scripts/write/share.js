@@ -14,7 +14,6 @@ const $searchList = $searchForm.querySelector(':scope > .list');
 const $radioPrimary = $writeForm.querySelector(':scope > .address-container > .row > .radio.primary');
 /** @type {HTMLInputElement} */
 const $radioSecondary = $writeForm.querySelector(':scope > .address-container > .row > .radio.secondary');
-const $fileList = $writeForm.querySelectorAll(':scope > .image-upload-container > .list > .item');
 const ps = new kakao.maps.services.Places();
 const markerImage = new kakao.maps.MarkerImage(
     '/article/assets/images/write/search-modal/marker.png',
@@ -142,45 +141,6 @@ $radioSecondary.addEventListener('change', () => {
     $writeForm['placeButton'].disabled = false;
 });
 
-$writeForm['files'].addEventListener('change', () => {
-    if ($writeForm['files'].files.length !== 0) {
-        for (let $li of $fileList) {
-            $li.innerText = "이미지를 업로드 해주세요.";
-        }
-    }
-    const MAX_FILE_SIZE = 5 * 1024 * 1024;
-    const filesArray = $writeForm['files'].files;
-    if (filesArray.length > 10) {
-        alert("사진 업로드는 최대 10장까지만 가능합니다.");
-        return;
-    }
-    for (const file of filesArray) {
-        if (!file.type.startsWith('image/')) {
-            alert("사진만 업로드 가능합니다.");
-            return;
-        }
-        if (file.size > MAX_FILE_SIZE) {
-            alert("5MB 이하 크기의 사진만 업로드 가능합니다.");
-            return;
-        }
-    }
-    if (filesArray.length === 0) {
-        return;
-    }
-    for (let i = 0; i < filesArray.length; i++) {
-        const reader = new FileReader();
-        reader.onload = () => {
-            $fileList[i].innerHTML = `
-                <img class="image" alt="" src="${reader.result}">
-            `;
-        }
-        reader.onerror = () => {
-            alert('파일을 가져오는데 실패했습니다.');
-        }
-        reader.readAsDataURL(filesArray[i]);
-    }
-    $writeForm.querySelector(':scope > .image-upload-container > .caption > .count').innerText = filesArray.length;
-});
 
 $writeForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -352,11 +312,6 @@ $writeForm.addEventListener('submit', (e) => {
     formData.append('shareCheck', $writeForm['shareCheck'].value);
     formData.append('entryCheck', $writeForm['entryCheck'].checked);
     // todo: xhr formData 까지만 함. userId 완성되면 추가해서 DB 시작하기.
-    const files = $writeForm['files'].files;
-    for (let i = 0; i < files.length; i++) {
-        formData.append('files', files[i]);
-    }
-
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;

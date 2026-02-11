@@ -84,44 +84,47 @@
         </div>
         <div class="context-container">
             <div class="content-container">
-                <div class="menu-container">
-                    <div class="box">
-                        <div class="title">메뉴</div>
-                        <div class="caption" th:text="${article.menuName}"></div>
+                <div class="order-card">
+                    <div class="menu-container">
+                        <div class="box">
+                            <div class="title">메뉴</div>
+                            <div class="caption" th:text="${article.menuName}"></div>
+                        </div>
+                        <div class="box">
+                            <div class="title">금액</div>
+                            <div class="caption" th:text="${article.orderPrice}"></div>
+                        </div>
+                        <div class="box">
+                            <div class="title">최소주문금액</div>
+                            <div class="caption" th:text="${article.minOrderPrice}"></div>
+                        </div>
+                        <div class="box">
+                            <div class="title">배달비</div>
+                            <div class="caption" th:text="${article.deliveryPrice}"></div>
+                        </div>
                     </div>
-                    <div class="box">
-                        <div class="title">금액</div>
-                        <div class="caption" th:text="${article.orderPrice}"></div>
+                    <div class="order-container">
+                        <div class="box">
+                            <div class="title">주문 시간</div>
+                            <div class="caption" th:text="${#temporals.format(article.getOrderTime(), 'yyyy-MM-dd HH:mm')}"></div>
+                        </div>
+                        <div class="box restaurant">
+                            <div class="title">주문 가게</div>
+                            <div class="caption" th:text="${article.restaurant}"></div>
+                        </div>
+                        <div class="box">
+                            <div class="title">모임 시간</div>
+                            <div class="caption" th:text="${#temporals.format(article.getPickupTime(), 'yyyy-MM-dd HH:mm')}"></div>
+                        </div>
+                        <div class="box location">
+                            <div class="title">모임 장소</div>
+                            <div class="caption" th:text="${article.addressSecondary}"></div>
+                        </div>
                     </div>
-                    <div class="box">
-                        <div class="title">최소주문금액</div>
-                        <div class="caption" th:text="${article.minOrderPrice}"></div>
-                    </div>
-                    <div class="box">
-                        <div class="title">배달비</div>
-                        <div class="caption" th:text="${article.deliveryPrice}"></div>
-                    </div>
+                    <div class="text" th:text="${article.content}"></div>
                 </div>
-                <div class="order-container">
-                    <div class="box">
-                        <div class="title">주문 시간</div>
-                        <div class="caption" th:text="${#temporals.format(article.getOrderTime(), 'yyyy-MM-dd HH:mm')}"></div>
-                    </div>
-                    <div class="box restaurant">
-                        <div class="title">주문 가게</div>
-                        <div class="caption" th:text="${article.restaurant}"></div>
-                    </div>
-                    <div class="box">
-                        <div class="title">모임 시간</div>
-                        <div class="caption" th:text="${#temporals.format(article.getPickupTime(), 'yyyy-MM-dd HH:mm')}"></div>
-                    </div>
-                    <div class="box location">
-                        <div class="title">모임 장소</div>
-                        <div class="caption" th:text="${article.addressSecondary}"></div>
-                    </div>
                 </div>
-                <div class="text" th:text="${article.content}"></div>
-            </div>
+
             <div class="view-container">
                 <div class="fund-container">
                     <div class="box fund">
@@ -164,10 +167,10 @@
                     <span class="hidden lat"></span>
                     <span class="hidden lng"></span>
                 </div>
-                <div class="memo-card">
-                    <div class="caption">메모</div>
-                    <div class="text" th:text="${article.content}"></div>
-                </div>
+            </div>
+            <div class="memo-card">
+                <div class="caption">메모</div>
+                <div class="text" th:text="${article.content}"></div>
             </div>
         </div>
     </div>

@@ -7,10 +7,32 @@ $global-background-color: #FAFBFF;
 $global-border-color: darken($global-background-color, 5%);
 $global-text-color: #212121;
 
+$mobile: 767px;
+$tablet: 1024px;
+$desktop:1280px;
+
 @mixin flex($flex-direction, $justify-contents, $align-items, $gap: 0) {
   align-items: $align-items;
   display: flex;
   flex-direction: $flex-direction;
   gap: $gap;
   justify-content: $justify-contents;
+}
+
+@mixin mobile {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $mobile + 1) and (max-width: $tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $tablet + 1) {
+    @content;
+  }
 }

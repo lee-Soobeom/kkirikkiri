@@ -10,11 +10,16 @@
     <link rel="stylesheet" href="/assets/styles/fragments.css" type="text/css">
     <link rel="stylesheet" href="/article/assets/styles/write.css" type="text/css">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=services"></script>
     <script defer src="/assets/scripts/common.js"></script>
     <script defer src="/article/assets/scripts/write/promote.js"></script>
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
+<th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
+
+
 <main id="main">
     <div class="error invalid-board" th:if="${board == null}">
         <h1 class="title">게시글 작성</h1>
@@ -51,55 +56,25 @@
                    data-object="input"
                    data-component="label.field">
         </label>
-        <div class="address-container">
-            <span class="caption">가게 주소</span>
-
-            <label class="row">
-                <span class="caption text">기본 주소</span>
-                <input readonly
-                       class="input"
-                       maxlength="100"
-                       minlength="5"
-                       name="addressPrimary"
-                       placeholder="주소찾기 버튼을 눌러주세요."
-                       type="text"
-                       data-object="input"
-                       data-component="label.field">
-                <button class="button"
-                        name="findButton"
-                        type="button"
-                        data-object="button"
-                        data-color="concept">
-                    주소찾기
-                </button>
-            </label>
-
-            <label class="row">
-                <span class="caption text">상세 주소</span>
-                <input required
-                       class="input"
-                       maxlength="100"
-                       minlength="1"
-                       name="addressSecondary"
-                       placeholder="상세 주소를 입력해 주세요."
-                       type="text"
-                       data-object="input"
-                       data-component="label.field">
-            </label>
-        </div>
+        <label class="row">
+            <span class="caption">가게위치</span>
+            <input readonly class="input" maxlength="100" minlength="1" name="restaurantAddress" type="text"
+                   placeholder="'가게찾기' 버튼을 클릭해 주세요." data-object="input" data-component="label.field">
+            <button class="button" name="restaurantButton" type="button" data-object="button" data-color="concept">가게찾기
+            </button>
+        </label>
         <div class="image-upload-container">
-            <span class="caption">이미지 추가</span>
-
+            <span class="caption">이미지 추가 (<span class="count">0</span>/10)</span>
             <label class="image-wrapper">
-                <input hidden
-                       multiple
-                       accept="image/*"
-                       name="files"
-                       type="file">
+                <input hidden multiple class="image-wrapper" accept="image/*" name="files" type="file">
                 <span class="caption">+</span>
             </label>
-
             <ol class="list">
+                <li class="item">이미지를 업로드 해주세요.</li>
+                <li class="item">이미지를 업로드 해주세요.</li>
+                <li class="item">이미지를 업로드 해주세요.</li>
+                <li class="item">이미지를 업로드 해주세요.</li>
+                <li class="item">이미지를 업로드 해주세요.</li>
                 <li class="item">이미지를 업로드 해주세요.</li>
                 <li class="item">이미지를 업로드 해주세요.</li>
                 <li class="item">이미지를 업로드 해주세요.</li>
@@ -123,6 +98,37 @@
             <button name="submit" type="submit" data-object="button" data-color="concept">작성하기</button>
         </div>
     </form>
+    <div id="searchModal">
+        <form class="modal" name="searchForm">
+            <label class="label">
+                <input class="search" maxlength="20" minlength="1" name="search" type="text"
+                       placeholder="'위치 설정' 후 검색하세요.">
+                <span class="image-wrapper">
+                <img class="image" src="/assets/images/main/main.menu.search.png" alt="">
+            </span>
+            </label>
+            <div class="button-container">
+                <span class="caption">현위치:<span class="address">현 위치의 주소를 불러오는 중입니다.</span></span>
+                <button class="button" name="current" type="button">
+                    <img class="image" src="/article/assets/images/write/search-modal/current.png" alt="">
+                </button>
+                <button class="button" name="select" type="button">
+                    <img class="image" src="/article/assets/images/write/search-modal/select.png" alt="">
+                </button>
+            </div>
+            <div id="geoMap">
+                <button class="close" name="close" type="button">
+                    <img class="image" src="/article/assets/images/write/search-modal/close.png" alt="">
+                </button>
+            </div>
+            <ol class="list">
+                <li class="empty">
+                    검색결과가 없습니다.
+                </li>
+            </ol>
+        </form>
+    </div>
+
 </main>
 </body>
 </html>

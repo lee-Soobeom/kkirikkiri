@@ -3,6 +3,7 @@ package com.lsb.kkirikkiri.controllers;
 import com.lsb.kkirikkiri.entities.ArticleEntity;
 import com.lsb.kkirikkiri.entities.BoardEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
+import com.lsb.kkirikkiri.enums.BoardId;
 import com.lsb.kkirikkiri.results.CommonResult;
 import com.lsb.kkirikkiri.services.ArticleService;
 import com.lsb.kkirikkiri.services.BoardService;
@@ -42,12 +43,8 @@ public class ArticleController {
         modelAndView.addObject("board", board);
         modelAndView.addObject("sessionUser", sessionUser);
         modelAndView.addObject("redirect", "/article/" + boardType + "/write");
-
-        switch (boardType) {
-            case "share" -> modelAndView.setViewName("article/share/write");
-            case "promote" -> modelAndView.setViewName("article/promote/write");
-            case "notice" -> modelAndView.setViewName("article/notice/write");
-        }
+        modelAndView.addObject("article", new ArticleEntity());
+        modelAndView.setViewName(BoardId.from(boardType).writeView);
 
         return modelAndView;
     }
@@ -59,11 +56,7 @@ public class ArticleController {
                                         @RequestParam int id,
                                         ModelAndView modelAndView) {
         modelAndView.addObject("article", this.articleService.getArticleById(id));
-        switch (boardType) {
-            case "share" -> modelAndView.setViewName("article/share/article");
-            case "promote" -> modelAndView.setViewName("article/promote/article");
-            case "notice" -> modelAndView.setViewName("article/notice/article");
-        }
+        modelAndView.setViewName(BoardId.from(boardType).articleView);
         return modelAndView;
     }
 

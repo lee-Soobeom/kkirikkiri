@@ -163,7 +163,7 @@
     > .content-container {
       display: block;
 
-      .order-card {
+      > .order-card {
         display: grid;
         grid-template-rows: auto auto auto;
         background-color: #ffffff;
@@ -186,7 +186,7 @@
           padding: 1rem;
         }
 
-        .box {
+        > .box {
           > .title {
             font-size: 0.875rem;
             color: #6b7280;
