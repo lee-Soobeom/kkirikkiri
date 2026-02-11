@@ -11,7 +11,6 @@ import com.lsb.kkirikkiri.services.BoardService;
 import com.lsb.kkirikkiri.vos.ArticleVo;
 import com.lsb.kkirikkiri.vos.BoardPageVo;
 import com.lsb.kkirikkiri.vos.BoardSearchVo;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +18,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Objects;
-
 @Controller
 @RequestMapping(value = "/board")
 @RequiredArgsConstructor
 public class BoardController {
     private final ServiceService serviceService;
-
     private final ArticleService articleService;
     private final BoardService boardService;
 

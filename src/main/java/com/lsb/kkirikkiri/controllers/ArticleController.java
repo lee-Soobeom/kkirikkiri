@@ -82,25 +82,19 @@ public class ArticleController {
             @SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser
     ) {
         Map<String, Object> response = new HashMap<>();
-
-        // 로그인 안 한 경우
-        if (sessionUser == null) {
-            response.put("result", CommonResult.FAILURE.name());
-            return response;
-        }
-
         // 게시판 설정
         articleEntity.setBoardId(boardType);
-        articleEntity.setNickname(sessionUser.getNickname());
+//        articleEntity.setNickname(sessionUser.getNickname());
 
-        Pair<CommonResult, ArticleEntity> result =
-                this.articleService.write(files, articleEntity);
-
-        response.put("result", result.getLeft().name());
-        if (result.getLeft() == CommonResult.SUCCESS) {
-            response.put("id", result.getRight().getId());
+        Pair<Map<String, Object>, ArticleEntity> result =
+                this.articleService.write(sessionUser, articleEntity, files);
+        System.out.println(articleEntity);
+        response.put("id", result.getRight().getId());
+        response.put("articleResult", result.getLeft().get("articleResult"));
+        response.put("fileResult", result.getLeft().get("fileResult"));
+        if (result.getLeft().get("fileResult") == CommonResult.SUCCESS) {
+            response.put("fileResultList", result.getLeft().get("fileResultList"));
         }
-
         return response;
     }
 }

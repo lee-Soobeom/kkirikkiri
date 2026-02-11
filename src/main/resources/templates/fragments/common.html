@@ -31,41 +31,7 @@
             </label>
             <ol class="message-list">
                 <li class="title">최근 알림</li>
-                <li class="item">
-                    <div class="title-container">
-                        <div class="sender">${message.sender}</div>
-                        <div class="created-at">2026-02-05 10:36</div>
-                    </div>
-                    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
-                </li>
-                <li class="item">
-                    <div class="title-container">
-                        <div class="sender">${message.sender}</div>
-                        <div class="created-at">2026-02-05 10:36</div>
-                    </div>
-                    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
-                </li>
-                <li class="item">
-                    <div class="title-container">
-                        <div class="sender">${message.sender}</div>
-                        <div class="created-at">2026-02-05 10:36</div>
-                    </div>
-                    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
-                </li>
-                <li class="item">
-                    <div class="title-container">
-                        <div class="sender">${message.sender}</div>
-                        <div class="created-at">2026-02-05 10:36</div>
-                    </div>
-                    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
-                </li>
-                <li class="item">
-                    <div class="title-container">
-                        <div class="sender">${message.sender}</div>
-                        <div class="created-at">2026-02-05 10:36</div>
-                    </div>
-                    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
-                </li>
+
             </ol>
         </li>
     </ol>
@@ -78,9 +44,10 @@
                 <img src="/assets/images/my/my.user.png" alt="user">
             </div>
             <div class="info">
-                <div class="nickname">게스트</div>
+                <div class="nickname" th:text="${user == null ? '게스트' : user.getNickname()}">게스트</div>
                 <div class="address">현재 위치정보를 알 수 없습니다.</div>
-                <div class="rank">비회원</div>
+                <div class="rank" th:if="${user == null}">비회원</div>
+                <div class="rank" th:if="${user != null}">회원</div>
             </div>
             <a class="link"
                th:href="@{${session.sessionUser != null ? '/user/my' : '/user/login'}}"
@@ -113,11 +80,10 @@
         <a class="link" href="/board/service" target="_self">고객센터</a>
     </div>
 </div>
-
 <div id="dialog" th:fragment="dialog">
     <!--    <div class="modal">-->
-    <!--        <div class="title">알림</div>-->
-    <!--        <div class="content">글쓰기는 로그인 후 사용할 수 있습니다.</div>-->
+    <!--        <div class="title"></div>-->
+    <!--        <div class="content"></div>-->
     <!--        <div class="button-container">-->
     <!--            <button class="button cancel" type="button">취소</button>-->
     <!--            <button class="button confirm" type="button">확인</button>-->

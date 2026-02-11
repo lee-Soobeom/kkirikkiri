@@ -3,6 +3,9 @@
 <mapper namespace="com.lsb.kkirikkiri.mappers.ArticleMapper">
     <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO `kkirikkiri`.`articles` (`board_id`,
+                                             `user_id`,
+                                             `participants_id`,
+                                             `wallet_id`,
                                              `title`,
                                              `menu`,
                                              `menu_name`,
@@ -10,16 +13,22 @@
                                              `order_price`,
                                              `delivery_price`,
                                              `order_time`,
-                                             `restaurant`,
                                              `pickup_time`,
-                                             `address_postal`,
+                                             `restaurant`,
+                                             `restaurant_lat`,
+                                             `restaurant_lng`,
                                              `address_primary`,
                                              `address_secondary`,
                                              `content`,
-                                             `nickname`,
+                                             `isShareChecked`,
+                                             `isEntryChecked`,
                                              `created_at`,
-                                             `updated_at`)
+                                             `updated_at`,
+                                             `view`)
         VALUES (#{boardId},
+                #{userId},
+                #{participantsId},
+                #{walletId},
                 #{title},
                 #{menu},
                 #{menuName},
@@ -27,35 +36,42 @@
                 #{orderPrice},
                 #{deliveryPrice},
                 #{orderTime},
-                #{restaurant},
                 #{pickupTime},
-                #{addressPostal},
+                #{restaurant},
+                #{restaurantLat},
+                #{restaurantLng},
                 #{addressPrimary},
                 #{addressSecondary},
                 #{content},
-                #{nickname},
+                #{IsShareChecked},
+                #{IsEntryChecked},
                 #{createdAt},
-                #{updatedAt})
+                #{updatedAt},
+                #{view})
     </insert>
     <update id="update">
         UPDATE `kkirikkiri`.`articles`
         SET `board_id`          = #{boardId},
+            `user_id`           = #{userId},
+            `participants_id`   = #{participantsId},
+            `wallet_id`         = #{walletId},
             `title`             = #{title},
             `menu`              = #{menu},
+            `menu_name`         = #{menuName},
             `min_order_price`   = #{minOrderPrice},
             `order_price`       = #{orderPrice},
             `delivery_price`    = #{deliveryPrice},
             `order_time`        = #{orderTime},
-            `restaurant`        = #{restaurant},
             `pickup_time`       = #{pickupTime},
-            `address_postal`    = #{addressPostal},
+            `restaurant`        = #{restaurant},
             `address_primary`   = #{addressPrimary},
             `address_secondary` = #{addressSecondary},
             `content`           = #{content},
+            `isShareChecked`    = #{IsShareChecked},
+            `isEntryChecked`    = #{IsEntryChecked},
             `created_at`        = #{createdAt},
             `updated_at`        = #{updatedAt},
-            `view`              = #{view},
-            `menu_name`         = #{menuName}
+            `view`              = #{view}
         WHERE `id` = #{id}
         LIMIT 1
     </update>
@@ -66,9 +82,44 @@
         WHERE id = #{id}
     </update>
     <select id="selectById"
-            resultType="com.lsb.kkirikkiri.entities.ArticleEntity">
+            resultType="com.lsb.kkirikkiri.vos.ArticleVo">
+        SELECT `t1`.`id`                AS `id`,
+               `t1`.`board_id`          AS `boardId`,
+               `t1`.`user_id`           AS `userId`,
+               `t1`.`participants_id`   AS `participantsId`,
+               `t1`.`wallet_id`         AS `walletId`,
+               `t1`.`title`             AS `title`,
+               `t1`.`menu`              AS `menu`,
+               `t1`.`menu_name`         AS `menuName`,
+               `t1`.`min_order_price`   AS `minOrderPrice`,
+               `t1`.`order_price`       AS `orderPrice`,
+               `t1`.`delivery_price`    AS `deliveryPrice`,
+               `t1`.`order_time`        AS `orderTime`,
+               `t1`.`pickup_time`       AS `pickupTime`,
+               `t1`.`restaurant`        AS `restaurant`,
+               `t1`.`restaurant_lat`    AS `restaurantLat`,
+               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`address_primary`   AS `addressPrimary`,
+               `t1`.`address_secondary` AS `addressSecondary`,
+               `t1`.`content`           AS `content`,
+               `t1`.`isShareChecked`    AS `IsShareChecked`,
+               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`created_at`        AS `createdAt`,
+               `t1`.`updated_at`        AS `updatedAt`,
+               `t1`.`view`              AS `view`,
+               `t2`.`nickname`          AS `nickname`
+        FROM `kkirikkiri`.`articles` AS `t1`
+                 LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
+        WHERE `t1`.`id` = #{id}
+        LIMIT 1
+    </select>
+<!--    조회수 조회-->
+    <select id="selectAllByBoardId" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
         SELECT `id`                AS `id`,
                `board_id`          AS `boardId`,
+               `user_id`           AS `userId`,
+               `participants_id`   AS `participantsId`,
+               `wallet_id`         AS `walletId`,
                `title`             AS `title`,
                `menu`              AS `menu`,
                `menu_name`         AS `menuName`,
@@ -76,67 +127,50 @@
                `order_price`       AS `orderPrice`,
                `delivery_price`    AS `deliveryPrice`,
                `order_time`        AS `orderTime`,
-               `restaurant`        AS `restaurant`,
                `pickup_time`       AS `pickupTime`,
-               `address_postal`    AS `addressPostal`,
+               `restaurant`        AS `restaurant`,
+               `restaurant_lat`    AS `restaurantLat`,
+               `restaurant_lng`    AS `restaurantLng`,
                `address_primary`   AS `addressPrimary`,
                `address_secondary` AS `addressSecondary`,
                `content`           AS `content`,
+               `isShareChecked`    AS `IsShareChecked`,
+               `isEntryChecked`    AS `IsEntryChecked`,
                `created_at`        AS `createdAt`,
                `updated_at`        AS `updatedAt`,
                `view`              AS `view`
         FROM `kkirikkiri`.`articles`
-        WHERE id = #{id}
-        LIMIT 1
-    </select>
-<!--    조회수 조회-->
-    <select id="selectAllByBoardId" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
-        SELECT `t1`.`id` AS `id`,
-               `t1`.`board_id` AS `boardId`,
-               `t1`.`title` AS `title`,
-               `t1`.`menu` AS `menu`,
-               `t1`.`menu_name` AS `menuName`,
-               `t1`.`min_order_price` AS `minOrderPrice`,
-               `t1`.`order_price` AS `orderPrice`,
-               `t1`.`delivery_price` AS `deliveryPrice`,
-               `t1`.`order_time` AS `orderTime`,
-               `t1`.`restaurant` AS `restaurant`,
-               `t1`.`pickup_time` AS `pickupTime`,
-               `t1`.`address_postal` AS `addressPostal`,
-               `t1`.`address_primary` AS `addressPrimary`,
-               `t1`.`address_secondary` AS `addressSecondary`,
-               `t1`.`content` AS `content`,
-               `t1`.`nickname` AS `nickname`,
-               `t1`.`created_at` AS `createdAt`,
-               `t1`.`updated_at` AS `updatedAt`,
-               `t1`.`view` AS `view`
-        FROM `kkirikkiri`.`articles` AS `t1`
-        WHERE `t1`.`board_id` = #{boardId}
-        ORDER BY `t1`.`id` DESC
+        WHERE `board_id` = #{boardId}
+        ORDER BY `id` DESC
         LIMIT #{boardPage.rowCount}
         OFFSET #{boardPage.dbOffset}
     </select>
 <!--    검색 목록-->
     <select id="selectAllByBoardSearch" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
-        SELECT `t1`.`id` AS `id`,
-               `t1`.`board_id` AS `boardId`,
-               `t1`.`title` AS `title`,
-               `t1`.`menu` AS `menu`,
-               `t1`.`menu_name` AS `menuName`,
-               `t1`.`min_order_price` AS `minOrderPrice`,
-               `t1`.`order_price` AS `orderPrice`,
-               `t1`.`delivery_price` AS `deliveryPrice`,
-               `t1`.`order_time` AS `orderTime`,
-               `t1`.`restaurant` AS `restaurant`,
-               `t1`.`pickup_time` AS `pickupTime`,
-               `t1`.`address_postal` AS `addressPostal`,
-               `t1`.`address_primary` AS `addressPrimary`,
+        SELECT `t1`.`id`                AS `id`,
+               `t1`.`board_id`          AS `boardId`,
+               `t1`.`user_id`           AS `userId`,
+               `t1`.`participants_id`   AS `participantsId`,
+               `t1`.`wallet_id`         AS `walletId`,
+               `t1`.`title`             AS `title`,
+               `t1`.`menu`              AS `menu`,
+               `t1`.`menu_name`         AS `menuName`,
+               `t1`.`min_order_price`   AS `minOrderPrice`,
+               `t1`.`order_price`       AS `orderPrice`,
+               `t1`.`delivery_price`    AS `deliveryPrice`,
+               `t1`.`order_time`        AS `orderTime`,
+               `t1`.`pickup_time`       AS `pickupTime`,
+               `t1`.`restaurant`        AS `restaurant`,
+               `t1`.`restaurant_lat`    AS `restaurantLat`,
+               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
-               `t1`.`content` AS `content`,
-               `t1`.`nickname` AS `nickname`,
-               `t1`.`created_at` AS `createdAt`,
-               `t1`.`updated_at` AS `updatedAt`,
-               `t1`.`view` AS `view`
+               `t1`.`content`           AS `content`,
+               `t1`.`isShareChecked`    AS `IsShareChecked`,
+               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`created_at`        AS `createdAt`,
+               `t1`.`updated_at`        AS `updatedAt`,
+               `t1`.`view`              AS `view`
         FROM `kkirikkiri`.`articles` AS `t1`
         WHERE `t1`.`board_id` = #{boardSearch.id}
         <if test="boardSearch.by.equals('titleContent')">
@@ -183,26 +217,30 @@
     </select>
     <!-- 최신순 -->
     <select id="selectAllByBoardIdOrderByCreatedAt" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
-        SELECT
-            `t1`.`id` AS `id`,
-            `t1`.`board_id` AS `boardId`,
-            `t1`.`title` AS `title`,
-            `t1`.`menu` AS `menu`,
-            `t1`.`menu_name` AS `menuName`,
-            `t1`.`min_order_price` AS `minOrderPrice`,
-            `t1`.`order_price` AS `orderPrice`,
-            `t1`.`delivery_price` AS `deliveryPrice`,
-            `t1`.`order_time` AS `orderTime`,
-            `t1`.`restaurant` AS `restaurant`,
-            `t1`.`pickup_time` AS `pickupTime`,
-            `t1`.`address_postal` AS `addressPostal`,
-            `t1`.`address_primary` AS `addressPrimary`,
-            `t1`.`address_secondary` AS `addressSecondary`,
-            `t1`.`content` AS `content`,
-            `t1`.`nickname` AS `nickname`,
-            `t1`.`created_at` AS `createdAt`,
-            `t1`.`updated_at` AS `updatedAt`,
-            `t1`.`view` AS `view`
+        SELECT `t1`.`id`                AS `id`,
+               `t1`.`board_id`          AS `boardId`,
+               `t1`.`user_id`           AS `userId`,
+               `t1`.`participants_id`   AS `participantsId`,
+               `t1`.`wallet_id`         AS `walletId`,
+               `t1`.`title`             AS `title`,
+               `t1`.`menu`              AS `menu`,
+               `t1`.`menu_name`         AS `menuName`,
+               `t1`.`min_order_price`   AS `minOrderPrice`,
+               `t1`.`order_price`       AS `orderPrice`,
+               `t1`.`delivery_price`    AS `deliveryPrice`,
+               `t1`.`order_time`        AS `orderTime`,
+               `t1`.`pickup_time`       AS `pickupTime`,
+               `t1`.`restaurant`        AS `restaurant`,
+               `t1`.`restaurant_lat`    AS `restaurantLat`,
+               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`address_primary`   AS `addressPrimary`,
+               `t1`.`address_secondary` AS `addressSecondary`,
+               `t1`.`content`           AS `content`,
+               `t1`.`isShareChecked`    AS `IsShareChecked`,
+               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`created_at`        AS `createdAt`,
+               `t1`.`updated_at`        AS `updatedAt`,
+               `t1`.`view`              AS `view`
         FROM `kkirikkiri`.`articles` AS `t1`
         WHERE `board_id` = #{boardId}
         ORDER BY `created_at` DESC
@@ -210,26 +248,30 @@
     </select>
     <!-- 인기순 -->
     <select id="selectAllByBoardIdOrderByView" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
-        SELECT
-            `t1`.`id` AS `id`,
-            `t1`.`board_id` AS `boardId`,
-            `t1`.`title` AS `title`,
-            `t1`.`menu` AS `menu`,
-            `t1`.`menu_name` AS `menuName`,
-            `t1`.`min_order_price` AS `minOrderPrice`,
-            `t1`.`order_price` AS `orderPrice`,
-            `t1`.`delivery_price` AS `deliveryPrice`,
-            `t1`.`order_time` AS `orderTime`,
-            `t1`.`restaurant` AS `restaurant`,
-            `t1`.`pickup_time` AS `pickupTime`,
-            `t1`.`address_postal` AS `addressPostal`,
-            `t1`.`address_primary` AS `addressPrimary`,
-            `t1`.`address_secondary` AS `addressSecondary`,
-            `t1`.`content` AS `content`,
-            `t1`.`nickname` AS `nickname`,
-            `t1`.`created_at` AS `createdAt`,
-            `t1`.`updated_at` AS `updatedAt`,
-            `t1`.`view` AS `view`
+        SELECT `t1`.`id`                AS `id`,
+               `t1`.`board_id`          AS `boardId`,
+               `t1`.`user_id`           AS `userId`,
+               `t1`.`participants_id`   AS `participantsId`,
+               `t1`.`wallet_id`         AS `walletId`,
+               `t1`.`title`             AS `title`,
+               `t1`.`menu`              AS `menu`,
+               `t1`.`menu_name`         AS `menuName`,
+               `t1`.`min_order_price`   AS `minOrderPrice`,
+               `t1`.`order_price`       AS `orderPrice`,
+               `t1`.`delivery_price`    AS `deliveryPrice`,
+               `t1`.`order_time`        AS `orderTime`,
+               `t1`.`pickup_time`       AS `pickupTime`,
+               `t1`.`restaurant`        AS `restaurant`,
+               `t1`.`restaurant_lat`    AS `restaurantLat`,
+               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`address_primary`   AS `addressPrimary`,
+               `t1`.`address_secondary` AS `addressSecondary`,
+               `t1`.`content`           AS `content`,
+               `t1`.`isShareChecked`    AS `IsShareChecked`,
+               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`created_at`        AS `createdAt`,
+               `t1`.`updated_at`        AS `updatedAt`,
+               `t1`.`view`              AS `view`
         FROM `kkirikkiri`.`articles` AS `t1`
         WHERE `board_id` = #{boardId}
         ORDER BY `view` DESC

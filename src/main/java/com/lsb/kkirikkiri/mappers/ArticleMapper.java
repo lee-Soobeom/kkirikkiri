@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
 public interface ArticleMapper {
     int insert(ArticleEntity articleEntity);
 
-    ArticleEntity selectById(@Param(value = "id") int id);
+    ArticleVo selectById(@Param(value = "id") int id);
 
     int update(ArticleEntity articleEntity);
 

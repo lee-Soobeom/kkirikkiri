@@ -1,29 +1,83 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lsb.kkirikkiri.mappers.MessageMapper">
+    <insert id="insert">
+        INSERT INTO `kkirikkiri`.`messages` (`sender`,
+                                             `receiver`,
+                                             `content`,
+                                             `timestamp`,
+                                             `isChecked`,
+                                             `article_id`,
+                                             `usage`)
+        VALUES (#{message.sender},
+                #{message.receiver},
+                #{message.content},
+                #{message.timestamp},
+                #{message.isChecked},
+                #{message.articleId},
+                #{message.usage})
+    </insert>
+    <update id="modify">
+        UPDATE `kkirikkiri`.`messages`
+        SET `sender`     = #{message.sender},
+            `receiver`   = #{message.receiver},
+            `content`    = #{message.content},
+            `timestamp`  = #{message.timestamp},
+            `isChecked`  = #{message.IsChecked},
+            `article_id` = #{message.articleId},
+            `usage`      = #{message.usage}
+        WHERE `id` = #{message.id}
+    </update>
+
     <select id="selectAllByEmail"
-            resultType="com.lsb.kkirikkiri.entities.MessageEntity">
-        SELECT `id`        AS `id`,
-               `sender`    AS `sender`,
-               `receiver`  AS `receiver`,
-               `content`   AS `content`,
-               `timestamp` AS `timestamp`,
-               `isChecked` AS `IsChecked`
-        FROM `kkirikkiri`.`notification`
-        WHERE `receiver` = #{email}
-          AND `isChecked` = FALSE
+            resultType="com.lsb.kkirikkiri.vos.MessageVo">
+        SELECT `t1`.`id`         AS `id`,
+               `t1`.`sender`     AS `sender`,
+               `t1`.`receiver`   AS `receiver`,
+               `t1`.`content`    AS `content`,
+               `t1`.`timestamp`  AS `timestamp`,
+               `t1`.`isChecked`  AS `IsChecked`,
+               `t1`.`article_id` AS `articleId`,
+               `t1`.`usage`      AS `usage`,
+               `t2`.nickname     AS `senderNickname`,
+               `t3`.nickname     AS `receiverNickname`
+        FROM `kkirikkiri`.`messages` AS `t1`
+                 LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`sender`
+                 LEFT JOIN `kkirikkiri`.`users` AS `t3` ON `t3`.`email` = `t1`.`receiver`
+        WHERE `t1`.`receiver` = #{email}
+          AND `t1`.`isChecked` = 0
     </select>
     <select id="selectByEmail"
+            resultType="com.lsb.kkirikkiri.vos.MessageVo">
+        SELECT `t1`.`id`        AS `id`,
+               `t1`.`sender`    AS `sender`,
+               `t1`.`receiver`  AS `receiver`,
+               `t1`.`content`   AS `content`,
+               `t1`.`timestamp` AS `timestamp`,
+               `t1`.`isChecked` AS `IsChecked`,
+               `t1`.`article_id` AS `articleId`,
+               `t1`.`usage`     AS `usage`,
+               `t2`.nickname    AS `senderNickname`,
+               `t3`.nickname    AS `receiverNickname`
+        FROM `kkirikkiri`.`messages` AS `t1`
+                 LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`sender`
+                 LEFT JOIN `kkirikkiri`.`users` AS `t3` ON `t3`.`email` = `t1`.`receiver`
+        WHERE `t1`.`receiver` = #{email}
+#           AND `t1`.`timestamp` >= #{timestamp}
+          AND `t1`.`isChecked` = 0
+    </select>
+    <select id="selectById"
             resultType="com.lsb.kkirikkiri.entities.MessageEntity">
-        SELECT `id`        AS `id`,
-               `sender`    AS `sender`,
-               `receiver`  AS `receiver`,
-               `content`   AS `content`,
-               `timestamp` AS `timestamp`,
-               `isChecked` AS `IsChecked`
-        FROM `kkirikkiri`.`notification`
-        WHERE `receiver` = #{email}
-          AND `timestamp` >= #{timestamp}
-          AND `isChecked` = FALSE
+        SELECT `id`         AS `id`,
+               `sender`     AS `sender`,
+               `receiver`   AS `receiver`,
+               `content`    AS `content`,
+               `timestamp`  AS `timestamp`,
+               `isChecked`  AS `IsChecked`,
+               `article_id` AS `articleId`,
+               `usage`      AS `usage`
+        FROM `kkirikkiri`.`messages`
+        WHERE `id` = #{id}
+        LIMIT 1
     </select>
 </mapper>

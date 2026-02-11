@@ -17,6 +17,7 @@
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
+<th:block th:replace="~{/fragments/common.html :: sideMypage(${session.sessionUser})}"></th:block>
 <th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
 <main id="main">
     <div class="error invalid-board">
@@ -37,14 +38,6 @@
     <form novalidate class="form" name="writeForm" enctype="multipart/form-data">
         <h2 class="title">게시글 작성</h2>
         <span class="board"></span>
-        <label class="column">
-            <span class="caption">게시판 선택</span>
-            <select name="boardId" class="input" data-object="input" data-component="label.field">
-                <option selected value="-1">게시판을 선택해 주세요.</option>
-                <option value="share">공구 게시판</option>
-                <option value="promote">홍보 게시판</option>
-            </select>
-        </label>
         <label class="column">
             <span class="caption">제목</span>
             <input required autocomplete="off" class="input" maxlength="100" minlength="1" name="title"
@@ -110,11 +103,11 @@
         <div class="share-container">
             <span class="title">주문 종류</span>
             <label class="row">
-                <input checked type="radio" name="shareCheck" value="each">
+                <input checked type="radio" name="shareCheck" value="0">
                 <span>1인 1메뉴</span>
             </label>
             <label class="row">
-                <input type="radio" name="shareCheck" value="share">
+                <input type="radio" name="shareCheck" value="1">
                 <span>1메뉴 n명 나누기</span>
             </label>
         </div>

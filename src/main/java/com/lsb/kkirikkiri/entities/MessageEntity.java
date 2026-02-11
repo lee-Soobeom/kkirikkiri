@@ -1,10 +1,11 @@
 package com.lsb.kkirikkiri.entities;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -17,4 +18,6 @@ public class MessageEntity {
     private String content;
     private LocalDateTime timestamp;
     private Boolean IsChecked;
+    private Integer articleId;
+    private String usage;
 }

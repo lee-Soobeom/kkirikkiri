@@ -226,6 +226,44 @@ body:has(> #dialog[data-visible]) {
   line-height: 1.375;
 }
 
+@media (max-width: 767px) {
+  #top {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    justify-content: space-between;
+    background-color: #4678FF;
+    color: #E9EFFF;
+    padding: 0.875rem 1rem;
+    position: relative;
+    z-index: 10;
+  }
+  #top > .image-wrapper {
+    line-height: 0;
+    cursor: pointer;
+  }
+  #top > .image-wrapper > .input {
+    display: none;
+  }
+  #top > .image-wrapper > .image {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  #top > .link {
+    top: 50%;
+    left: 50%;
+    color: inherit;
+    font: inherit;
+    font-size: 1.25rem;
+    font-weight: 700;
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+  #top > .button-container {
+    display: none;
+  }
+}
 #my {
   top: 0;
   left: 0;
@@ -376,6 +414,17 @@ body:has(> #dialog[data-visible]) {
   text-decoration: none;
 }
 
+@media (max-width: 767px) {
+  #my > .container {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    width: 90%;
+    padding: 3.875rem 0.5rem 0.75rem 0.5rem;
+  }
+}
 #quick {
   align-items: center;
   display: flex;

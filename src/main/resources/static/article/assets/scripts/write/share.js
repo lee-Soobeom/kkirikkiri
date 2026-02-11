@@ -118,6 +118,7 @@ $writeForm['placeButton'].addEventListener('click', () => {
     geoHandler.addressName === ''
         ? $searchFormAddr.textContent = '현 위치를 알 수 없습니다.'
         : $searchFormAddr.textContent = geoHandler.addressName;
+    $searchList.querySelector(':scope > .empty').hide();
     $searchModal.show();
 });
 
@@ -126,6 +127,7 @@ $writeForm['restaurantButton'].addEventListener('click', () => {
     geoHandler.addressName === ''
         ? $searchFormAddr.textContent = '현 위치를 알 수 없습니다.'
         : $searchFormAddr.textContent = geoHandler.addressName;
+    $searchList.querySelector(':scope > .empty').hide();
     $searchModal.show();
 });
 
@@ -144,13 +146,6 @@ $radioSecondary.addEventListener('change', () => {
 
 $writeForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    // boardId
-    if ($writeForm['boardId'].value === -1) {
-        dialogHandler.simpleYesModal('경고', '게시판을 선택해 주세요.');
-        $writeForm['boardId'].focus();
-        return;
-    }
-
     // title
     if ($writeForm['title'].value === '') {
         dialogHandler.simpleYesModal('경고', '제목을 입력해 주세요.');
@@ -261,6 +256,16 @@ $writeForm.addEventListener('submit', (e) => {
         return;
     }
 
+    // restaurant lat & lng
+    if ($writeForm['restaurant'].dataset['lng'].split('.')[0] < 125
+        || $writeForm['restaurant'].dataset['lng'].split('.')[0] > 132) {
+        dialogHandler.simpleYesModal('경고', '올바른 경도가 아닙니다. 다시 검색해 주세요.');
+    }
+    if ($writeForm['restaurant'].dataset['lat'].split('.')[0] < 33
+        || $writeForm['restaurant'].dataset['lat'].split('.')[0] > 39) {
+        dialogHandler.simpleYesModal('경고', '올바른 위도가 아닙니다. 다시 검색해 주세요.');
+    }
+
     // addressPrimary
     if ($radioPrimary.checked) {
         if ($writeForm['addressPrimary'].value === '') {
@@ -283,7 +288,7 @@ $writeForm.addEventListener('submit', (e) => {
         $writeForm['content'].focus();
         return;
     }
-    if (!/^.{1,10000}$/g.test($writeForm['content'].value)) {
+    if (!/^[\s\S]{1,10000}$/g.test($writeForm['content'].value)) {
         dialogHandler.simpleYesModal('경고', '1-10000자 이내 올바른 내용을 입력해 주세요.');
         $writeForm['content'].focus();
         $writeForm['content'].select();
@@ -292,8 +297,8 @@ $writeForm.addEventListener('submit', (e) => {
 
     const xhr = new XMLHttpRequest();
     const formData = new FormData();
-    formData.append('boardId', $writeForm['boardId'].value);
     formData.append('title', $writeForm['title'].value);
+    // formData.append('boardId', "share");
     formData.append('menu', $writeForm['menu'].value);
     formData.append('menuName', $writeForm['menuName'].value);
     formData.append('minOrderPrice', $writeForm['minOrderPrice'].value);
@@ -302,6 +307,8 @@ $writeForm.addEventListener('submit', (e) => {
     formData.append('orderTime', $writeForm['orderTime'].value);
     formData.append('pickupTime', $writeForm['pickupTime'].value);
     formData.append('restaurant', $writeForm['restaurant'].value);
+    formData.append('restaurantLng', $writeForm['restaurant'].dataset['lng']);
+    formData.append('restaurantLat', $writeForm['restaurant'].dataset['lat']);
     if ($writeForm['addressCheck'].value === 'addressPrimary') {
         formData.append('addressPrimary', $writeForm['addressPrimary'].value);
         formData.append('addressSecondary', $writeForm['addressSecondary'].value);
@@ -309,8 +316,8 @@ $writeForm.addEventListener('submit', (e) => {
         formData.append('addressSecondary', $writeForm['addressSecondary'].value);
     }
     formData.append('content', $writeForm['content'].value);
-    formData.append('shareCheck', $writeForm['shareCheck'].value);
-    formData.append('entryCheck', $writeForm['entryCheck'].checked);
+    formData.append('IsShareChecked', $writeForm['shareCheck'].value);
+    formData.append('IsEntryChecked', $writeForm['entryCheck'].checked);
     // todo: xhr formData 까지만 함. userId 완성되면 추가해서 DB 시작하기.
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
@@ -321,9 +328,9 @@ $writeForm.addEventListener('submit', (e) => {
             return;
         }
         const response = JSON.parse(xhr.responseText);
-        switch (response.result) {
+        console.log(response);
+        switch (response["articleResult"]) {
             case 'SUCCESS':
-                $writeForm['boardId'].value = '';
                 $writeForm['title'].value = '';
                 $writeForm['menu'].value = '';
                 $writeForm['menuName'].value = '';
@@ -338,7 +345,7 @@ $writeForm.addEventListener('submit', (e) => {
                 $writeForm['addressSecondary'].value = '';
                 $writeForm['content'].value = '';
                 $writeForm['entryCheck'].checked = false;
-                location.href = `/article/?id=${response.id}`;
+                location.href = `/article/share?id=${response.id}`;
                 break;
             case 'FAILURE':
                 alert('failure');
@@ -351,11 +358,12 @@ $writeForm.addEventListener('submit', (e) => {
                 break;
         }
     };
-    xhr.open('POST', '/article/write');
+    xhr.open('POST', '/article/share/write');
     xhr.send(formData);
 })
 
 function placesSearchCB(data, status) {
+    $searchList.querySelector(':scope > .empty').hide();
     if (status === kakao.maps.services.Status.ZERO_RESULT) {
         $searchList.querySelector(':scope > .empty').show();
     }
@@ -364,8 +372,6 @@ function placesSearchCB(data, status) {
         for (let i = 0; i < data.length; i++) {
             const $li = document.createElement('li');
             $li.classList.add('item');
-            $li.dataset['lng'] = data[i]['x'];
-            $li.dataset['lat'] = data[i]['y'];
             const $title = document.createElement('span');
             $title.classList.add('title');
             $title.innerText = data[i]['place_name'];
@@ -379,9 +385,13 @@ function placesSearchCB(data, status) {
             $li.addEventListener('click', () => {
                 if (buttonRef === 'place') {
                     $writeForm['addressSecondary'].value = data[i]['place_name'];
+                    $writeForm['addressSecondary'].dataset['lng'] = data[i]['x'];
+                    $writeForm['addressSecondary'].dataset['lat'] = data[i]['y'];
                 }
                 if (buttonRef === 'restaurant') {
                     $writeForm['restaurant'].value = data[i]['place_name'];
+                    $writeForm['restaurant'].dataset['lng'] = data[i]['x'];
+                    $writeForm['restaurant'].dataset['lat'] = data[i]['y'];
                 }
                 $searchModal.hide();
                 $searchForm['search'].value = '';

@@ -10,6 +10,10 @@ HTMLElement.prototype.show = function () {
     return this;
 }
 
+const $my = document.getElementById('my');
+const $topNav = document.getElementById('top');
+const $messageList = $topNav.querySelector(':scope > .button-container > .bell > .message-list');
+
 const dialogHandler = {
     /** @type {HTMLElement} */
     $dialog: document.getElementById('dialog'),
@@ -59,7 +63,7 @@ const dialogHandler = {
                     if (typeof args?.onclick === 'function') {
                         args?.onclick();
                     }
-                    setTimeout(() => dialogHandler.$dialog.querySelector(':scope > .modal').remove(), 1000);
+                    setTimeout(() => dialogHandler.$dialog.querySelector(':scope > .modal').remove(), 500);
                 }
             }],
         });
@@ -79,7 +83,7 @@ const dialogHandler = {
                     if (typeof args[0]?.onclick === 'function') {
                         args[0]?.onclick();
                     }
-                    setTimeout(() => dialogHandler.$dialog.querySelector(':scope > .modal').remove(), 1000);
+                    setTimeout(() => dialogHandler.$dialog.querySelector(':scope > .modal').remove(), 500);
                 }
             }, {
                 caption: args[1]?.caption ?? "확인",
@@ -88,7 +92,7 @@ const dialogHandler = {
                     if (typeof args[1]?.onclick === 'function') {
                         args[1]?.onclick();
                     }
-                    setTimeout(() => dialogHandler.$dialog.querySelector(':scope > .modal').remove(), 1000);
+                    setTimeout(() => dialogHandler.$dialog.querySelector(':scope > .modal').remove(), 500);
                 }
             }],
         });
@@ -132,6 +136,9 @@ const geoHandler = {
                         geoHandler.lat = position.coords.latitude;
                         geoHandler.lng = position.coords.longitude;
                         geoHandler.timestamp = new Date(position.timestamp);
+                        if ($my !== null) {
+                            $my.querySelector(':scope > .container > .box.user > .info > .address').innerText = geoHandler.addressName;
+                        }
                         resolve();
                     })
                     .catch((error) => {
@@ -190,21 +197,151 @@ function getIp2Location(ip) {
         .catch(error => console.error('Error: ', error));
 }
 
+function denyMessage(message) {
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append("sender", message['receiver']);
+    formData.append("senderNickname", message['receiverNickname']);
+    formData.append("receiver", message['sender']);
+    formData.append("receiverNickname", message['senderNickname']);
+    formData.append("articleId", message['articleId']);
+    formData.append("usage", "deny");
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 400) {
+            console.log(`error: ${xhr.status}`);
+            return;
+        }
+        JSON.parse(xhr.responseText);
+    };
+    xhr.open('POST', '/message/');
+    xhr.send(formData);
+}
+
+function confirmMessage(message) {
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append("sender", message['receiver']);
+    formData.append("senderNickname", message['receiverNickname']);
+    formData.append("receiver", message['sender']);
+    formData.append("receiverNickname", message['senderNickname']);
+    formData.append("articleId", message['articleId']);
+    formData.append("usage", "accept");
+    formData.append('participant', message['sender']);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 400) {
+            console.log(`error: ${xhr.status}`);
+            return;
+        }
+        const response = JSON.parse(xhr.responseText);
+        switch (response.result) {
+            case 'SUCCESS':
+                dialogHandler.simpleYesNoModal('알림', '해당 게시글로 이동하시겠습니까?', [{
+                    caption: "취소",
+                }, {
+                    caption: "확인",
+                    onclick: () => location.href = `/article/share?=${message['articleId']}`
+                }]);
+                break;
+            case 'FAILURE':
+                setTimeout(() => dialogHandler.simpleYesNoModal('경고', '잠시후 다시 시도해 주세요.'), 1000);
+                break;
+            default:
+        }
+        //todo article에서 participants 받아서 참여자 목록 업데이트
+    };
+    xhr.open('POST', '/message/participants');
+    xhr.send(formData);
+}
+
+function checkedMessage(id) {
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append("messageId", id);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 400) {
+            console.log(`error: ${xhr.status}`);
+            return;
+        }
+    };
+    xhr.open('POST', '/message/checked');
+    xhr.send(formData);
+}
+
 geoHandler.getGeoLocation();
 
-// setInterval(() => {
-//     const xhr = new XMLHttpRequest();
-//     xhr.onreadystatechange = () => {
-//         if (xhr.readyState !== XMLHttpRequest.DONE) {
-//             return;
-//         }
-//         if (xhr.status < 200 || xhr.status >= 400) {
-//             dialogHandler.simpleYesModal('경고', '요청에 실패하였습니다. error: ' + `${xhr.status}`);
-//             return;
-//         }
-//         const response = JSON.parse(xhr.responseText);
-//         console.log(response.result);
-//     };
-//     xhr.open('GET', '/message/');
-//     xhr.send();
-// }, 10000);
+const messageId = setInterval(() => {
+    $messageList.querySelectorAll(':scope > .item').forEach($li => $li.remove());
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 400) {
+            console.log(`error: ${xhr.status}`);
+            return;
+        }
+        const response = JSON.parse(xhr.responseText);
+        for (const message of response.messages) {
+            // message === messageVo
+            console.log(message);
+            const $li = document.createElement('li');
+            $li.classList.add('item');
+            $li.dataset['usage'] = "confirm";
+            $li.dataset['articleId'] = message['articleId'];
+            const $titleContainer = document.createElement('div');
+            $titleContainer.classList.add('title-container');
+            const $sender = document.createElement('div');
+            $sender.classList.add('sender');
+            $sender.innerText = message['senderNickname'];
+            const $createdAt = document.createElement('div');
+            $createdAt.classList.add('created-at');
+            $createdAt.innerText = message['timestamp'].split('T').join(' ');
+            const $content = document.createElement('div');
+            $content.classList.add('content');
+            $content.innerText = message['content'];
+            $titleContainer.append($sender, $createdAt);
+            $li.append($titleContainer, $content);
+            $messageList.append($li);
+            $li.addEventListener('click', () => {
+                checkedMessage(message['id']);
+                switch ($li.dataset['usage']) {
+                    case 'confirm':
+                        dialogHandler.simpleYesNoModal('알림', `${message['content']}`, [{
+                            caption: '거절',
+                            onclick: () => denyMessage(message)
+                        }, {
+                            caption: '수락',
+                            onclick: () => confirmMessage(message)
+                        }]);
+                        break;
+                    case 'accept':
+                        dialogHandler.simpleYesNoModal('알림', `${message['content']}\n해당 게시글로 이동하시겠습니까?`, [{
+                            caption: "취소",
+                        }, {
+                            caption: "확인",
+                            onclick: () => location.href = `/article/share?=${message['articleId']}`
+                        }]);
+                        break;
+                    case 'deny':
+                        dialogHandler.simpleYesModal('알림', `${message['content']}`);
+                        break;
+                    default:
+
+                }
+            });
+        }
+    };
+    xhr.open('GET', '/message/');
+    xhr.send();
+}, 10000);
+clearInterval(messageId);
+// setTimeout(() => clearInterval(messageId), 15000);

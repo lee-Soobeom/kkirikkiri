@@ -16,10 +16,6 @@ public class ArticleValidator {
     private static final String ADDRESS_SECONDARY_REGEX = "^[\\da-zA-Z가-힣`~!@#$%^&*()_=+\\[\\]{}\\\\|;:'\",<.>/? -]{1,100}$";
     private static final String CONTENT_REGEX = "^[\\s\\S]{1,10000}$";
 
-    public boolean isLengthBetween(int length, int min, int max) {
-        return length >= min && length <= max;
-    }
-
     public boolean validateBoardId(String boardId) {
         if (boardId == null) {
             return false;
@@ -41,7 +37,7 @@ public class ArticleValidator {
     public boolean validateTitle(String title) {
         return title != null
                 && title.matches(TITLE_REGEX)
-                && isLengthBetween(title.length(), 1, 100);
+                && ValidatorUtils.isLengthInBetween(title, 1, 100);
     }
 
     public boolean validateTitle(@NonNull ArticleEntity articleEntity) {
@@ -69,7 +65,7 @@ public class ArticleValidator {
     public boolean validateMenuName(String menuName) {
         return menuName != null
                 && menuName.matches(MENU_NAME_REGEX)
-                && isLengthBetween(menuName.length(), 1, 50);
+                && ValidatorUtils.isLengthInBetween(menuName, 1, 50);
     }
 
     public boolean validateMenuName(@NonNull ArticleEntity articleEntity) {
@@ -117,7 +113,7 @@ public class ArticleValidator {
     public boolean validateRestaurant(String restaurant) {
         return restaurant != null
                 && restaurant.matches(RESTAURANT_REGEX)
-                && isLengthBetween(restaurant.length(), 1, 100);
+                && ValidatorUtils.isLengthInBetween(restaurant, 1, 100);
     }
 
     public boolean validateRestaurant(@NonNull ArticleEntity articleEntity) {
@@ -135,7 +131,7 @@ public class ArticleValidator {
     public boolean validateAddressSecondary(String addressSecondary) {
         return addressSecondary != null
                 && addressSecondary.matches(ADDRESS_SECONDARY_REGEX)
-                && isLengthBetween(addressSecondary.length(), 1, 100);
+                && ValidatorUtils.isLengthInBetween(addressSecondary, 1, 100);
     }
 
     public boolean validateAddressSecondary(@NonNull ArticleEntity articleEntity) {
@@ -145,7 +141,7 @@ public class ArticleValidator {
     public boolean validateContent(String content) {
         return content != null
                 && content.matches(CONTENT_REGEX)
-                && isLengthBetween(content.length(), 1, 10000);
+                && ValidatorUtils.isLengthInBetween(content, 1, 10000);
     }
 
     public boolean validateContent(@NonNull ArticleEntity articleEntity) {

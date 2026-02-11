@@ -1,7 +1,6 @@
 /** @type {HTMLElement} */
 const $main = document.getElementById('main');
 const $more = document.getElementById('more');
-const $my = document.getElementById('my');
 const $address = $my.querySelector(':scope > .container > .user > .info > .address');
 const $advertisement = $main.querySelector(':scope > .title');
 const $orderList = $main.querySelector(':scope > .group');

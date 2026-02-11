@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         case 'SUCCESS':
                             dialogHandler.simpleYesModal('알림', '회원 가입이 완료되었습니다!');
                             // alert('회원가입이 완료되었습니다!');
-                            location.href = '/';
+                            location.href = '/user/login';
                             break;
                         case 'FAILURE_DUPLICATE_EMAIL':
                             dialogHandler.simpleYesModal('경고', `입력하신 이메일(${$emailInput.value})은 이미 사용 중인 이메일입니다.`)

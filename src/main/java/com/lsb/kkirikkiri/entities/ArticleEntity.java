@@ -1,4 +1,5 @@
 package com.lsb.kkirikkiri.entities;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -13,6 +14,9 @@ import java.time.LocalDateTime;
 public class ArticleEntity {
     private int id;
     private String boardId;
+    private String userId;
+    private int participantsId;
+    private Integer walletId;
     private String title;
     private String menu;
     private String menuName;
@@ -21,13 +25,17 @@ public class ArticleEntity {
     private Integer deliveryPrice;
     private LocalDateTime orderTime;
     private String restaurant;
+    private String restaurantLat;
+    private String restaurantLng;
     private LocalDateTime pickupTime;
-    private Integer addressPostal;
     private String addressPrimary;
     private String addressSecondary;
     private String content;
-    private String nickname;
+    private Boolean IsShareChecked;
+    private Boolean IsEntryChecked;
     private int view;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+
 }

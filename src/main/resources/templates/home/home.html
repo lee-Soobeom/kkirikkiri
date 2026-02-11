@@ -16,43 +16,81 @@
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
-<th:block th:replace="~{/fragments/common.html :: sideMypage(user)}"></th:block>
+<th:block th:replace="~{/fragments/common.html :: sideMypage(${session.sessionUser})}"></th:block>
 <th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
 <main id="main">
     <div class="search">
         <div class="menu-container">
-            <button class="menu" type="button" value="chicken">
-                <img class="icon" src="/assets/images/main/main.menu.chicken.png" alt="">
-                <span class="caption">#치킨</span>
-            </button>
-            <button class="menu" type="button" value="pizza">
-                <img class="icon" src="/assets/images/main/main.menu.pizza.png" alt="">
-                <span class="caption">#피자</span>
-            </button>
-            <button class="menu" type="button" value="hamburger">
-                <img class="icon" src="/assets/images/main/main.menu.hamburger.png" alt="">
-                <span class="caption">#햄버거</span>
-            </button>
-            <button class="menu" type="button" value="stew">
-                <img class="icon" src="/assets/images/main/main.menu.stew.png" alt="">
-                <span class="caption">#찜/탕</span>
-            </button>
-            <button class="menu" type="button" value="raw">
-                <img class="icon" src="/assets/images/main/main.menu.raw.png" alt="">
-                <span class="caption">#회</span>
-            </button>
-            <button class="menu" type="button" value="Japanese-food">
-                <img class="icon" src="/assets/images/main/main.menu.jpfood.png" alt="">
-                <span class="caption">#일식</span>
-            </button>
-            <button class="menu" type="button" value="Chinese-food">
-                <img class="icon" src="/assets/images/main/main.menu.chfood.png" alt="">
-                <span class="caption">#중식</span>
-            </button>
-            <button class="menu" type="button" value="Western-food">
-                <img class="icon" src="/assets/images/main/main.menu.west.png" alt="">
-                <span class="caption">#양식</span>
-            </button>
+            <label class="label">
+                <input hidden checked class="input" type="radio" name="menuFilter" value="all">
+                <span class="menu">
+                    <img class="icon" src="/assets/images/main/main.menu.all.png" alt="">
+                    <span class="caption">전체</span>
+                </span>
+            </label>
+            <label class="label">
+                <input hidden class="input" type="radio" name="menuFilter" value="chicken">
+                <span class="menu">
+                    <img class="icon" src="/assets/images/main/main.menu.chicken.png" alt="">
+                    <span class="caption">#치킨</span>
+                </span>
+            </label>
+            <label class="label">
+                <input hidden class="input" type="radio" name="menuFilter" value="pizza">
+                <span class="menu">
+                    <img class="icon" src="/assets/images/main/main.menu.pizza.png" alt="">
+                    <span class="caption">#피자</span>
+                </span>
+            </label>
+            <label class="label">
+                <input hidden class="input" type="radio" name="menuFilter" value="hamburger">
+                <span class="menu">
+                    <img class="icon" src="/assets/images/main/main.menu.hamburger.png" alt="">
+                    <span class="caption">#햄버거</span>
+                </span>
+            </label>
+            <label class="label">
+                <input hidden class="input" type="radio" name="menuFilter" value="stew">
+                <span class="menu">
+                    <img class="icon" src="/assets/images/main/main.menu.stew.png" alt="">
+                    <span class="caption">#찜/탕</span>
+                </span>
+            </label>
+            <label class="label">
+                <input hidden class="input" type="radio" name="menuFilter" value="raw-jp-food">
+                <span class="menu">
+                    <img class="icon" src="/assets/images/main/main.menu.japanese-food.png" alt="">
+                    <span class="caption">#회/일식</span>
+                </span>
+            </label>
+            <label class="label">
+                <input hidden class="input" type="radio" name="menuFilter" value="ch-food">
+                <span class="menu">
+                    <img class="icon" src="/assets/images/main/main.menu.chinese-food.png" alt="">
+                    <span class="caption">#중식</span>
+                </span>
+            </label>
+            <label class="label">
+                <input hidden class="input" type="radio" name="menuFilter" value="ws-food">
+                <span class="menu">
+                    <img class="icon" src="/assets/images/main/main.menu.western-food.png" alt="">
+                    <span class="caption">#양식</span>
+                </span>
+            </label>
+            <label class="label">
+                <input hidden class="input" type="radio" name="menuFilter" value="ws-food">
+                <span class="menu">
+                    <img class="icon" src="/assets/images/main/main.menu.dessert.png" alt="">
+                    <span class="caption">#디저트</span>
+                </span>
+            </label>
+            <label class="label">
+                <input hidden class="input" type="radio" name="menuFilter" value="etc">
+                <span class="menu">
+                    <img class="icon" src="/assets/images/main/main.menu.etc.png" alt="">
+                    <span class="caption">#그 외</span>
+                </span>
+            </label>
         </div>
         <form class="search" name="listSearch">
             <h2 class="title">검색으로 찾기</h2>
@@ -64,7 +102,7 @@
             </label>
         </form>
     </div>
-    <h2 class="title">마감임박! 빠르게 주문하고 싶은 분들은 여기서 찾아보세요!</h2>
+    <h2 class="title">마감임박! 빠른주문!</h2>
     <div class="group">
         <ol class="list">
             <li class="row">
@@ -239,35 +277,20 @@
     <button class="button" name="deactivateButton" type="button">
         <img src="/assets/images/more/more.png" alt="">
     </button>
-    <a th:href="@{/board/list(id='share')}" class="link" target="_self">
+    <a th:href="@{/board/list (id='share')}" class="link" target="_self">
 <!--        <img src="/assets/images/more/more.png" alt="">-->
         공구 게시판으로 이동
     </a>
 </div>
-<ol id="quick">
+<ol id="quick-nav">
     <li class="item">
-        <a
-                class="link"
-                th:href="@{/board/list(id='share')}"
-                target="_self">
-            공구
-        </a>
+        <a class="link" th:href="@{/board/list(id='share')}" target="_self">공구</a>
     </li>
     <li class="item">
-        <a
-                class="link"
-                th:href="@{/board/list(id='promote')}"
-                target="_self">
-            홍보
-        </a>
+        <a class="link" th:href="@{/board/list(id='promote')}" target="_self">홍보</a>
     </li>
     <li class="item">
-        <a
-                class="link"
-                th:href="@{/board/list(id='notice')}"
-                target="_self">
-            공지사항
-        </a>
+        <a class="link" th:href="@{/board/list(id='notice')}" target="_self">공지</a>
     </li>
     <li class="item">
         <label class="label">
@@ -276,7 +299,7 @@
         </label>
     </li>
 </ol>
-<div class="modify-content" id="modifyContent" data-visible>
+<div class="modify-content" id="modifyContent">
     <form class="modify-form" data-name="modifyForm" enctype="multipart/form-data">
         <section class="header">
             <h2 class="title">회원 정보 수정</h2>
@@ -394,7 +417,7 @@
     </form>
 
 </div>
-<div id="message">
+<div id="message" data-visible>
     <div class="title">
         <div class="sender">${message.sender}</div>
         <span class="created-at">10:36</span>

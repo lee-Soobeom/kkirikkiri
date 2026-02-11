@@ -13,7 +13,7 @@
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
-<th:block th:replace="~{/fragments/common.html :: sideMypage(user)}"></th:block>
+<th:block th:replace="~{/fragments/common.html :: sideMypage(${session.sessionUser})}"></th:block>
 <main id="main">
     <h2 class="title">고객센터</h2>
     <div class="created-at">작성일: <span th:text="${#temporals.format(service.createdAt, 'yyyy-MM-dd')}"></span></div>

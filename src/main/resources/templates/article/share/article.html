@@ -12,45 +12,12 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=services"></script>
     <script defer type="text/javascript" src="/article/assets/scripts/article.js"></script>
     <script defer type="module" src="/article/assets/scripts/websocket.js"></script>
+    <script defer src="/assets/scripts/common.js" type="text/javascript"></script>
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
-<div id="my">
-    <div class="container">
-        <div class="box user">
-            <div class="image-container">
-                <img src="/assets/images/my/my.user.png" alt="user">
-            </div>
-            <div class="info">
-                <div class="nickname">0kcal</div>
-                <div class="address">대구 북구 동천동</div>
-                <div class="rank">신입회원</div>
-            </div>
-            <button class="button" type="button">마이페이지</button>
-        </div>
-        <div class="box cash-container">
-            <h2 class="title">내 지갑</h2>
-            <div class="content-container">
-                <span class="content cash">
-                    <span class="now">32000</span>
-                    <span class="won">원</span>
-                </span>
-                <button class="button" type="button">충전</button>
-            </div>
-
-        </div>
-        <div class="box review-container">
-            <h2 class="title">나의 리뷰 점수</h2>
-            <span class="content review">
-                <span class="now">4.21</span>
-                <span>/</span>
-                <span class="max">★ 4.5</span>
-            </span>
-        </div>
-        <div class="-stretch" role="none"></div>
-        <a class="link" href="#" target="_self">고객센터</a>
-    </div>
-</div>
+<th:block th:replace="~{/fragments/common.html :: sideMypage(${session.sessionUser})}"></th:block>
+<th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
 <div id="ws">
     <form class="room-container" name="chatRoom">
         <ol class="room">
@@ -76,7 +43,7 @@
         <div class="title-container">
             <h2 class="title" th:text="${article.title}">푸라닭 블랙마요 나눠먹을 사람</h2>
             <div class="user">
-                <div class="nickname">작성자</div>
+                <div class="nickname" th:text="${article.nickname}">작성자</div>
                 <div class="created-at" th:text="${ #temporals.format(article.getCreatedAt(), 'yyyy-MM-dd HH:mm')}"></div>
                 <!--            <div class="is-updated">수정됨</div>-->
                 <div class="view" th:text="${article.view}"></div>
@@ -86,6 +53,10 @@
             <div class="content-container">
                 <div class="order-card">
                     <div class="menu-container">
+                        <div class="box menu" th:attr="data-lat=${article.restaurantLat}, data-lng=${article.restaurantLng}">
+                            <div class="title">메뉴</div>
+                            <div class="caption" th:text="${article.menu}"></div>
+                        </div>
                         <div class="box">
                             <div class="title">메뉴</div>
                             <div class="caption" th:text="${article.menuName}"></div>
@@ -121,10 +92,8 @@
                             <div class="caption" th:text="${article.addressSecondary}"></div>
                         </div>
                     </div>
-                    <div class="text" th:text="${article.content}"></div>
                 </div>
-                </div>
-
+            </div>
             <div class="view-container">
                 <div class="fund-container">
                     <div class="box fund">
@@ -159,8 +128,8 @@
                         </tbody>
                     </table>
                     <div class="button-container">
-                        <button class="button" type="button">참여하기</button>
-<!--                        <button class="button" type="button">계산하기</button>-->
+                        <button class="button" name="participate" type="button">참여하기</button>
+                        <!--                        <button class="button" type="button">계산하기</button>-->
                     </div>
                 </div>
                 <div id="map">
