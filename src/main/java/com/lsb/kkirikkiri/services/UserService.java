@@ -7,6 +7,7 @@ import com.lsb.kkirikkiri.exceptions.TransactionalException;
 import com.lsb.kkirikkiri.mappers.EmailTokenMapper;
 import com.lsb.kkirikkiri.mappers.StoreMapper;
 import com.lsb.kkirikkiri.mappers.UserMapper;
+import com.lsb.kkirikkiri.mappers.WalletMapper;
 import com.lsb.kkirikkiri.results.*;
 import com.lsb.kkirikkiri.validators.EmailTokenValidator;
 import com.lsb.kkirikkiri.validators.StoreValidate;
@@ -34,11 +35,12 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    private final WalletService walletService;
+    private final EmailTokenMapper emailTokenMapper;
+    private final StoreMapper storeMapper;
+    private final UserMapper userMapper;
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
-    private final UserMapper userMapper;
-    private final StoreMapper storeMapper;
-    private final EmailTokenMapper emailTokenMapper;
 
     // 사장님 회원 가입 시, 제출하는 사진 두 장 (사업자 등록증 사본, 영업 신고증 사본) 저장을 위한 것
     private String saveFile(MultipartFile file) {
@@ -87,7 +89,6 @@ public class UserService {
                 !UserValidator.validateAddressPrimary(user)) {
             return CommonResult.FAILURE;
         }
-
 
         if (user.isBoss()) {
             if (store == null ||
@@ -165,6 +166,9 @@ public class UserService {
             if (this.storeMapper.insert(store) < 1) {
                 throw new TransactionalException(CommonResult.FAILURE);
             }
+        }
+        if (this.walletService.createWallet(user.getEmail()).equals(CommonResult.FAILURE)) {
+            throw new TransactionalException(CommonResult.FAILURE);
         }
         return CommonResult.SUCCESS;
     }

@@ -2,6 +2,7 @@
 
 body:has(> #top > .image-wrapper > .input:checked) > #my {
   opacity: 1;
+  pointer-events: auto;
 
   > .container {
     pointer-events: auto;
@@ -136,8 +137,27 @@ body:has(> #dialog[data-visible]) {
       height: 2rem;
       border: 0.0625rem solid #E9EFFF;
       border-radius: 999rem;
-      margin-left: 1.5rem;
+      cursor: pointer;
+      margin-left: 1rem;
       position: relative;
+
+      > .total {
+        @include flex(row, center, center);
+        top: -0.375rem;
+        right: -0.375rem;
+        height: 1.125rem;
+        aspect-ratio: 1 /1;
+        background-color: red;
+        border-radius: 999rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1;
+        position: absolute;
+
+        &.hidden {
+          display: none;
+        }
+      }
 
       > .label {
         @include flex(column, center, center);
@@ -279,12 +299,14 @@ body:has(> #dialog[data-visible]) {
     width: 25%;
     height: 100%;
     background-color: #E9EFFF;
+    border-right: 0.0625rem solid #FFFFFF;
     padding: 6.25rem 1.25rem 1rem 1.25rem;
     position: absolute;
     pointer-events: none;
     transform: translateX(-30%);
     transition-duration: 150ms;
     transition-property: pointer-events, transform;
+    z-index: 2;
 
     > .box {
       @include flex(column, flex-start, stretch, 0.5rem);
@@ -328,9 +350,9 @@ body:has(> #dialog[data-visible]) {
           @include flex(row, center, center);
           width: 80%;
           align-self: center;
-          background-color: #D2DEFF;
+          background-color: #4678FF;
           border-radius: 1rem;
-          color: inherit;
+          color: #FFFFFF;
           font-size: 1rem;
           font-weight: 500;
           padding: 0.375rem 0;
@@ -372,6 +394,7 @@ body:has(> #dialog[data-visible]) {
           background-color: #3A6FFF;
           border-radius: 999rem;
           color: #FFFFFF;
+          cursor: pointer;
           font-size: 1rem;
           font-weight: 500;
           padding: 0.375rem 1rem;
@@ -395,6 +418,117 @@ body:has(> #dialog[data-visible]) {
       font-size: 0.875rem;
       font-weight: 300;
       text-decoration: none;
+    }
+  }
+
+  > .charge-container {
+    @include flex(column, flex-start, stretch, 1rem);
+    top: 0;
+    left: 0;
+    width: 25%;
+    height: 100%;
+    background-color: #E9EFFF;
+    color: inherit;
+    font: inherit;
+    opacity: 0;
+    padding: 6.25rem 1.25rem 1rem 1.25rem;
+    pointer-events: none;
+    position: absolute;
+    transform: translateX(0%);
+    transition-property: opacity, pointer-events, transform;
+    transition-duration: 250ms;
+    z-index: 1;
+
+    &[data-visible]{
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(100%);
+    }
+
+    > .cost-container {
+      @include flex(column, center, stretch, 1rem);
+      position: relative;
+
+      > .close {
+        top: 0;
+        right: 0;
+        width: 1rem;
+        height: 1rem;
+        cursor: pointer;
+        position: absolute;
+
+        > .image {
+          width: 1rem;
+          height: 1rem;
+        }
+      }
+
+      > .title {
+        align-self: center;
+        font-size: 2rem;
+        font-weight: 700;
+        padding: 1rem 0;
+      }
+
+      > .cost-wrapper {
+        @include flex(row, center, center);
+        background-color: #FFFFFF;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        padding: 1rem 0.875rem;
+
+        &:has(> .radio:checked) {
+          background-color: #A5BDFF;
+
+          > .input-wrapper > .white-paper {
+            background-color: #FFFFFF;
+            pointer-events: auto;
+          }
+        }
+
+        > .radio {
+          display: none;
+        }
+
+        > .value {
+          font-size: 1.125rem;
+          font-weight: 500;
+        }
+
+        > .input-wrapper {
+          @include flex(row, center, center);
+          width: 16rem;
+          background-color: #FFFFFF;
+          //border: 0.0625rem solid #A5BDFF;
+          border-radius: 0.5rem;
+          flex: 1 1 auto;
+          line-height: 0;
+
+          > .white-paper {
+            background-color: #EAEAEA;
+            border-radius: 0.5rem;
+            flex: 1 1 auto;
+            line-height: 1.25;
+            padding: 0.5rem 0.5rem;
+            pointer-events: none;
+
+            &::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+            }
+          }
+        }
+      }
+    }
+
+    > .button {
+      background-color: #3A6FFF;
+      border-radius: 0.5rem;
+      color: #FFFFFF;
+      cursor: pointer;
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-top: 2rem;
+      padding: 1rem 0;
     }
   }
 }

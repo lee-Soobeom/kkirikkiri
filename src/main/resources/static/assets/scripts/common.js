@@ -1,103 +1,11 @@
-HTMLElement.VISIBLE = 'data-visible';
-/** @return {HTMLElement} */
-HTMLElement.prototype.hide = function () {
-    this.removeAttribute(HTMLElement.VISIBLE);
-    return this;
-}
-/** @return {HTMLElement} */
-HTMLElement.prototype.show = function () {
-    this.setAttribute(HTMLElement.VISIBLE, '');
-    return this;
-}
-
 const $my = document.getElementById('my');
 const $topNav = document.getElementById('top');
+const $chargeContainer = $my.querySelector(':scope > .charge-container');
+const $chargeButton = $my.querySelector('[name="charge"]');
+const $chargeCloseButton = $my.querySelector('[name="chargeClose"]');
+const $paymentButton = $my.querySelector('[name="payment"]');
+const $totalMessages = $topNav.querySelector(':scope > .button-container > .bell > .total');
 const $messageList = $topNav.querySelector(':scope > .button-container > .bell > .message-list');
-
-const dialogHandler = {
-    /** @type {HTMLElement} */
-    $dialog: document.getElementById('dialog'),
-    /**
-     * @param {{title?: String, content?: String, buttons?: {caption?: String, onclick?: function(HTMLElement?)}[]}} args
-     */
-    showModal: (args) => {
-        const $modal = document.createElement('div');
-        $modal.classList.add('modal');
-        const $title = document.createElement('div');
-        $title.classList.add('title');
-        $title.innerText = args.title;
-        const $content = document.createElement('div');
-        $content.classList.add('content');
-        $content.innerText = args.content;
-        const $buttonContainer = document.createElement('div');
-        $buttonContainer.classList.add('button-container');
-        if (args.buttons != null && args.buttons.length > 0) {
-            for (const button of args.buttons) {
-                const $button = document.createElement('button');
-                $button.classList.add('button');
-                $button.setAttribute('type', 'button');
-                $button.innerText = button.caption;
-                if (typeof button.onclick === 'function') {
-                    $button.addEventListener('click', () => button.onclick());
-                }
-                $buttonContainer.append($button);
-            }
-        }
-        $modal.append($title, $content, $buttonContainer);
-        dialogHandler.$dialog.append($modal);
-        setTimeout(() => dialogHandler.$dialog.show(), 100);
-    },
-    /**
-     * @param {String} title
-     * @param {String} content
-     * @param {{caption?: string, onclick?: function(HTMLElement?)||undefined}} args
-     */
-    simpleYesModal: (title, content, args = {caption: "확인", onclick: undefined}) => {
-        dialogHandler.showModal({
-            title: title,
-            content: content,
-            buttons: [{
-                caption: args?.caption ?? "확인",
-                onclick: () => {
-                    dialogHandler.$dialog.hide();
-                    if (typeof args?.onclick === 'function') {
-                        args?.onclick();
-                    }
-                    setTimeout(() => dialogHandler.$dialog.querySelector(':scope > .modal').remove(), 500);
-                }
-            }],
-        });
-    },
-    simpleYesNoModal: (title, content, args = [{
-        caption: "취소", onclick: undefined
-    }, {
-        caption: "확인", onclick: undefined
-    }]) => {
-        dialogHandler.showModal({
-            title: title,
-            content: content,
-            buttons: [{
-                caption: args[0]?.caption ?? "취소",
-                onclick: () => {
-                    dialogHandler.$dialog.hide();
-                    if (typeof args[0]?.onclick === 'function') {
-                        args[0]?.onclick();
-                    }
-                    setTimeout(() => dialogHandler.$dialog.querySelector(':scope > .modal').remove(), 500);
-                }
-            }, {
-                caption: args[1]?.caption ?? "확인",
-                onclick: () => {
-                    dialogHandler.$dialog.hide();
-                    if (typeof args[1]?.onclick === 'function') {
-                        args[1]?.onclick();
-                    }
-                    setTimeout(() => dialogHandler.$dialog.querySelector(':scope > .modal').remove(), 500);
-                }
-            }],
-        });
-    },
-}
 
 const geoHandler = {
     geocoder: new kakao.maps.services.Geocoder(),
@@ -179,6 +87,47 @@ const geoHandler = {
     }
 };
 
+$chargeButton.addEventListener('click', () => {
+    $chargeContainer.show();
+});
+
+$chargeCloseButton.addEventListener('click', () => {
+    $chargeContainer.hide();
+});
+
+
+
+$paymentButton.addEventListener('click', () => {
+    const $checkedCost = Array.from($chargeContainer.querySelectorAll('[name="cost"]')).filter(x => x.checked === true)[0];
+    if ($checkedCost instanceof HTMLInputElement) {
+        let amount;
+        if ($checkedCost.value === "-1") {
+            const $whitePaper = $my.querySelector('[name="whitePaper"]');
+            if (Number.isNaN(+$whitePaper.value) || +$whitePaper.value > 100000 || +$whitePaper.value < 1000) {
+                dialogHandler.simpleYesModal('경고', '최대 10만원, 최소 1천원의 올바른 금액을 입력하세요', {
+                    onclick: () => {
+                        $whitePaper.focus();
+                        $whitePaper.select();
+                    }
+                });
+                return;
+            } else {
+                amount = $whitePaper.value;
+            }
+        } else {
+            if (Number.isNaN(+$checkedCost.value)) {
+                dialogHandler.simpleYesModal('경고', '잠시후 다시 시도해 주세요.');
+                return;
+            } else {
+                amount = $checkedCost.value;
+            }
+        }
+        window.open(`/charge?amount=${amount}`, 'popup', `width=${window.screen.width / 3},height=${window.screen.height * 2 / 3},left=20,top=40`)
+    } else {
+        dialogHandler.simpleYesModal('경고', '충전할 금액을 선택 후 결제해 주세요.');
+    }
+});
+
 // todo: getIp data 저장하기
 function getIp() {
     fetch('https://api.ipify.org?format=json')
@@ -197,7 +146,7 @@ function getIp2Location(ip) {
         .catch(error => console.error('Error: ', error));
 }
 
-function denyMessage(message) {
+function postDenyMessage(message) {
     const xhr = new XMLHttpRequest();
     const formData = new FormData();
     formData.append("sender", message['receiver']);
@@ -220,7 +169,7 @@ function denyMessage(message) {
     xhr.send(formData);
 }
 
-function confirmMessage(message) {
+function postConfirmMessage(message) {
     const xhr = new XMLHttpRequest();
     const formData = new FormData();
     formData.append("sender", message['receiver']);
@@ -229,7 +178,6 @@ function confirmMessage(message) {
     formData.append("receiverNickname", message['senderNickname']);
     formData.append("articleId", message['articleId']);
     formData.append("usage", "accept");
-    formData.append('participant', message['sender']);
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
@@ -245,7 +193,7 @@ function confirmMessage(message) {
                     caption: "취소",
                 }, {
                     caption: "확인",
-                    onclick: () => location.href = `/article/share?=${message['articleId']}`
+                    onclick: () => location.href = `/article/share?id=${message['articleId']}`
                 }]);
                 break;
             case 'FAILURE':
@@ -259,7 +207,7 @@ function confirmMessage(message) {
     xhr.send(formData);
 }
 
-function checkedMessage(id) {
+function postCheckedMessage(id) {
     const xhr = new XMLHttpRequest();
     const formData = new FormData();
     formData.append("messageId", id);
@@ -289,54 +237,58 @@ function getMessages() {
                 return;
             }
             const response = JSON.parse(xhr.responseText);
-            for (const message of response.messages) {
-                // message === messageVo
-                console.log(message);
-                const $li = document.createElement('li');
-                $li.classList.add('item');
-                $li.dataset['usage'] = "confirm";
-                $li.dataset['articleId'] = message['articleId'];
-                const $titleContainer = document.createElement('div');
-                $titleContainer.classList.add('title-container');
-                const $sender = document.createElement('div');
-                $sender.classList.add('sender');
-                $sender.innerText = message['senderNickname'];
-                const $createdAt = document.createElement('div');
-                $createdAt.classList.add('created-at');
-                $createdAt.innerText = message['timestamp'].split('T').join(' ');
-                const $content = document.createElement('div');
-                $content.classList.add('content');
-                $content.innerText = message['content'];
-                $titleContainer.append($sender, $createdAt);
-                $li.append($titleContainer, $content);
-                $messageList.append($li);
-                $li.addEventListener('click', () => {
-                    checkedMessage(message['id']);
-                    switch ($li.dataset['usage']) {
-                        case 'confirm':
-                            dialogHandler.simpleYesNoModal('알림', `${message['content']}`, [{
-                                caption: '거절',
-                                onclick: () => denyMessage(message)
-                            }, {
-                                caption: '수락',
-                                onclick: () => confirmMessage(message)
-                            }]);
-                            break;
-                        case 'accept':
-                            dialogHandler.simpleYesNoModal('알림', `${message['content']}\n해당 게시글로 이동하시겠습니까?`, [{
-                                caption: "취소",
-                            }, {
-                                caption: "확인",
-                                onclick: () => location.href = `/article/share?=${message['articleId']}`
-                            }]);
-                            break;
-                        case 'deny':
-                            dialogHandler.simpleYesModal('알림', `${message['content']}`);
-                            break;
-                        default:
+            if (response.messages.length === 0) {
+                $totalMessages.classList.add('hidden');
+            } else {
+                for (const message of response.messages) {
+                    const $li = document.createElement('li');
+                    $li.classList.add('item');
+                    $li.dataset['usage'] = "confirm";
+                    $li.dataset['articleId'] = message['articleId'];
+                    const $titleContainer = document.createElement('div');
+                    $titleContainer.classList.add('title-container');
+                    const $sender = document.createElement('div');
+                    $sender.classList.add('sender');
+                    $sender.innerText = message['senderNickname'];
+                    const $createdAt = document.createElement('div');
+                    $createdAt.classList.add('created-at');
+                    $createdAt.innerText = message['timestamp'].split('T').join(' ');
+                    const $content = document.createElement('div');
+                    $content.classList.add('content');
+                    $content.innerText = message['content'];
+                    $titleContainer.append($sender, $createdAt);
+                    $li.append($titleContainer, $content);
+                    $messageList.append($li);
+                    $li.addEventListener('click', () => {
+                        postCheckedMessage(message['id']);
+                        switch ($li.dataset['usage']) {
+                            case 'confirm':
+                                dialogHandler.simpleYesNoModal('알림', `${message['content']}`, [{
+                                    caption: '거절',
+                                    onclick: () => postDenyMessage(message)
+                                }, {
+                                    caption: '수락',
+                                    onclick: () => postConfirmMessage(message)
+                                }]);
+                                break;
+                            case 'accept':
+                                dialogHandler.simpleYesNoModal('알림', `${message['content']}\n해당 게시글로 이동하시겠습니까?`, [{
+                                    caption: "취소",
+                                }, {
+                                    caption: "확인",
+                                    onclick: () => location.href = `/article/share?id=${message['articleId']}`
+                                }]);
+                                break;
+                            case 'deny':
+                                dialogHandler.simpleYesModal('알림', `${message['content']}`);
+                                break;
+                            default:
 
-                    }
-                });
+                        }
+                    });
+                }
+                $totalMessages.classList.remove('hidden');
+                $totalMessages.innerText = response.messages.length;
             }
         };
         xhr.open('GET', '/message/');
@@ -347,5 +299,5 @@ function getMessages() {
 geoHandler.getGeoLocation();
 
 const messageId = $topNav.querySelector(':scope > .button-container > .bell') === null ? '' : getMessages();
-// clearInterval(messageId);
+
 setTimeout(() => clearInterval(messageId), 15000);

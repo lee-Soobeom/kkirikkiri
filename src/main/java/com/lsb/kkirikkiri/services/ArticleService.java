@@ -113,7 +113,7 @@ public class ArticleService {
 //            articleEntity.setParticipantsId(null);
             if (this.articleMapper.insert(articleEntity) > 0) {
                 // 게시글 작성 성공하면 참여자 테이블 만들기
-                ParticipantEntity participant = new ParticipantEntity(articleEntity.getId(), sessionUser.getEmail(), String.join(",", new String[]{"","","",""}), 1);
+                ParticipantEntity participant = new ParticipantEntity(articleEntity.getId(), sessionUser.getEmail(), String.join(",", new String[]{"","","",""}), String.join(",", new String[]{sessionUser.getNickname(),"","","",""}), 1);
                 if (this.participantMapper.insert(participant) > 0) {
                     result.put("participantResult", CommonResult.SUCCESS);
                 } else {

@@ -5,30 +5,34 @@
         INSERT INTO `kkirikkiri`.`participants` (`article_id`,
                                                  `leader`,
                                                  `participants`,
+                                                 `participants_nickname`,
                                                  `count`)
         VALUES (#{participant.articleId},
                 #{participant.leader},
                 #{participant.participants},
+                #{participant.participantsNickname},
                 #{participant.count})
     </insert>
     <update id="update">
         UPDATE `kkirikkiri`.`participants`
-        SET `article_id`   = #{participant.articleId},
-            `leader`       = #{participant.leader},
-            `participants` = #{participant.participants},
-            `count`        = #{participant.count}
+        SET `article_id`            = #{participant.articleId},
+            `leader`                = #{participant.leader},
+            `participants`          = #{participant.participants},
+            `participants_nickname` = #{participant.participantsNickname},
+            `count`                 = #{participant.count}
         WHERE `article_id` = #{participant.articleId}
           AND `leader` = #{participant.leader}
     </update>
-    <select id="selectById" resultType="com.lsb.kkirikkiri.entities.ParticipantEntity">
-        SELECT `id`           AS `id`,
-               `article_id`   AS `articleId`,
-               `leader`       AS `leader`,
-               `participants` AS `participants`,
-               `count`        AS `count`
-        FROM `kkirikkiri`.`participants`
-        WHERE `article_id` = #{articleId}
-        LIMIT 1
-
-    </select>
+      <select id="selectById"
+            resultType="com.lsb.kkirikkiri.entities.ParticipantEntity">
+          SELECT `id`                    AS `id`,
+                 `article_id`            AS `articleId`,
+                 `leader`                AS `leader`,
+                 `participants`          AS `participants`,
+                 `participants_nickname` AS `participantsNickname`,
+                 `count`                 AS `count`
+          FROM `kkirikkiri`.`participants`
+          WHERE `article_id` = #{articleId}
+          LIMIT 1
+      </select>
 </mapper>

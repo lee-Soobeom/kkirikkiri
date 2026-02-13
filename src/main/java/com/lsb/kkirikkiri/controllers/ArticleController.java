@@ -7,6 +7,7 @@ import com.lsb.kkirikkiri.enums.BoardId;
 import com.lsb.kkirikkiri.results.CommonResult;
 import com.lsb.kkirikkiri.services.ArticleService;
 import com.lsb.kkirikkiri.services.BoardService;
+import com.lsb.kkirikkiri.services.ParticipantService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/article")
@@ -27,6 +29,8 @@ import java.util.Map;
 public class ArticleController {
     private final ArticleService articleService;
     private final BoardService boardService;
+    private final ParticipantService participantService;
+
     // 글 작성 페이지
     @RequestMapping(
             value = "/{boardType}/write",
@@ -56,6 +60,9 @@ public class ArticleController {
                                         @RequestParam int id,
                                         ModelAndView modelAndView) {
         modelAndView.addObject("article", this.articleService.getArticleById(id));
+        if (boardType.equals("share")) {
+            modelAndView.addObject("participants", this.participantService.getParticipantByArticleId(id));
+        }
         modelAndView.setViewName(BoardId.from(boardType).articleView);
         return modelAndView;
     }
@@ -88,7 +95,6 @@ public class ArticleController {
 
         Pair<Map<String, Object>, ArticleEntity> result =
                 this.articleService.write(sessionUser, articleEntity, files);
-        System.out.println(articleEntity);
         response.put("id", result.getRight().getId());
         response.put("articleResult", result.getLeft().get("articleResult"));
         response.put("fileResult", result.getLeft().get("fileResult"));

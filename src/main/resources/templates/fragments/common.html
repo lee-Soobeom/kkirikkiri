@@ -25,6 +25,7 @@
             <a class="link" href="/user/logout" target="_self">로그아웃</a>
         </li>
         <li class="bell" th:if=" ${isSigned == true }">
+            <div class="total hidden"></div>
             <label class="label">
                 <input hidden class="input" name="bell" type="checkbox">
                 <img class="image" src="/assets/images/my/my.message.box.png" alt="">
@@ -60,10 +61,8 @@
             </div>
             <div class="content" th:if="${session.sessionUser != null}">
                 <span class="value">2000</span>
-                <span class="caption">P</span>
-                <a th:href="@{${session.sessionUser != null ? '/widget/checkout' : '/'}}"
-                   class="charge">충전하기</a>
-<!--                <a th:href="@{'/charge'}" class="charge">충전하기</a>-->
+                <span class="caption">Pay</span>
+                <button class="charge" name="charge" type="button">충전하기</button>
             </div>
         </div>
         <div class="box">
@@ -79,6 +78,46 @@
         <div class="-stretch" role="none"></div>
         <a class="link" href="/board/service" target="_self">고객센터</a>
     </div>
+    <div class="charge-container">
+        <div class="cost-container">
+            <button class="close" name="chargeClose" type="button">
+                <img class="image" src="/assets/images/my/my.charge.close.png" alt="">
+            </button>
+            <h2 class="title">충전금액</h2>
+            <label class="cost-wrapper">
+                <input hidden class="radio" type="radio" name="cost" value="50000">
+                <span class="value">50000원</span>
+            </label>
+            <label class="cost-wrapper">
+                <input hidden class="radio" type="radio" name="cost" value="30000">
+                <span class="value">30000원</span>
+            </label>
+            <label class="cost-wrapper">
+                <input hidden class="radio" type="radio" name="cost" value="10000">
+                <span class="value">10000원</span>
+            </label>
+            <label class="cost-wrapper">
+                <input hidden class="radio" type="radio" name="cost" value="5000">
+                <span class="value">5000원</span>
+            </label>
+            <label class="cost-wrapper">
+                <input hidden class="radio" type="radio" name="cost" value="3000">
+                <span class="value">3000원</span>
+            </label>
+            <label class="cost-wrapper">
+                <input hidden class="radio" type="radio" name="cost" value="1000">
+                <span class="value">1000원</span>
+            </label>
+            <label class="cost-wrapper">
+                <input hidden class="radio" type="radio" name="cost" value="-1">
+                <span class="input-wrapper">
+                    <input class="white-paper" max="100000" min="1000" name="whitePaper"
+                           placeholder="원하시는 금액을 입력하세요. 최대 10만원, 최소 1천원" type="number">
+                </span>
+            </label>
+        </div>
+        <button class="button" name="payment" type="button">결제하기</button>
+    </div>
 </div>
 <div id="dialog" th:fragment="dialog">
     <!--    <div class="modal">-->
@@ -91,7 +130,7 @@
     <!--    </div>-->
 </div>
 <ol id="quick" th:fragment="quick(board)"
-th:with="boardId=${board != null ? board.id : null}">
+    th:with="boardId=${board != null ? board.id : null}">
     <li class="item" th:if="${board != null}">
         <a
                 class="link"

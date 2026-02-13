@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lsb.kkirikkiri.mappers.WalletMapper">
+    <insert id="insert">
+        INSERT INTO `kkirikkiri`.`wallet` (`user_email`,
+                                           `cash`,
+                                           `last_charge`,
+                                           `customer_key`)
+        VALUES (#{wallet.userEmail},
+                #{wallet.cash},
+                #{wallet.lastCharge},
+                #{wallet.customerKey})
+    </insert>
+</mapper>

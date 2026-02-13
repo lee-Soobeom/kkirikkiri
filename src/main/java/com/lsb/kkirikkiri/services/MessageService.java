@@ -122,33 +122,5 @@ public class MessageService {
         return CommonResult.SUCCESS;
     }
 
-    public CommonResult modifyParticipants(UserEntity sessionUser, String sender, int articleId) {
-        if (sessionUser == null
-                || this.userMapper.selectByEmail(sessionUser.getEmail()) == null
-                || this.userMapper.selectByEmail(sender) == null) {
-            return CommonResult.FAILURE;
-        }
-        ParticipantEntity dbParticipantEntity = this.participantMapper.selectById(articleId);
-        if (dbParticipantEntity == null) {
-            return CommonResult.FAILURE;
-        }
-        String[] participants = dbParticipantEntity.getParticipants().split(",", -1);
-        // participants 참가자 배열에 순서대로 추가 로직
-        int count = 0;
-        for (int i = 0; i < participants.length; i++) {
-            if (!participants[i].isEmpty()) {
-                count++;
-            }
-            break;
-        }
-        if (count < participants.length) {
-            participants[count] = sender;
-            count++;
-        }
-        dbParticipantEntity.setParticipants(String.join(",", participants));
-        dbParticipantEntity.setCount(count);
-        return this.participantMapper.update(dbParticipantEntity) > 0
-                ? CommonResult.SUCCESS
-                : CommonResult.FAILURE;
-    }
+
 }

@@ -1,18 +1,21 @@
 package com.lsb.kkirikkiri.controllers;
 
+import com.lsb.kkirikkiri.entities.user.UserEntity;
+import com.lsb.kkirikkiri.services.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -23,7 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor
 public class PaymentController {
+    private final PaymentService paymentService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private static final String WIDGET_SECRET_KEY = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
@@ -90,7 +95,7 @@ public class PaymentController {
         }
     }
 
-    private JSONObject sendRequest(JSONObject requestData, String secretKey, String urlString) throws IOException {
+    private JSONObject sendRequest(@NonNull JSONObject requestData, String secretKey, String urlString) throws IOException {
         HttpURLConnection connection = createConnection(secretKey, urlString);
         try (OutputStream os = connection.getOutputStream()) {
             os.write(requestData.toString().getBytes(StandardCharsets.UTF_8));
@@ -117,15 +122,22 @@ public class PaymentController {
         return connection;
     }
 
-    @RequestMapping(value = "/charge", method = RequestMethod.GET)
-    public String index() {
-        return "/widget/checkout";
+    @RequestMapping(value = "/charge", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView index(ModelAndView modelAndView,
+                              @SessionAttribute(value = "sessionUser") UserEntity sessionUser,
+                              @RequestParam(value = "amount", defaultValue = "0") int amount) {
+        modelAndView.setViewName("/tosspayments/widget/checkout");
+        if (this.paymentService.checkUser(sessionUser)) {
+            modelAndView.addObject("sessionUser", sessionUser);
+        }
+        modelAndView.addObject("amount", amount);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/fail", method = RequestMethod.GET)
     public String failPayment(HttpServletRequest request, Model model) {
         model.addAttribute("code", request.getParameter("code"));
         model.addAttribute("message", request.getParameter("message"));
-        return "/fail";
+        return "/tosspayments/fail";
     }
 }
