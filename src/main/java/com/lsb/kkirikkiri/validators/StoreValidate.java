@@ -2,12 +2,13 @@ package com.lsb.kkirikkiri.validators;
 
 import com.lsb.kkirikkiri.entities.user.StoreEntity;
 import lombok.NonNull;
+import org.springframework.web.multipart.MultipartFile;
 
 public class StoreValidate {
     public static final String ADDRESS_PRIMARY_REGEX = "^.{1,200}$";
     public static final String BUSINESS_NUMBER_REGEX = "^\\d{10}$";
     public static final String STORE_NAME_REGEX = "^.{1,50}$";
-    public static final String BUSINESS_TYPE_REGEX = "^[a-zA-Z가-힣]{1,20}$";
+    public static final String BUSINESS_TYPE_REGEX = "^(치킨|피자|햄버거|찜/탕|일식|중식|양식|디저트/카페)$";
     public static final String STORE_CONTACT_REGEX = "^\\d{8,11}$";
     public static final String OPERATING_HOURS_REGEX = "^.{1,100}$";
     public static final String LICENSE_URL_REGEX = "^.{1,255}$";
@@ -40,7 +41,7 @@ public class StoreValidate {
 
     public static boolean validateBusinessType(String businessType) {
         return businessType != null &&
-                ValidatorUtils.isLengthInBetween(businessType, 1, 20) &&
+                ValidatorUtils.isLengthInBetween(businessType, 2, 20) &&
                 businessType.matches(BUSINESS_TYPE_REGEX);
     }
 

@@ -13,6 +13,7 @@ import com.lsb.kkirikkiri.validators.StoreValidate;
 import com.lsb.kkirikkiri.validators.UserValidator;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -29,7 +31,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -40,24 +42,25 @@ public class UserService {
     private final UserMapper userMapper;
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
+    private final HttpSession httpSession;
 
     // 사장님 회원 가입 시, 제출하는 사진 두 장 (사업자 등록증 사본, 영업 신고증 사본) 저장을 위한 것
-    private String saveFile(MultipartFile file) {
-        try {
-            String uploadPath = "C:/kkirikkiri/uploads/";
-            File folder = new File(uploadPath);
-            if (!folder.exists()) {
-                folder.mkdirs(); // 폴더가 없으면 생성
-            }
-            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+    private String saveFile(MultipartFile file) throws IOException {
+        String uploadPath = "C:/kkiri/uploads/profiles/";
 
-            File targetFile = new File(uploadPath + fileName);
-            file.transferTo(targetFile);
-
-            return "/uploads/" + fileName;
-        } catch (IOException e) {
-            throw new RuntimeException("파일 저장 중 오류가 발생했습니다.", e);
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
         }
+
+        String originalFileName = file.getOriginalFilename();
+        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        String savedFileName = UUID.randomUUID().toString() + extension;
+
+        File targetFile = new File(uploadPath, savedFileName);
+        file.transferTo(targetFile);
+
+        return "/user/display?fileName=" + savedFileName;
     }
 
     public Pair<Result, UserEntity> login(String email, String password) {
@@ -76,100 +79,219 @@ public class UserService {
     }
 
     @Transactional
-    public Result register(UserEntity user, StoreEntity store, EmailTokenEntity emailToken, boolean termMarketingAgreed, MultipartFile businessLicense, MultipartFile reportCardUrl) {
-        if (user == null ||
-                !UserValidator.validateEmail(user) ||
-                !UserValidator.validatePassword(user) ||
-                !UserValidator.validateNickname(user) ||
-                !UserValidator.validateName(user) ||
-                !UserValidator.validateBirth(user) ||
-                !UserValidator.validateTelecom(user) ||
-                !UserValidator.validateContact(user) ||
-                !UserValidator.validateAddressPrimary(user)) {
+    public Result modify(UserEntity user, StoreEntity store, MultipartFile profileImage, MultipartFile storeImage) {
+
+        UserEntity existingUser = this.userMapper.selectByEmail(user.getEmail());
+        if (existingUser == null) return CommonResult.FAILURE;
+
+        if (user.getNickname() == null ||
+                user.getNickname().isBlank()) {
+            user.setNickname(null);
+        } else if (user.getNickname().length() < 2 || user.getNickname().length() > 10) {
             return CommonResult.FAILURE;
         }
 
-        if (user.isBoss()) {
-            if (store == null ||
-                    !StoreValidate.validateBusinessNumber(store) ||
-                    !StoreValidate.validateStoreName(store) ||
-                    !StoreValidate.validateBusinessType(store) ||
-                    !StoreValidate.validateStoreContact(store) ||
-                    !StoreValidate.validateOperatingHours(store) ||
-                    !StoreValidate.validateLicenseUrl(store) ||
-                    !StoreValidate.validateReportCardUrl(store)) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            String rawPassword = user.getPassword();
+            String encodedPassword = encoder.encode(rawPassword);
+            user.setPassword(encodedPassword);
+        } else {
+            user.setPassword(null);
+        }
+
+        if (user.getTelecom() == null ||
+                user.getTelecom().isBlank()) {
+            user.setTelecom(null);
+        } else {
+            if (!UserValidator.validateTelecom(user)) {
                 return CommonResult.FAILURE;
             }
-            if (businessLicense != null && !businessLicense.isEmpty()) {
-                String licensePath = saveFile(businessLicense);
-                store.setLicenseUrl(licensePath);
+        }
+
+        try {
+            if (profileImage != null && !profileImage.isEmpty()) {
+                user.setProfileImagePath(this.saveFile(profileImage));
             }
-            if (reportCardUrl != null && !reportCardUrl.isEmpty()) {
-                String reportPath = saveFile(reportCardUrl);
-                store.setReportCardUrl(reportPath);
+        } catch (IOException e) {
+            throw new RuntimeException("프로필 이미지 저장 실패");
+        }
+
+
+        if (this.userMapper.update(user) < 1) {
+            return CommonResult.FAILURE;
+        }
+
+
+        if (store != null && store.getEmail() != null) {
+            StoreEntity existingStore = this.storeMapper.selectByEmail(store.getEmail());
+
+            try {
+                if (storeImage != null && !storeImage.isEmpty()) {
+                    store.setStoreImagePath(this.saveFile(storeImage));
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("가게 이미지 저장 실패");
             }
-            this.storeMapper.insert(store);
+
+            if (existingStore != null) {
+                if (store.getStoreName() != null && !store.getStoreName().isBlank()) {
+                    if (!store.getStoreName().matches("^[a-zA-Z0-9가-힣\\s]{2,10}$")) {
+                        return CommonResult.FAILURE;
+                    }
+                } else {
+                    store.setStoreName(existingStore.getStoreName());
+                }
+
+                if (store.getStoreContact() != null && !store.getStoreContact().isBlank()) {
+                    if (!store.getStoreContact().matches("^0\\d{8,10}$")) {
+                        return CommonResult.FAILURE;
+                    }
+                } else {
+                    store.setStoreContact(existingStore.getStoreContact());
+                }
+
+                if (store.getBusinessType() != null && !store.getBusinessType().isBlank()) {
+                    if (!StoreValidate.validateBusinessType(store.getBusinessType())) {
+                        return CommonResult.FAILURE;
+                    }
+
+                } else {
+                    store.setBusinessType(existingStore.getBusinessType());
+                }
+
+                if (store.getOperatingHours() == null ||
+                        store.getOperatingHours().isBlank()) {
+                    store.setOperatingHours(existingStore.getOperatingHours());
+                }
+
+                if (this.storeMapper.update(store) < 1) {
+                    return CommonResult.FAILURE;
+                }
+            }
         }
 
-        if (emailToken == null ||
-                !EmailTokenValidator.validateEmail(emailToken) ||
-                !EmailTokenValidator.validateCode(emailToken) ||
-                !EmailTokenValidator.validateSalt(emailToken)) {
+        return CommonResult.SUCCESS;
+    }
+
+    @Transactional
+    public Result deleteUser(UserEntity sessionUser, String email) {
+        if (sessionUser == null) {
+            return DeleteUserResult.FAILURE_SESSION;
+        }
+        UserEntity dbUser = this.userMapper.selectByEmail(email);
+        if (dbUser == null) {
             return CommonResult.FAILURE;
         }
-
-        EmailTokenEntity dbEmailToken = this.emailTokenMapper.select(emailToken.getEmail(), emailToken.getCode(), emailToken.getSalt());
-
-        if (dbEmailToken == null ||
-                !dbEmailToken.isVerified() ||
-                dbEmailToken.isUsed()) {
-            return CommonResult.FAILURE;
+        if (!sessionUser.isAdmin() && !dbUser.getEmail().equals(sessionUser.getEmail())) {
+            return DeleteUserResult.FAILURE_SESSION;
         }
+        return this.userMapper.deleteUserByEmail(sessionUser.getEmail()) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
 
-        dbEmailToken.setUsed(true);
-        if (this.emailTokenMapper.update(dbEmailToken) < 1) {
-            return CommonResult.FAILURE;
-        }
+    public UserEntity getUserByEmail(String email) {
+        return this.userMapper.selectByEmail(email);
+    }
 
-        if (this.userMapper.selectByEmail(user.getEmail()) != null) {
-            throw new TransactionalException(RegisterResult.FAILURE_DUPLICATE_EMAIL);
-        }
-        if (this.userMapper.selectByNickname(user.getNickname()) != null) {
-            throw new TransactionalException(RegisterResult.FAILURE_DUPLICATE_NICKNAME);
-        }
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String rawPassword = user.getPassword();
-        String hashedPassword = encoder.encode(rawPassword);
-        user.setPassword(hashedPassword);
+    @Transactional
+    public Result register(UserEntity user, StoreEntity store, EmailTokenEntity emailToken, boolean isBoss, boolean termMarketingAgreed, MultipartFile licenseFile, MultipartFile reportCardFile) {
+        try {
 
-        if (termMarketingAgreed) {
-            user.setTermMarketingAt(LocalDateTime.now());
-        }
-        user.setTermPolicyAt(LocalDateTime.now());
-        user.setTermPrivacyAt(LocalDateTime.now());
-        user.setTermLocationAt(LocalDateTime.now());
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
+            if (user == null || !UserValidator.validateEmail(user) || !UserValidator.validatePassword(user) ||
+                    !UserValidator.validateName(user) || !UserValidator.validateBirth(user) ||
+                    !UserValidator.validateTelecom(user) || !UserValidator.validateContact(user) ||
+                    !UserValidator.validateAddressPrimary(user)) {
+                return CommonResult.FAILURE;
+            }
 
-        if (this.userMapper.insert(user) < 1) {
-            throw new TransactionalException(CommonResult.FAILURE);
-        }
-        if (user.isBoss()) {
-            store.setEmail(user.getEmail());
-            store.setTermPolicyAt(LocalDateTime.now());
-            store.setTermPrivacyAt(LocalDateTime.now());
-            store.setTermBusinessVerifyAt(LocalDateTime.now());
-            store.setTermThirdParty(LocalDateTime.now());
-            store.setTermDocSubmissionAt(LocalDateTime.now());
+            if (!user.isBoss()) {
+                if (!UserValidator.validateNickname(user)) return CommonResult.FAILURE;
+            } else {
+                if (user.getNickname() == null ||
+                        user.getNickname().isBlank()) {
+                    user.setNickname(store.getStoreName());
+                }
+                if (store == null ||
+                        !StoreValidate.validateBusinessNumber(store) || !StoreValidate.validateStoreName(store) ||
+                        !StoreValidate.validateBusinessType(store) || !StoreValidate.validateStoreContact(store) ||
+                        !StoreValidate.validateOperatingHours(store)) {
+                    return CommonResult.FAILURE;
+                }
+            }
 
-            if (this.storeMapper.insert(store) < 1) {
+            if (emailToken == null || !EmailTokenValidator.validateEmail(emailToken) ||
+                    !EmailTokenValidator.validateCode(emailToken) || !EmailTokenValidator.validateSalt(emailToken)) {
+                return CommonResult.FAILURE;
+            }
+
+            EmailTokenEntity dbEmailToken = this.emailTokenMapper.select(emailToken.getEmail(), emailToken.getCode(), emailToken.getSalt());
+            if (dbEmailToken == null || !dbEmailToken.isVerified() || dbEmailToken.isUsed()) {
+                return CommonResult.FAILURE;
+            }
+
+            if (this.userMapper.selectByEmail(user.getEmail()) != null) {
+                throw new TransactionalException(RegisterResult.FAILURE_DUPLICATE_EMAIL);
+            }
+            if (this.userMapper.selectByNickname(user.getNickname()) != null) {
+                throw new TransactionalException(RegisterResult.FAILURE_DUPLICATE_NICKNAME);
+            }
+
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            user.setPassword(encoder.encode(user.getPassword()));
+
+            LocalDateTime now = LocalDateTime.now();
+            if (termMarketingAgreed) {
+                user.setTermMarketingAt(now);
+            }
+            user.setStatus("GENERAL");
+            user.setTermPolicyAt(now);
+            user.setTermPrivacyAt(now);
+            user.setTermLocationAt(now);
+            user.setCreatedAt(now);
+            user.setUpdatedAt(now);
+
+            if (this.userMapper.insert(user) < 1) {
                 throw new TransactionalException(CommonResult.FAILURE);
             }
+
+            // 가게 정보
+            if (isBoss && user.isBoss()) {
+                store.setEmail(user.getEmail());
+                store.setTermPolicyAt(now);
+                store.setTermPrivacyAt(now);
+                store.setTermBusinessVerifyAt(now);
+                store.setTermThirdPartyAt(now);
+                store.setTermDocSubmissionAt(now);
+                store.setApprovalStatus("PENDING");
+                store.setAppliedAt(now);
+
+                if (licenseFile != null && !licenseFile.isEmpty()) {
+                    store.setLicenseUrl(saveFile(licenseFile));
+                }
+                if (reportCardFile != null && !reportCardFile.isEmpty()) {
+                    store.setReportCardUrl(saveFile(reportCardFile));
+                }
+
+                if (this.storeMapper.insert(store) < 1) {
+                    throw new TransactionalException(CommonResult.FAILURE);
+                }
+            }
+
+            dbEmailToken.setUsed(true);
+            this.emailTokenMapper.update(dbEmailToken);
+
+            if (this.walletService.createUserWallet(user.getEmail()).equals(CommonResult.FAILURE)) {
+                throw new TransactionalException(CommonResult.FAILURE);
+            }
+
+            return CommonResult.SUCCESS;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CommonResult.FAILURE;
         }
-        if (this.walletService.createUserWallet(user.getEmail()).equals(CommonResult.FAILURE)) {
-            throw new TransactionalException(CommonResult.FAILURE);
-        }
-        return CommonResult.SUCCESS;
     }
 
     public Pair<Result, EmailTokenEntity> sendEmail(String email) throws MessagingException {
@@ -205,6 +327,36 @@ public class UserService {
         this.mailSender.send(message);
 
         return Pair.of(CommonResult.SUCCESS, emailToken);
+    }
+
+
+    public boolean verifyBusinessNumber(String businessNumber) {
+        String url = "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=58fa4c63802dc54a0163e2a572d52d67866d1afcacada18f3d1cb19687da8871";
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("b_no", Collections.singletonList(businessNumber));
+
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            Map response = restTemplate.postForObject(url, body, Map.class);
+            List<Map<String, Object>> data = (List<Map<String, Object>>) response.get("data");
+
+            if (data != null && !data.isEmpty()) {
+                String bSttCd = (String) data.get(0).get("b_stt_cd");
+
+                // "01" = 계속사업자 (정상)
+                // "02" = 휴업자
+                // "03" = 폐업자
+                return "01".equals(bSttCd);  // 계속사업자만 true
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public StoreEntity getStoreByEmail(String email) {
+        return this.storeMapper.selectByEmail(email);
     }
 
     public Result verifyEmail(EmailTokenEntity emailToken) {

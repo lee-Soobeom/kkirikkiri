@@ -6,10 +6,8 @@ import com.lsb.kkirikkiri.entities.user.UserEntity;
 import com.lsb.kkirikkiri.exceptions.TransactionalException;
 import com.lsb.kkirikkiri.results.CommonResult;
 import com.lsb.kkirikkiri.results.Result;
-import com.lsb.kkirikkiri.results.VerifyEmailResult;
 import com.lsb.kkirikkiri.services.UserService;
 import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
@@ -19,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,10 +32,10 @@ public class UserController extends AbstractGeneralController{
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getLogin(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser) {
         if (sessionUser != null) {
-            return "redirect:/user/";
+            return "redirect:/admin/index";
         }
 
-        return "user/login";
+        return "/user/login";
     }
 
     @RequestMapping(value = "/login")
@@ -73,13 +72,81 @@ public class UserController extends AbstractGeneralController{
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, Object> postUser(@RequestParam(value = "termMarketingAgreed", required = false) boolean termMarketingAgreed, UserEntity user, StoreEntity store, EmailTokenEntity emailToken, @RequestParam(value = "businessLicense", required = false) MultipartFile businessLicense, @RequestParam(value = "reportCardUrl", required = false) MultipartFile reportCardUrl) {
+    public String postUser(
+            @RequestParam(value = "termMarketingAgreed", required = false, defaultValue = "false") boolean termMarketingAgreed,
+            @RequestParam(value = "isBoss", required = false, defaultValue = "false") boolean boss,
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "code", required = false) String code,
+            @RequestParam(value = "salt", required = false) String salt,
+            UserEntity user,
+            StoreEntity store,
+            @RequestParam(value = "licenseFile", required = false) MultipartFile licenseFile,
+            @RequestParam(value = "reportCardFile", required = false) MultipartFile reportCardFile) {
+
+        user.setBoss(boss);
+
+        EmailTokenEntity emailToken = new EmailTokenEntity();
+        emailToken.setEmail(email);
+        emailToken.setCode(code);
+        emailToken.setSalt(salt);
+
         Result result;
         try {
-            result = this.userService.register(user, store, emailToken, termMarketingAgreed, businessLicense, reportCardUrl);
+            result = this.userService.register(user, store, emailToken, termMarketingAgreed, boss, licenseFile, reportCardFile);
         } catch (TransactionalException e) {
             result = (Result) e.result;
         }
+
+        String resultName = ((Enum<?>) result).name();
+        return String.format("{\"result\": \"%s\"}", resultName);
+    }
+
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> deleteUser(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser, HttpSession session) {
+
+        if (sessionUser == null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put(Result.KEY, CommonResult.FAILURE.name());
+            return response;
+        }
+
+        Result result = this.userService.deleteUser(sessionUser, sessionUser.getEmail());
+        if (result == CommonResult.SUCCESS) {
+            session.invalidate();
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put(Result.KEY, result.name());
+        return response;
+    }
+
+
+    @RequestMapping(value = "/my", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getMyPage(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser, Model model) {
+        if (sessionUser == null) {
+            return "redirect:/user/login";
+        }
+        if (sessionUser.isBoss()) {
+            StoreEntity store = this.userService.getStoreByEmail(sessionUser.getEmail());
+            model.addAttribute("store", store);
+        } else {
+            model.addAttribute("store", new StoreEntity());
+        }
+        return "user/my";
+    }
+
+    @RequestMapping(value = "/my", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> patchMyPage(@SessionAttribute(value = "sessionUser") UserEntity sessionUser, UserEntity user, MultipartFile profileImage, HttpSession session) {
+        user.setEmail(sessionUser.getEmail());
+        Result result = userService.modify(user, null, profileImage, null);
+
+        if (result == CommonResult.SUCCESS) {
+            UserEntity updatedUser = userService.getUserByEmail(user.getEmail());
+            session.setAttribute("sessionUser", updatedUser);
+        }
+
         return prepareJsonResponse(result);
     }
 
@@ -91,6 +158,15 @@ public class UserController extends AbstractGeneralController{
         if (result.getLeft() == CommonResult.SUCCESS) {
             response.put("salt", result.getRight().getSalt());
         }
+        return response;
+    }
+
+    @RequestMapping(value = "/verify-business", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> getVerifyBusiness(@RequestParam String businessNumber) {
+        boolean isValid = userService.verifyBusinessNumber(businessNumber);
+        Map<String, Object> response = new HashMap<>();
+        response.put("result", isValid ? "SUCCESS" : "FAILURE");
         return response;
     }
 
@@ -121,7 +197,6 @@ public class UserController extends AbstractGeneralController{
         Map<String, Object> response = new HashMap<>(prepareJsonResponse(result));
         if (result == CommonResult.SUCCESS) {
             response.put("salt", emailToken.getSalt());
-            System.out.println("서버가 보내는 솔트" + emailToken.getSalt());
         }
         return response;
     }

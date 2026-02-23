@@ -74,7 +74,7 @@
                     <select name="telecom" class="field">
                        <option value="SKT">SKT</option>
                        <option value="KT">KT</option>
-                       <option value="LG">LG U+</option>
+                       <option value="LGU">LG U+</option>
                         <option value="SKM">SKT 알뜰폰</option>
                         <option value="KTM">KT 알뜰폰</option>
                         <option value="LGM">LG 알뜰폰</option>
@@ -87,12 +87,12 @@
                 </span>
             </label>
             <label class="label" data-name="registerEmail">
-                <input hidden name="emailSalt" type="hidden">
+                <input hidden name="salt" type="hidden">
                 <span class="caption">이메일</span>
                 <span class="row">
                      <input required autocomplete="email" maxlength="50" minlength="6" name="email" spellcheck="false"
                             placeholder="이메일을 입력해 주세요" type="email" class="field">
-                     <button class="botton" type="button" name="emailCodeSendButton">인증번호 전송</button>
+                     <button class="botton" type="button" name="codeSendButton">인증번호 전송</button>
                 </span>
                 <span data-component="label.message" data-message="info" data-visible>
                     <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
@@ -105,8 +105,8 @@
             <label class="label">
                 <span class="caption">이메일 인증 번호</span>
                 <span class="row">
-                    <input type="text" name="emailCode" class="field" minlength="6" maxlength="50" placeholder="인증번호를 입력해 주세요." required>
-                    <button class="botton" type="button" name="emailCodeVerifyButton">인증번호 확인</button>
+                    <input type="text" name="code" class="field" minlength="6" maxlength="50" placeholder="인증번호를 입력해 주세요." required>
+                    <button class="botton" type="button" name="codeVerifyButton">인증번호 확인</button>
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
@@ -208,7 +208,7 @@
                     <select name="telecom" class="field">
                         <option value="SKT">SKT</option>
                         <option value="KT">KT</option>
-                        <option value="LG">LG U+</option>
+                        <option value="LGU">LG U+</option>
                         <option value="SKM">SKT 알뜰폰</option>
                         <option value="KTM">KT 알뜰폰</option>
                         <option value="LGM">LG 알뜰폰</option>
@@ -221,11 +221,11 @@
                 </span>
             </label>
             <label class="label" data-name="registerEmail">
-                <input hidden name="emailSalt" type="hidden">
+                <input hidden name="salt" type="hidden">
                 <span class="caption">사장님 이메일</span>
                 <span class="row">
                     <input type="email" name="email" class="field" minlength="6" maxlength="50" placeholder="이메일 주소를 입력해 주세요." required>
-                    <button type="button" class="button" name="emailCodeSendButton">인증번호 전송</button>
+                    <button type="button" class="button" name="codeSendButton">인증번호 전송</button>
                 </span>
                 <span data-component="label.message" data-message="info" data-visible>
                     <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
@@ -238,8 +238,8 @@
             <label class="label">
                 <span class="caption">이메일 인증 번호</span>
                 <span class="row">
-                    <input type="text" name="emailCode" class="field" minlength="6" maxlength="50" placeholder="인증번호를 입력해 주세요." required>
-                    <button type="button" class="button" name="emailCodeVerifyButton">인증번호 확인</button>
+                    <input type="text" name="code" class="field" minlength="6" maxlength="50" placeholder="인증번호를 입력해 주세요." required>
+                    <button type="button" class="button" name="codeVerifyButton">인증번호 확인</button>
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
@@ -253,9 +253,12 @@
                     <input type="password" name="password" class="field" placeholder="비밀번호를 입력해 주세요." required>
                     <input type="password" name="passwordCheck" class="field" placeholder="비밀번호를 한 번 더 입력해 주세요." required>
                 </span>
+                <span data-component="label.message" data-message="info" data-visible>
+                    <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
+                    8자 이상 50자 이하의 유효한 형식의 비밀번호를 입력해 주세요.</span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    <span class="text">비밀번호를 입력해 주세요.</span>
+                    <span class="text">올바른 형식으로 입력해 주세요.</span>
                 </span>
             </label>
 
@@ -295,7 +298,7 @@
                 <span class="caption">사업자 등록번호</span>
                 <span class="row">
                     <input type="text" name="businessNumber" minlength="10" maxlength="10" class="field" placeholder="숫자 10자리를 입력해 주세요." required>
-                    <button type="button">조회하기</button>
+                    <button type="button" name="businessCheckButton">조회하기</button>
                 </span>
                 <span data-component="label.message" data-message="info" data-visible>
                     <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
@@ -309,11 +312,21 @@
             <label class="label">
                 <span class="caption">업종</span>
                 <span class="row">
-                    <input type="text" name="businessType" class="field" placeholder="예: 음식점, 카페 등" required>
+                    <select name="businessType" class="business-type" required>
+                        <option value="" disabled selected>업종을 선택해 주세요</option>
+                        <option value="치킨">치킨</option>
+                        <option value="피자">피자</option>
+                        <option value="햄버거">햄버거</option>
+                        <option value="찜/탕">찜/탕</option>
+                        <option value="일식">일식</option>
+                        <option value="중식">중식</option>
+                        <option value="양식">양식</option>
+                        <option value="디저트/카페">디저트/카페</option>
+                    </select>
                 </span>
                 <span data-component="label.message" data-message="warning">
                     <img src="/user/assets/images/userWarning.png" alt="" class="warningIcon">
-                    <span class="text">업종을 입력해 주세요.</span>
+                    <span class="text">업종을 선택해 주세요.</span>
                 </span>
             </label>
 
@@ -352,7 +365,7 @@
             <label class="label">
                 <span class="caption">사업자 등록증 사본</span>
                 <span class="row">
-                    <input required type="file" name="businessLicense" class="field" accept="image/*, .pdf">
+                    <input required type="file" name="licenseFile" class="field" accept="image/*, .pdf">
                 </span>
                 <span class="preview-container" id="licensePreview"></span>
                 <span data-component="label.message" data-message="info" data-visible>
@@ -366,7 +379,7 @@
             <label class="label">
                 <span class="caption">영업 신고증 사본</span>
                 <span class="row">
-                    <input required type="file" name="reportCardUrl" class="field" accept="image/*, .pdf">
+                    <input required type="file" name="reportCardFile" class="field" accept="image/*, .pdf">
                 </span>
                 <span data-component="label.message" data-message="info" data-visible>
                     <img src="/user/assets/images/userInfo.png" alt="" class="infoIcon">
@@ -385,19 +398,19 @@
                 <span class="caption">[필수]<a href="#">서비스 이용 약관</a>에 동의합니다.</span>
             </label>
             <label class="term" name="termThirdParty">
-                <input required type="checkbox" class="checkbox" name="termThirdParty">
+                <input required type="checkbox" class="checkbox" name="termThirdPartyAgreed">
                 <span class="caption">[필수]<a href="#">개인정보 제3자 제공 동의</a>에 동의합니다.</span>
             </label>
             <label class="term" name="termBusinessVerify">
-                <input required type="checkbox" class="checkbox" name="termBusinessVerify">
+                <input required type="checkbox" class="checkbox" name="termBusinessVerifyAgreed">
                 <span class="caption">[필수]<a href="#">사업자 정보 진위 확인</a>에 동의합니다.</span>
             </label>
             <label class="term" name="termStorePolicy">
-                <input required type="checkbox" class="checkbox" name="termStorePolicy">
+                <input required type="checkbox" class="checkbox" name="termStorePolicyAgreed">
                 <span class="caption">[필수]<a href="#">판매자 서비스 이용 약관</a>에 동의합니다.</span>
             </label>
             <label class="term" name="termDocSubmission">
-                <input required type="checkbox" class="checkbox" name="termDocSubmission">
+                <input required type="checkbox" class="checkbox" name="termDocSubmissionAgreed">
                 <span class="caption">[필수]<a href="#">사업자 등록 정보 및 서류 제출 동의</a>에 동의합니다.</span>
             </label>
             <label class="term" name="termMarketing">

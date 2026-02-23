@@ -1,6 +1,8 @@
 package com.lsb.kkirikkiri.entities.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -19,11 +21,12 @@ public class StoreEntity {
     private String addressSecondary;
     private String storeContact;
     private String operatingHours;
+    private String storeImagePath;
     private String licenseUrl;
     private String reportCardUrl;
     private LocalDateTime termPolicyAt;
     private LocalDateTime termPrivacyAt;
-    private LocalDateTime termThirdParty;
+    private LocalDateTime termThirdPartyAt;
     private LocalDateTime termBusinessVerifyAt;
     private LocalDateTime termDocSubmissionAt;
     private LocalDateTime termMarketingAt;
@@ -31,5 +34,6 @@ public class StoreEntity {
     private String rejectReason;
     private LocalDateTime appliedAt;
     private LocalDateTime approvedAt;
+    @JsonIgnore
     private UserEntity user;
 }

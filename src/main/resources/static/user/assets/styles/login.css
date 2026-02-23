@@ -13,6 +13,22 @@
   transform: translate(-50%, -50%);
   z-index: 1;
 }
+@media screen and (max-width: 768px) {
+  #main {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    width: 95%;
+    max-width: 450px;
+    height: auto;
+    min-height: 80vh;
+    grid-template-columns: 1fr;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
 #main > .logo {
   align-items: center;
   display: flex;
@@ -20,6 +36,14 @@
   gap: 0.5rem;
   justify-content: center;
   position: relative;
+}
+@media screen and (max-width: 768px) {
+  #main > .logo {
+    padding: 2.5rem 0;
+  }
+  #main > .logo::after {
+    display: none;
+  }
 }
 #main > .logo > .wrapper {
   align-items: center;
@@ -64,6 +88,15 @@
   overflow: hidden;
   position: relative;
 }
+@media screen and (max-width: 768px) {
+  #main > .content {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    border-radius: 0 0 0.5rem 0.5rem;
+    padding: 2rem 0;
+  }
+}
 #main > .content > .form {
   align-items: center;
   display: flex;
@@ -84,6 +117,13 @@
   margin-left: 12.5%;
   margin-bottom: 2.5rem;
 }
+@media screen and (max-width: 768px) {
+  #main > .content > .form > .title {
+    margin-left: 0;
+    align-self: center;
+    margin-bottom: 1.5rem;
+  }
+}
 #main > .content > .form > .label {
   align-items: flex-start;
   display: flex;
@@ -93,6 +133,11 @@
   width: 75%;
   max-width: 30rem;
   margin-bottom: 1.5rem;
+}
+@media screen and (max-width: 768px) {
+  #main > .content > .form > .label {
+    width: 85%;
+  }
 }
 #main > .content > .form > .label > .title {
   color: #4a4a4a;
@@ -154,6 +199,11 @@
   margin-top: 0.5rem;
   margin-bottom: 2rem;
 }
+@media screen and (max-width: 768px) {
+  #main > .content > .form > .checkLabel {
+    width: 85%;
+  }
+}
 #main > .content > .form > .checkLabel input[type=checkbox] {
   width: 1.1rem;
   height: 1.1rem;
@@ -161,16 +211,37 @@
   position: relative;
   transition: all 175ms;
 }
+#main > .content > .form .login-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: center;
+  width: 100%;
+}
+#main > .content > .form .login-container .button, #main > .content > .form .login-container .social-login {
+  width: 75%;
+  margin: 0;
+}
+@media screen and (max-width: 768px) {
+  #main > .content > .form .login-container .button, #main > .content > .form .login-container .social-login {
+    width: 85%;
+  }
+}
 #main > .content > .form .button {
   width: 75%;
+  height: 3.25rem;
   background-color: rgb(90.4, 134.8864864865, 255);
-  border-radius: 0.85rem;
+  border-radius: 0.35rem;
   color: #FDFDFD;
+  display: block;
   font: inherit;
   font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 0.75rem;
-  padding: 0.5rem 1.65rem;
+  line-height: 3.25rem;
+  margin: 0 auto 0.75rem auto;
+  padding: 0;
+  text-align: center;
 }
 #main > .content > .form .button:hover {
   background-color: rgb(80.2, 127.4432432432, 255);
@@ -180,6 +251,25 @@
   background-color: #4678ff;
   color: #FFFFFF;
 }
+#main > .content > .form .social-login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: center;
+  width: 75%;
+  height: 3.25rem;
+  align-self: center;
+  margin: 0 auto 0.75rem auto;
+  overflow: hidden;
+}
+#main > .content > .form .social-login .kakao-login, #main > .content > .form .social-login .naver-login {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.35rem;
+  display: block;
+  object-fit: fill;
+}
 #main > .content > .form .menu {
   align-items: flex-end;
   display: flex;
@@ -187,6 +277,12 @@
   gap: 3.5rem;
   justify-content: center;
   margin-top: 1.5rem;
+  width: 100%;
+}
+@media screen and (max-width: 768px) {
+  #main > .content > .form .menu {
+    gap: 2rem;
+  }
 }
 #main > .content > .form .menu > .caption {
   color: #4678FF;

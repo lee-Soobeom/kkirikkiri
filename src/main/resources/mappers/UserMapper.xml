@@ -3,7 +3,7 @@
 <mapper namespace="com.lsb.kkirikkiri.mappers.UserMapper">
     <insert id="insert">
         INSERT INTO `kkirikkiri`.`users` (
-            `email`, `password`,`nickname`, `name`, `birth`, `telecom`, `contact`, `address_primary`, `address_secondary`, `is_admin`, `is_boss`, `status`, `term_policy_at`, `term_privacy_at`,`term_location_at`, `term_marketing_at`, `created_at`, `updated_at`
+            `email`, `password`,`nickname`, `name`, `birth`, `telecom`, `contact`, `address_primary`, `address_secondary`, `profile_image_path`, `is_admin`, `is_boss`, `status`, `term_policy_at`, `term_privacy_at`,`term_location_at`, `term_marketing_at`, `created_at`, `updated_at`
         ) VALUES (
                      #{user.email},
                      #{user.password},
@@ -14,6 +14,7 @@
                      #{user.contact},
                      #{user.addressPrimary},
                      #{user.addressSecondary},
+                     #{user.profileImagePath},
                      #{user.isAdmin},
                      #{user.isBoss},
                      #{user.status},
@@ -26,6 +27,38 @@
 
                  )
     </insert>
+    <update id="update">
+        UPDATE `kkirikkiri`.`users`
+        SET <if test="user.nickname != null">
+                `nickname` = #{user.nickname},
+            </if>
+            <if test="user.password != null">
+                `password` = #{user.password},
+            </if>
+            <if test="user.telecom">
+                `telecom` = #{user.telecom},
+            </if>
+            <if test="user.contact != null">
+                `contact` = #{user.contact},
+            </if>
+            <if test="user.addressPrimary != null">
+                `address_primary` = #{user.addressPrimary},
+            </if>
+            <if test="user.addressSecondary != null">
+                `address_secondary` = #{user.addressSecondary},
+            </if>
+            <if test="user.profileImagePath != null">
+                `profile_image_path` = #{user.profileImagePath},
+            </if>
+            `updated_at` = now()
+        WHERE `email` = #{user.email}
+        LIMIT 1
+    </update>
+    <delete id="deleteUserByEmail">
+        DELETE
+        FROM `kkirikkiri`.`users`
+        WHERE `email` = #{email}
+    </delete>
     <select id="selectByEmail" resultType="com.lsb.kkirikkiri.entities.user.UserEntity">
         SELECT `email`             AS `email`,
                `password`          AS `password`,

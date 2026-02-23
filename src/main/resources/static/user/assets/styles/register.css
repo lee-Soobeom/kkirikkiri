@@ -222,7 +222,7 @@
   justify-content: stretch;
   width: 100%;
 }
-#main > .content .form .label .row .field {
+#main > .content .form .label .row .field, #main > .content .form .label .row .business-type {
   border-bottom: #4678FF solid 0.0625rem;
   background: none;
   box-sizing: border-box;
@@ -230,28 +230,42 @@
   flex: 2.5;
   padding: 0.5rem 0;
 }
-#main > .content .form .label .row .field::placeholder {
+#main > .content .form .label .row .field.field:is(select), #main > .content .form .label .row .field.business-type:is(select), #main > .content .form .label .row .field select.field, #main > .content .form .label .row .business-type.field:is(select), #main > .content .form .label .row .business-type.business-type:is(select), #main > .content .form .label .row .business-type select.field {
+  color: #353535 !important;
+}
+#main > .content .form .label .row .field.field:is(select) option, #main > .content .form .label .row .field.business-type:is(select) option, #main > .content .form .label .row .field select.field option, #main > .content .form .label .row .business-type.field:is(select) option, #main > .content .form .label .row .business-type.business-type:is(select) option, #main > .content .form .label .row .business-type select.field option {
+  color: #353535;
+  background-color: #FFFFFF;
+}
+#main > .content .form .label .row .field::placeholder, #main > .content .form .label .row .business-type::placeholder {
   color: #4A4A4A;
 }
-#main > .content .form .label .row .field[name=telecom] {
+#main > .content .form .label .row .field[name=telecom], #main > .content .form .label .row .business-type[name=telecom] {
   flex: 1;
   padding-left: 0.25rem;
   text-align: left;
 }
-#main > .content .form .label .row .field select.field {
+#main > .content .form .label .row .field select.field, #main > .content .form .label .row .field select.business-type, #main > .content .form .label .row .business-type select.field, #main > .content .form .label .row .business-type select.business-type {
   flex: 0.4;
   text-align: center;
   border: none;
   border-bottom: #4678FF solid 0.0625rem;
+  color: #353535;
   cursor: pointer;
   outline: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
 }
-#main > .content .form .label .row .field select.field option {
+#main > .content .form .label .row .field select.field option, #main > .content .form .label .row .field select.business-type option, #main > .content .form .label .row .business-type select.field option, #main > .content .form .label .row .business-type select.business-type option {
   background-color: #FFFFFF;
   color: #353535;
+}
+#main > .content .form .label .row select[name=telecom] {
+  flex: 1;
+}
+#main > .content .form .label .row select[name=businessType] {
+  flex: 2.5;
 }
 #main > .content .form .label .row button {
   background-color: #7D9DFF;

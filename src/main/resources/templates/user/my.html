@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>끼리끼리 - 회원 정보 수정</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/assets/styles/fragments.css">
+    <link rel="stylesheet" href="/user/assets/styles/myModify.css">
+    <script defer src="/assets/scripts/common.js"></script>
+    <script defer src="/user/assets/scripts/myModify.js"></script>
+</head>
+<body>
+<th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
+<div class="modify-content" id="modifyContent" data-visible>
+    <form class="modify-form" data-name="modifyForm" enctype="multipart/form-data">
+        <section class="header">
+            <h2 class="title">회원 정보 수정</h2>
+        </section>
+             <div class="profile-modify">
+            <section class="profile owner-profile" th:if="${session.sessionUser.isBoss()}">
+            <span class="upload-button">
+                <input accept="image/*" name="storeImage" type="file" class="image-change">
+                <img src="/assets/images/user/profile-update.png" alt="" class="plus-icon">
+             </span>
+                <span class="basis-profile">
+                  <span class="title" th:text="${store.storeName}"></span>
+                  <span class="myplace" th:text="${store.addressPrimary}"></span>
+                  <span class="grade owner">사장님</span>
+                 </span>
+            </section>
+            <section class="profile user-profile" th:unless="${session.sessionUser.isBoss}">
+                <span class="upload-button">
+                    <input accept="image/*" name="profileImage" type="file" class="image-change">
+                    <img src="/assets/images/user/profile-update.png" alt="" class="plus-icon">
+                </span>
+                <span class="basis-profile">
+                    <span class="title" th:text="${session.sessionUser.nickname}"></span>
+                    <span class="myplace"
+                          th:with="rawAddr=${session.sessionUser.addressPrimary},
+               addArray=${#strings.arraySplit(rawAddr, ' ')},
+               dongName=${addArray.length >= 3 ? addArray[2].replaceAll('[0-9-]', '') : (addArray.length > 2 ? addArray[1].replaceAll('[0-9-]', '') : rawAddr)}"
+                          th:text="${#strings.substringBefore(dongName, '0')} ?: ${dongName}"></span>
+                    <span class="grade">일반회원</span>
+                </span>
+            </section>
+
+            <div class="change-container">
+                <label class="label">
+                    <span class="caption">닉네임 변경</span>
+                    <span class="row">
+                    <input class="input" name="nickname" type="text" placeholder="변경할 닉네임을 입력해 주세요" th:value="${session.sessionUser.nickname}">
+                </span>
+                </label>
+                <label class="label">
+                    <span class="caption">비밀번호 변경</span>
+                    <span class="row">
+                    <input class="input" name="password" type="password" placeholder="변경할 비밀번호를 입력해 주세요">
+                </span>
+                </label>
+                <label class="label">
+                    <span class="caption">휴대폰 번호 변경</span>
+                    <span class="row">
+                    <select name="telecom" class="field">
+                       <option value="SKT">SKT</option>
+                       <option value="KT">KT</option>
+                       <option value="LG">LG U+</option>
+                       <option value="ETC">알뜰폰</option>
+                   </select>
+                    <input type="tel" name="contact" class="field" placeholder="'-' 없이 입력해 주세요" maxlength="11" th:value="${session.sessionUser.contact}">
+                </span>
+                </label>
+                <label class="label">
+                    <span class="caption">주소지 변경</span>
+                    <span class="row">
+                        <input required type="text" name="address" class="field" placeholder="주소 찾기를 이용해 주세요." readonly th:value="${session.sessionUser.addressPrimary}">
+                        <button class="addressButton" name="addressButton" type="button">주소 찾기</button>
+                    </span>
+                    <span class="row">
+                        <input type="text" name="addressDetail" class="field" placeholder="상세 주소를 입력해 주세요." th:value="${session.sessionUser.addressSecondary}">
+                    </span>
+                </label>
+            </div>
+            <div class="change-container owner-only" th:if="${session.sessionUser.isBoss}">
+                <label class="label">
+                    <span class="title">가게 정보 수정</span>
+                </label>
+                <label class="label">
+                    <span class="caption">업종 선택</span>
+                    <span class="row">
+                      <select name="businessType" class="field">
+                        <option value="" disabled selected>업종을 선택해 주세요</option>
+                        <option value="치킨">치킨</option>
+                        <option value="피자">피자</option>
+                        <option value="햄버거">햄버거</option>
+                        <option value="찜/탕">찜/탕</option>
+                        <option value="일식">일식</option>
+                        <option value="중식">중식</option>
+                        <option value="양식">양식</option>
+                        <option value="디저트/카페">디저트/카페</option>
+                      </select>
+                  </span>
+                </label>
+
+                <label class="label">
+                    <span class="caption">상호명</span>
+                    <span class="row">
+                          <input class="input" name="storeName" type="text" placeholder="상호명을 입력해 주세요" th:value="${store.storeName}">
+                    </span>
+                </label>
+
+                <label class="label">
+                    <span class="caption">가게 전화번호</span>
+                    <span class="row">
+                       <input class="input" name="storeContact" type="tel" placeholder="지역번호 포함 '-' 없이 입력" th:value="${store.storeContact}">
+                     </span>
+                </label>
+
+                <label class="label">
+                    <span class="caption">영업 시간</span>
+                    <span class="row">
+                      <input class="input" name="businessHours" type="text" placeholder="예: 평일 09:00 - 20:00">
+                    </span>
+                </label>
+
+                <label class="label">
+                    <span class="caption">가게 위치</span>
+                    <span class="row">
+                        <input required type="text" name="storeAddress" class="field" placeholder="가게 위치를 찾아주세요" readonly th:value="${store.addressPrimary}">
+                        <button class="addressButton" name="storeAddressButton" type="button">주소 찾기</button>
+                    </span>
+                </label>
+            </div>
+        </div>
+        <div class="button-container">
+            <button type="button" name="cancel" class="button">취소</button>
+            <button type="submit" name="submit" class="button">수정</button>
+            <button class="deleteBtn" type="button" id="deleteButton" name="deleteBtn">회원탈퇴</button>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

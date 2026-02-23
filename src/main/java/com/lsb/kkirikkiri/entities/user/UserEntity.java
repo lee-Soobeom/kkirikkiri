@@ -1,6 +1,7 @@
 package com.lsb.kkirikkiri.entities.user;
 
 import lombok.*;
+import org.springframework.data.relational.core.mapping.Column;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class UserEntity {
     private String contact;
     private String addressPrimary;
     private String addressSecondary;
+    private String profileImagePath;
     private boolean isAdmin;
     private boolean isBoss;
     private String storeEmail;

@@ -1,0 +1,261 @@
+#modifyContent {
+  top: 50%;
+  left: 50%;
+  width: 60rem;
+  height: 50rem;
+  background-color: #F5F7FF;
+  border-radius: 0.5rem;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  position: fixed;
+  transform: translate(-50%, -50%);
+}
+#modifyContent[data-visible] {
+  display: flex;
+}
+#modifyContent > .modify-form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+#modifyContent > .modify-form > .header {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: space-between;
+  background-color: #4678FF;
+  color: #FDFDFD;
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+}
+#modifyContent > .modify-form > .header > .title {
+  flex: 1;
+  text-align: center;
+  margin-left: 2rem;
+}
+#modifyContent > .modify-form > .header > .closeIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+}
+#modifyContent > .modify-form > .profile-modify {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  justify-content: flex-start;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 2rem;
+}
+#modifyContent > .modify-form > .profile-modify::-webkit-scrollbar {
+  width: 0.5rem;
+}
+#modifyContent > .modify-form > .profile-modify::-webkit-scrollbar-thumb {
+  background-color: rgba(70, 120, 255, 0.2);
+  border-radius: 1rem;
+}
+#modifyContent > .modify-form > .profile-modify > .profile {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  justify-content: center;
+  width: calc(100% - 8rem);
+  height: 16.5rem;
+  background-color: #FDFDFD;
+  border-radius: 1.5rem;
+  flex-shrink: 0;
+  margin: 1.5rem auto;
+  padding: 2rem 0;
+}
+#modifyContent > .modify-form > .profile-modify > .profile > .upload-button {
+  width: 8rem;
+  height: 8rem;
+  background-image: url("../../../assets/images/my/my.user.png");
+  background-position: center;
+  background-size: cover;
+  display: inline-block;
+  border: rgba(70, 120, 255, 0.8784313725) solid 0.0825rem;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+}
+#modifyContent > .modify-form > .profile-modify > .profile > .upload-button .image-change {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  z-index: 10;
+}
+#modifyContent > .modify-form > .profile-modify > .profile > .upload-button > .plus-icon {
+  bottom: 0;
+  right: 0;
+  width: 3rem;
+  height: 3rem;
+  background-image: url("../../../assets/images/user/profile-update.png");
+  background-position: center;
+  background-size: cover;
+  border-radius: 50%;
+  object-fit: none;
+  position: absolute;
+}
+#modifyContent > .modify-form > .profile-modify > .profile > .basis-profile {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  justify-content: stretch;
+}
+#modifyContent > .modify-form > .profile-modify > .profile > .basis-profile > .title {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+#modifyContent > .modify-form > .profile-modify > .profile > .basis-profile > .myplace {
+  color: #7d7d7d;
+  font-size: 1.025rem;
+  font-weight: 500;
+}
+#modifyContent > .modify-form > .profile-modify > .profile > .basis-profile > .grade {
+  background-color: rgb(80.2, 127.4432432432, 255);
+  border-radius: 0.25rem;
+  color: #FDFDFD;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.325rem 0.45rem;
+}
+#modifyContent > .modify-form > .profile-modify > .change-container {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: flex-start;
+  width: calc(100% - 8rem);
+  background-color: #FDFDFD;
+  border-radius: 1.5rem;
+  flex-shrink: 0;
+  margin: 0.25rem auto;
+  padding: 3.5rem;
+}
+#modifyContent > .modify-form > .profile-modify > .change-container > .label {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  justify-content: center;
+  width: 100%;
+  border-bottom: 0.0625rem solid rgba(234, 234, 234, 0.8784313725);
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+#modifyContent > .modify-form > .profile-modify > .change-container > .label:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+#modifyContent > .modify-form > .profile-modify > .change-container > .label > .caption {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-left: 0.5rem;
+}
+#modifyContent > .modify-form > .profile-modify > .change-container > .label > .row {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  justify-content: space-between;
+  width: 90%;
+}
+#modifyContent > .modify-form > .profile-modify > .change-container > .label > .row .input, #modifyContent > .modify-form > .profile-modify > .change-container > .label > .row .field {
+  border: none;
+  border-bottom: 0.1rem solid transparent;
+  flex: 1;
+  font-size: 1.1rem;
+  padding: 0.8rem 0.5rem;
+  transition: border-bottom-color 0.3s;
+}
+#modifyContent > .modify-form > .profile-modify > .change-container > .label > .row .input:focus, #modifyContent > .modify-form > .profile-modify > .change-container > .label > .row .field:focus {
+  outline: none;
+  border-bottom-color: #4678FF;
+}
+#modifyContent > .modify-form > .profile-modify > .change-container > .label > .row > .addressButton {
+  background-color: rgb(90.4, 134.8864864865, 255);
+  border-radius: 0.25rem;
+  color: #FDFDFD;
+  flex-shrink: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.45rem 0.65rem;
+}
+#modifyContent > .modify-form > .profile-modify > .change-container > .label > .row > .addressButton:hover {
+  background-color: rgb(80.2, 127.4432432432, 255);
+}
+#modifyContent > .modify-form > .profile-modify > .change-container > .label > .row > .addressButton:active {
+  background-color: #4678FF;
+}
+#modifyContent > .modify-form > .button-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  justify-content: flex-start;
+  width: 100%;
+  background-color: #F5F7FF;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 1.5rem 4rem;
+}
+#modifyContent > .modify-form > .button-container .button {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  width: 6rem;
+  height: 2.8rem;
+  background-color: #7D9DFF;
+  border: none;
+  border-radius: 0.5rem;
+  color: #FDFDFD;
+  flex: none;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+#modifyContent > .modify-form > .button-container .button:hover {
+  background-color: #6E91FF;
+}
+#modifyContent > .modify-form > .button-container .button[name=delete] {
+  margin-left: auto;
+}
+#modifyContent > .modify-form > .button-container .button[name=cancel] {
+  background-color: #FF4646;
+}
+#modifyContent > .modify-form > .button-container .button[name=cancel]:hover {
+  background-color: #E63E3E;
+}
+#modifyContent > .modify-form > .button-container .deleteBtn {
+  width: auto;
+  border: #4678FF solid 0.0625rem;
+  border-radius: 0.25rem;
+  color: #4678FF;
+  cursor: pointer;
+  flex: none;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-left: auto;
+  padding: 0.75rem;
+}
+
+/*# sourceMappingURL=myModify.css.map */

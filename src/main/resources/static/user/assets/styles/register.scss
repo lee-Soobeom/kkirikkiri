@@ -1,5 +1,4 @@
 @use "sass:color";
-@import "../../../assets/styles/objects/dialog";
 @import "../../../assets/styles/def";
 
 #main {
@@ -212,13 +211,22 @@
           @include flex(row, stretch, center, 1rem);
           width: 100%;
 
-          .field {
+          .field, .business-type {
             border-bottom: #4678FF solid 0.0625rem;
             background: none;
             box-sizing: border-box;
             color: #4678FF;
             flex: 2.5;
             padding: 0.5rem 0;
+
+            &.field:is(select), &.business-type:is(select), select.field {
+              color: #353535 !important;
+
+              option {
+                color: #353535;
+                background-color: #FFFFFF;
+              }
+            }
 
             &::placeholder {
               color: #4A4A4A;
@@ -230,11 +238,12 @@
               text-align: left;
             }
 
-            select.field {
+            select.field, select.business-type {
               flex: 0.4;
               text-align: center;
               border: none;
               border-bottom: #4678FF solid 0.0625rem;
+              color: #353535;
               cursor: pointer;
               outline: none;
               -webkit-appearance: none;
@@ -248,6 +257,13 @@
             }
           }
 
+          select[name="telecom"] {
+            flex: 1;
+          }
+
+          select[name="businessType"] {
+            flex: 2.5;
+          }
           button {
             background-color: #7D9DFF;
             border: none;

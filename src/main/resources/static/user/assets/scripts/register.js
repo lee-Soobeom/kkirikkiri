@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    if (typeof dialogHandler !== 'undefined' && !dialogHandler.$dialog) {
+        dialogHandler.$dialog = document.getElementById('dialog');
+    }
+
     const switchButtons = document.querySelectorAll('.switch-btn');
     const forms = document.querySelectorAll('.form');
     const birthYearSelects = document.querySelectorAll('select[name="birthYear"]');
@@ -42,8 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
             switchButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
-            forms.forEach(form => {form.removeAttribute('data-visible');
-                form.scrollTop = 0;});
+            forms.forEach(form => {
+                form.removeAttribute('data-visible');
+                form.scrollTop = 0;
+            });
 
             const targetForm = document.querySelector(`.form[data-type="${type}"]`);
             if (targetForm) {
@@ -163,12 +170,12 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             let firstErrorField = null;
 
+            // 1. 유효성 검사 로직
             const inputs = form.querySelectorAll('.field[required], .field[name]');
             inputs.forEach(input => {
                 const rule = validateRules[input.name];
                 const label = input.closest('.label');
                 const value = input.value.trim();
-
                 if (!label) return;
 
                 if (value === "") {
@@ -180,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            // 비밀번호 일치 확인
             const password = form['password'];
             const passwordCheck = form['passwordCheck'];
             if (password && passwordCheck && password.value !== passwordCheck.value) {
@@ -187,10 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!firstErrorField) firstErrorField = passwordCheck;
             }
 
+            // 약관 동의 확인
             const requiredTerms = form.querySelectorAll('.term input[required]');
             const allChecked = Array.from(requiredTerms).every(checkBox => checkBox.checked);
             if (!allChecked) {
-                // alert('모든 필수 약관에 동의해 주세요.');
                 dialogHandler.simpleYesModal('경고', '모든 필수 약관에 동의해 주세요.');
                 return;
             }
@@ -200,70 +208,80 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const formData = new FormData(form);
-            const year = form['birthYear'].value;
-            const month = form['birthMonth'].value;
-            const day = form['birthDay'].value;
-            const marketingCheckbox = form.querySelector('input[name="termMarketingAgreed"]');
-            const $emailValue = form.querySelector('input[name="email"]').value;
-            const $emailCodeValue = form.querySelector('input[name="emailCode"]').value;
-            const $emailSaltValue = form.querySelector('input[name="emailSalt"]').value;
-            formData.append('type', form.getAttribute('data-type'));
+            // 2. FormData 생성 (여기서 모든 데이터를 모읍니다)
+            const formData = new FormData(form); // 현재 이벤트가 발생한 '그 폼'의 데이터를 가져옴
+
+            // 이메일 인증 토큰 (폼 내부에 해당 input이 있다고 가정)
+            const $codeInput = form['code'];
+            const $saltInput = form['salt'];
+            if ($saltInput && $saltInput.value === "") {
+                dialogHandler.simpleYesModal('경고', '이메일 인증을 완료해 주세요.');
+                return;
+            }
+
+            // 생년월일 조합
+            const year = form['birthYear']?.value;
+            const month = form['birthMonth']?.value;
+            const day = form['birthDay']?.value;
             if (year && month && day) {
-                formData.append('birth', `${year}-${month}-${day}`);
+                formData.set('birth', `${year}-${month}-${day}`);
             }
-            if (form.getAttribute('data-type') === 'boss') {
-                const licenseFile = form.querySelector('input[name="businessLicense"]').files[0];
-                const reportFile = form.querySelector('input[name="reportCardUrl"]').files[0];
-                if(licenseFile) formData.append('businessLicense', licenseFile);
-                if(reportFile) formData.append('reportCardUrl', reportFile);
+
+            // 마케팅 수신 동의
+            const marketingCheckbox = form.querySelector('input[name="termMarketing"]');
+            formData.set('termMarketingAgreed', marketingCheckbox && marketingCheckbox.checked ? 'true' : 'false');
+
+            // 사장님 여부 및 전용 필드
+            const isBoss = form.getAttribute('data-type') === 'boss';
+            formData.set('isBoss', String(isBoss));
+
+            if (isBoss) {
+                // 파일은 name 속성으로 자동 담기지만, 명시적으로 다시 한번 확인
+                const licenseFile = form.querySelector('input[name="licenseFile"]')?.files[0];
+                const reportFile = form.querySelector('input[name="reportCardFile"]')?.files[0];
+                if (licenseFile) formData.set('licenseFile', licenseFile);
+                if (reportFile) formData.set('reportCardFile', reportFile);
             }
-            formData.append('termMarketingAgreed', marketingCheckbox && marketingCheckbox.checked ? 'true' : 'false');
-            formData.append('isBoss', String(form.getAttribute('data-type') === 'boss'));
-            formData.set('email', $emailValue);
-            formData.append('code', $emailCodeValue);
-            formData.append('salt', $emailSaltValue);
 
-            // if (typeof mtLoading !== 'undefined') {
-            //     mtLoading.show();
-            // }
-
-            fetch('/user/register', {
-                method: 'POST',
-                body: formData
-            }).then(response => {
-                //mtLoading.hide();
-                if (!response.ok) throw new Error(response.status.toString());
-                return response.json();
-            })
-                .then(response => {
-                    switch (response.result) {
-                        case 'SUCCESS':
-                            dialogHandler.simpleYesModal('알림', '회원 가입이 완료되었습니다!');
-                            // alert('회원가입이 완료되었습니다!');
-                            location.href = '/user/login';
-                            break;
-                        case 'FAILURE_DUPLICATE_EMAIL':
-                            dialogHandler.simpleYesModal('경고', `입력하신 이메일(${$emailInput.value})은 이미 사용 중인 이메일입니다.`)
-                            // alert('이미 사용 중인 이메일입니다.');
-                            break;
-                        case 'FAILURE':
-                            dialogHandler.simpleYesModal('경고', '가입 처리 중 알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-                            // alert('가입 처리 중 알 수 없는 오류가 발생했습니다.');
-                            break;
-                        default:
-                            dialogHandler.simpleYesModal('오류', `서버 응답 중 오류가 생겼습니다. 잠시 후 다시 시도해 주세요. ${response.result})`);
-                            // alert(`서버 응답 오류: ${response.result}`);
-                    }
-                })
-                .catch(error => {
-                    //mtLoading.hide();
-                    dialogHandler.simpleYesModal('오류', `요청을 전송하는 도중 오류가 발생했습니다. (${error})`);
-                    // alert(`요청을 전송하는 도중 오류가 발생했습니다. (${error})`);
-                });
+            // 3. 데이터를 들고 handleRegister 호출
+            handleRegister(form, formData);
         });
-
     });
+
+    const handleRegister = ($form, formData) => {
+        // 이제 formData는 위에서 만든 완성된 데이터를 인자로 받습니다.
+        const $emailInput = $form['email'];
+        const $nicknameInput = $form['nickname'];
+
+        fetch('/user/register', {
+            method: 'POST',
+            body: formData // 인자로 받은 formData를 그대로 전송
+        }).then(response => {
+            if (!response.ok) throw new Error(response.status.toString());
+            return response.json();
+        }).then(data => {
+            switch (data.result) {
+                case 'SUCCESS':
+                    dialogHandler.simpleYesModal('알림', '회원 가입이 완료되었습니다!', {
+                        onclick: () => location.href = '/user/login'
+                    });
+                    break;
+                case 'FAILURE_DUPLICATE_EMAIL':
+                    dialogHandler.simpleYesModal('경고', `이미 사용 중인 이메일입니다.`);
+                    break;
+                case 'FAILURE_DUPLICATE_NICKNAME':
+                    dialogHandler.simpleYesModal('경고', `이미 사용 중인 닉네임입니다.`);
+                    break;
+                case 'FAILURE':
+                    dialogHandler.simpleYesModal('경고', '가입 처리 중 오류가 발생했습니다.');
+                    break;
+                default:
+                    dialogHandler.simpleYesModal('경고', '서버 응답 오류');
+            }
+        }).catch(error => {
+            dialogHandler.simpleYesModal('오류', `서버 통신 문제 (${error})`);
+        });
+    }
 
     const addressButtons = document.querySelectorAll('button[name="addressButton"]');
 
@@ -295,11 +313,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.querySelectorAll('button[name="emailCodeSendButton"]').forEach($sendButton => {
+    document.querySelectorAll('button[name="codeSendButton"]').forEach($sendButton => {
         $sendButton.addEventListener('click', () => {
             const $currentForm = $sendButton.closest('.form');
             const $emailInput = $currentForm.querySelector('input[name="email"]');
-            const $emailCodeSendButton = document.querySelectorAll('button[name="emailCodeSendButton"]');
+            const $codeSendButton = document.querySelectorAll('button[name="codeSendButton"]');
             // const emailLabel = $emailInput.closest('.label');
 
             if ($emailInput.value === '') {
@@ -334,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         dialogHandler.simpleYesModal('경고', `입력하신 이메일(${$emailInput.value}) 은/는 이미 사용 중입니다.`);
                         break;
                     case 'SUCCESS':
-                        $currentForm.querySelector('input[name="emailSalt"]').value = response['salt'];
+                        $currentForm.querySelector('input[name="salt"]').value = response['salt'];
                         dialogHandler.simpleYesModal('알림', `입력하신 이메일(${$emailInput.value})로 인증번호를 전송하였습니다. 인증번호는 3분간만 유효하니 유의해 주세요.`)
                         break;
                     default:
@@ -346,31 +364,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.querySelectorAll('button[name="emailCodeVerifyButton"]').forEach($verifyButton => {
+    document.querySelectorAll('button[name="codeVerifyButton"]').forEach($verifyButton => {
         $verifyButton.addEventListener('click', () => {
             const $currentForm = $verifyButton.closest('.form');
             const $emailInput = $currentForm.querySelector('input[name="email"]');
-            const $emailCodeInput = $currentForm.querySelector('input[name="emailCode"]');
-            const $emailSaltInput = $currentForm.querySelector('input[name="emailSalt"]');
+            const $codeInput = $currentForm.querySelector('input[name="code"]');
+            const $saltInput = $currentForm.querySelector('input[name="salt"]');
 
-            if ($emailCodeInput.value === '') {
+            if ($codeInput.value === '') {
                 dialogHandler.simpleYesModal('경고', '이메일 인증번호를 입력해 주세요');
-                $emailCodeInput.focus();
+                $codeInput.focus();
                 return;
             }
 
-            if (!/^(\d{6})$/.test($emailCodeInput.value)){
+            if (!/^(\d{6})$/.test($codeInput.value)) {
                 dialogHandler.simpleYesModal('경고', '올바른 이메일 인증번호를 입력해 주세요');
-                $emailCodeInput.focus();
-                $emailCodeInput.select();
+                $codeInput.focus();
+                $codeInput.select();
                 return;
             }
 
             const xhr = new XMLHttpRequest();
             const formData = new FormData();
             formData.append('email', $emailInput.value);
-            formData.append('code', $emailCodeInput.value);
-            formData.append('salt', $emailSaltInput.value);
+            formData.append('code', $codeInput.value);
+            formData.append('salt', $saltInput.value);
             xhr.onreadystatechange = () => {
                 if (xhr.readyState !== XMLHttpRequest.DONE) {
                     return;
@@ -389,7 +407,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         $emailInput.focus();
                         break;
                     case 'SUCCESS':
-                        $currentForm.querySelector('input[name="emailSalt"]').value = response['salt'];
+                        $currentForm.querySelector('input[name="salt"]').value = response['salt'];
+                        dialogHandler.simpleYesModal('알림', '인증 완료되었습니다.')
                         break;
                     default:
                         dialogHandler.simpleYesModal('경고', '서버가 알 수 없는 응답을 반환하였습니다. 잠시 후 다시 시도해 주세요.');
@@ -400,6 +419,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    let isBusinessVerified = false;
+
+    const $businessCheckButton = document.querySelector('button[name="businessCheckButton"]')
+    $businessCheckButton.addEventListener('click', () => {
+        const $businessNumberInput = document.querySelector('input[name="businessNumber"]');
+        const number = $businessNumberInput.value;
+        fetch(`/user/verify-business?businessNumber=${number}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'SUCCESS') {
+                    dialogHandler.simpleYesModal('알림', '인증되었습니다.');
+                    isBusinessVerified = true;
+                    $businessNumberInput.readOnly = true;
+                } else {
+                    dialogHandler.simpleYesModal('경고', '유효하지 않은 사업자 번호입니다.');
+                    isBusinessVerified = false;
+                }
+            });
+    });
+
     document.querySelectorAll('button[name="nicknameCheck"]').forEach($checkButton => {
         $checkButton.addEventListener('click', () => {
             const $currentForm = $checkButton.closest('.form');
@@ -407,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const $nicknameLabel = $nicknameInput.closest('.label');
 
             if ($nicknameInput.value === '') {
-                toggleMessage($nicknameLabel, true, '닉네임을 입력해 주세요')
+                dialogHandler.simpleYesModal('경고', '닉네임을 입력해 주세요');
                 $nicknameInput.focus();
                 return;
             }
@@ -435,14 +474,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 switch (response.result) {
                     case 'FAILURE':
                         // 이미 사용 중인 경우
-                        toggleMessage($nicknameLabel, true, `입력하신 닉네임(${$nicknameInput.value})은 이미 사용 중입니다.`);
+                        dialogHandler.simpleYesModal('경고', `입력하신 닉네임(${$nicknameInput.value})은 이미 사용 중입니다.`);
                         break;
 
                     case 'SUCCESS':
                         // 사용 가능한 경우
-                        if (confirm(`입력하신 닉네임(${$nicknameInput.value})은 사용 가능합니다. 해당 닉네임을 사용할까요?`)) {
-                            toggleMessage($nicknameLabel, false);
-                        }
+                        dialogHandler.simpleYesModal('알림', `입력하신 닉네임(${$nicknameInput.value})은 사용 가능합니다. 해당 닉네임을 사용할까요?`);
                         break;
 
                     default:
@@ -455,32 +492,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-});
 
+    /**
+     * @param {HTMLElement} labelElement
+     * @param {boolean} isError
+     * @param {string} message*/
 
+    function toggleMessage(labelElement, isError, message = "") {
+        const infoMessage = labelElement.querySelector('[data-message="info"]');
+        const warningMessage = labelElement.querySelector('[data-message="warning"]');
 
+        if (isError) {
+            infoMessage?.removeAttribute('data-visible');
+            warningMessage?.setAttribute('data-visible', '');
 
-
-
-/**
- * @param {HTMLElement} labelElement
- * @param {boolean} isError
- * @param {string} message*/
-
-function toggleMessage(labelElement, isError, message = "") {
-    const infoMessage = labelElement.querySelector('[data-message="info"]');
-    const warningMessage = labelElement.querySelector('[data-message="warning"]');
-
-    if (isError) {
-        infoMessage?.removeAttribute('data-visible');
-        warningMessage?.setAttribute('data-visible', '');
-
-        const warningText = warningMessage?.querySelector('.text');
-        if (warningText && message) {
-            warningText.innerText = message;
+            const warningText = warningMessage?.querySelector('.text');
+            if (warningText && message) {
+                warningText.innerText = message;
+            }
+        } else {
+            warningMessage?.removeAttribute('data-visible');
+            infoMessage?.setAttribute('data-visible', '');
         }
-    } else {
-        warningMessage?.removeAttribute('data-visible');
-        infoMessage?.setAttribute('data-visible', '');
     }
-}
+});
