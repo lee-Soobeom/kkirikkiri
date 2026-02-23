@@ -69,7 +69,6 @@
             `content`           = #{content},
             `isShareChecked`    = #{IsShareChecked},
             `isEntryChecked`    = #{IsEntryChecked},
-            `created_at`        = #{createdAt},
             `updated_at`        = #{updatedAt},
             `view`              = #{view}
         WHERE `id` = #{id}
@@ -81,6 +80,11 @@
         SET view = view + 1
         WHERE id = #{id}
     </update>
+    <delete id="deleteById">
+        DELETE FROM `kkirikkiri`.`articles`
+        WHERE `id` = #{id}
+        LIMIT 1
+    </delete>
     <select id="selectById"
             resultType="com.lsb.kkirikkiri.vos.ArticleVo">
         SELECT `t1`.`id`                AS `id`,
@@ -106,8 +110,7 @@
                `t1`.`isEntryChecked`    AS `IsEntryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
-               `t1`.`view`              AS `view`,
-               `t2`.`nickname`          AS `nickname`
+               `t1`.`view`              AS `view`
         FROM `kkirikkiri`.`articles` AS `t1`
                  LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `t1`.`id` = #{id}
@@ -176,13 +179,13 @@
         <if test="boardSearch.by.equals('titleContent')">
             AND (`t1`.`title` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
             OR `t1`.`content` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
-            OR `t1`.`nickname` LIKE CONCAT('%', #{boardSearch.keyword}, '%'))
+            OR `t1`.`user_id` LIKE CONCAT('%', #{boardSearch.keyword}, '%'))
         </if>
         <if test="boardSearch.by.equals('title')">
             AND `t1`.`title` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
         </if>
-        <if test="boardSearch.by.equals('nickname')">
-            AND `t1`.`nickname` = #{boardSearch.keyword}
+        <if test="boardSearch.by.equals('userId')">
+            AND `t1`.`user_id` = #{boardSearch.keyword}
         </if>
         ORDER BY `t1`.`id` DESC
         LIMIT #{boardPage.rowCount}
@@ -190,9 +193,17 @@
     </select>
 <!--    페이지 계산용-->
     <select id="selectCountByBoardId" resultType="java.lang.Integer">
-        SELECT COUNT(0)
+        SELECT COUNT(*)
         FROM `kkirikkiri`.`articles`
         WHERE `board_id` = #{boardId}
+    </select>
+    <select id="selectCountByBoardIdAndMenu" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `kkirikkiri`.`articles`
+        WHERE `board_id` = #{boardId}
+        <if test="menu != null and menu != 'all'">
+            AND `menu` = #{menu}
+        </if>
     </select>
 <!--    검색 개수-->
     <select id="selectCountByBoardSearch" resultType="java.lang.Integer">
@@ -203,7 +214,7 @@
             AND (
             `t1`.`title` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
             OR `t1`.`content` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
-            OR `t1`.`nickname` LIKE CONCAT(`%`, #{boardSearch.keyword}, `%`)
+            OR `t1`.`user_id` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
             )
         </if>
 
@@ -211,8 +222,8 @@
             AND `t1`.`title` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
         </if>
 
-        <if test="boardSearch.by.equals('nickname')">
-            AND `t1`.`nickname` = #{boardSearch.keyword}
+        <if test="boardSearch.by.equals('userId')">
+            AND `t1`.`user_id` = #{boardSearch.keyword}
         </if>
     </select>
     <!-- 최신순 -->
@@ -277,4 +288,104 @@
         ORDER BY `view` DESC
         LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
     </select>
+    <select id="selectAllBoardIdAndMenuOrderByCreatedAt">
+        SELECT `t1`.`id`                AS `id`,
+               `t1`.`board_id`          AS `boardId`,
+               `t1`.`user_id`           AS `userId`,
+               `t1`.`participants_id`   AS `participantsId`,
+               `t1`.`wallet_id`         AS `walletId`,
+               `t1`.`title`             AS `title`,
+               `t1`.`menu`              AS `menu`,
+               `t1`.`menu_name`         AS `menuName`,
+               `t1`.`min_order_price`   AS `minOrderPrice`,
+               `t1`.`order_price`       AS `orderPrice`,
+               `t1`.`delivery_price`    AS `deliveryPrice`,
+               `t1`.`order_time`        AS `orderTime`,
+               `t1`.`pickup_time`       AS `pickupTime`,
+               `t1`.`restaurant`        AS `restaurant`,
+               `t1`.`restaurant_lat`    AS `restaurantLat`,
+               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`address_primary`   AS `addressPrimary`,
+               `t1`.`address_secondary` AS `addressSecondary`,
+               `t1`.`content`           AS `content`,
+               `t1`.`isShareChecked`    AS `IsShareChecked`,
+               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`created_at`        AS `createdAt`,
+               `t1`.`updated_at`        AS `updatedAt`,
+               `t1`.`view`              AS `view`
+        FROM `kkirikkiri`.`articles` AS `t1`
+        WHERE `board_id` = #{boardId}
+          AND `t1`.`menu` = #{menu}
+        ORDER BY `created_at` DESC
+        LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
+    </select>
+    <select id="selectAllBoardIdAndMenuOrderByView">
+        SELECT `t1`.`id`                AS `id`,
+               `t1`.`board_id`          AS `boardId`,
+               `t1`.`user_id`           AS `userId`,
+               `t1`.`participants_id`   AS `participantsId`,
+               `t1`.`wallet_id`         AS `walletId`,
+               `t1`.`title`             AS `title`,
+               `t1`.`menu`              AS `menu`,
+               `t1`.`menu_name`         AS `menuName`,
+               `t1`.`min_order_price`   AS `minOrderPrice`,
+               `t1`.`order_price`       AS `orderPrice`,
+               `t1`.`delivery_price`    AS `deliveryPrice`,
+               `t1`.`order_time`        AS `orderTime`,
+               `t1`.`pickup_time`       AS `pickupTime`,
+               `t1`.`restaurant`        AS `restaurant`,
+               `t1`.`restaurant_lat`    AS `restaurantLat`,
+               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`address_primary`   AS `addressPrimary`,
+               `t1`.`address_secondary` AS `addressSecondary`,
+               `t1`.`content`           AS `content`,
+               `t1`.`isShareChecked`    AS `IsShareChecked`,
+               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`created_at`        AS `createdAt`,
+               `t1`.`updated_at`        AS `updatedAt`,
+               `t1`.`view`              AS `view`
+        FROM `kkirikkiri`.`articles` AS `t1`
+        WHERE `board_id` = #{boardId}
+          AND `t1`.`menu` = #{menu}
+        ORDER BY `view` DESC
+        LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
+    </select>
+    <select id="selectImminentShareArticles">
+        SELECT `t1`.`id`                AS `id`,
+        `t1`.`board_id`          AS `boardId`,
+        `t1`.`user_id`           AS `userId`,
+        `t1`.`participants_id`   AS `participantsId`,
+        `t1`.`wallet_id`         AS `walletId`,
+        `t1`.`title`             AS `title`,
+        `t1`.`menu`              AS `menu`,
+        `t1`.`menu_name`         AS `menuName`,
+        `t1`.`min_order_price`   AS `minOrderPrice`,
+        `t1`.`order_price`       AS `orderPrice`,
+        `t1`.`delivery_price`    AS `deliveryPrice`,
+        `t1`.`order_time`        AS `orderTime`,
+        `t1`.`pickup_time`       AS `pickupTime`,
+        `t1`.`restaurant`        AS `restaurant`,
+        `t1`.`restaurant_lat`    AS `restaurantLat`,
+        `t1`.`restaurant_lng`    AS `restaurantLng`,
+        `t1`.`address_primary`   AS `addressPrimary`,
+        `t1`.`address_secondary` AS `addressSecondary`,
+        `t1`.`content`           AS `content`,
+        `t1`.`isShareChecked`    AS `IsShareChecked`,
+        `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+        `t1`.`created_at`        AS `createdAt`,
+        `t1`.`updated_at`        AS `updatedAt`,
+        `t1`.`view`              AS `view`
+        FROM `kkirikkiri`.`articles`AS `t1`
+        WHERE `board_id` = #{boardId}
+        AND `order_time` IS NOT NULL
+        AND `order_time` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 30 MINUTE)
+
+        <if test="menu != null and menu != '' and menu != 'all'">
+            AND `menu` = #{menu}
+        </if>
+        ORDER BY `orderTime` ASC
+        LIMIT 10
+    </select>
+
+
 </mapper>

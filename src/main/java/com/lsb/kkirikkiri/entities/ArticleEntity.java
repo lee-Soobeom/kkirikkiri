@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @EqualsAndHashCode(of = "id")
 public class ArticleEntity {
-    private int id;
+    private Integer id;
     private String boardId;
     private String userId;
     private int participantsId;

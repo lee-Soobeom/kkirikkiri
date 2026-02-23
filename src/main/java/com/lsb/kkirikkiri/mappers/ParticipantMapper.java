@@ -10,5 +10,7 @@ public interface ParticipantMapper {
 
     int update(@Param(value = "participant") ParticipantEntity participant);
 
+    int deleteByArticleId(@Param("articleId") int articleId);
+
     ParticipantEntity selectById(@Param(value = "articleId") int articleId);
 }

@@ -134,13 +134,19 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div class="button-container">
+                    <div class="button-container" th:if="${session.sessionUser != null}">
                         <button class="button" name="participate" type="button"
-                                th:if="${session.sessionUser.email != participants.leader && !#strings.contains(participants.participants, session.sessionUser.email)}">
+                                th:if="${session.sessionUser != null
+                                && participants != null
+                                && session.sessionUser.email != participants.leader
+                                && !#strings.contains(participants.participants, session.sessionUser.email)}">
                             참여하기
                         </button>
                         <button class="button" name="pay" type="button"
-                                th:if="${session.sessionUser.email == participants.leader || #strings.contains(participants.participants, session.sessionUser.email)}">
+                                th:if="${session.sessionUser != null
+                                && participants != null
+                                && (session.sessionUser.email == participants.leader
+                                || #strings.contains(participants.participants, session.sessionUser.email))}">
                             계산하기
                         </button>
                     </div>
@@ -155,6 +161,24 @@
                 <div class="text" th:text="${article.content}"></div>
             </div>
         </div>
+    </div>
+    <div class="action-container"
+    th:if="${session.sessionUser != null and session.sessionUser.email == article.userId}">
+        <form th:if="${session.sessionUser != null and session.sessionUser.email == article.userId}"
+              th:action="@{/article/{boardType}/modify(boardType=${boardType})}"
+              method="get">
+            <input type="hidden" name="id" th:value="${article.id}">
+            <button data-object="button" data-color="concept" type="submit">수정하기</button>
+        </form>
+        <form th:if="${session.sessionUser != null and session.sessionUser.email == article.userId}"
+              th:action="@{/article/{boardType}/delete(boardType=${boardType})}"
+              method="post">
+            <input type="hidden" name="id" th:value="${article.id}">
+            <button data-object="button"
+                    data-color="red"
+                    type="submit"
+                    onclick="return confirm('정말 삭제하시겠습니까?')">삭제하기</button>
+        </form>
     </div>
 </main>
 </body>

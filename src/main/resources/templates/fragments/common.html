@@ -134,8 +134,10 @@
     <li class="item" th:if="${board != null}">
         <a
                 class="link"
-                th:href="@{/article/{boardId}/write(boardId=${boardId})}">
-            게시글 작성
+                th:href="@{/article/{boardId}/write(boardId=${boardId})}"
+        th:if="${board != null
+        && session.sessionUser != null
+        && (!board.isAdminOnly() || session.sessionUser.isAdmin())}">작성하기
         </a>
     </li>
 

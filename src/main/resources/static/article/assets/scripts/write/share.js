@@ -146,6 +146,7 @@ $radioSecondary.addEventListener('change', () => {
 
 $writeForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    const isModify = $writeForm['mode'].value === 'modify';
     // title
     if ($writeForm['title'].value === '') {
         dialogHandler.simpleYesModal('경고', '제목을 입력해 주세요.');
@@ -256,6 +257,13 @@ $writeForm.addEventListener('submit', (e) => {
         return;
     }
 
+    const restaurant = $writeForm['restaurant'];
+
+    if (!restaurant.dataset['lng'] || !restaurant.dataset['lat']) {
+        dialogHandler.simpleYesModal('경고', '가게를 다시 선택해 주세요.');
+        return;
+    }
+
     // restaurant lat & lng
     if ($writeForm['restaurant'].dataset['lng'].split('.')[0] < 125
         || $writeForm['restaurant'].dataset['lng'].split('.')[0] > 132) {
@@ -318,6 +326,10 @@ $writeForm.addEventListener('submit', (e) => {
     formData.append('content', $writeForm['content'].value);
     formData.append('IsShareChecked', $writeForm['shareCheck'].value);
     formData.append('IsEntryChecked', $writeForm['entryCheck'].checked);
+    if (isModify) {
+        const idInput = $writeForm.querySelector('input[name="id"]');
+        formData.append('id', idInput.value);
+    }
     // todo: xhr formData 까지만 함. userId 완성되면 추가해서 DB 시작하기.
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
@@ -328,37 +340,66 @@ $writeForm.addEventListener('submit', (e) => {
             return;
         }
         const response = JSON.parse(xhr.responseText);
+        const idInput = $writeForm.querySelector('input[name="id"]');
+        const isModify = idInput && idInput.value !== '';
         console.log(response);
-        switch (response["articleResult"]) {
-            case 'SUCCESS':
-                $writeForm['title'].value = '';
-                $writeForm['menu'].value = '';
-                $writeForm['menuName'].value = '';
-                $writeForm['minOrderPrice'].value = '';
-                $writeForm['orderPrice'].value = '';
-                $writeForm['deliveryPrice'].value = '';
-                $writeForm['orderTime'].value = '';
-                $writeForm['pickupTime'].value = '';
-                $writeForm['restaurant'].value = '';
-                $writeForm['addressCheck'][0].checked = true;
-                $writeForm['addressPrimary'].value = '';
-                $writeForm['addressSecondary'].value = '';
-                $writeForm['content'].value = '';
-                $writeForm['entryCheck'].checked = false;
-                location.href = `/article/share?id=${response.id}`;
-                break;
-            case 'FAILURE':
-                alert('failure');
-                break;
-            case 'FAILURE_SESSION':
-                alert('failure_session');
-                break;
-            default:
-                alert('default ???');
-                break;
+
+        if (isModify) {
+            // 수정
+            switch (response["result"]) {
+                case 'SUCCESS':
+                    location.href = `/article/share?id=${idInput.value}`;
+                    break;
+                case 'FAILURE':
+                    alert('수정 실패');
+                    break;
+                case 'FAILURE_SESSION':
+                    alert('세션 만료');
+                    break;
+                default:
+                    alert('알 수 없는 오류');
+                    break;
+            }
+        } else {
+            // 작성
+            switch (response["articleResult"]) {
+                case 'SUCCESS':
+                    $writeForm['title'].value = '';
+                    $writeForm['menu'].value = '';
+                    $writeForm['menuName'].value = '';
+                    $writeForm['minOrderPrice'].value = '';
+                    $writeForm['orderPrice'].value = '';
+                    $writeForm['deliveryPrice'].value = '';
+                    $writeForm['orderTime'].value = '';
+                    $writeForm['pickupTime'].value = '';
+                    $writeForm['restaurant'].value = '';
+                    $writeForm['addressCheck'][0].checked = true;
+                    $writeForm['addressPrimary'].value = '';
+                    $writeForm['addressSecondary'].value = '';
+                    $writeForm['content'].value = '';
+                    $writeForm['entryCheck'].checked = false;
+
+                    location.href = `/article/share?id=${response.id}`;
+                    break;
+                case 'FAILURE':
+                    alert('failure');
+                    break;
+                case 'FAILURE_SESSION':
+                    alert('failure_session');
+                    break;
+                default:
+                    alert('default ???');
+                    break;
+            }
         }
     };
-    xhr.open('POST', '/article/share/write');
+    const pathParts = window.location.pathname.split('/');
+    const boardType = pathParts[2];
+
+    const actionUrl = isModify
+        ? `/article/${boardType}/modify`
+        : `/article/${boardType}/write`;
+    xhr.open('POST', actionUrl);
     xhr.send(formData);
 })
 

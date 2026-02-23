@@ -13,7 +13,7 @@
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=services"></script>
     <script defer src="/assets/scripts/common.js"></script>
-    \<script defer src="/assets/scripts/dialog.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/dialog.js" type="text/javascript"></script>
     <script defer src="/article/assets/scripts/write/promote.js"></script>
 </head>
 <body>
@@ -29,7 +29,7 @@
     </div>
     <div class="error empty-session" th:if="${board != null && sessionUser == null}">
         <h1 class="title">게시글 작성</h1>
-        <span class="message">게시글은 회원만 작성할 수 있습니다. <a href="/user/login" target="_self">로그인</a>해 주세요.</span>
+        <span class="message">게시글은 회원만 작성할 수 있습니다. <a th:href="@{/user/login(redirect=${redirect})}">로그인</a>해 주세요.</span>
         <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
     </div>
     <div class="error invalid-session" th:if="${board.adminOnly && !sessionUser.isBoss()}">

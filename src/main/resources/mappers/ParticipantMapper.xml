@@ -23,7 +23,11 @@
         WHERE `article_id` = #{participant.articleId}
           AND `leader` = #{participant.leader}
     </update>
-      <select id="selectById"
+    <delete id="deleteByArticleId">
+        DELETE FROM `kkirikkiri`.`participants`
+        WHERE `article_id` = #{articleId}
+    </delete>
+    <select id="selectById"
             resultType="com.lsb.kkirikkiri.entities.ParticipantEntity">
           SELECT `id`                    AS `id`,
                  `article_id`            AS `articleId`,

@@ -28,7 +28,31 @@ public interface ArticleMapper {
     ArticleVo[] selectAllByBoardIdOrderByView(@Param("boardPageVo") BoardPageVo boardPageVo,
                                               @Param("boardId") String boardId);
 
-    int selectCountByBoardId(@Param(value = "boardId") String boardId);
+    ArticleVo[] selectAllBoardIdAndMenuOrderByCreatedAt(
+            @Param("boardPageVo") BoardPageVo boardPageVo,
+            @Param("boardId") String boardId,
+            @Param("menu") String menu
+    );
+
+    ArticleVo[] selectAllBoardIdAndMenuOrderByView(
+            @Param("boardPageVo") BoardPageVo boardPageVo,
+            @Param("boardId") String boardId,
+            @Param("menu") String menu
+    );
+
+    ArticleVo[] selectImminentShareArticles(
+            @Param("boardId") String boardId,
+            @Param("menu") String menu
+    );
+
+    Integer selectCountByBoardId(@Param("boardId") String boardId);
+
+    int selectCountByBoardIdAndMenu(@Param(value = "boardId") String boardId,
+                                    @Param("menu") String menu);
 
     int selectCountByBoardSearch(@Param(value = "boardSearch") BoardSearchVo boardSearchVo);
+
+    int deleteById(@Param("id") int id);
+
+
 }

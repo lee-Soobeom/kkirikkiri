@@ -132,6 +132,18 @@
   width: 60%;
   align-self: center;
   padding: 2rem 0;
+
+  > .action-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    width: 100%;
+
+    > form {
+      margin: 0;
+    }
+  }
 }
 
 #main > .container {

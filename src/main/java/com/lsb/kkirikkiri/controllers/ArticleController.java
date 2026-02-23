@@ -8,6 +8,7 @@ import com.lsb.kkirikkiri.results.CommonResult;
 import com.lsb.kkirikkiri.services.ArticleService;
 import com.lsb.kkirikkiri.services.BoardService;
 import com.lsb.kkirikkiri.services.ParticipantService;
+import com.lsb.kkirikkiri.vos.ParticipantVo;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
@@ -44,6 +45,17 @@ public class ArticleController {
     ) {
         BoardEntity board = this.boardService.getBoardById(boardType);
 
+        if (board == null) {
+            modelAndView.addObject("board", null);
+            modelAndView.setViewName("article/share/write");
+            return modelAndView;
+        }
+
+        if (board.isAdminOnly() && (sessionUser == null || !sessionUser.isAdmin())) {
+            modelAndView.setViewName("redirect:/access-denied");
+            return modelAndView;
+        }
+
         modelAndView.addObject("board", board);
         modelAndView.addObject("sessionUser", sessionUser);
         modelAndView.addObject("redirect", "/article/" + boardType + "/write");
@@ -52,6 +64,7 @@ public class ArticleController {
 
         return modelAndView;
     }
+
     // 게시글 조회
     @RequestMapping(value = "/{boardType}",
             method = RequestMethod.GET,
@@ -59,22 +72,46 @@ public class ArticleController {
     public ModelAndView getShareArticle(@PathVariable String boardType,
                                         @RequestParam int id,
                                         ModelAndView modelAndView) {
+        modelAndView.addObject("boardType", boardType);
         modelAndView.addObject("article", this.articleService.getArticleById(id));
         if (boardType.equals("share")) {
-            modelAndView.addObject("participants", this.participantService.getParticipantByArticleId(id));
+            ParticipantVo participantVo = this.participantService.getParticipantByArticleId(id);
+
+            if (participantVo != null) {
+                modelAndView.addObject("participants", participantVo);
+            }
         }
         modelAndView.setViewName(BoardId.from(boardType).articleView);
         return modelAndView;
     }
 
     // 게시글 수정
-    @RequestMapping(value = "/modify",
+    @RequestMapping(value = "/{boardType}/modify",
             method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getModify(ModelAndView modelAndView) {
-        modelAndView.setViewName("article/modify");
+    public ModelAndView getModify(@PathVariable String boardType,
+                                  @RequestParam int id,
+                                  @SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser,
+                                  ModelAndView modelAndView) {
+        ArticleEntity article = this.articleService.getArticleById(id);
+
+        if (article == null) {
+            modelAndView.setViewName("redirect:/");
+            return modelAndView;
+        }
+        if (sessionUser == null || !article.getUserId().equals(sessionUser.getEmail())) {
+            modelAndView.setViewName("redirect:/access-denied");
+            return modelAndView;
+        }
+
+        modelAndView.addObject("article", article);
+        modelAndView.addObject("board", this.boardService.getBoardById(boardType));
+        modelAndView.addObject("sessionUser", sessionUser);
+        modelAndView.setViewName(BoardId.from(boardType).writeView);
+
         return modelAndView;
     }
+
     // 글 작성 처리
     @RequestMapping(
             value = "/{boardType}/write",
@@ -89,18 +126,60 @@ public class ArticleController {
             @SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser
     ) {
         Map<String, Object> response = new HashMap<>();
+
+//        articleEntity.setNickname(sessionUser.getNickname());
+        BoardEntity board = this.boardService.getBoardById(boardType);
+
+        if (board != null && board.isAdminOnly() && (sessionUser == null || !sessionUser.isAdmin())) {
+            response.put("articleResult", CommonResult.FAILURE);
+            response.put("fileResult", CommonResult.FAILURE);
+            return response;
+        }
         // 게시판 설정
         articleEntity.setBoardId(boardType);
-//        articleEntity.setNickname(sessionUser.getNickname());
 
         Pair<Map<String, Object>, ArticleEntity> result =
                 this.articleService.write(sessionUser, articleEntity, files);
-        response.put("id", result.getRight().getId());
+        if (result.getLeft().get("articleResult") == CommonResult.SUCCESS) {
+            response.put("id", result.getRight().getId());
+        }
         response.put("articleResult", result.getLeft().get("articleResult"));
         response.put("fileResult", result.getLeft().get("fileResult"));
         if (result.getLeft().get("fileResult") == CommonResult.SUCCESS) {
             response.put("fileResultList", result.getLeft().get("fileResultList"));
         }
         return response;
+    }
+
+    @RequestMapping(value = "/{boardType}/modify",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> PostModify(@PathVariable String boardType,
+                                          ArticleEntity articleEntity,
+                                          @SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser) {
+        Map<String, Object> response = new HashMap<>();
+
+        articleEntity.setBoardId(boardType);
+
+        CommonResult result = this.articleService.modify(sessionUser, articleEntity);
+        response.put("result", result);
+        return response;
+    }
+
+    @RequestMapping(value = "/{boardType}/delete",
+    method = RequestMethod.POST)
+    public String postDelete(@PathVariable String boardType,
+                             @RequestParam int id,
+                             @SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser) {
+        if (sessionUser == null) {
+            return "redirect:/access-denied";
+        }
+        CommonResult result = this.articleService.delete(sessionUser, id);
+
+        if (result == CommonResult.SUCCESS) {
+            return "redirect:/board/list?id=" + boardType;
+        }
+        return "redirect:/board/list?id=" + boardType;
     }
 }

@@ -37,15 +37,26 @@ public class ArticleService {
         return this.articleMapper.selectById(id);
     }
 
-    public ArticleVo[] getAllByBoardId(BoardPageVo boardPageVo, String boardId) {
+    public ArticleVo[] getAllByBoardIdAndMenu(BoardPageVo boardPageVo, String boardId, String menu) {
         if (boardId == null) {
             return new ArticleVo[0];
         }
 
-        if ("view".equals(boardPageVo.getSort())) {
-            return this.articleMapper.selectAllByBoardIdOrderByView(boardPageVo, boardId);
+        if (menu == null || menu.isEmpty() || "all".equals(menu)) {
+            if ("view".equals(boardPageVo.getSort())) {
+                return this.articleMapper.selectAllByBoardIdOrderByView(boardPageVo, boardId);
+            }
+            return this.articleMapper.selectAllByBoardIdOrderByCreatedAt(boardPageVo, boardId);
         }
-        return this.articleMapper.selectAllByBoardIdOrderByCreatedAt(boardPageVo, boardId);
+
+        if ("view".equals(boardPageVo.getSort())) {
+            return this.articleMapper.selectAllBoardIdAndMenuOrderByView(boardPageVo, boardId, menu);
+        }
+        return this.articleMapper.selectAllBoardIdAndMenuOrderByCreatedAt(boardPageVo, boardId, menu);
+    }
+
+    public ArticleVo[] getImminentShareArticles(String menu) {
+        return this.articleMapper.selectImminentShareArticles("share", menu);
     }
 
     public ArticleVo[] getAllBoardSearch(BoardPageVo boardPageVo, BoardSearchVo boardSearchVo) {
@@ -60,11 +71,15 @@ public class ArticleService {
     }
 
     public int getCountByBoardId(String boardId) {
-        if (boardId == null) {
-            return 0;
-        }
+        if (boardId == null) return 0;
         return this.articleMapper.selectCountByBoardId(boardId);
     }
+
+    public int getCountByBoardIdAndMenu(String boardId, String menu) {
+        if (boardId == null) return 0;
+        return this.articleMapper.selectCountByBoardIdAndMenu(boardId, menu);
+    }
+
 
     public int getCountByBoardSearch(BoardSearchVo boardSearchVo) {
         if (boardSearchVo == null ||
@@ -76,12 +91,14 @@ public class ArticleService {
         return this.articleMapper.selectCountByBoardSearch(boardSearchVo);
     }
 
+
+
     @Transactional
     public Pair<Map<String, Object>, ArticleEntity> write(UserEntity sessionUser, ArticleEntity articleEntity, List<MultipartFile> files) {
         Map<String, Object> result = new HashMap<>();
         if (sessionUser == null) {
             System.out.println("session");
-            result.put("result", CommonResult.FAILURE);
+            result.put("articleResult", CommonResult.FAILURE);
             return Pair.of(result, null);
         }
         if (articleEntity == null ||
@@ -89,7 +106,7 @@ public class ArticleService {
                 !ArticleValidator.validateTitle(articleEntity) ||
                 !ArticleValidator.validateContent(articleEntity)) {
             System.out.println("basic");
-            result.put("result", CommonResult.FAILURE);
+            result.put("articleResult", CommonResult.FAILURE);
             return Pair.of(result, null);
         }
         String boardId = articleEntity.getBoardId();
@@ -104,7 +121,7 @@ public class ArticleService {
                     !ArticleValidator.validatePickupTime(articleEntity) ||
                     !ArticleValidator.validateRestaurant(articleEntity) ||
                     !ArticleValidator.validateAddressSecondary(articleEntity)) {
-                result.put("result", CommonResult.FAILURE);
+                result.put("articleResult", CommonResult.FAILURE);
                 return Pair.of(result, null);
             }
             articleEntity.setUserId(sessionUser.getEmail());
@@ -131,13 +148,33 @@ public class ArticleService {
         if ("promote".equals(boardId)) {
             if (!ArticleValidator.validateRestaurant(articleEntity) ||
                     !ArticleValidator.validateAddressSecondary(articleEntity)) {
-                result.put("result", CommonResult.FAILURE);
+                result.put("articleResult", CommonResult.FAILURE);
                 return Pair.of(result, null);
             }
 
         }
         // 공지 게시판 (notice)
         // → 제목 + 내용만 있으면 OK (추가 검증 없음)
+        if ("notice".equals(boardId)) {
+            if (!sessionUser.isAdmin()) {
+                result.put("articleResult", CommonResult.FAILURE);
+                return Pair.of(result, null);
+            }
+
+            articleEntity.setUserId(sessionUser.getEmail());
+            articleEntity.setCreatedAt(LocalDateTime.now());
+            articleEntity.setUpdatedAt(LocalDateTime.now());
+            articleEntity.setView(0);
+
+            articleEntity.setIsShareChecked(false);
+            articleEntity.setIsEntryChecked(false);
+
+            if (this.articleMapper.insert(articleEntity) > 0) {
+                result.put("articleResult", CommonResult.SUCCESS);
+            } else {
+                result.put("articleResult", CommonResult.FAILURE);
+            }
+        }
 
         // file upload: filesEntity + articleId + userEmail
         List<Map<String, CommonResult>> fileResult = this.fileService.postFile(sessionUser, articleEntity, files);
@@ -148,5 +185,50 @@ public class ArticleService {
             result.put("fileResult", CommonResult.FAILURE);
         }
         return Pair.of(result, articleEntity);
+    }
+
+    @Transactional
+    public CommonResult modify(UserEntity sessionUser, ArticleEntity articleEntity){
+        if (sessionUser == null || articleEntity == null) {
+            return CommonResult.FAILURE;
+        }
+        ArticleVo dbArticle = this.articleMapper.selectById(articleEntity.getId());
+        if (dbArticle == null) {
+            return CommonResult.FAILURE;
+        }
+        // 작성자 본인 체크
+        if (!dbArticle.getUserId().equals(sessionUser.getEmail())) {
+            return CommonResult.FAILURE;
+        }
+
+        articleEntity.setUserId(sessionUser.getEmail());
+        articleEntity.setUpdatedAt(LocalDateTime.now());
+
+        return this.articleMapper.update(articleEntity) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
+
+    @Transactional
+    public CommonResult delete(UserEntity sessionUser, int id) {
+        if (sessionUser == null || id < 1) {
+            return CommonResult.FAILURE;
+        }
+
+        ArticleVo dbArticle = this.articleMapper.selectById(id);
+
+        if (dbArticle == null) {
+            return CommonResult.FAILURE;
+        }
+
+        if (!dbArticle.getUserId().equals(sessionUser.getEmail())) {
+            return CommonResult.FAILURE;
+        }
+        if ("share".equals(dbArticle.getBoardId())) {
+            this.participantMapper.deleteByArticleId(id);
+        }
+        return this.articleMapper.deleteById(id) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
     }
 }

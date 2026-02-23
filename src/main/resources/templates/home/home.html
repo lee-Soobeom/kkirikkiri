@@ -23,70 +23,90 @@
     <div class="search">
         <div class="menu-container">
             <label class="label">
-                <input hidden checked class="input" type="radio" name="menuFilter" value="all">
+                <input hidden checked class="input" type="radio" name="menuFilter" value="all"
+                th:checked="${menu == 'null'}"
+                th:onclick="|location.href='/'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.all.png" alt="">
                     <span class="caption">전체</span>
                 </span>
             </label>
             <label class="label">
-                <input hidden class="input" type="radio" name="menuFilter" value="chicken">
+                <input hidden class="input" type="radio" name="menuFilter" value="chicken"
+                th:checked="${menu == 'chicken'}"
+                th:onclick="|location.href='/?menu=chicken'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.chicken.png" alt="">
                     <span class="caption">#치킨</span>
                 </span>
             </label>
             <label class="label">
-                <input hidden class="input" type="radio" name="menuFilter" value="pizza">
+                <input hidden class="input" type="radio" name="menuFilter" value="pizza"
+                th:checked="${menu == 'pizza'}"
+                th:onclick="|location.href='/?menu=pizza'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.pizza.png" alt="">
                     <span class="caption">#피자</span>
                 </span>
             </label>
             <label class="label">
-                <input hidden class="input" type="radio" name="menuFilter" value="hamburger">
+                <input hidden class="input" type="radio" name="menuFilter" value="hamburger"
+                th:checked="${menu == 'hamburger'}"
+                th:onclick="|location.href='/?menu=hamburger'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.hamburger.png" alt="">
                     <span class="caption">#햄버거</span>
                 </span>
             </label>
             <label class="label">
-                <input hidden class="input" type="radio" name="menuFilter" value="stew">
+                <input hidden class="input" type="radio" name="menuFilter" value="stew"
+                th:checked="${menu == 'stew'}"
+                th:onclick="|location.href='/?menu=stew'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.stew.png" alt="">
                     <span class="caption">#찜/탕</span>
                 </span>
             </label>
             <label class="label">
-                <input hidden class="input" type="radio" name="menuFilter" value="raw-jp-food">
+                <input hidden class="input" type="radio" name="menuFilter" value="japanese-food"
+                th:checked="${menu == 'japanese-food'}"
+                th:onclick="|location.href='/?menu=japanese-food'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.japanese-food.png" alt="">
                     <span class="caption">#회/일식</span>
                 </span>
             </label>
             <label class="label">
-                <input hidden class="input" type="radio" name="menuFilter" value="ch-food">
+                <input hidden class="input" type="radio" name="menuFilter" value="chinese-food"
+                th:checked="${menu == 'chinese-food'}"
+                th:onclick="|location.href='/?menu=chinese-food'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.chinese-food.png" alt="">
                     <span class="caption">#중식</span>
                 </span>
             </label>
             <label class="label">
-                <input hidden class="input" type="radio" name="menuFilter" value="ws-food">
+                <input hidden class="input" type="radio" name="menuFilter" value="western-food"
+                th:checked="${menu == 'western-food'}"
+                th:onclick="|location.href='/?menu=western-food'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.western-food.png" alt="">
                     <span class="caption">#양식</span>
                 </span>
             </label>
             <label class="label">
-                <input hidden class="input" type="radio" name="menuFilter" value="ws-food">
+                <input hidden class="input" type="radio" name="menuFilter" value="dessert"
+                th:checked="${menu == 'dessert'}"
+                th:onclick="|location.href='/?menu=dessert'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.dessert.png" alt="">
                     <span class="caption">#디저트</span>
                 </span>
             </label>
             <label class="label">
-                <input hidden class="input" type="radio" name="menuFilter" value="etc">
+                <input hidden class="input" type="radio" name="menuFilter" value="etc"
+                th:checked="${menu == 'etc'}"
+                th:onclick="|location.href='/?menu=etc'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.etc.png" alt="">
                     <span class="caption">#그 외</span>
@@ -103,33 +123,40 @@
             </label>
         </form>
     </div>
-    <h2 class="title">마감임박! 빠른주문!</h2>
+    <h2 class="title">마감이 30분 남았어요! 빠르게 주문해보세요!</h2>
     <div class="group">
         <ol class="list">
-            <li class="row">
+            <li class="row"
+            th:each="article : ${articles}"
+            th:onclick="|location.href='@{/article/share(id=${article.id})}'|">
                 <div class="image-container">
-                    <img class="image" src="/assets/images/main/main.menu.chicken.png" alt="">
+                    <img class="image" alt=""
+                    th:src="@{/assets/images/main/main.menu.{menu}.png(menu=${article.menu})}">
                 </div>
                 <div class="content-container">
-                    <h2 class="title">푸라닭 블랙마요 나눠먹을 사람</h2>
+                    <h2 class="title" th:text="${article.title}"></h2>
                     <div class="content">
                         <div class="item">
                             <span class="title">주문:</span>
-                            <span class="caption">17:00</span>
+                            <span class="caption"
+                            th:text="${#temporals.format(article.orderTime, 'HH:mm')}"></span>
                         </div>
                         <div class="item">
                             <span class="title">가게:</span>
-                            <span class="caption">대구 동성로점</span>
+                            <span class="caption"
+                            th:text="${article.restaurant}"></span>
                         </div>
                     </div>
                     <div class="content">
                         <div class="item">
                             <span class="title">모임:</span>
-                            <span class="caption">18:00</span>
+                            <span class="caption"
+                            th:text="${#temporals.format(article.pickupTime, 'HH:mm')}"></span>
                         </div>
                         <div class="item">
                             <span class="title">장소:</span>
-                            <span class="caption">중앙대로 366 10층 class A</span>
+                            <span class="caption"
+                            th:text="${article.addressPrimary + ' ' + article.addressSecondary}"></span>
                         </div>
                     </div>
                 </div>
@@ -137,138 +164,6 @@
                     <span class="now">1</span>
                     <span>/</span>
                     <span class="max">5</span>
-                </div>
-            </li>
-            <li class="row">
-                <div class="image-container">
-                    <img class="image" src="/assets/images/main/main.menu.chicken.png" alt="">
-                </div>
-                <div class="content-container">
-                    <h2 class="title">푸라닭 블랙마요 나눠먹을사람</h2>
-                    <div class="content">
-                        <div class="item">
-                            <div class="title">주문:</div>
-                            <div class="caption">17:00</div>
-                        </div>
-                        <div class="item">
-                            <div class="title">가게:</div>
-                            <div class="caption">대구 동성로점</div>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="item">
-                            <div class="title">모임:</div>
-                            <div class="caption">18:00</div>
-                        </div>
-                        <div class="item">
-                            <div class="title">장소:</div>
-                            <div class="caption">중앙대로 366 10층 class A</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="member-container">
-                    <div class="now">1</div>
-                    <div>/</div>
-                    <div class="max">5</div>
-                </div>
-            </li>
-            <li class="row">
-                <div class="image-container">
-                    <img class="image" src="/assets/images/main/main.menu.chicken.png" alt="">
-                </div>
-                <div class="content-container">
-                    <h2 class="title">푸라닭 블랙마요 나눠먹을사람</h2>
-                    <div class="content">
-                        <div class="item">
-                            <div class="title">주문:</div>
-                            <div class="caption">17:00</div>
-                        </div>
-                        <div class="item">
-                            <div class="title">가게:</div>
-                            <div class="caption">대구 동성로점</div>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="item">
-                            <div class="title">모임:</div>
-                            <div class="caption">18:00</div>
-                        </div>
-                        <div class="item">
-                            <div class="title">장소:</div>
-                            <div class="caption">중앙대로 366 10층 class A</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="member-container">
-                    <div class="now">1</div>
-                    <div>/</div>
-                    <div class="max">5</div>
-                </div>
-            </li>
-            <li class="row">
-                <div class="image-container">
-                    <img class="image" src="/assets/images/main/main.menu.chicken.png" alt="">
-                </div>
-                <div class="content-container">
-                    <h2 class="title">푸라닭 블랙마요 나눠먹을사람</h2>
-                    <div class="content">
-                        <div class="item">
-                            <div class="title">주문:</div>
-                            <div class="caption">17:00</div>
-                        </div>
-                        <div class="item">
-                            <div class="title">가게:</div>
-                            <div class="caption">대구 동성로점</div>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="item">
-                            <div class="title">모임:</div>
-                            <div class="caption">18:00</div>
-                        </div>
-                        <div class="item">
-                            <div class="title">장소:</div>
-                            <div class="caption">중앙대로 366 10층 class A</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="member-container">
-                    <div class="now">1</div>
-                    <div>/</div>
-                    <div class="max">5</div>
-                </div>
-            </li>
-            <li class="row">
-                <div class="image-container">
-                    <img class="image" src="/assets/images/main/main.menu.chicken.png" alt="">
-                </div>
-                <div class="content-container">
-                    <h2 class="title">푸라닭 블랙마요 나눠먹을사람</h2>
-                    <div class="content">
-                        <div class="item">
-                            <div class="title">주문:</div>
-                            <div class="caption">17:00</div>
-                        </div>
-                        <div class="item">
-                            <div class="title">가게:</div>
-                            <div class="caption">대구 동성로점</div>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="item">
-                            <div class="title">모임:</div>
-                            <div class="caption">18:00</div>
-                        </div>
-                        <div class="item">
-                            <div class="title">장소:</div>
-                            <div class="caption">중앙대로 366 10층 class A</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="member-container">
-                    <div class="now">1</div>
-                    <div>/</div>
-                    <div class="max">5</div>
                 </div>
             </li>
         </ol>

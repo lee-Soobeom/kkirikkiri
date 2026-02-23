@@ -21,82 +21,86 @@
 <th:block th:replace="~{/fragments/common.html :: sideMypage(${session.sessionUser})}"></th:block>
 <th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
 <main id="main">
-    <div class="error invalid-board">
+    <div class="error invalid-board" th:if="${board == null}">
         <h1 class="title">게시글 작성</h1>
         <span class="message">존재하지 않는 게시판입니다. 주소를 다시 확인해 주세요.</span>
         <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
     </div>
-    <div class="error empty-session">
+    <div class="error empty-session" th:if="${board != null and session.sessionUser == null}">
         <h1 class="title">게시글 작성</h1>
         <span class="message">게시글은 회원만 작성할 수 있습니다. <a href="/user/login" target="_self">로그인</a>해 주세요.</span>
         <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
     </div>
-    <div class="error invalid-session">
-        <h1 class="title">게시글 작성</h1>
-        <span class="message">해당 게시판에 게시글을 작성할 권한이 없습니다.</span>
-        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
-    </div>
-    <form novalidate class="form" name="writeForm" enctype="multipart/form-data">
+    <form novalidate class="form" name="writeForm"
+          th:if="${board != null and session.sessionUser != null}"
+          th:action="@{|/article/${board.id}/${article.id != null ? 'modify' : 'write'}|}"
+          method="post"
+          enctype="multipart/form-data"
+          th:object="${article}">
         <h2 class="title">게시글 작성</h2>
+        <input type="hidden" name="id" th:value="${article.id}" />
+        <input type="hidden" name="mode" th:value="${article.id != null ? 'modify' : 'write'}" />
         <span class="board"></span>
         <label class="column">
             <span class="caption">제목</span>
-            <input required autocomplete="off" class="input" maxlength="100" minlength="1" name="title"
+            <input required autocomplete="off" class="input" maxlength="100" minlength="1" th:field="*{title}"
                    placeholder="제목을 입력해 주세요." type="text" data-object="input" data-component="label.field">
         </label>
         <div class="row-group">
             <label class="column">
                 <span class="caption">공동구매 메뉴</span>
-                <select name="menu" class="input" data-object="input" data-component="label.field">
+                <select th:field="*{menu}" class="input" data-object="input" data-component="label.field">
                     <option selected value="-1">메뉴를 선택해 주세요.</option>
+                    <option value="all">전체</option>
                     <option value="chicken">치킨</option>
                     <option value="pizza">피자</option>
                     <option value="hamburger">햄버거</option>
                     <option value="stew">찜/탕</option>
-                    <option value="raw">회</option>
-                    <option value="japanese-food">일식</option>
+                    <option value="japanese-food">회/일식</option>
                     <option value="chinese-food">중식</option>
                     <option value="western-food">양식</option>
+                    <option value="dessert">디저트</option>
+                    <option value="etc">그 외</option>
                 </select>
             </label>
             <label class="column">
                 <span class="caption">메뉴이름</span>
-                <input class="input" maxlength="50" minlength="1" name="menuName" type="text" placeholder="금액을 입력해 주세요."
+                <input class="input" maxlength="50" minlength="1" th:field="*{menuName}" type="text" placeholder="금액을 입력해 주세요."
                        data-object="input" data-component="label.field">
             </label>
         </div>
         <div class="row-group">
             <label class="column">
                 <span class="caption">최소주문금액</span>
-                <input class="input" name="minOrderPrice" maxlength="5" minlength="1" type="text"
+                <input class="input" th:field="*{minOrderPrice}" maxlength="5" minlength="1" type="text"
                        placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
             </label>
             <label class="column">
                 <span class="caption">주문금액</span>
-                <input class="input" name="orderPrice" maxlength="6" minlength="1" type="text"
+                <input class="input" th:field="*{orderPrice}" maxlength="6" minlength="1" type="text"
                        placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
             </label>
             <label class="column">
                 <span class="caption">배달비</span>
-                <input class="input" name="deliveryPrice" maxlength="5" minlength="1" type="text"
+                <input class="input" th:field="*{deliveryPrice}" maxlength="5" minlength="1" type="text"
                        placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
             </label>
         </div>
         <div class="row-group">
             <label class="column">
                 <span class="caption">주문시간</span>
-                <input class="input" name="orderTime" type="datetime-local" data-object="input"
+                <input class="input" th:field="*{orderTime}" type="datetime-local" data-object="input"
                        data-component="label.field">
             </label>
             <label class="column">
                 <span class="caption">나눔시간</span>
-                <input class="input" name="pickupTime" type="datetime-local" data-object="input"
+                <input class="input" th:field="*{pickupTime}" type="datetime-local" data-object="input"
                        data-component="label.field">
             </label>
         </div>
         <label class="row">
             <span class="caption">주문가게</span>
-            <input readonly disabled class="input" maxlength="100" minlength="1" name="restaurant" type="text"
+            <input readonly disabled class="input" maxlength="100" minlength="1" th:field="*{restaurant}" type="text"
                    placeholder="'가게찾기' 버튼을 클릭해 주세요." data-object="input" data-component="label.field">
             <button class="button" name="restaurantButton" type="button" data-object="button" data-color="concept">가게찾기
             </button>
@@ -117,7 +121,7 @@
             <label class="row">
                 <input checked class="radio primary" type="radio" name="addressCheck" value="addressPrimary">
                 <span class="caption text">나눔주소</span>
-                <input readonly disabled class="input" maxlength="100" minlength="5" name="addressPrimary"
+                <input readonly disabled class="input" maxlength="100" minlength="5" th:field="*{addressPrimary}"
                        placeholder="기본 주소('주소찾기' 버튼을 클릭해 주세요.)" type="text" data-object="input"
                        data-component="label.field">
                 <button class="button" name="findButton" type="button" data-object="button" data-color="concept">주소찾기
@@ -127,7 +131,7 @@
                 <input class="radio secondary" type="radio" name="addressCheck" value="addressSecondary">
                 <span class="caption text">나눔장소</span>
                 <input class="input" autocomplete="off" spellcheck="false" maxlength="100"
-                       minlength="1" name="addressSecondary"
+                       minlength="1" th:field="*{addressSecondary}"
                        placeholder="장소 혹은 상세 주소('장소찾기' 버튼을 클릭해 주세요.)" type="text"
                        data-object="input"
                        data-component="label.field">
@@ -138,7 +142,7 @@
         </div>
         <label class="column">
             <span class="caption">내용</span>
-            <textarea required autocomplete="off" spellcheck="false" maxlength="10000" minlength="1" name="content"
+            <textarea required autocomplete="off" spellcheck="false" maxlength="10000" minlength="1" th:field="*{content}"
                       rows="20" data-object="input" data-component="label.field"></textarea>
         </label>
         <label class="row end">

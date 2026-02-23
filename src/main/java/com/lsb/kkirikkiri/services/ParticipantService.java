@@ -53,6 +53,9 @@ public class ParticipantService {
             return null;
         }
         ParticipantEntity dbParticipantEntity = this.participantMapper.selectById(articleId);
+        if (dbParticipantEntity == null) {
+            return null;
+        }
         String[] dbParticipantsNickname = dbParticipantEntity.getParticipantsNickname().split(",", -1);
         ParticipantVo participantVo = new ParticipantVo();
         participantVo.setId(dbParticipantEntity.getId());

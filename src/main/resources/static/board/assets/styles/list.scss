@@ -25,6 +25,7 @@
 
     .header {
       margin-bottom: 1rem;
+      width: 100%;
 
       .title {
         font-size: 1.8rem;
@@ -34,7 +35,24 @@
       }
 
       .sub-row {
-        @include flex(row, space-between, center);
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+
+      .right-group {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: nowrap;
+      }
+
+      .menu-filter {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        height: 2.2rem;
       }
 
       .board {
@@ -44,7 +62,9 @@
       }
 
       .filter {
-        @include flex(row, center, center, 0.5rem);
+        display: flex;
+        gap: 0.5rem;
+        white-space: nowrap;
 
         .link {
           padding: 0.4rem 0.8rem;

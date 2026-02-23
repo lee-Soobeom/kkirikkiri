@@ -31,22 +31,29 @@ public class BoardController {
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getList(@RequestParam(value = "id", required = false) String id,
                                 @RequestParam(value = "page", defaultValue = "1") int requestPage,
-                                @RequestParam(value = "sort", required = false) String sort, BoardSearchVo boardSearchVo, ModelAndView modelAndView) {
+                                @RequestParam(value = "sort", required = false) String sort,
+                                @RequestParam(value = "menu", required = false, defaultValue = "all") String menu,
+                                BoardSearchVo boardSearchVo, ModelAndView modelAndView) {
         BoardEntity board = this.boardService.getBoardById(id);
         modelAndView.addObject("board", board);
         if (board != null) {
             boolean isSearching = boardSearchVo.getBy() != null && boardSearchVo.getKeyword() != null;
             int totalCount = isSearching
                     ? this.articleService.getCountByBoardSearch(boardSearchVo)
-                    : this.articleService.getCountByBoardId(id);
+                    : ("all".equals(menu)
+                    ? this.articleService.getCountByBoardId(id)
+                    : this.articleService.getCountByBoardIdAndMenu(id, menu));
+
             BoardPageVo boardPageVo = new BoardPageVo(requestPage, totalCount, sort);
+
             ArticleVo[] articles = isSearching
                     ? this.articleService.getAllBoardSearch(boardPageVo, boardSearchVo)
-                    : this.articleService.getAllByBoardId(boardPageVo, id);
+                    : this.articleService.getAllByBoardIdAndMenu(boardPageVo, id, menu);
 
             modelAndView.addObject("boardPageVo", boardPageVo);
             modelAndView.addObject("boardSearchVo", boardSearchVo);
             modelAndView.addObject("articles", articles);
+            modelAndView.addObject("selectedMenu", menu);
         }
         modelAndView.setViewName("board/list");
         return modelAndView;

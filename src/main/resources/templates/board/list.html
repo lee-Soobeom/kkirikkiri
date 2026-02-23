@@ -26,20 +26,78 @@
     <div class="content-wrapper" th:if="${board != null}">
         <div class="header">
             <h1 class="title">게시판</h1>
-            <h2 class="board"></h2>
             <div class="sub-row">
                 <h2 class="board" th:text="${board.getDisplayText()}"></h2>
-                <div class="filter ">
-                    <a class="link"
-                    th:href="@{/board/list(id=${board.id}, sort='latest')}"
-                    th:classappend="${boardPageVo.sort == 'latest'} ? ' -active'">
-                        최신순
-                    </a>
-                    <a class="link"
-                    th:href="@{/board/list(id=${board.id}, sort='view')}"
-                    th:classappend="${boardPageVo.sort == 'view'} ? ' -active'">
-                        인기순
-                    </a>
+                <div class="right-group">
+                    <div class="menu-filter">
+                        <select id="menuSelect"
+                                name="menuFilter"
+                                th:onchange="|location.href='@{/board/list(id=${board.id}, sort = ${boardPageVo.sort})}' + (this.value ? '&menu=' + this.value : '')|">
+
+                            <option value="all"
+                                    th:selected="${selectedMenu == 'all'}">
+                                전체
+                            </option>
+
+                            <option value="chicken"
+                                    th:selected="${selectedMenu == 'chicken'}">
+                                치킨
+                            </option>
+
+                            <option value="pizza"
+                                    th:selected="${selectedMenu == 'pizza'}">
+                                피자
+                            </option>
+
+                            <option value="hamburger"
+                                    th:selected="${selectedMenu == 'hamburger'}">
+                                햄버거
+                            </option>
+
+                            <option value="stew"
+                                    th:selected="${selectedMenu == 'stew'}">
+                                찜/탕
+                            </option>
+
+                            <option value="japanese-food"
+                                    th:selected="${selectedMenu == 'japanese-food'}">
+                                회/일식
+                            </option>
+
+                            <option value="chinese-food"
+                                    th:selected="${selectedMenu == 'chinese-food'}">
+                                중식
+                            </option>
+
+                            <option value="western-food"
+                                    th:selected="${selectedMenu == 'western-food'}">
+                                양식
+                            </option>
+
+                            <option value="dessert"
+                                    th:selected="${selectedMenu == 'dessert'}">
+                                디저트
+                            </option>
+
+                            <option value="etc"
+                                    th:selected="${selectedMenu == 'etc'}">
+                                그 외
+                            </option>
+
+                        </select>
+                    </div>
+                    <div class="filter ">
+                        <a class="link"
+                           th:href="@{/board/list(id=${board.id}, sort='latest', menu=${selectedMenu})}"
+                           th:classappend="${boardPageVo.sort == 'latest'} ? ' -active'">
+                            최신순
+                        </a>
+                        <a class="link"
+                           th:href="@{/board/list(id=${board.id}, sort='view', menu=${selectedMenu})}"
+                           th:classappend="${boardPageVo.sort == 'view'} ? ' -active'">
+                            인기순
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,8 +128,7 @@
                         </div>
                     </div>
                 </td>
-
-                <td class="cell nickname" th:text="${article.nickname}"></td>
+                <td class="cell nickname" th:text="${article.userId}"></td>
                 <td class="cell view" th:text="${article.view}"></td>
                 <td class="cell created_at"
                     th:text="${#temporals.format(article.createdAt, 'yyyy-MM-dd')}"></td>
@@ -94,9 +151,12 @@
         <input hidden name="id" type="hidden" th:value="${board.getId()}">
         <label data-object="label" data-name="searchByLabel">
             <select required name="by" data-object="input" data-component="label.field">
-                <option selected value="titleContent">제목 + 내용</option>
-                <option value="title">제목</option>
-                <option value="nickname">작성자</option>
+                <option selected value="titleContent"
+                th:selected="${boardSearchVo.by == null || boardSearchVo.by == 'titleContent'}">제목 + 내용</option>
+                <option value="title"
+                th:selected="${boardSearchVo.by == 'title'}">제목</option>
+                <option value="nickname"
+                th:selected="${boardSearchVo.by == 'nickname'}">작성자</option>
             </select>
         </label>
         <label data-object="label">
@@ -107,18 +167,21 @@
     </form>
     <div class="page-container" th:if="${boardSearchVo.getBy() == null || boardSearchVo.getKeyword() == null}">
         <div class="group" th:if="${boardPageVo.requestPage > boardPageVo.minPage}">
-            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.minPage})}">&lt;&lt;</a>
-            <a class="link" th:if="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.requestPage - 1})}">&lt;</a>
+            <a class="link" th:href="@{'/board/list' (id = ${board.id},
+            page = ${boardPageVo.minPage}, sort = ${boardPageVo.sort}, menu = ${selectedMenu})}">&lt;&lt;</a>
+            <a class="link"
+               th:if="${boardPageVo.requestPage > boardPageVo.minPage}"
+               th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.requestPage - 1}, sort = ${boardPageVo.sort}, menu = ${selectedMenu})}">&lt;</a>
         </div>
         <div class="group">
             <a th:each="page : ${#numbers.sequence(boardPageVo.startPage, boardPageVo.endPage)}"
             th:text="${page}"
-            th:href="@{'/board/list' (id = ${board.id}, page = ${page})}"
-            th:class="${page == boardPageVo.requestPage ? 'link -selexted' : 'link'}"></a>
+            th:href="@{'/board/list' (id = ${board.id}, page = ${page}, sort = ${boardPageVo.sort}, menu = ${selectedMenu})}"
+            th:class="${page == boardPageVo.requestPage ? 'link -selected' : 'link'}"></a>
         </div>
         <div class="group" th:if="${boardPageVo.requestPage < boardPageVo.maxPage}">
-            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.maxPage})}">&gt;&gt;</a>
-            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.requestPage + 1})}">&gt;</a>
+            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.maxPage}, sort = ${boardPageVo.sort}, menu = ${selectedMenu})}">&gt;&gt;</a>
+            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.requestPage + 1}, sort = ${boardPageVo.sort}, menu = ${selectedMenu})}">&gt;</a>
         </div>
     </div>
     <div class="page-container" th:if="${boardSearchVo.getBy() != null || boardSearchVo.getKeyword() != null}">
