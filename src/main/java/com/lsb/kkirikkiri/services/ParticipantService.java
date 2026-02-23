@@ -16,6 +16,13 @@ public class ParticipantService {
     private final UserMapper userMapper;
     private final ParticipantMapper participantMapper;
 
+    public CommonResult createParticipants(int articleId, String leader, String leaderNickname) {
+        ParticipantEntity participant = new ParticipantEntity(articleId, leader, String.join(",", new String[]{"", "", "", ""}), String.join(",", new String[]{leaderNickname, "", "", "", ""}), 1);
+        return this.participantMapper.insert(participant) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
+
     public CommonResult modifyParticipants(UserEntity sessionUser, MessageVo messageVo) {
         if (sessionUser == null
                 || this.userMapper.selectByEmail(sessionUser.getEmail()) == null) {
@@ -42,7 +49,7 @@ public class ParticipantService {
         String[] dbParticipantsNickname = dbParticipantEntity.getParticipantsNickname().split(",", -1);
         dbParticipantsNickname[count] = messageVo.getReceiverNickname();
         dbParticipantEntity.setParticipantsNickname(String.join(",", dbParticipantsNickname));
-        dbParticipantEntity.setCount(count);
+        dbParticipantEntity.setCount(count + 1);
         return this.participantMapper.update(dbParticipantEntity) > 0
                 ? CommonResult.SUCCESS
                 : CommonResult.FAILURE;

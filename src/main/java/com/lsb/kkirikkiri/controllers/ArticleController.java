@@ -8,21 +8,19 @@ import com.lsb.kkirikkiri.results.CommonResult;
 import com.lsb.kkirikkiri.services.ArticleService;
 import com.lsb.kkirikkiri.services.BoardService;
 import com.lsb.kkirikkiri.services.ParticipantService;
-import com.lsb.kkirikkiri.vos.ParticipantVo;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/article")
@@ -64,7 +62,6 @@ public class ArticleController {
 
         return modelAndView;
     }
-
     // 게시글 조회
     @RequestMapping(value = "/{boardType}",
             method = RequestMethod.GET,
@@ -73,12 +70,16 @@ public class ArticleController {
                                         @RequestParam int id,
                                         ModelAndView modelAndView) {
         modelAndView.addObject("boardType", boardType);
-        modelAndView.addObject("article", this.articleService.getArticleById(id));
+        ArticleEntity dbArticle = this.articleService.getArticleById(id);
+        modelAndView.addObject("article", dbArticle);
         if (boardType.equals("share")) {
-            ParticipantVo participantVo = this.participantService.getParticipantByArticleId(id);
-
-            if (participantVo != null) {
-                modelAndView.addObject("participants", participantVo);
+            modelAndView.addObject("participants", this.participantService.getParticipantByArticleId(id));
+            long diff = Duration.between(LocalDateTime.now(), dbArticle.getOrderTime()).toMinutes();
+            System.out.println(diff);
+            if (diff >= 0 && diff <= 20) {
+                modelAndView.addObject("deadline", true);
+            } else {
+                modelAndView.addObject("deadline", false);
             }
         }
         modelAndView.setViewName(BoardId.from(boardType).articleView);
@@ -111,7 +112,6 @@ public class ArticleController {
 
         return modelAndView;
     }
-
     // 글 작성 처리
     @RequestMapping(
             value = "/{boardType}/write",
@@ -144,6 +144,7 @@ public class ArticleController {
             response.put("id", result.getRight().getId());
         }
         response.put("articleResult", result.getLeft().get("articleResult"));
+        response.put("participants", this.participantService.getParticipantByArticleId(result.getRight().getId()));
         response.put("fileResult", result.getLeft().get("fileResult"));
         if (result.getLeft().get("fileResult") == CommonResult.SUCCESS) {
             response.put("fileResultList", result.getLeft().get("fileResultList"));

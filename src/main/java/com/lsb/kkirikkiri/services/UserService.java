@@ -7,7 +7,6 @@ import com.lsb.kkirikkiri.exceptions.TransactionalException;
 import com.lsb.kkirikkiri.mappers.EmailTokenMapper;
 import com.lsb.kkirikkiri.mappers.StoreMapper;
 import com.lsb.kkirikkiri.mappers.UserMapper;
-import com.lsb.kkirikkiri.mappers.WalletMapper;
 import com.lsb.kkirikkiri.results.*;
 import com.lsb.kkirikkiri.validators.EmailTokenValidator;
 import com.lsb.kkirikkiri.validators.StoreValidate;
@@ -167,7 +166,7 @@ public class UserService {
                 throw new TransactionalException(CommonResult.FAILURE);
             }
         }
-        if (this.walletService.createWallet(user.getEmail()).equals(CommonResult.FAILURE)) {
+        if (this.walletService.createUserWallet(user.getEmail()).equals(CommonResult.FAILURE)) {
             throw new TransactionalException(CommonResult.FAILURE);
         }
         return CommonResult.SUCCESS;

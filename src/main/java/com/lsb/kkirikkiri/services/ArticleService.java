@@ -26,6 +26,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ArticleService {
     private final FileService fileService;
+    private final WalletService walletService;
+    private final ParticipantService participantService;
     private final ArticleMapper articleMapper;
     private final ParticipantMapper participantMapper;
 
@@ -126,21 +128,14 @@ public class ArticleService {
             }
             articleEntity.setUserId(sessionUser.getEmail());
             articleEntity.setCreatedAt(LocalDateTime.now());
-//            articleEntity.setWalletId(null);
-//            articleEntity.setParticipantsId(null);
-            if (this.articleMapper.insert(articleEntity) > 0) {
-                // 게시글 작성 성공하면 참여자 테이블 만들기
-                ParticipantEntity participant = new ParticipantEntity(articleEntity.getId(), sessionUser.getEmail(), String.join(",", new String[]{"","","",""}), String.join(",", new String[]{sessionUser.getNickname(),"","","",""}), 1);
-                if (this.participantMapper.insert(participant) > 0) {
-                    result.put("participantResult", CommonResult.SUCCESS);
-                } else {
-                    result.put("participantResult", CommonResult.FAILURE);
-                    // transactional
-                    throw new TransactionalException(CommonResult.FAILURE);
-                }
-                result.put("articleResult", CommonResult.SUCCESS);
-            } else {
-                result.put("articleResult", CommonResult.FAILURE);
+            result.put("articleResult", this.articleMapper.insert(articleEntity));
+            result.put("participantResult", this.participantService.createParticipants(articleEntity.getId(), sessionUser.getEmail(), sessionUser.getNickname()));
+            result.put("walletResult", this.walletService.createGroupWallet(articleEntity.getId()));
+            if (result.get("articleResult") != CommonResult.SUCCESS
+                    ||  result.get("participantResult") != CommonResult.SUCCESS
+                    ||  result.get("walletResult") != CommonResult.SUCCESS) {
+                // 게시글 작성 성공하면 참여자 테이블 & 공구 지갑 만들기 >> 하나라도 실패하면
+                throw new TransactionalException(CommonResult.FAILURE);
             }
 
         }

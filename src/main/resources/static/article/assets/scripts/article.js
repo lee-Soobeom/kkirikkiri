@@ -42,6 +42,12 @@ if ($participateButton !== null) {
                 case 'FAILURE':
                     dialogHandler.simpleYesModal('경고', '참여 신청을 실패하였습니다. 잠시후 다시 시도해 주세요');
                     break;
+                case 'FAILURE_SESSION':
+                    dialogHandler.simpleYesModal('경고', '공동구매 참여하기는 로그인 후 이용 가능합니다.');
+                    break;
+                case 'FAILURE_TIMEOUT':
+                    dialogHandler.simpleYesModal('경고', '공동구매 참여하기는 주문 20분 전 마감됩니다. 다른 공동구매에 참여해 주세요.');
+                    break;
                 default:
                     alert('default?');
                     break;
@@ -54,7 +60,45 @@ if ($participateButton !== null) {
 
 if ($payButton !== null) {
     $payButton.addEventListener('click', () => {
+        dialogHandler.simpleYesNoModal('결제', '공동구매 1인당 주문금액 잔액을 결제하시겠습니까?', [{
+            caption: '취소',
+            onclick: () => {}
+        }, {
+            caption: '확인',
+            onclick: () => {
+                const xhr = new XMLHttpRequest();
+                const formData = new FormData();
+                formData.append('articleId', new URLSearchParams(location.href).get('id'));
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState !== XMLHttpRequest.DONE) {
+                        return;
+                    }
+                    if (xhr.status < 200 || xhr.status >= 400) {
+                        dialogHandler.simpleYesModal('오류', `요청을 전송하는 도중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요. (${xhr.status})`);
+                        return;
+                    }
+                    const response = JSON.parse(xhr.responseText);
+                    switch (response.result) {
+                        case 'SUCCESS':
+                            setTimeout(() => {
+                                dialogHandler.simpleYesModal('알림', '결제에 성공하였습니다.');
+                            }, 500);
+                            break;
+                        case 'FAILURE':
+                            setTimeout(() => {
+                                dialogHandler.simpleYesModal('경고', '결제에 실패하였습니다. 잠시후 다시 시도해 주세요.');
+                            }, 500);
+                            break;
+                        default:
+                    }
+
+                };
+                xhr.open('PUT', '/wallet/pay');
+                xhr.send(formData);
+            }
+        }])
         // todo 내 지갑 kkiri-pay에서 지불
+
     });
 }
 

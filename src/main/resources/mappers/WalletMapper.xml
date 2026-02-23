@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lsb.kkirikkiri.mappers.WalletMapper">
-    <insert id="insert">
-        INSERT INTO `kkirikkiri`.`wallet` (`user_email`,
-                                           `cash`,
-                                           `last_charge`,
-                                           `customer_key`)
+    <insert id="insertUserWallet">
+        INSERT INTO `kkirikkiri`.`user_wallet` (`user_email`,
+                                                `cash`,
+                                                `last_charge`,
+                                                `last_pay`,
+                                                `customer_key`)
         VALUES (#{wallet.userEmail},
                 #{wallet.cash},
                 #{wallet.lastCharge},
+                #{wallet.lastPay},
                 #{wallet.customerKey})
     </insert>
+    <insert id="insertGroupWallet">
+        INSERT INTO `kkirikkiri`.`group_wallet` (`article_id`,
+                                                 `wallet`,
+                                                 `payed_participants`)
+        VALUES (#{wallet.articleId},
+                #{wallet.wallet},
+                #{wallet.payedParticipants})
+    </insert>
+    <update id="modifyUserWallet">
+        UPDATE `kkirikkiri`.`user_wallet`
+        SET `cash`        = #{wallet.cash},
+            `last_charge` = #{wallet.lastCharge},
+            `last_pay`    = #{wallet.lastPay}
+        WHERE `id` = #{wallet.id}
+        LIMIT 1
+    </update>
+    <update id="modifyGroupWallet">
+        UPDATE `kkirikkiri`.`group_wallet`
+        SET `wallet`             = #{wallet.wallet},
+            `payed_participants` = #{wallet.payedParticipants}
+        WHERE `article_id` = #{wallet.articleId}
+        LIMIT 1
+    </update>
+    <select id="selectUserWalletByEmail"
+            resultType="com.lsb.kkirikkiri.entities.UserWalletEntity">
+        SELECT `id`           AS `id`,
+               `user_email`   AS `userEmail`,
+               `cash`         AS `cash`,
+               `last_charge`  AS `lastCharge`,
+               `last_pay`     AS `lastPay`,
+               `customer_key` AS `customerKey`
+        FROM `kkirikkiri`.`user_wallet`
+        WHERE `user_email` = #{email}
+        LIMIT 1
+    </select>
+    <select id="selectUserWalletByCustomerKey"
+            resultType="com.lsb.kkirikkiri.entities.UserWalletEntity">
+        SELECT `id`           AS `id`,
+               `user_email`   AS `userEmail`,
+               `cash`         AS `cash`,
+               `last_charge`  AS `lastCharge`,
+               `last_pay`     AS `lastPay`,
+               `customer_key` AS `customerKey`
+        FROM `kkirikkiri`.`user_wallet`
+        WHERE `customer_key` = #{customerKey}
+        LIMIT 1
+    </select>
+    <select id="selectGroupWalletByArticleId"
+            resultType="com.lsb.kkirikkiri.entities.GroupWalletEntity">
+        SELECT `id`                 AS `id`,
+               `article_id`         AS `articleId`,
+               `wallet`             AS `wallet`,
+               `payed_participants` AS `payedParticipants`
+        FROM `kkirikkiri`.`group_wallet`
+        WHERE `article_id` = #{articleId}
+        LIMIT 1
+    </select>
 </mapper>

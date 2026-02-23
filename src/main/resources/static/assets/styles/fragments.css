@@ -27,7 +27,7 @@ body:has(> #dialog[data-visible]) {
   position: fixed;
   transition-duration: 200ms;
   transition-property: opacity, pointer-events;
-  z-index: 15;
+  z-index: 10;
 }
 #dialog[data-visible] {
   opacity: 1;
@@ -85,6 +85,56 @@ body:has(> #dialog[data-visible]) {
   background-color: rgb(229.5, 229.5, 229.5);
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  #dialog > .modal {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 0.0625rem;
+    justify-content: flex-start;
+    width: 25rem;
+    height: 15rem;
+  }
+  #dialog > .modal > .title {
+    font-size: 1rem;
+    padding: 0.625rem;
+  }
+  #dialog > .modal > .content {
+    font-size: 1rem;
+    padding: 1.75rem 0.875rem;
+  }
+  #dialog > .modal > .button-container {
+    padding: 0.625rem;
+  }
+  #dialog > .modal > .button-container > .button {
+    padding: 0.625rem 1rem;
+  }
+}
+@media (max-width: 767px) {
+  #dialog > .modal {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 0.0625rem;
+    justify-content: flex-start;
+    width: 20rem;
+    height: 15rem;
+  }
+  #dialog > .modal > .title {
+    font-size: 0.875rem;
+    padding: 0.375rem;
+  }
+  #dialog > .modal > .content {
+    font-size: 0.875rem;
+    padding: 0.75rem 0.375rem;
+  }
+  #dialog > .modal > .button-container {
+    padding: 0.375rem;
+  }
+  #dialog > .modal > .button-container > .button {
+    padding: 0.375rem 0.75rem;
+  }
+}
 #top {
   align-items: center;
   display: flex;
@@ -248,6 +298,44 @@ body:has(> #dialog[data-visible]) {
   line-height: 1.375;
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  #top {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    justify-content: space-between;
+    background-color: #4678FF;
+    color: #E9EFFF;
+    padding: 1rem 1.25rem;
+    position: relative;
+    z-index: 5;
+  }
+  #top > .image-wrapper {
+    line-height: 0;
+    cursor: pointer;
+  }
+  #top > .image-wrapper > .input {
+    display: none;
+  }
+  #top > .image-wrapper > .image {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  #top > .link {
+    top: 50%;
+    left: 50%;
+    color: inherit;
+    font: inherit;
+    font-size: 1.5rem;
+    font-weight: 700;
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+  #top > .button-container {
+    display: flex;
+  }
+}
 @media (max-width: 767px) {
   #top {
     align-items: center;
@@ -550,6 +638,17 @@ body:has(> #dialog[data-visible]) {
   padding: 1rem 0;
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  #my > .container {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    width: 45%;
+    padding: 4.625rem 0.5rem 0.75rem 0.5rem;
+  }
+}
 @media (max-width: 767px) {
   #my > .container {
     align-items: stretch;

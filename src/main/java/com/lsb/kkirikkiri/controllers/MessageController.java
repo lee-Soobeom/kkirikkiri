@@ -3,6 +3,7 @@ package com.lsb.kkirikkiri.controllers;
 import com.lsb.kkirikkiri.entities.MessageEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
 import com.lsb.kkirikkiri.results.CommonResult;
+import com.lsb.kkirikkiri.results.Result;
 import com.lsb.kkirikkiri.services.MessageService;
 import com.lsb.kkirikkiri.services.ParticipantService;
 import com.lsb.kkirikkiri.vos.MessageVo;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -45,7 +47,7 @@ public class MessageController {
     public Map<String, Object> postMessage(MessageVo messageVo,
                                            @SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser) {
         Map<String, Object> response = new HashMap<>();
-        CommonResult result = this.messageService.writeMessage(messageVo, sessionUser);
+        Result result = this.messageService.writeMessage(messageVo, sessionUser);
         response.put("result", result.name());
         return response;
     }
@@ -69,5 +71,10 @@ public class MessageController {
 
         response.put("result", result.name());
         return response;
+    }
+
+    @Scheduled(fixedRate = 60000)
+    public void scheduledMessage() {
+        this.messageService.scheduleMessage();
     }
 }

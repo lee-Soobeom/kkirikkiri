@@ -20,11 +20,8 @@
                  th:text="${amount}"></div>
             <div style="font-size: 1.25rem; font-weight: 500;">원</div>
         </div>
-        <input disabled readonly hidden id="email" type="hidden"
+        <input disabled readonly hidden id="em" type="hidden"
                th:value="${session.sessionUser.email}"
-               th:if="${session.sessionUser != null}">
-        <input disabled readonly hidden id="name" type="hidden"
-               th:value="${session.sessionUser.name}"
                th:if="${session.sessionUser != null}">
         <button class="button" id="payment-button" style="margin-top: 30px">결제하기</button>
     </div>
@@ -34,33 +31,33 @@
 
     async function main() {
         const button = document.getElementById("payment-button");
+        const data = await fetch('/wallet/', {method: 'POST'})
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('response error');
+                }
+                return res.json();
+            })
+            .catch(err => console.error('error: ' + err));
+
+        // ------  결제위젯 초기화 ------
+        const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+        const tossPayments = TossPayments(clientKey);
+        // 회원 결제
+        const customerKey = data['wallet']['customerKey'];
+        const widgets = tossPayments.widgets({ customerKey });
+
+        // ------  주문서의 결제 금액 설정 ------
         const amount = {
             currency: "KRW",
             value: +`${new URL(location.href).searchParams.get("amount")}`,
         };
-        // ------  결제위젯 초기화 ------
-        // TODO: clientKey는 개발자센터의 결제위젯 연동 키 > 클라이언트 키로 바꾸세요.
-        // TODO: 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요. 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
-        const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-        const customerKey = generateRandomString();
-        const tossPayments = TossPayments(clientKey);
-        // 회원 결제
-        const widgets = tossPayments.widgets({
-            customerKey,
-        });
-
-        // ------  주문서의 결제 금액 설정 ------
-        // TODO: 위젯의 결제금액을 결제하려는 금액으로 초기화하세요.
-        // TODO: renderPaymentMethods, renderAgreement, requestPayment 보다 반드시 선행되어야 합니다.
         await widgets.setAmount(amount);
 
         await Promise.all([
             // ------  결제 UI 렌더링 ------
             widgets.renderPaymentMethods({
                 selector: "#payment-method",
-                // 렌더링하고 싶은 결제 UI의 variantKey
-                // 결제 수단 및 스타일이 다른 멀티 UI를 직접 만들고 싶다면 계약이 필요해요.
-                // @docs https://docs.tosspayments.com/guides/v2/payment-widget/admin#새로운-결제-ui-추가하기
                 variantKey: "DEFAULT",
             }),
             // ------  이용약관 UI 렌더링 ------
@@ -72,23 +69,41 @@
 
         // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
         button.addEventListener("click", async function () {
+            // todo payment db 저장
+            const formData = new FormData();
+            formData.append('customerKey', customerKey);
+            formData.append('amount', amount.value);
+            formData.append('userEmail', data['user_email']);
+            formData.append('userName', data['user_name']);
+
+            const response = await fetch('/payment/',{
+                method: 'POST',
+                body: formData,
+            }).then(res => {
+                if (!res.ok) {
+                    dialogHandler.simpleYesModal('경고', `오류가 발생하였습니다. 잠시후 다시 시도해 주세요. ${res.status}`);
+                    return;
+                }
+                return res.json();
+            }).catch(err => console.error(`error: ` + err));
+            console.log(response);
+            if (response.result === 'FAILURE') {
+                dialogHandler.simpleYesModal('경고', `잠시후 다시 시도해 주세요.`);
+                return;
+            }
             // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
             // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
             await widgets.requestPayment({
-                orderId: generateRandomString(),
+                orderId: response.orderId,
                 orderName: `kkirikkiri-pay ${new URL(location.href).searchParams.get("amount")}원 구매`,
-                successUrl: window.location.origin + "/tosspayments/widget/success.html",
+                successUrl: window.location.origin + "/charge/success",
                 failUrl: window.location.origin + "/tosspayments/fail.html",
-                customerEmail: `${document.getElementById('email').value}`,
-                customerName: `${document.getElementById('name').value}`,
+                customerEmail: data['user_email'],
+                customerName: data['user_name'],
                 // 가상계좌 안내, 퀵계좌이체 휴대폰 번호 자동 완성에 사용되는 값입니다. 필요하다면 주석을 해제해 주세요.
                 // customerMobilePhone: "01012341234",
             });
         });
-    }
-
-    function generateRandomString() {
-        return window.btoa(Math.random()).slice(0, 20);
     }
 </script>
 </body>

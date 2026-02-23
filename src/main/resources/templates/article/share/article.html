@@ -21,7 +21,7 @@
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
 <th:block th:replace="~{/fragments/common.html :: sideMypage(${session.sessionUser})}"></th:block>
 <th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
-<div id="ws">
+<div id="ws" th:if="${session.sessionUser != null && #strings.contains(participants.participantsNickname, session.sessionUser.nickname)}">
     <form class="room-container" name="chatRoom">
         <ol class="room">
             <li class="message system">
@@ -104,16 +104,16 @@
             <div class="view-container">
                 <div class="fund-container">
                     <div class="box fund">
-                        <h2 class="title">누적 금액</h2>
+                        <h2 class="title">총 가격</h2>
                         <div class="value-container">
-                            <div class="value">16000</div>
+                            <div class="value" th:text="${article.orderPrice + article.deliveryPrice / participants.count}"></div>
                             <div class="caption">원</div>
                         </div>
                     </div>
                     <div class="box bill">
-                        <h2 class="title">보내야할 금액</h2>
+                        <h2 class="title">잔액</h2>
                         <div class="value-container">
-                            <div class="value">16000</div>
+                            <div class="value" th:text="${article.orderPrice + article.deliveryPrice / participants.count}"></div>
                             <div class="caption">원</div>
                         </div>
                     </div>
@@ -134,19 +134,18 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div class="button-container" th:if="${session.sessionUser != null}">
-                        <button class="button" name="participate" type="button"
-                                th:if="${session.sessionUser != null
-                                && participants != null
-                                && session.sessionUser.email != participants.leader
-                                && !#strings.contains(participants.participants, session.sessionUser.email)}">
+                    <span th:text="${deadline}"></span>
+                    <div class="button-container">
+                        <button name="participate" type="button"
+                                th:if="${session.sessionUser == null ? true : session.sessionUser.email != participants.leader && !#strings.contains(participants.participants, session.sessionUser.email)}"
+                                th:class="${deadline ? 'button disabled' : 'button'}"
+                                th:disabled="${!deadline}">
                             참여하기
                         </button>
-                        <button class="button" name="pay" type="button"
-                                th:if="${session.sessionUser != null
-                                && participants != null
-                                && (session.sessionUser.email == participants.leader
-                                || #strings.contains(participants.participants, session.sessionUser.email))}">
+                        <button name="pay" type="button"
+                                th:if="${session.sessionUser == null ? false : session.sessionUser.email == participants.leader || #strings.contains(participants.participants, session.sessionUser.email)}"
+                                th:class="${deadline ? 'button' : 'button disabled'}"
+                                th:disabled="${deadline}">
                             계산하기
                         </button>
                     </div>

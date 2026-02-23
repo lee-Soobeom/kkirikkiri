@@ -13,6 +13,8 @@ public interface ArticleMapper {
 
     ArticleVo selectById(@Param(value = "id") int id);
 
+    ArticleEntity[] selectAllByOrderTime();
+
     int update(ArticleEntity articleEntity);
 
     int incrementView(@Param("id") int id);

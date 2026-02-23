@@ -26,7 +26,6 @@ $wsConnectButton.addEventListener('click', () => {
             stompClient.subscribe(`/topic/message/${new URL(location.href).searchParams.get('id')}`, (message) => {
                 const response = JSON.parse(message.body);
                 createMessage(response.sender, response.content);
-                $wsContainer.querySelector('[name="chat"]').value = '';
             });
         };
         stompClient.onWebSocketError = (error) => {
@@ -65,6 +64,7 @@ function sendMessage() {
             content: $wsContainer.querySelector('[name="chat"]').value
         }),
     });
+    $wsContainer.querySelector('[name="chat"]').value = '';
 }
 
 function createMessage(messageSender, messageContent) {

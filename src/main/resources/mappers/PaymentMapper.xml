@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lsb.kkirikkiri.mappers.PaymentMapper">
+    <insert id="insertPayment">
+        INSERT INTO `kkirikkiri`.`payment` (`order_id`,
+                                            `customer_key`,
+                                            `user_email`,
+                                            `user_name`,
+                                            `amount`,
+                                            `status`)
+        VALUES (#{payment.orderId},
+                #{payment.customerKey},
+                #{payment.userEmail},
+                #{payment.userName},
+                #{payment.amount},
+                #{payment.status})
+    </insert>
+    <update id="modifyPayment">
+        UPDATE `kkirikkiri`.`payment`
+        SET `status`       = #{payment.status},
+            `payment_key`  = #{payment.paymentKey}
+        WHERE `id` = #{payment.id}
+        LIMIT 1
+    </update>
+    <select id="selectPaymentByOrderId"
+            resultType="com.lsb.kkirikkiri.entities.PaymentEntity">
+        SELECT `id`           AS `id`,
+               `order_id`     AS `orderId`,
+               `customer_key` AS `customerKey`,
+               `user_email`   AS `userEmail`,
+               `user_name`    AS `userName`,
+               `amount`       AS `amount`,
+               `status`       AS `status`,
+               `payment_key`  AS `paymentKey`
+        FROM `kkirikkiri`.`payment`
+        WHERE `order_id` = #{orderId}
+        LIMIT 1
+    </select>
+</mapper>

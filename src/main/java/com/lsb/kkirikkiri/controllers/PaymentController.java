@@ -1,10 +1,17 @@
 package com.lsb.kkirikkiri.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lsb.kkirikkiri.entities.PaymentEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
+import com.lsb.kkirikkiri.results.CommonResult;
+import com.lsb.kkirikkiri.results.PaymentResult;
+import com.lsb.kkirikkiri.results.Result;
 import com.lsb.kkirikkiri.services.PaymentService;
+import com.lsb.kkirikkiri.vos.PaymentVo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -17,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.print.attribute.standard.Media;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -35,7 +43,7 @@ public class PaymentController {
     private static final String API_SECRET_KEY = "test_sk_zXLkKEypNArWmo50nX3lmeaxYG5R";
     private final Map<String, String> billingKeyMap = new HashMap<>();
 
-    @RequestMapping(value = {"/confirm/widget", "/confirm/payment"})
+    @RequestMapping(value = "/confirm/payment")
     public ResponseEntity<JSONObject> confirmPayment(HttpServletRequest request, @RequestBody String jsonBody) throws Exception {
         String secretKey = request.getRequestURI().contains("/confirm/payment") ? API_SECRET_KEY : WIDGET_SECRET_KEY;
         JSONObject response = sendRequest(parseRequestData(jsonBody), secretKey, "https://api.tosspayments.com/v1/payments/confirm");
@@ -69,7 +77,7 @@ public class PaymentController {
         requestData.put("grantType", "AuthorizationCode");
         requestData.put("customerKey", customerKey);
         requestData.put("code", code);
-        
+
         String url = "https://api.tosspayments.com/v1/brandpay/authorizations/access-token";
         JSONObject response = sendRequest(requestData, API_SECRET_KEY, url);
 
@@ -134,10 +142,57 @@ public class PaymentController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/charge/success", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getSuccess(ModelAndView modelAndView,
+                                   @SessionAttribute(value = "sessionUser") UserEntity sessionUser,
+                                   PaymentEntity paymentEntity) throws IOException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("paymentKey",  paymentEntity.getPaymentKey());
+        jsonObject.put("orderId", paymentEntity.getOrderId());
+        jsonObject.put("amount", paymentEntity.getAmount());
+        JSONObject response = sendRequest(jsonObject, WIDGET_SECRET_KEY, "https://api.tosspayments.com/v1/payments/confirm");
+
+        // 결제 실패
+        if (response.containsKey("error")) {
+            modelAndView.setViewName("/tosspayments/fail");
+            modelAndView.addObject("response", response);
+            return modelAndView;
+        }
+
+        //결제 성공 > record update
+        Pair<Result, PaymentVo> result = this.paymentService.updateCharge(sessionUser, paymentEntity);
+        if (result.getLeft().equals(PaymentResult.FAILURE_CANCEL)) {
+            modelAndView.setViewName("/tosspayments/fail");
+            modelAndView.addObject("response", response);
+            modelAndView.addObject("cancel", result.getRight());
+            modelAndView.addObject("result", result.getLeft().name());
+            return modelAndView;
+        }
+
+        modelAndView.setViewName("/tosspayments/widget/success");
+        modelAndView.addObject("payment", paymentEntity);
+        modelAndView.addObject("response", response);
+        modelAndView.addObject("result", result.getLeft().name());
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/fail", method = RequestMethod.GET)
     public String failPayment(HttpServletRequest request, Model model) {
         model.addAttribute("code", request.getParameter("code"));
         model.addAttribute("message", request.getParameter("message"));
         return "/tosspayments/fail";
+    }
+
+    @RequestMapping(value = "/payment/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> postPayment(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser,
+                                           PaymentEntity paymentEntity) {
+        Map<String, Object> response = new HashMap<>();
+        Pair<CommonResult, String> result = this.paymentService.createPayment(sessionUser, paymentEntity);
+        response.put("result", result.getLeft().name());
+        if (result.getLeft().equals(CommonResult.SUCCESS)) {
+            response.put("orderId", result.getRight());
+        }
+        return response;
     }
 }

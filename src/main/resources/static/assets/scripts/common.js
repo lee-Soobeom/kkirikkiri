@@ -122,7 +122,7 @@ $paymentButton.addEventListener('click', () => {
                 amount = $checkedCost.value;
             }
         }
-        window.open(`/charge?amount=${amount}`, 'popup', `width=${window.screen.width / 3},height=${window.screen.height * 2 / 3},left=20,top=40`)
+        window.open(`/charge?amount=${amount}`, 'popup', `width=620px,height=${window.screen.height * 2 / 3},left=20,top=40`)
     } else {
         dialogHandler.simpleYesModal('경고', '충전할 금액을 선택 후 결제해 주세요.');
     }

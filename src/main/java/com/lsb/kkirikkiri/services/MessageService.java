@@ -1,5 +1,6 @@
 package com.lsb.kkirikkiri.services;
 
+import com.lsb.kkirikkiri.entities.ArticleEntity;
 import com.lsb.kkirikkiri.entities.MessageEntity;
 import com.lsb.kkirikkiri.entities.ParticipantEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
@@ -9,6 +10,8 @@ import com.lsb.kkirikkiri.mappers.MessageMapper;
 import com.lsb.kkirikkiri.mappers.ParticipantMapper;
 import com.lsb.kkirikkiri.mappers.UserMapper;
 import com.lsb.kkirikkiri.results.CommonResult;
+import com.lsb.kkirikkiri.results.MessageResult;
+import com.lsb.kkirikkiri.results.Result;
 import com.lsb.kkirikkiri.validators.MessageValidator;
 import com.lsb.kkirikkiri.validators.UserValidator;
 import com.lsb.kkirikkiri.vos.ArticleVo;
@@ -17,9 +20,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Optional;
+
+import static com.lsb.kkirikkiri.results.MessageResult.FAILURE_TIMEOUT;
 
 @Service
 @RequiredArgsConstructor
@@ -42,16 +46,17 @@ public class MessageService {
         return Pair.of(CommonResult.SUCCESS, dbMessages);
     }
 
-    public CommonResult writeMessage(MessageVo messageVo, UserEntity sessionUser) {
+    public Result writeMessage(MessageVo messageVo, UserEntity sessionUser) {
         // null & usage & session 공통 검사
+        if (sessionUser == null ||
+                this.userMapper.selectByEmail(sessionUser.getEmail()) == null) {
+            return CommonResult.FAILURE_SESSION;
+        }
         if (messageVo == null ||
                 !MessageValidator.validateUsage(messageVo)) {
             return CommonResult.FAILURE;
         }
-        if (sessionUser == null ||
-                this.userMapper.selectByEmail(sessionUser.getEmail()) == null) {
-            return CommonResult.FAILURE;
-        }
+
 
         if (messageVo.getUsage().equals(MessageType.TALK.code)) {
             if (!MessageValidator.validateContent(messageVo)) {
@@ -65,6 +70,9 @@ public class MessageService {
             ArticleVo dbArticleVo = this.articleMapper.selectById(messageVo.getArticleId());
             if (dbArticleVo == null) {
                 return CommonResult.FAILURE;
+            }
+            if (Duration.between(LocalDateTime.now(), dbArticleVo.getOrderTime()).toMinutes() <= 20) {
+                return MessageResult.FAILURE_TIMEOUT;
             }
             messageVo.setSender(sessionUser.getEmail());
             messageVo.setSenderNickname(sessionUser.getNickname());
@@ -122,5 +130,23 @@ public class MessageService {
         return CommonResult.SUCCESS;
     }
 
+    public void scheduleMessage() {
+        ArticleEntity[] dbArticleEntities = this.articleMapper.selectAllByOrderTime();
+        if (dbArticleEntities != null) {
+            for (ArticleEntity dbArticleEntity : dbArticleEntities) {
+                ParticipantEntity dbParticipantEntity = this.participantMapper.selectById(dbArticleEntity.getId());
+                String[] members = new String[5];
+                members[0] = dbParticipantEntity.getLeader();
+                String[] participants = dbParticipantEntity.getParticipants().split(",", -1);
+                System.arraycopy(participants, 0, members, 1, participants.length);
+                for (String member : members) {
+                    MessageVo messageVo = new MessageVo("system", member, "주문 20분 전입니다. 지금부터 결제를 진행 할 수 있습니다.", LocalDateTime.now(), false, dbArticleEntity.getId(), "system");
+                    this.messageMapper.insert(messageVo);
+                }
+            }
+        } else {
+            System.out.println("null");
+        }
 
+    }
 }
