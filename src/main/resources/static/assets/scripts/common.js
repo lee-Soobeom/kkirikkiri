@@ -87,15 +87,15 @@ const geoHandler = {
     }
 };
 
-$chargeButton.addEventListener('click', () => {
-    $chargeContainer.show();
-});
+if ($chargeButton != null) {
+    $chargeButton.addEventListener('click', () => {
+        $chargeContainer.show();
+    });
+}
 
 $chargeCloseButton.addEventListener('click', () => {
     $chargeContainer.hide();
 });
-
-
 
 $paymentButton.addEventListener('click', () => {
     const $checkedCost = Array.from($chargeContainer.querySelectorAll('[name="cost"]')).filter(x => x.checked === true)[0];

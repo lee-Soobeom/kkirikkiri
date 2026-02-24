@@ -168,15 +168,6 @@
         </ol>
     </div>
 </main>
-<div id="more">
-    <button class="button" name="deactivateButton" type="button">
-        <img src="/assets/images/more/more.png" alt="">
-    </button>
-    <a th:href="@{/board/list (id='share')}" class="link" target="_self">
-<!--        <img src="/assets/images/more/more.png" alt="">-->
-        공구 게시판으로 이동
-    </a>
-</div>
 <ol id="quick-nav">
     <li class="item">
         <a class="link" th:href="@{/board/list(id='share')}" target="_self">공구</a>
@@ -194,24 +185,6 @@
         </label>
     </li>
 </ol>
-
-<div id="message">
-                <label class="label">
-                    <span class="caption">가게 위치</span>
-                    <span class="row">
-                        <input required type="text" name="storeAddress" class="field" placeholder="가게 위치를 찾아주세요" readonly>
-                        <button class="addressButton" name="storeAddressButton" type="button">주소 찾기</button>
-                    </span>
-                </label>
-            </div>
-        </div>
-        <div class="button-container">
-            <button type="button" name="cancel" class="button">취소</button>
-            <button type="submit" name="submit" class="button">수정</button>
-        </div>
-    </form>
-
-</div>
 <div id="message">
     <div class="title">
         <div class="sender">${message.sender}</div>

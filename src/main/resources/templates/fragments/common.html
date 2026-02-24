@@ -74,7 +74,7 @@
                 <span class="message">로그인 후 이용가능합니다.</span>
             </div>
             <div class="content" th:if="${session.sessionUser != null}">
-                <span class="value" th:text="${wallet.cash}">2000</span>
+                <span class="value" th:text="${wallet.cash}"></span>
                 <span class="caption">Pay</span>
                 <button class="charge" name="charge" type="button">충전하기</button>
             </div>

@@ -18,6 +18,7 @@ VALUES ('share', '공구게시판'),
        ('promote', '홍보게시판'),
        ('notice','공지게시판');
 ```
+
 ## menu
 ```mariadb
 CREATE TABLE `kkirikkiri`.`menus`
@@ -167,6 +168,7 @@ VALUES ('pay', '결제/환불'),
        ('restrict', '이용제한');
 
 ```
+
 ## service
 ```mariadb
 CREATE TABLE `kkirikkiri`.`services`
@@ -181,6 +183,62 @@ CREATE TABLE `kkirikkiri`.`services`
     CONSTRAINT FOREIGN KEY (`filter`) REFERENCES `kkirikkiri`.`service_filter` (`code`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
+);
+```
+
+##  user_wallet (02.23)
+```mariadb
+CREATE TABLE `kkirikkiri`.`user_wallet`
+(
+    `id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_email`   VARCHAR(50)  NOT NULL,
+    `cash`         INT UNSIGNED NOT NULL DEFAULT 0,
+    `last_charge`  DATETIME     NULL     DEFAULT NULL,
+    `last_pay`     DATETIME     NULL     DEFAULT NULL,
+    `customer_key` VARCHAR(36)  NOT NULL,
+    CONSTRAINT PRIMARY KEY (`id`),
+    CONSTRAINT UNIQUE (`customer_key`),
+    CONSTRAINT FOREIGN KEY (`user_email`) REFERENCES `kkirikkiri`.`users` (`email`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+```
+
+## group_wallet
+```mariadb
+CREATE TABLE `kkirikkiri`.`group_wallet`
+(
+    `id`                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `article_id`         INT UNSIGNED NOT NULL,
+    `wallet`             INT UNSIGNED NOT NULL DEFAULT 0,
+    `payed_participants` varchar(200) NOT NULL,
+    CONSTRAINT PRIMARY KEY (`id`),
+    CONSTRAINT FOREIGN KEY (`article_id`) REFERENCES `kkirikkiri`.`articles` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+```
+
+## payment
+```mariadb
+CREATE TABLE `kkirikkiri`.`payment`
+(
+    `id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `order_id`     VARCHAR(36)  NOT NULL,
+    `customer_key` VARCHAR(36)  NOT NULL,
+    `user_email`   VARCHAR(50)  NOT NULL,
+    `user_name`    VARCHAR(20)  NOT NULL,
+    `amount`       INT UNSIGNED NOT NULL,
+    `status`       VARCHAR(10)  NOT NULL DEFAULT 'READY',
+    `payment_key`  VARCHAR(36)  NULL,
+    CONSTRAINT PRIMARY KEY (`id`),
+    CONSTRAINT UNIQUE (`order_id`),
+    CONSTRAINT FOREIGN KEY (`customer_key`) REFERENCES `kkirikkiri`.`user_wallet` (`customer_key`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT FOREIGN KEY (`user_email`) REFERENCES `kkirikkiri`.`users` (`email`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 ```
 # user

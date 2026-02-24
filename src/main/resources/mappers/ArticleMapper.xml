@@ -409,6 +409,7 @@
         `t1`.`view`              AS `view`
         FROM `kkirikkiri`.`articles`AS `t1`
         WHERE `board_id` = #{boardId}
+          AND
         AND `order_time` IS NOT NULL
         AND `order_time` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 30 MINUTE)
 

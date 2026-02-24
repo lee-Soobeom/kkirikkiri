@@ -45,13 +45,11 @@ public class WalletService {
     }
 
     public UserWalletEntity getUserWallet(String userEmail) {
-        if (!UserValidator.validateEmail(userEmail)) {
-            return null;
-        }
-        if (this.userMapper.selectByEmail(userEmail) == null) {
-            return null;
-        }
-        return this.walletMapper.selectUserWalletByEmail(userEmail);
+        return !UserValidator.validateEmail(userEmail)
+                ? null
+                : this.userMapper.selectByEmail(userEmail) == null
+                ? null
+                : this.walletMapper.selectUserWalletByEmail(userEmail);
     }
 
     @Transactional

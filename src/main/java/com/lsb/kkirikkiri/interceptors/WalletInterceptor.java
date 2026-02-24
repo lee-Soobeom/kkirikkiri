@@ -16,7 +16,6 @@ public class WalletInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // preHandle 메서드는 요청이 컨트롤러로 넘어가기 전의 처리를 하기 위한 메서드.
         HttpSession session = request.getSession(false);
         if (session != null) {
             UserEntity sessionUser = (UserEntity) session.getAttribute("sessionUser");

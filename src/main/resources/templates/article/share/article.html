@@ -49,7 +49,6 @@
                 <div class="nickname" th:text="${article.nickname}">작성자</div>
                 <div class="created-at"
                      th:text="${ #temporals.format(article.getCreatedAt(), 'yyyy-MM-dd HH:mm')}"></div>
-                <!--            <div class="is-updated">수정됨</div>-->
                 <div class="view" th:text="${article.view}"></div>
             </div>
         </div>

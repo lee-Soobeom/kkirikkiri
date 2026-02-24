@@ -1,7 +1,7 @@
 package com.lsb.kkirikkiri.configs;
 
-import com.lsb.kkirikkiri.interceptors.AdminInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lsb.kkirikkiri.interceptors.WalletInterceptor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -9,14 +9,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private AdminInterceptor adminInterceptor;
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(adminInterceptor)
-                .addPathPatterns("/admin/**")
-                .excludePathPatterns("/static/**", "/assets/**", "/user/**", "/", "/error");
+        registry.addInterceptor(this.walletInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/user/**");
+    }
 
+    @Bean
+    public WalletInterceptor walletInterceptor() {
+        return new WalletInterceptor();
     }
 }

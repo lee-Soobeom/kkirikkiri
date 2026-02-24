@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,13 +31,12 @@ public class UserController extends AbstractGeneralController{
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getLogin(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser) {
         if (sessionUser != null) {
-            return "redirect:/admin/index";
+            return "redirect:/";
         }
-
         return "/user/login";
     }
 
-    @RequestMapping(value = "/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map<String, Object> postLogin(
             @RequestParam(value = "email", required = false) String email,
@@ -64,7 +62,7 @@ public class UserController extends AbstractGeneralController{
     @RequestMapping(value = "/register", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getRegister(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser) {
         if (sessionUser != null) {
-            return "redirect:/user/";
+            return "redirect:/";
         }
 
         return "user/register";
