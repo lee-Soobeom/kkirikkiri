@@ -37,7 +37,7 @@
           method="post"
           enctype="multipart/form-data"
           th:object="${article}">
-        <h2 class="title">게시글 작성</h2>
+        <h2 class="title" th:text="${article.id != null} ? '게시글 수정' : '게시글 작성'"></h2>
         <input type="hidden" name="id" th:value="${article.id}" />
         <input type="hidden" name="mode" th:value="${article.id != null ? 'modify' : 'write'}" />
         <span class="board"></span>

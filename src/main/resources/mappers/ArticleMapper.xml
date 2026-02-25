@@ -43,8 +43,8 @@
                 #{addressPrimary},
                 #{addressSecondary},
                 #{content},
-                #{IsShareChecked},
-                #{IsEntryChecked},
+                #{shareChecked},
+                #{entryChecked},
                 #{createdAt},
                 #{updatedAt},
                 #{view})
@@ -67,8 +67,8 @@
             `address_primary`   = #{addressPrimary},
             `address_secondary` = #{addressSecondary},
             `content`           = #{content},
-            `isShareChecked`    = #{IsShareChecked},
-            `isEntryChecked`    = #{IsEntryChecked},
+            `isShareChecked`    = #{shareChecked},
+            `isEntryChecked`    = #{entryChecked},
             `updated_at`        = #{updatedAt},
             `view`              = #{view}
         WHERE `id` = #{id}
@@ -106,8 +106,8 @@
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
-               `t1`.`isShareChecked`    AS `IsShareChecked`,
-               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`isShareChecked`    AS `ShareChecked`,
+               `t1`.`isEntryChecked`    AS `EntryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`,
@@ -138,8 +138,8 @@
                `address_primary`   AS `addressPrimary`,
                `address_secondary` AS `addressSecondary`,
                `content`           AS `content`,
-               `isShareChecked`    AS `IsShareChecked`,
-               `isEntryChecked`    AS `IsEntryChecked`,
+               `isShareChecked`    AS `shareChecked`,
+               `isEntryChecked`    AS `entryChecked`,
                `created_at`        AS `createdAt`,
                `updated_at`        AS `updatedAt`,
                `view`              AS `view`
@@ -170,8 +170,8 @@
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
-               `t1`.`isShareChecked`    AS `IsShareChecked`,
-               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`isShareChecked`    AS `shareChecked`,
+               `t1`.`isEntryChecked`    AS `entryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`
@@ -248,8 +248,8 @@
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
-               `t1`.`isShareChecked`    AS `IsShareChecked`,
-               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`isShareChecked`    AS `shareChecked`,
+               `t1`.`isEntryChecked`    AS `entryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`
@@ -279,8 +279,8 @@
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
-               `t1`.`isShareChecked`    AS `IsShareChecked`,
-               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`isShareChecked`    AS `shareChecked`,
+               `t1`.`isEntryChecked`    AS `entryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`
@@ -310,8 +310,8 @@
                `address_primary`   AS `addressPrimary`,
                `address_secondary` AS `addressSecondary`,
                `content`           AS `content`,
-               `isShareChecked`    AS `IsShareChecked`,
-               `isEntryChecked`    AS `IsEntryChecked`,
+               `isShareChecked`    AS `shareChecked`,
+               `isEntryChecked`    AS `entryChecked`,
                `created_at`        AS `createdAt`,
                `updated_at`        AS `updatedAt`,
                `view`              AS `view`
@@ -340,8 +340,8 @@
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
-               `t1`.`isShareChecked`    AS `IsShareChecked`,
-               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`isShareChecked`    AS `shareChecked`,
+               `t1`.`isEntryChecked`    AS `entryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`
@@ -371,8 +371,8 @@
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
-               `t1`.`isShareChecked`    AS `IsShareChecked`,
-               `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+               `t1`.`isShareChecked`    AS `shareChecked`,
+               `t1`.`isEntryChecked`    AS `entryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`
@@ -402,17 +402,15 @@
         `t1`.`address_primary`   AS `addressPrimary`,
         `t1`.`address_secondary` AS `addressSecondary`,
         `t1`.`content`           AS `content`,
-        `t1`.`isShareChecked`    AS `IsShareChecked`,
-        `t1`.`isEntryChecked`    AS `IsEntryChecked`,
+        `t1`.`isShareChecked`    AS `shareChecked`,
+        `t1`.`isEntryChecked`    AS `entryChecked`,
         `t1`.`created_at`        AS `createdAt`,
         `t1`.`updated_at`        AS `updatedAt`,
         `t1`.`view`              AS `view`
         FROM `kkirikkiri`.`articles`AS `t1`
         WHERE `board_id` = #{boardId}
-          AND
         AND `order_time` IS NOT NULL
         AND `order_time` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 30 MINUTE)
-
         <if test="menu != null and menu != '' and menu != 'all'">
             AND `menu` = #{menu}
         </if>

@@ -146,6 +146,8 @@ $radioSecondary.addEventListener('change', () => {
 
 $writeForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    console.log('mode:', $writeForm['mode'].value);
+    console.log('id:', $writeForm['id'].value);
     const isModify = $writeForm['mode'].value === 'modify';
     // title
     if ($writeForm['title'].value === '') {

@@ -97,6 +97,7 @@ public class ArticleService {
 
     @Transactional
     public Pair<Map<String, Object>, ArticleEntity> write(UserEntity sessionUser, ArticleEntity articleEntity, List<MultipartFile> files) {
+        System.out.println("넘어온 boardId = [" + articleEntity.getBoardId() + "]");
         Map<String, Object> result = new HashMap<>();
         if (sessionUser == null) {
             System.out.println("session");
@@ -114,6 +115,16 @@ public class ArticleService {
         String boardId = articleEntity.getBoardId();
         // 공구 게시판 (share)
         if ("share".equals(boardId)) {
+            System.out.println("boardId: " + articleEntity.getBoardId());
+            System.out.println("title: " + articleEntity.getTitle());
+            System.out.println("menu: " + articleEntity.getMenu());
+            System.out.println("menuName: " + articleEntity.getMenuName());
+            System.out.println("orderPrice: " + articleEntity.getOrderPrice());
+            System.out.println("deliveryPrice: " + articleEntity.getDeliveryPrice());
+            System.out.println("orderTime: " + articleEntity.getOrderTime());
+            System.out.println("pickupTime: " + articleEntity.getPickupTime());
+            System.out.println("restaurant: " + articleEntity.getRestaurant());
+            System.out.println("addressSecondary: " + articleEntity.getAddressSecondary());
             if (!ArticleValidator.validateMenu(articleEntity) ||
                     !ArticleValidator.validateMenuName(articleEntity) ||
                     !ArticleValidator.validateMinOrderPrice(articleEntity) ||
@@ -128,7 +139,14 @@ public class ArticleService {
             }
             articleEntity.setUserId(sessionUser.getEmail());
             articleEntity.setCreatedAt(LocalDateTime.now());
-            result.put("articleResult", this.articleMapper.insert(articleEntity));
+            articleEntity.setShareChecked(false);
+            articleEntity.setEntryChecked(false);
+            int insertResult = this.articleMapper.insert(articleEntity);
+            if (insertResult > 0) {
+                result.put("articleResult", CommonResult.SUCCESS);
+            } else {
+                result.put("articleResult", CommonResult.FAILURE);
+            }
             result.put("participantResult", this.participantService.createParticipants(articleEntity.getId(), sessionUser.getEmail(), sessionUser.getNickname()));
             result.put("walletResult", this.walletService.createGroupWallet(articleEntity.getId()));
             if (result.get("articleResult") != CommonResult.SUCCESS
@@ -161,8 +179,8 @@ public class ArticleService {
             articleEntity.setUpdatedAt(LocalDateTime.now());
             articleEntity.setView(0);
 
-            articleEntity.setIsShareChecked(false);
-            articleEntity.setIsEntryChecked(false);
+            articleEntity.setShareChecked(false);
+            articleEntity.setEntryChecked(false);
 
             if (this.articleMapper.insert(articleEntity) > 0) {
                 result.put("articleResult", CommonResult.SUCCESS);
@@ -182,6 +200,7 @@ public class ArticleService {
         return Pair.of(result, articleEntity);
     }
 
+    // 게시글 수정
     @Transactional
     public CommonResult modify(UserEntity sessionUser, ArticleEntity articleEntity){
         if (sessionUser == null || articleEntity == null) {
@@ -198,12 +217,18 @@ public class ArticleService {
 
         articleEntity.setUserId(sessionUser.getEmail());
         articleEntity.setUpdatedAt(LocalDateTime.now());
-
+        if (articleEntity.getShareChecked() == null) {
+            articleEntity.setShareChecked(false);
+        }
+        if (articleEntity.getEntryChecked() == null) {
+            articleEntity.setEntryChecked(false);
+        }
         return this.articleMapper.update(articleEntity) > 0
                 ? CommonResult.SUCCESS
                 : CommonResult.FAILURE;
     }
 
+    // 게시글 삭제
     @Transactional
     public CommonResult delete(UserEntity sessionUser, int id) {
         if (sessionUser == null || id < 1) {

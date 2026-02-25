@@ -20,8 +20,8 @@ public class SecurityConfig {
 //                                .authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/user/login")
-                        .defaultSuccessUrl("/")
+                                .loginPage("/user/login")
+                                .defaultSuccessUrl("/")
                         // TODO Naver와 Kakao를 공통으로 처리할 서비스 등록
                         // .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                 );

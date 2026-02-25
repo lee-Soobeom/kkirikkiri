@@ -31,8 +31,8 @@ public class ArticleEntity {
     private String addressPrimary;
     private String addressSecondary;
     private String content;
-    private Boolean IsShareChecked;
-    private Boolean IsEntryChecked;
+    private Boolean shareChecked;
+    private Boolean entryChecked;
     private int view;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

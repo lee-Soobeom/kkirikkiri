@@ -78,7 +78,7 @@ public class WalletService {
             return CommonResult.FAILURE;
         }
         int cost;
-        if (dbArticleVo.getIsShareChecked()) {
+        if (dbArticleVo.getShareChecked()) {
             cost = dbArticleVo.getOrderPrice() / dbParticipantVo.getCount() + dbArticleVo.getDeliveryPrice() / dbParticipantVo.getCount();
         } else {
             cost = dbArticleVo.getOrderPrice() + dbArticleVo.getDeliveryPrice() / dbParticipantVo.getCount();
