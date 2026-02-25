@@ -203,6 +203,7 @@ public class UserService {
                     !UserValidator.validateName(user) || !UserValidator.validateBirth(user) ||
                     !UserValidator.validateTelecom(user) || !UserValidator.validateContact(user) ||
                     !UserValidator.validateAddressPrimary(user)) {
+                System.out.println("DEBUG: 유저 필수 정보 누락!");
                 return CommonResult.FAILURE;
             }
 
@@ -245,7 +246,11 @@ public class UserService {
             if (termMarketingAgreed) {
                 user.setTermMarketingAt(now);
             }
-            user.setStatus("GENERAL");
+            if (isBoss && user.isBoss()) {
+                user.setStatus("PENDING_BOSS");
+            } else {
+                user.setStatus("GENERAL");
+            }
             user.setTermPolicyAt(now);
             user.setTermPrivacyAt(now);
             user.setTermLocationAt(now);
@@ -289,7 +294,13 @@ public class UserService {
             return CommonResult.SUCCESS;
 
         } catch (Exception e) {
+            System.err.println("가입 중 에러 발생 지점: " + e.getStackTrace()[0]);
+            System.err.println("에러 메시지: " + e.getMessage());
             e.printStackTrace();
+
+            if (e instanceof TransactionalException) {
+                return (Result) ((TransactionalException) e).result;
+            }
             return CommonResult.FAILURE;
         }
     }

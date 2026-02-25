@@ -12,12 +12,19 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,7 +97,7 @@ public class UserController extends AbstractGeneralController{
 
         Result result;
         try {
-            result = this.userService.register(user, store, emailToken, termMarketingAgreed, boss, licenseFile, reportCardFile);
+            result = this.userService.register(user, store, emailToken, boss, termMarketingAgreed, licenseFile, reportCardFile);
         } catch (TransactionalException e) {
             result = (Result) e.result;
         }
@@ -197,6 +204,23 @@ public class UserController extends AbstractGeneralController{
             response.put("salt", emailToken.getSalt());
         }
         return response;
+    }
+
+    @RequestMapping(value = "/display", method = RequestMethod.GET,
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
+    @ResponseBody
+    public ResponseEntity<byte[]> display(@RequestParam(value = "fileName") String fileName) {
+        String savePath = "C:/kkiri/uploads/profiles/";
+        File file = new File(savePath + fileName);
+
+        try {
+            HttpHeaders header = new HttpHeaders();
+            header.add("Content-Type", Files.probeContentType(file.toPath()));
+            return new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

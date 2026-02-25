@@ -16,6 +16,8 @@ public class StoreValidate {
     public static final String APPROVAL_STATUS_REGEX = "^(PENDING|APPROVED|REJECTED)$";
     public static final String REJECT_REASON_REGEX = "^.{0,255}$";
 
+
+
     public static boolean validateBusinessNumber(@NonNull StoreEntity store) {
         return validateBusinessNumber(store.getBusinessNumber());
     }

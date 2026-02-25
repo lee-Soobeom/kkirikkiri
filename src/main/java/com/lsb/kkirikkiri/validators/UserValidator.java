@@ -106,10 +106,14 @@ public class UserValidator {
                 address.matches(ADDRESS_PRIMARY_REGEX);
     }
 
-    public static boolean validateAddressSecondary(String address) {
-        // 상세 주소는 필수가 아닐 수 있으므로 null 허용 혹은 0~100자 체크
-        return address == null || (
-                ValidatorUtils.isLengthInBetween(address, 0, 100) &&
-                        address.matches(ADDRESS_SECONDARY_REGEX));
+    public static boolean validateAddressSecondary(@NonNull UserEntity user) {
+        return validateAddressSecondary(user.getAddressSecondary());
     }
+
+    public static boolean validateAddressSecondary(String address) {
+        return address != null && !address.isBlank() &&
+                ValidatorUtils.isLengthInBetween(address, 1, 100) &&
+                address.matches(ADDRESS_SECONDARY_REGEX);
+    }
+
 }

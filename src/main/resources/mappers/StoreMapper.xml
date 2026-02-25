@@ -2,14 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lsb.kkirikkiri.mappers.StoreMapper">
     <insert id="insert">
-        INSERT INTO `kkirikkiri`.`stores` (`email`, `business_number`, `store_name`, `business_type`,`address_primary`, `address_secondary`, `store_contact`,`operating_hours`, `store_image_path`,`license_url`, `report_card_url`, `term_policy_at`, `term_privacy_at`, `term_third_party_at`, `term_business_verify_at`, `term_doc_submission_at`, `term_marketing_at`, `approval_status`, `reject_reason`, `applied_at`, `approved_at`)
+        INSERT INTO `kkirikkiri`.`stores` (`email`, `business_number`, `store_name`, `business_type`,`address_primary`, `store_contact`,`operating_hours`, `store_image_path`,`license_url`, `report_card_url`, `term_policy_at`, `term_privacy_at`, `term_third_party_at`, `term_business_verify_at`, `term_doc_submission_at`, `term_marketing_at`, `approval_status`, `reject_reason`, `applied_at`, `approved_at`)
         VALUES (
                 #{store.email},
                 #{store.businessNumber},
                 #{store.storeName},
                 #{store.businessType},
                 #{store.addressPrimary},
-                #{store.addressSecondary},
                 #{store.storeContact},
                 #{store.operatingHours},
                 #{store.storeImagePath},
@@ -45,7 +44,6 @@
                `store_name`        AS `storeName`,
                `business_type`     AS `businessType`,
                `address_primary`   AS `addressPrimary`,
-               `address_secondary` AS `addressSecondary`,
                `store_contact`     AS `storeContact`,
                `operating_hours`   AS `operatingHours`,
                `store_image_path`  AS `storeImagePath`,

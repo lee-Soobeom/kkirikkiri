@@ -18,7 +18,6 @@ public class StoreEntity {
     private String storeName;
     private String businessType;
     private String addressPrimary;
-    private String addressSecondary;
     private String storeContact;
     private String operatingHours;
     private String storeImagePath;

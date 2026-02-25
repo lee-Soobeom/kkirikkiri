@@ -170,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             let firstErrorField = null;
 
-            // 1. 유효성 검사 로직
             const inputs = form.querySelectorAll('.field[required], .field[name]');
             inputs.forEach(input => {
                 const rule = validateRules[input.name];
@@ -208,10 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // 2. FormData 생성 (여기서 모든 데이터를 모읍니다)
-            const formData = new FormData(form); // 현재 이벤트가 발생한 '그 폼'의 데이터를 가져옴
 
-            // 이메일 인증 토큰 (폼 내부에 해당 input이 있다고 가정)
+            const formData = new FormData(form);
+
             const $codeInput = form['code'];
             const $saltInput = form['salt'];
             if ($saltInput && $saltInput.value === "") {
@@ -236,26 +234,24 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.set('isBoss', String(isBoss));
 
             if (isBoss) {
-                // 파일은 name 속성으로 자동 담기지만, 명시적으로 다시 한번 확인
                 const licenseFile = form.querySelector('input[name="licenseFile"]')?.files[0];
                 const reportFile = form.querySelector('input[name="reportCardFile"]')?.files[0];
                 if (licenseFile) formData.set('licenseFile', licenseFile);
                 if (reportFile) formData.set('reportCardFile', reportFile);
             }
 
-            // 3. 데이터를 들고 handleRegister 호출
             handleRegister(form, formData);
         });
     });
 
     const handleRegister = ($form, formData) => {
-        // 이제 formData는 위에서 만든 완성된 데이터를 인자로 받습니다.
+
         const $emailInput = $form['email'];
         const $nicknameInput = $form['nickname'];
 
         fetch('/user/register', {
             method: 'POST',
-            body: formData // 인자로 받은 formData를 그대로 전송
+            body: formData
         }).then(response => {
             if (!response.ok) throw new Error(response.status.toString());
             return response.json();
