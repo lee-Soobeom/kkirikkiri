@@ -10,7 +10,6 @@ import com.lsb.kkirikkiri.services.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +53,12 @@ public class UserController extends AbstractGeneralController{
         Pair<Result, UserEntity> result = this.userService.login(email, password);
         if (result.getLeft() == CommonResult.SUCCESS) {
             session.setAttribute("sessionUser", result.getRight());
+
+            LocalDate today = LocalDate.now();
+            LocalDate birth = result.getRight().getBirth();
+            int age = today.getYear() - birth.getYear();
+            if (birth.plusYears(age).isAfter(today)) age--;
+            session.setAttribute("isAdult", age >= 19);
         }
         return prepareJsonResponse(result.getLeft());
 

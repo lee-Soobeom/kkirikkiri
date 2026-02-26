@@ -3,7 +3,7 @@
 <mapper namespace="com.lsb.kkirikkiri.mappers.UserMapper">
     <insert id="insert">
         INSERT INTO `kkirikkiri`.`users` (
-            `email`, `password`,`nickname`, `name`, `birth`, `telecom`, `contact`, `address_primary`, `address_secondary`, `profile_image_path`, `is_admin`, `is_boss`, `status`, `term_policy_at`, `term_privacy_at`,`term_location_at`, `term_marketing_at`, `created_at`, `updated_at`
+            `email`, `password`,`nickname`, `name`, `birth`, `telecom`, `contact`, `address_primary`, `address_secondary`, `profile_image_path`, `is_admin`, `is_boss`, `status`, `term_policy_at`, `term_privacy_at`,`term_location_at`, `term_marketing_at`, `created_at`, `updated_at`, `last_login_at`, `social_type_code`
         ) VALUES (
                      #{user.email},
                      #{user.password},
@@ -23,8 +23,9 @@
                      #{user.termLocationAt},
                      #{user.termMarketingAt},
                      #{user.createdAt},
-                     #{user.updatedAt}
-
+                     #{user.updatedAt},
+                     #{user.lastLoginAt},
+                     #{user.socialTypeCode}
                  )
     </insert>
     <update id="update">
@@ -50,7 +51,13 @@
             <if test="user.profileImagePath != null">
                 `profile_image_path` = #{user.profileImagePath},
             </if>
-            `updated_at` = now()
+            `updated_at` = now(),
+            <if test="user.lastLoginAt != null">
+            `last_login_at` = #{user.lastLoginAt},
+            </if>
+            <if test="user.status != null">
+            `status` = #{user.status}
+            </if>
         WHERE `email` = #{user.email}
         LIMIT 1
     </update>
@@ -77,7 +84,9 @@
                `term_location_at`  AS `termLocaitonAt`,
                `term_marketing_at` AS `termMarketingAt`,
                `created_at`        AS `createdAt`,
-               `updated_at`        AS `updatedAt`
+               `updated_at`        AS `updatedAt`,
+               `last_login_at`     AS `lastLoginAt`,
+               `social_type_code`  AS `socialTypeCode`
         FROM `kkirikkiri`.`users`
         WHERE `email` = #{email}
         LIMIT 1
@@ -100,7 +109,9 @@
                `term_location_at`  AS `termLocaitonAt`,
                `term_marketing_at` AS `termMarketingAt`,
                `created_at`        AS `createdAt`,
-               `updated_at`        AS `updatedAt`
+               `updated_at`        AS `updatedAt`,
+               `last_login_at`     AS `lastLoginAt`,
+               `social_type_code`  AS `socialTypeCode`
         FROM `kkirikkiri`.`users`
         WHERE `nickname` = #{nickname}
         LIMIT 1

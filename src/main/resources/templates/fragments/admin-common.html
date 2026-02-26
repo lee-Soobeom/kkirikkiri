@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>끼리끼리 ADMIN</title>
+</head>
+<body>
+<nav th:fragment="sidebar(menu)" class="admin-sidebar">
+    <div class="logo">
+        <a th:href="@{/admin/index(menu='dashboard')}">끼리끼리 ADMIN</a>
+    </div>
+    <ul class="menu">
+        <li th:classappend="${menu == 'dashboard'} ? 'active'">
+            <a th:href="@{/admin/index(menu='dashboard')}">대시보드</a>
+        </li>
+        <li th:classappend="${menu == 'approval'} ? 'active'">
+            <a th:href="@{/admin/index(menu='approval')}">사장님 승인 관리</a>
+        </li>
+        <li th:classappend="${menu == 'user'} ? 'active'">
+            <a th:href="@{/admin/index(menu='user')}">회원 관리</a>
+        </li>
+        <li th:classappend="${menu == 'content'} ? 'active'">
+            <a th:href="@{/admin/index(menu='content')}">콘텐츠/리뷰 관리</a>
+        </li>
+        <li th:classappend="${menu == 'support'} ? 'active'">
+            <a th:href="@{/admin/index(menu='support')}">문의/고객센터</a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>

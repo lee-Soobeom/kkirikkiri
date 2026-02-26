@@ -1,0 +1,326 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fc;
+}
+.admin-layout .admin-sidebar {
+  width: 16.25rem;
+  height: 100vh;
+  background-color: #2c3e50;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  box-shadow: 0.25rem 0 0.625rem rgba(0, 0, 0, 0.1);
+}
+.admin-layout .admin-sidebar .logo {
+  padding: 2rem 1.5rem;
+  border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+.admin-layout .admin-sidebar .logo a {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: 0.0625rem;
+}
+.admin-layout .admin-sidebar .logo a:hover {
+  color: #4e73df;
+}
+.admin-layout .admin-sidebar .menu {
+  list-style: none;
+  padding: 1.5rem 0.75rem;
+  margin: 0;
+}
+.admin-layout .admin-sidebar .menu li {
+  margin-bottom: 0.5rem;
+}
+.admin-layout .admin-sidebar .menu li a {
+  display: block;
+  padding: 0.8rem 1rem;
+  color: #adb5bd;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  transition: all 0.2s ease-in-out;
+}
+.admin-layout .admin-sidebar .menu li a:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+.admin-layout .admin-sidebar .menu li.active a {
+  background-color: #4e73df;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 0.25rem 0.75rem rgba(78, 115, 223, 0.25);
+}
+.admin-layout .admin-main {
+  flex: 1;
+  margin-left: 16.25rem;
+  padding: 2.5rem;
+}
+.admin-layout .admin-main .boss-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.05);
+  min-height: calc(100vh - 5rem);
+}
+.admin-layout .admin-main .boss-container h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-weight: 700;
+  font-size: 1.5rem;
+  border-bottom: 0.125rem solid #eee;
+  padding-bottom: 1rem;
+}
+.admin-layout .admin-main .boss-container .dashboard-cards {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+.admin-layout .admin-main .boss-container .dashboard-cards .card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  flex: 1;
+  box-shadow: 0 0.15rem 1rem 0 #ebedf2;
+  display: flex;
+  flex-direction: column;
+  border-left: 0.25rem solid transparent;
+}
+.admin-layout .admin-main .boss-container .dashboard-cards .card.card-primary {
+  border-left-color: #4e73df;
+}
+.admin-layout .admin-main .boss-container .dashboard-cards .card.card-primary .card-label {
+  color: #4e73df;
+}
+.admin-layout .admin-main .boss-container .dashboard-cards .card.card-success {
+  border-left-color: #1cc88a;
+}
+.admin-layout .admin-main .boss-container .dashboard-cards .card.card-success .card-label {
+  color: #1cc88a;
+}
+.admin-layout .admin-main .boss-container .dashboard-cards .card.card-danger {
+  border-left-color: #e74a3b;
+}
+.admin-layout .admin-main .boss-container .dashboard-cards .card.card-danger .card-label {
+  color: #e74a3b;
+}
+.admin-layout .admin-main .boss-container .dashboard-cards .card .card-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.admin-layout .admin-main .boss-container .dashboard-cards .card .card-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #5a5c69;
+}
+.admin-layout .admin-main .boss-container .search-wrapper {
+  background: #ffffff;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0.15rem 1.75rem 0 #ebedf2;
+}
+.admin-layout .admin-main .boss-container .search-wrapper form {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+.admin-layout .admin-main .boss-container .search-wrapper form select, .admin-layout .admin-main .boss-container .search-wrapper form input {
+  padding: 0.5rem 0.75rem;
+  border: 0.0625rem solid #e3e6f0;
+  border-radius: 0.35rem;
+  font-size: 0.9rem;
+  color: #6e707e;
+  outline: none;
+}
+.admin-layout .admin-main .boss-container .search-wrapper form select:focus, .admin-layout .admin-main .boss-container .search-wrapper form input:focus {
+  border-color: #bac8f3;
+}
+.admin-layout .admin-main .boss-container .search-wrapper form input[type=text] {
+  flex: 1;
+}
+.admin-layout .admin-main .boss-container .search-wrapper form button {
+  padding: 0.5rem 1.25rem;
+  background: #4e73df;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.35rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.admin-layout .admin-main .boss-container .search-wrapper form button:hover {
+  background: #2e59d9;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table th, .admin-layout .admin-main .boss-container .table-wrapper table td {
+  border-bottom: 0.0625rem solid #e3e6f0;
+  padding: 0.75rem 0.9375rem;
+  text-align: center;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table th {
+  background-color: #f1f3f9;
+  color: #4e5e6a;
+  font-weight: 600;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table tr:hover {
+  background-color: rgba(78, 115, 223, 0.05);
+}
+.admin-layout .admin-main .boss-container .table-wrapper table a {
+  color: #4e73df;
+  font-weight: 600;
+  text-decoration: none;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table a:hover {
+  text-decoration: underline;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  display: inline-block;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .badge.pending {
+  background: #f6c23e;
+  color: #ffffff;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .badge.approved {
+  background: #1cc88a;
+  color: #ffffff;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .badge.vip {
+  background: #f6c23e;
+  color: #ffffff;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .badge.normal {
+  background: #eaecf4;
+  color: #5a5c69;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .badge.black {
+  background: #3a3b45;
+  color: #ffffff;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .badge.kakao {
+  background: #fee500;
+  color: #3c1e1e;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .badge.naver {
+  background: #03c75a;
+  color: #ffffff;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .badge.adult {
+  background: #4e73df;
+  color: #ffffff;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .badge.minor {
+  background: #36b9cc;
+  color: #ffffff;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .btn-group {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .btn-group button {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 200ms;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .btn-group button.btn-approve {
+  background-color: #4e73df;
+  color: white;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .btn-group button.btn-approve:hover {
+  background-color: rgb(38.2775119617, 82.5358851675, 211.7224880383);
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .btn-group button.btn-reject {
+  background-color: #fff;
+  color: #e74a3b;
+  border: 0.0625rem solid #e74a3b;
+}
+.admin-layout .admin-main .boss-container .table-wrapper table .btn-group button.btn-reject:hover {
+  background-color: #e74a3b;
+  color: white;
+}
+.admin-layout .admin-main .dashboard-wrapper .dashboard-grid {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.admin-layout .admin-main .dashboard-wrapper .dashboard-grid .chart-container {
+  flex: 2;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.15rem 1.75rem 0 #ebedf2;
+}
+.admin-layout .admin-main .dashboard-wrapper .dashboard-grid .chart-container h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 1.25rem;
+}
+.admin-layout .admin-main .dashboard-wrapper .dashboard-grid .chart-container .chart-area {
+  height: 18.75rem;
+  position: relative;
+}
+.admin-layout .admin-main .dashboard-wrapper .dashboard-grid .activity-container {
+  flex: 1;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.15rem 1.75rem 0 #ebedf2;
+}
+.admin-layout .admin-main .dashboard-wrapper .dashboard-grid .activity-container h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 1.25rem;
+}
+.admin-layout .admin-main .dashboard-wrapper .dashboard-grid .activity-container .activity-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.admin-layout .admin-main .dashboard-wrapper .dashboard-grid .activity-container .activity-list li {
+  padding: 0.75rem 0;
+  border-bottom: 0.0625rem solid #eeeeee;
+  font-size: 0.875rem;
+  color: #5a5c69;
+}
+.admin-layout .admin-main .dashboard-wrapper .dashboard-grid .activity-container .activity-list li:last-child {
+  border-bottom: none;
+}
+.admin-layout .admin-main .dashboard-wrapper .dashboard-grid .activity-container .activity-list li .date {
+  font-size: 0.75rem;
+  color: #adb5bd;
+  display: block;
+}
+
+.screen-reader-only {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  padding: 0;
+  margin: -0.0625rem;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/*# sourceMappingURL=admin.css.map */

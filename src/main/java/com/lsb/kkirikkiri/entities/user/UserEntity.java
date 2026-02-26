@@ -40,4 +40,5 @@ public class UserEntity {
     private LocalDateTime updatedAt;
     private String socialTypeCode;
     private String socialId;
+    private LocalDateTime lastLoginAt;
 }

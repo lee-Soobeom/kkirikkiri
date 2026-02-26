@@ -5,7 +5,7 @@
         INSERT INTO `kkirikkiri`.`files` (`user_id`,
                                           `article_id`,
                                           `original_filename`,
-                                          `saved_filename`,
+                                          saved_filepath,
                                           `saved_filepath`,
                                           `size`)
         VALUES (#{file.user_id},

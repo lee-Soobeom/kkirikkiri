@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>회원 관리</title>
+    <link rel="stylesheet" href="/assets/styles/fragments.css">
+    <link rel="stylesheet" href="/user/assets/styles/admin.css">
+    <script defer src="/assets/scripts/dialog.js"></script>
+    <script defer src="/user/assets/scripts/admin.js"></script>
+</head>
+<body>
+<div th:fragment="dashboardSection" class="boss-container dashboard-wrapper">
+    <h2>관리자 대시보드</h2>
+
+    <div class="dashboard-cards">
+        <div class="card card-primary">
+            <div class="card-label">신규 승인 대기</div>
+            <div class="card-value" th:text="${pendingBossCount ?: 0} + '건'">5건</div>
+        </div>
+        <div class="card card-success">
+            <div class="card-label">오늘 신규 회원</div>
+            <div class="card-value" th:text="${todayUserCount ?: 0} + '명'">24명</div>
+        </div>
+        <div class="card card-danger">
+            <div class="card-label">미답변 문의</div>
+            <div class="card-value">3건</div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="chart-container">
+            <h3>주간 방문자 추이</h3>
+            <div class="chart-area">
+                <canvas id="visitorChart"></canvas>
+            </div>
+        </div>
+
+        <div class="activity-container">
+            <h3>최근 활동</h3>
+            <ul class="activity-list">
+                <li>
+                    <span class="date">2026-02-25 14:20</span>
+                    [승인] '치킨나라' 입점 신청이 들어왔습니다.
+                </li>
+                <li>
+                    <span class="date">2026-02-25 13:05</span>
+                    [신고] 유저 '욕설왕'에 대한 신고가 접수되었습니다.
+                </li>
+                <li>
+                    <span class="date">2026-02-25 11:30</span>
+                    [문의] 결제 오류 관련 문의가 발생했습니다.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

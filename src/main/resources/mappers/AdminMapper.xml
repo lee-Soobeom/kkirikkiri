@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lsb.kkirikkiri.mappers.AdminMapper">
+    <update id="updateStoreStatus">
+        UPDATE `kkirikkiri`.`stores`
+        SET `approval_status` = #{status},
+            `approved_at` = IF(#{status} = 'APPROVED', NOW(), NULL)
+        WHERE `email` = #{email}
+    </update>
+    <update id="updateUserStatus">
+        UPDATE `kkirikkiri`.`users`
+        SET `status` = #{status}
+        WHERE `email` = #{email}
+        LIMIT 1
+    </update>
+    <update id="updateDormantUsers">
+        <![CDATA[
+        UPDATE `kkirikkiri`.`users`
+        SET `status` = 'DORMANT'
+        WHERE `last_login_at` < DATE_SUB(NOW(), INTERVAL 6 MONTH)
+          AND `status` NOT IN ('ADMIN', 'BLACK', 'DORMANT')
+        ]]>
+    </update>
+    <select id="selectPendingBosses" resultType="com.lsb.kkirikkiri.dtos.AdminStoreDTO">
+        SELECT
+            u.`name` AS `ownerName`,
+            s.`email` AS `email`,
+            s.`store_name` AS `storeName`,
+            s.`business_number` AS `businessNumber`,
+            s.`approval_status` AS `approvalStatus`,
+            s.`license_url` AS `licenseUrl`,
+            s.`report_card_url` AS `reportCardUrl`,
+            s.`applied_at` AS `appliedAt`
+        FROM `kkirikkiri`.`users` AS `u`
+        JOIN `kkirikkiri`.`stores` AS `s` ON u.`email` = s.`email`
+        WHERE s.`approval_status` = 'PENDING'
+           OR u.`status` = 'PENDING_BOSS'
+        ORDER BY s.`applied_at` DESC
+    </select>
+    <select id="selectAllUsers" resultType="com.lsb.kkirikkiri.dtos.AdminUserDTO">
+        SELECT `email`            AS `email`,
+               `nickname`         AS `nickname`,
+               `contact`          AS `contact`,
+               `is_admin`         AS `isAdmin`,
+               `is_boss`          AS `isBoss`,
+               `status`           AS `status`,
+               `social_type_code` AS `socialTypeCode`,
+               `created_at`       AS `createdAt`,
+               `last_login_at`    AS `lastLoginAt`
+        FROM `kkirikkiri`.`users`
+        ORDER BY `created_at` DESC
+    </select>
+    <select id="countAllUsers" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `kkirikkiri`.`users`
+    </select>
+    <select id="countTodayJoin" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `kkirikkiri`.`users`
+        WHERE DATE(`created_at`) = CURDATE();
+    </select>
+</mapper>

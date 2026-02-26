@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>관리자 대시보드</title>
+    <link rel="stylesheet" href="/assets/styles/fragments.css">
+    <link rel="stylesheet" href="/user/assets/styles/admin.css">
+    <script defer src="/assets/scripts/dialog.js"></script>
+    <script defer src="/user/assets/scripts/admin.js"></script>
+</head>
+<body>
+<div th:fragment="approvalSection" class="boss-container">
+    <h2>사장님 가입 승인 관리</h2>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>사장님 성함</th>
+                <th>가게 이름</th>
+                <th>사업자 번호</th>
+                <th>사업자등록증</th>
+                <th>영업신고증</th>
+                <th>상태</th>
+                <th>신청일</th>
+                <th>관리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="boss : ${bossList}">
+                <td th:text="${boss.ownerName}">홍길동</td>
+                <td th:text="${boss.storeName}">길동이네 치킨</td>
+                <td th:text="${boss.businessNumber}">123-45-67890</td>
+                <td>
+                    <a th:href="${boss.licenseUrl}" target="_blank">등록증 보기</a>
+                </td>
+                <td>
+                    <a th:href="${boss.reportCardUrl}" target="_blank">등록증 보기</a>
+                </td>
+                <td><span class="badge pending">대기</span></td>
+                <td th:text="${#temporals.format(boss.appliedAt, 'yyyy-MM-dd')}">2026-02-24</td>
+                <td>
+                    <div class="btn-group">
+                        <button type="button"
+                                class="btn-approve btn-action"
+                                th:data-email="${boss.email}"
+                                data-status="APPROVED">승인</button>
+                        <button type="button"
+                                class="btn-reject btn-action"
+                                th:data-email="${boss.email}"
+                                data-status="REJECTED">거절</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

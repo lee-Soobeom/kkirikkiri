@@ -32,7 +32,7 @@
             `business_type` = #{store.businessType},
             `store_contact` = #{store.storeContact},
             `operating_hours` = #{store.operatingHours},
-            `store_image_path` = #{store.profileImagePath},
+            `store_image_path` = #{store.storeImagePath},
             `address_primary` = #{store.addressPrimary},
             `license_url` = #{store.licenseUrl}
         WHERE `email` = #{store.email}

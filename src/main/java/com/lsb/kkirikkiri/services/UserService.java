@@ -75,6 +75,13 @@ public class UserService {
         if (!BCrypt.checkpw(password, dbUser.getPassword())) {
             return Pair.of(CommonResult.FAILURE, null);
         }
+
+        dbUser.setLastLoginAt(LocalDateTime.now());
+        if ("DORMANT".equals(dbUser.getStatus())) {
+            dbUser.setStatus("GENERAL");
+        }
+        this.userMapper.update(dbUser);
+
         return Pair.of(CommonResult.SUCCESS, dbUser);
     }
 
@@ -256,6 +263,9 @@ public class UserService {
             user.setTermLocationAt(now);
             user.setCreatedAt(now);
             user.setUpdatedAt(now);
+            if (user.getSocialTypeCode() == null || user.getSocialTypeCode().isBlank()) {
+                user.setSocialTypeCode("LOCAL");
+            }
 
             if (this.userMapper.insert(user) < 1) {
                 throw new TransactionalException(CommonResult.FAILURE);
@@ -294,8 +304,6 @@ public class UserService {
             return CommonResult.SUCCESS;
 
         } catch (Exception e) {
-            System.err.println("가입 중 에러 발생 지점: " + e.getStackTrace()[0]);
-            System.err.println("에러 메시지: " + e.getMessage());
             e.printStackTrace();
 
             if (e instanceof TransactionalException) {
