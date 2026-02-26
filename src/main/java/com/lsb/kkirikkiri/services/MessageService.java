@@ -23,8 +23,6 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static com.lsb.kkirikkiri.results.MessageResult.FAILURE_TIMEOUT;
-
 @Service
 @RequiredArgsConstructor
 public class MessageService {
@@ -42,7 +40,7 @@ public class MessageService {
         }
         MessageVo[] dbMessages = messageTimestamp == null
                 ? this.messageMapper.selectAllByEmail(sessionUser.getEmail())
-                : this.messageMapper.selectByEmail(sessionUser.getEmail(), messageTimestamp);
+                : this.messageMapper.selectAllByEmailTimestamp(sessionUser.getEmail(), messageTimestamp);
         return Pair.of(CommonResult.SUCCESS, dbMessages);
     }
 

@@ -5,6 +5,7 @@ import com.lsb.kkirikkiri.entities.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -16,9 +17,10 @@ public class WebSocketController {
 
     @MessageMapping(value = "/chat/{articleId}")
     public void sendMessage(@DestinationVariable int articleId,
-                            @SessionAttribute(value = "sessionUser") UserEntity sessionUser,
+                            SimpMessageHeaderAccessor accessor,
                             WSMessage message) {
-        message.setSender(sessionUser.getNickname());
+        String nickname = (String) accessor.getSessionAttributes().get("nickname");
+        message.setSender(nickname);
         simpMessagingTemplate.convertAndSend("/topic/message/" + articleId, message);
     }
 }

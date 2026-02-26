@@ -125,45 +125,12 @@
     <h2 class="title">마감이 30분 남았어요! 빠르게 주문해보세요!</h2>
     <div class="group">
         <ol class="list">
-            <li class="row"
-            th:each="article : ${articles}"
-            th:onclick="|location.href='@{/article/share(id=${article.id})}'|">
-                <div class="image-container">
-                    <img class="image" alt=""
-                    th:src="@{/assets/images/main/main.menu.{menu}.png(menu=${article.menu})}">
-                </div>
-                <div class="content-container">
-                    <h2 class="title" th:text="${article.title}"></h2>
-                    <div class="content">
-                        <div class="item">
-                            <span class="title">주문:</span>
-                            <span class="caption"
-                            th:text="${#temporals.format(article.orderTime, 'HH:mm')}"></span>
-                        </div>
-                        <div class="item">
-                            <span class="title">가게:</span>
-                            <span class="caption"
-                            th:text="${article.restaurant}"></span>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="item">
-                            <span class="title">모임:</span>
-                            <span class="caption"
-                            th:text="${#temporals.format(article.pickupTime, 'HH:mm')}"></span>
-                        </div>
-                        <div class="item">
-                            <span class="title">장소:</span>
-                            <span class="caption"
-                            th:text="${article.addressPrimary + ' ' + article.addressSecondary}"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="member-container">
-                    <span class="now">1</span>
-                    <span>/</span>
-                    <span class="max">5</span>
-                </div>
+            <li class="loading -hidden">
+                <img class="image" src="/assets/images/loading.png" alt="">
+                <span>loading...</span>
+            </li>
+            <li class="empty -hidden">
+                <span class="caption">주변에 공동구매 게시글이 없습니다. <br> 게시글을 작성하러 이동하시겠습니까? <a class="link" href="/article/share/write" target="_self">이동하기</a></span>
             </li>
         </ol>
     </div>

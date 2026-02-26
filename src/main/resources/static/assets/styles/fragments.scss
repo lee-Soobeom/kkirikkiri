@@ -414,6 +414,43 @@ body:has(> #dialog[data-visible]) {
         @include flex(column, space-around, center, 0.5rem);
         position: relative;
 
+        > .current {
+          @include flex(row, center, center);
+          top: 0;
+          right: 0;
+          width: 1.75rem;
+          height: 1.75rem;
+          border: 0.0625rem solid #E9EFFF;
+          border-radius: 0.25rem;
+          cursor: pointer;
+          position: absolute;
+          transform: translate(-50%, 50%);
+
+          &:hover {
+            > .caption {
+              opacity: 1;
+              pointer-events: auto;
+              transform: translateY(calc(100% + 0.25rem));
+            }
+          }
+
+          > .caption {
+            @include flex(row, center, center);
+            bottom: 0;
+            width: 2.5rem;
+            background-color: #E9EFFF;
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0;
+            padding: 0.125rem;
+            position: absolute;
+            pointer-events: none;
+            transform: translateY(100%);
+            transition-duration: 500ms;
+            transition-property: opacity, pointer-events, transform;
+          }
+        }
+
         > .image-container {
           border: 0.0625rem solid #E9EFFF;
           border-radius: 999rem;

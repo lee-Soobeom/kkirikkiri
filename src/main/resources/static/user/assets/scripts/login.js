@@ -70,7 +70,19 @@ $loginForm.addEventListener('submit', (e) => {
          } else {
             localStorage.removeItem('savedEmail');
          }
-         location.href = '/';
+         geoHandler.addrToCoords(data.user.addressPrimary)
+             .then(coords => {
+                 localStorage.setItem("location", JSON.stringify({
+                     lat: +coords[0].y,
+                     lng: +coords[0].x,
+                 }));
+                 // localStorage.setItem("address", data.user.addressPrimary);
+             })
+             .then(() => location.href = '/')
+             .catch(err => {
+                 console.error("Error: ", err);
+                 location.href = '/';
+             });
       } else {
          //showWarning($passwordInput, '이메일 또는 비밀번호가 올바르지 않습니다') TODO modal 생성 후 만들기
          alert('로그인 실패')

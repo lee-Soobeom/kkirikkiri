@@ -25,8 +25,8 @@ public class ArticleEntity {
     private Integer deliveryPrice;
     private LocalDateTime orderTime;
     private String restaurant;
-    private String restaurantLat;
-    private String restaurantLng;
+    private String pointLat;
+    private String pointLng;
     private LocalDateTime pickupTime;
     private String addressPrimary;
     private String addressSecondary;

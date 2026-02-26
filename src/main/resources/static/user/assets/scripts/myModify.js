@@ -11,7 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 {
                     caption: "확인",
-                    onclick: () => { location.href = '/'; }
+                    onclick: () => {
+                        location.href = '/';
+                    }
                 }
             ]
         );
@@ -36,9 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 dialogHandler.simpleYesModal('경고', '정보 수정에 실패했습니다. 입력값을 확인해 주세요.');
             }
         }).catch(error => {
-           console.error('Error : ', error);
-           dialogHandler.simpleYesModal('경고', '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+            console.error('Error : ', error);
+            dialogHandler.simpleYesModal('경고', '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
         });
+    });
+
+    $modifyForm.querySelector('[name="geoAddress"]').addEventListener('click', () => {
+        setCurrentLocation($modifyForm);
     });
 });
 
@@ -61,7 +67,9 @@ const deleteAccount = () => {
         [
             {
                 caption: '취소',
-                onclick: () => { location.href = '/'; }
+                onclick: () => {
+                    location.href = '/';
+                }
             },
             {
                 caption: '확인',
@@ -69,6 +77,14 @@ const deleteAccount = () => {
             }
         ]
     )
-}
+};
+
+
+/** @param {HTMLFormElement} $element */
+const setCurrentLocation = ($element) => {
+    geoHandler.getGeoLocation()
+        .then(() => $element.querySelector('[name="address"]').value = geoHandler.addressName)
+        .catch(err => console.error("Error: " + err));
+};
 
 document.getElementById('deleteButton').addEventListener('click', deleteAccount);

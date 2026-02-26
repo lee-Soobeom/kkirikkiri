@@ -6,12 +6,9 @@ import com.lsb.kkirikkiri.entities.user.UserEntity;
 import com.lsb.kkirikkiri.mappers.FileMapper;
 import com.lsb.kkirikkiri.results.CommonResult;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.CSS;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,7 +46,7 @@ public class FileService {
             // DB fileEntity insert + userEmail + articleId
             String originalFileName = file.getOriginalFilename();
             String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-            String savedFileName = UUID.randomUUID().toString() + extension;
+            String savedFileName = UUID.randomUUID() + extension;
             long size = file.getSize();
 
             Path firstPath = Paths.get("C:/upload/image");

@@ -15,8 +15,8 @@
                                              `order_time`,
                                              `pickup_time`,
                                              `restaurant`,
-                                             `restaurant_lat`,
-                                             `restaurant_lng`,
+                                             `point_lat`,
+                                             `point_lng`,
                                              `address_primary`,
                                              `address_secondary`,
                                              `content`,
@@ -38,8 +38,8 @@
                 #{orderTime},
                 #{pickupTime},
                 #{restaurant},
-                #{restaurantLat},
-                #{restaurantLng},
+                #{pointLat},
+                #{pointLng},
                 #{addressPrimary},
                 #{addressSecondary},
                 #{content},
@@ -101,8 +101,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`restaurant_lat`    AS `restaurantLat`,
-               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`point_lat`    AS `pointLat`,
+               `t1`.`point_lng`    AS `pointLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -133,8 +133,8 @@
                `order_time`        AS `orderTime`,
                `pickup_time`       AS `pickupTime`,
                `restaurant`        AS `restaurant`,
-               `restaurant_lat`    AS `restaurantLat`,
-               `restaurant_lng`    AS `restaurantLng`,
+               `point_lat`    AS `pointLat`,
+               `point_lng`    AS `pointLng`,
                `address_primary`   AS `addressPrimary`,
                `address_secondary` AS `addressSecondary`,
                `content`           AS `content`,
@@ -165,8 +165,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`restaurant_lat`    AS `restaurantLat`,
-               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`point_lat`    AS `pointLat`,
+               `t1`.`point_lng`    AS `pointLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -243,8 +243,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`restaurant_lat`    AS `restaurantLat`,
-               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`point_lat`    AS `pointLat`,
+               `t1`.`point_lng`    AS `pointLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -274,8 +274,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`restaurant_lat`    AS `restaurantLat`,
-               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`point_lat`    AS `pointLat`,
+               `t1`.`point_lng`    AS `pointLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -305,8 +305,8 @@
                `order_time`        AS `orderTime`,
                `pickup_time`       AS `pickupTime`,
                `restaurant`        AS `restaurant`,
-               `restaurant_lat`    AS `restaurantLat`,
-               `restaurant_lng`    AS `restaurantLng`,
+               `point_lat`    AS `pointLat`,
+               `point_lng`    AS `pointLng`,
                `address_primary`   AS `addressPrimary`,
                `address_secondary` AS `addressSecondary`,
                `content`           AS `content`,
@@ -335,8 +335,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`restaurant_lat`    AS `restaurantLat`,
-               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`point_lat`    AS `pointLat`,
+               `t1`.`point_lng`    AS `pointLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -366,8 +366,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`restaurant_lat`    AS `restaurantLat`,
-               `t1`.`restaurant_lng`    AS `restaurantLng`,
+               `t1`.`point_lat`    AS `pointLat`,
+               `t1`.`point_lng`    AS `pointLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -397,8 +397,8 @@
         `t1`.`order_time`        AS `orderTime`,
         `t1`.`pickup_time`       AS `pickupTime`,
         `t1`.`restaurant`        AS `restaurant`,
-        `t1`.`restaurant_lat`    AS `restaurantLat`,
-        `t1`.`restaurant_lng`    AS `restaurantLng`,
+        `t1`.`point_lat`    AS `pointLat`,
+        `t1`.`point_lng`    AS `pointLng`,
         `t1`.`address_primary`   AS `addressPrimary`,
         `t1`.`address_secondary` AS `addressSecondary`,
         `t1`.`content`           AS `content`,
@@ -410,11 +410,14 @@
         FROM `kkirikkiri`.`articles`AS `t1`
         WHERE `board_id` = #{boardId}
         AND `order_time` IS NOT NULL
-        AND `order_time` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 30 MINUTE)
+        AND `order_time` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 60 MINUTE)
+        AND `point_lat` BETWEEN #{location.lat} - 3.0/111 AND #{location.lat} + 3.0/111
+        AND `point_lng` BETWEEN #{location.lng} - (3.0 / (111 * COS(RADIANS(#{location.lat})))) AND #{location.lng} + (3.0 / (111 * COS(RADIANS(#{location.lat}))))
+        AND ST_DISTANCE_SPHERE(POINT(`point_lng`,`point_lat`), POINT(#{location.lng}, #{location.lat})) &lt;= 3000
         <if test="menu != null and menu != '' and menu != 'all'">
             AND `menu` = #{menu}
         </if>
-        ORDER BY `orderTime` ASC
+        ORDER BY `t1`.`order_time` ASC
         LIMIT 10
     </select>
 

@@ -12,7 +12,7 @@ const $wsConnectButton = $chatroom?.querySelector('[name="entry"]');
 let stompClient = null;
 let isConnected = false;
 
-if ($wsConnectButton !== null) {
+if ($wsConnectButton !== null && $wsConnectButton !== undefined) {
     $wsConnectButton.addEventListener('click', () => {
         if (!isConnected) {
             const socket = new SockJS("/article-chat");
@@ -48,7 +48,7 @@ if ($wsConnectButton !== null) {
     });
 }
 
-if ($chatroom !== null) {
+if ($chatroom !== null && $wsConnectButton !== undefined) {
     $chatroom.addEventListener('submit', (e) => {
         e.preventDefault();
         sendMessage();
@@ -64,8 +64,7 @@ function sendMessage() {
     stompClient.publish({
         destination: `/app/chat/${new URL(location.href).searchParams.get('id')}`,
         body: JSON.stringify({
-            sender: '',
-            content: $wsContainer.querySelector('[name="chat"]').value
+            content: $wsContainer.querySelector('[name="chat"]').value,
         }),
     });
     $wsContainer.querySelector('[name="chat"]').value = '';

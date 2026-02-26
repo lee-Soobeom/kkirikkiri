@@ -10,6 +10,7 @@ const $searchForm = document.forms['searchForm'];
 const $searchFormAddr = $searchModal.querySelector(':scope > .modal > .button-container > .caption > .address')
 /** @type {HTMLElement} */
 const $searchList = $searchForm.querySelector(':scope > .list');
+const $addressContainer = $writeForm.querySelector(':scope > .address-container');
 /** @type {HTMLInputElement} */
 const $radioPrimary = $writeForm.querySelector(':scope > .address-container > .row > .radio.primary');
 /** @type {HTMLInputElement} */
@@ -17,9 +18,9 @@ const $radioSecondary = $writeForm.querySelector(':scope > .address-container > 
 const ps = new kakao.maps.services.Places();
 const markerImage = new kakao.maps.MarkerImage(
     '/article/assets/images/write/search-modal/marker.png',
-    new kakao.maps.Size(40, 40),
+    new kakao.maps.Size(64, 64),
     {
-        offset: new kakao.maps.Point(3, 40)
+        offset: new kakao.maps.Point(10, 56)
     }
 );
 let currentLng = '128.5938';
@@ -38,26 +39,29 @@ $searchModal.addEventListener('mousedown', (e) => {
 });
 
 $searchForm['current'].addEventListener('click', () => {
-    geoHandler.getGeoLocation();
-    switch (geoHandler.error) {
-        case 0:
-            geoHandler.lat !== '' && geoHandler.lng !== ''
-                ? dialogHandler.simpleYesModal('알림', '현재 위치를 저장했습니다.', {onclick: () => $searchFormAddr.textContent = geoHandler.addressName})
-                : dialogHandler.simpleYesModal('경고', '위치정보가 제공되지 않았습니다. 잠시후 다시 시도해 보세요');
-            currentLat = geoHandler.lat;
-            currentLng = geoHandler.lng;
-            break;
-        case 1:
-            dialogHandler.simpleYesModal('경고', '위치정보 제공을 거부하였습니다. 정확한 검색을 위해 위치정보 제공을 허용해 주세요.');
-            break;
-        case 2:
-            dialogHandler.simpleYesModal('경고', '정확한 위치를 알 수 없습니다. 잠시후 다시 시도해 주세요.');
-            break;
-        case 3:
-            dialogHandler.simpleYesModal('경고', '요청시간이 초과되었습니다. 잠시후 다시 시도해 주세요.');
-            break;
-        default:
-    }
+    geoHandler.getGeoLocation()
+        .then(() => {
+            switch (geoHandler.error) {
+                case 0:
+                    geoHandler.lat !== '' && geoHandler.lng !== ''
+                        ? dialogHandler.simpleYesModal('알림', '현재 위치를 저장했습니다.', {onclick: () => $searchFormAddr.textContent = geoHandler.addressName})
+                        : dialogHandler.simpleYesModal('경고', '위치정보가 제공되지 않았습니다. 잠시후 다시 시도해 보세요');
+                    currentLat = geoHandler.lat;
+                    currentLng = geoHandler.lng;
+                    break;
+                case 1:
+                    dialogHandler.simpleYesModal('경고', '위치정보 제공을 거부하였습니다. 정확한 검색을 위해 위치정보 제공을 허용해 주세요.');
+                    break;
+                case 2:
+                    dialogHandler.simpleYesModal('경고', '정확한 위치를 알 수 없습니다. 잠시후 다시 시도해 주세요.');
+                    break;
+                case 3:
+                    dialogHandler.simpleYesModal('경고', '요청시간이 초과되었습니다. 잠시후 다시 시도해 주세요.');
+                    break;
+                default:
+            }
+        })
+        .catch(err => console.error("Error: " + err));
 });
 
 $searchForm['select'].addEventListener('click', () => {
@@ -115,34 +119,41 @@ $searchForm.addEventListener('submit', (e) => {
 
 $writeForm['placeButton'].addEventListener('click', () => {
     buttonRef = 'place';
-    geoHandler.addressName === ''
-        ? $searchFormAddr.textContent = '현 위치를 알 수 없습니다.'
-        : $searchFormAddr.textContent = geoHandler.addressName;
+    geoHandler.getGeoLocation()
+        .then(() => {
+            geoHandler.addressName === ''
+                ? $searchFormAddr.textContent = '현 위치를 알 수 없습니다.'
+                : $searchFormAddr.textContent = geoHandler.addressName;
+        });
     $searchList.querySelector(':scope > .empty').hide();
     $searchModal.show();
 });
 
 $writeForm['restaurantButton'].addEventListener('click', () => {
     buttonRef = 'restaurant';
-    geoHandler.addressName === ''
-        ? $searchFormAddr.textContent = '현 위치를 알 수 없습니다.'
-        : $searchFormAddr.textContent = geoHandler.addressName;
+    geoHandler.getGeoLocation()
+        .then(() => {
+            geoHandler.addressName === ''
+                ? $searchFormAddr.textContent = '현 위치를 알 수 없습니다.'
+                : $searchFormAddr.textContent = geoHandler.addressName;
+        });
     $searchList.querySelector(':scope > .empty').hide();
     $searchModal.show();
 });
 
-$radioPrimary.addEventListener('change', () => {
-    $writeForm['addressPrimary'].disabled = false;
-    $writeForm['findButton'].disabled = false;
-    $writeForm['placeButton'].disabled = true;
+$addressContainer.addEventListener('change', () => {
+    if ($radioPrimary.checked) {
+        $writeForm['addressPrimary'].disabled = true;
+        $writeForm['findButton'].disabled = false;
+        $writeForm['addressSecondary'].disabled = false;
+        $writeForm['placeButton'].disabled = true;
+    } else if ($radioSecondary.checked) {
+        $writeForm['addressPrimary'].disabled = true;
+        $writeForm['findButton'].disabled = true;
+        $writeForm['addressSecondary'].disabled = true;
+        $writeForm['placeButton'].disabled = false;
+    }
 });
-
-$radioSecondary.addEventListener('change', () => {
-    $writeForm['addressPrimary'].disabled = true;
-    $writeForm['findButton'].disabled = true;
-    $writeForm['placeButton'].disabled = false;
-});
-
 
 $writeForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -266,15 +277,27 @@ $writeForm.addEventListener('submit', (e) => {
         return;
     }
 
-    // restaurant lat & lng
-    if ($writeForm['restaurant'].dataset['lng'].split('.')[0] < 125
-        || $writeForm['restaurant'].dataset['lng'].split('.')[0] > 132) {
-        dialogHandler.simpleYesModal('경고', '올바른 경도가 아닙니다. 다시 검색해 주세요.');
+    // lat & lng
+    if ($radioPrimary.checked) {
+        if ($writeForm['addressPrimary'].dataset['lng'].split('.')[0] < 125
+            || $writeForm['addressPrimary'].dataset['lng'].split('.')[0] > 132) {
+            dialogHandler.simpleYesModal('경고', '올바른 경도가 아닙니다. 다시 검색해 주세요.');
+        }
+        if ($writeForm['addressPrimary'].dataset['lat'].split('.')[0] < 33
+            || $writeForm['addressPrimary'].dataset['lat'].split('.')[0] > 39) {
+            dialogHandler.simpleYesModal('경고', '올바른 위도가 아닙니다. 다시 검색해 주세요.');
+        }
+    } else if ($radioSecondary.checked) {
+        if ($writeForm['addressSecondary'].dataset['lng'].split('.')[0] < 125
+            || $writeForm['addressSecondary'].dataset['lng'].split('.')[0] > 132) {
+            dialogHandler.simpleYesModal('경고', '올바른 경도가 아닙니다. 다시 검색해 주세요.');
+        }
+        if ($writeForm['addressSecondary'].dataset['lat'].split('.')[0] < 33
+            || $writeForm['addressSecondary'].dataset['lat'].split('.')[0] > 39) {
+            dialogHandler.simpleYesModal('경고', '올바른 위도가 아닙니다. 다시 검색해 주세요.');
+        }
     }
-    if ($writeForm['restaurant'].dataset['lat'].split('.')[0] < 33
-        || $writeForm['restaurant'].dataset['lat'].split('.')[0] > 39) {
-        dialogHandler.simpleYesModal('경고', '올바른 위도가 아닙니다. 다시 검색해 주세요.');
-    }
+
 
     // addressPrimary
     if ($radioPrimary.checked) {
@@ -317,12 +340,14 @@ $writeForm.addEventListener('submit', (e) => {
     formData.append('orderTime', $writeForm['orderTime'].value);
     formData.append('pickupTime', $writeForm['pickupTime'].value);
     formData.append('restaurant', $writeForm['restaurant'].value);
-    formData.append('restaurantLng', $writeForm['restaurant'].dataset['lng']);
-    formData.append('restaurantLat', $writeForm['restaurant'].dataset['lat']);
-    if ($writeForm['addressCheck'].value === 'addressPrimary') {
+    if ($radioPrimary.checked) {
+        formData.append('pointLat', $writeForm['addressPrimary'].dataset['lat']);
+        formData.append('pointLng', $writeForm['addressPrimary'].dataset['lng']);
         formData.append('addressPrimary', $writeForm['addressPrimary'].value);
         formData.append('addressSecondary', $writeForm['addressSecondary'].value);
-    } else if ($writeForm['addressCheck'].value === 'addressSecondary') {
+    } else if($radioSecondary.checked) {
+        formData.append('pointLat', $writeForm['addressSecondary'].dataset['lat']);
+        formData.append('pointLng', $writeForm['addressSecondary'].dataset['lng']);
         formData.append('addressSecondary', $writeForm['addressSecondary'].value);
     }
     formData.append('content', $writeForm['content'].value);
@@ -332,7 +357,6 @@ $writeForm.addEventListener('submit', (e) => {
         const idInput = $writeForm.querySelector('input[name="id"]');
         formData.append('id', idInput.value);
     }
-    // todo: xhr formData 까지만 함. userId 완성되면 추가해서 DB 시작하기.
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
@@ -344,7 +368,6 @@ $writeForm.addEventListener('submit', (e) => {
         const response = JSON.parse(xhr.responseText);
         const idInput = $writeForm.querySelector('input[name="id"]');
         const isModify = idInput && idInput.value !== '';
-        console.log(response);
 
         if (isModify) {
             // 수정
@@ -428,13 +451,13 @@ function placesSearchCB(data, status) {
             $li.addEventListener('click', () => {
                 if (buttonRef === 'place') {
                     $writeForm['addressSecondary'].value = data[i]['place_name'];
-                    $writeForm['addressSecondary'].dataset['lng'] = data[i]['x'];
                     $writeForm['addressSecondary'].dataset['lat'] = data[i]['y'];
+                    $writeForm['addressSecondary'].dataset['lng'] = data[i]['x'];
                 }
                 if (buttonRef === 'restaurant') {
                     $writeForm['restaurant'].value = data[i]['place_name'];
-                    $writeForm['restaurant'].dataset['lng'] = data[i]['x'];
                     $writeForm['restaurant'].dataset['lat'] = data[i]['y'];
+                    $writeForm['restaurant'].dataset['lng'] = data[i]['x'];
                 }
                 $searchModal.hide();
                 $searchForm['search'].value = '';
@@ -462,7 +485,11 @@ function openAddressDialog(addressPrimary) {
 
     new daum.Postcode({
         oncomplete: function (data) {
-            // addressPostal.value = data.zonecode;
+            geoHandler.addrToCoords(data.address)
+                .then(coords => {
+                    addressPrimary.dataset['lat'] = coords[0].y;
+                    addressPrimary.dataset['lng'] = coords[0].x;
+                })
             addressPrimary.value = data.address;
             closeAddressDialog();
         },

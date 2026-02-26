@@ -41,32 +41,30 @@
     <!--    로그인상태에 따라 보여줄 요소 다르게 해야함-->
     <div class="container">
         <div class="box user">
+            <button class="current" name="location" type="button"
+                th:if="${session.sessionUser != null}">
+                <img src="/article/assets/images/write/search-modal/current.png" alt="">
+                <span class="caption">현위치</span>
+            </button>
             <div class="image-container">
                 <img src="/assets/images/my/my.user.png" alt="user">
             </div>
             <div class="info">
-                <span class="nickname"
-                      th:if="${session.sessionUser != null}"
-                      th:text="${session.sessionUser.nickname}"></span>
-                <div class="nickname" th:if="${session.sessionUser == null}">게스트</div>
-                <div class="address" th:text="${session.sessionUser?.addressPrimary}"></div>
-<!--                <div class="address">-->
-<!--                    <th:block th:if="${session.sessionUser == null}">현재 위치정보를 알 수 없습니다.</th:block>-->
-
-<!--                    <th:block th:if="${session.sessionUser != null}"-->
-<!--                              th:with="user=${session.sessionUser},-->
-<!--                           parts=${#strings.arraySplit(user.addressPrimary, ' ')}">-->
-<!--                        <span th:text="${parts.length >= 3 ? parts[2].replaceAll('[0-9-]', '') : (parts.length > 2 ? parts[1].replaceAll('[0-9-]', '') : user.addressPrimary)}"></span>-->
-<!--                    </th:block>-->
-<!--                </div>-->
-<!--                <div class="address" th:if="${session.sessionUser == null}">현재 위치정보를 알 수 없습니다.</div>-->
-                <span class="rank"
-                th:if="${session.sessionUser != null}">일반회원</span>
-                <div class="rank" th:if="${session.sessionUser == null}">비회원</div>
+                <div class="nickname"
+                     th:if="${session.sessionUser != null}"
+                     th:text="${session.sessionUser.nickname}"></div>
+                <div class="nickname"
+                     th:if="${session.sessionUser == null}">게스트</div>
+                <div class="address"
+                     th:text="${session.sessionUser?.addressPrimary}"></div>
+                <div class="rank"
+                     th:if="${session.sessionUser != null}">일반회원</div>
+                <div class="rank"
+                     th:if="${session.sessionUser == null}">비회원</div>
             </div>
             <a class="link"
                th:href="@{${session.sessionUser != null ? '/user/my' : '/user/login'}}"
-               th:text="${session.sessionUser != null ? '회원정보 수정' : '로그인'}">로그인</a>
+               th:text="${session.sessionUser != null ? '회원정보 수정' : '로그인'}"></a>
         </div>
         <div class="box point-container">
             <h2 class="title">내 지갑</h2>

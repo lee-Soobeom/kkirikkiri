@@ -62,17 +62,6 @@ public class MessageController {
         return response;
     }
 
-    @RequestMapping(value = "/participants", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Map<String, Object> postParticipants(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser,
-                                                MessageVo messageVo) {
-        Map<String, Object> response = new HashMap<>();
-        CommonResult result = this.participantService.modifyParticipants(sessionUser, messageVo);
-
-        response.put("result", result.name());
-        return response;
-    }
-
     @Scheduled(fixedRate = 60000)
     public void scheduledMessage() {
         this.messageService.scheduleMessage();

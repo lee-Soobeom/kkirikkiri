@@ -1,6 +1,7 @@
 package com.lsb.kkirikkiri.services;
 
 import com.lsb.kkirikkiri.entities.ArticleEntity;
+import com.lsb.kkirikkiri.entities.LocationEntity;
 import com.lsb.kkirikkiri.entities.ParticipantEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
 import com.lsb.kkirikkiri.exceptions.TransactionalException;
@@ -57,8 +58,8 @@ public class ArticleService {
         return this.articleMapper.selectAllBoardIdAndMenuOrderByCreatedAt(boardPageVo, boardId, menu);
     }
 
-    public ArticleVo[] getImminentShareArticles(String menu) {
-        return this.articleMapper.selectImminentShareArticles("share", menu);
+    public ArticleVo[] getImminentShareArticles(String menu, LocationEntity pos) {
+        return this.articleMapper.selectImminentShareArticles("share", menu, pos);
     }
 
     public ArticleVo[] getAllBoardSearch(BoardPageVo boardPageVo, BoardSearchVo boardSearchVo) {
@@ -97,10 +98,8 @@ public class ArticleService {
 
     @Transactional
     public Pair<Map<String, Object>, ArticleEntity> write(UserEntity sessionUser, ArticleEntity articleEntity, List<MultipartFile> files) {
-        System.out.println("넘어온 boardId = [" + articleEntity.getBoardId() + "]");
         Map<String, Object> result = new HashMap<>();
         if (sessionUser == null) {
-            System.out.println("session");
             result.put("articleResult", CommonResult.FAILURE);
             return Pair.of(result, null);
         }
@@ -108,23 +107,12 @@ public class ArticleService {
                 !ArticleValidator.validateBoardId(articleEntity) ||
                 !ArticleValidator.validateTitle(articleEntity) ||
                 !ArticleValidator.validateContent(articleEntity)) {
-            System.out.println("basic");
             result.put("articleResult", CommonResult.FAILURE);
             return Pair.of(result, null);
         }
         String boardId = articleEntity.getBoardId();
         // 공구 게시판 (share)
         if ("share".equals(boardId)) {
-            System.out.println("boardId: " + articleEntity.getBoardId());
-            System.out.println("title: " + articleEntity.getTitle());
-            System.out.println("menu: " + articleEntity.getMenu());
-            System.out.println("menuName: " + articleEntity.getMenuName());
-            System.out.println("orderPrice: " + articleEntity.getOrderPrice());
-            System.out.println("deliveryPrice: " + articleEntity.getDeliveryPrice());
-            System.out.println("orderTime: " + articleEntity.getOrderTime());
-            System.out.println("pickupTime: " + articleEntity.getPickupTime());
-            System.out.println("restaurant: " + articleEntity.getRestaurant());
-            System.out.println("addressSecondary: " + articleEntity.getAddressSecondary());
             if (!ArticleValidator.validateMenu(articleEntity) ||
                     !ArticleValidator.validateMenuName(articleEntity) ||
                     !ArticleValidator.validateMinOrderPrice(articleEntity) ||
@@ -141,8 +129,7 @@ public class ArticleService {
             articleEntity.setCreatedAt(LocalDateTime.now());
             articleEntity.setShareChecked(false);
             articleEntity.setEntryChecked(false);
-            int insertResult = this.articleMapper.insert(articleEntity);
-            if (insertResult > 0) {
+            if (this.articleMapper.insert(articleEntity) > 0) {
                 result.put("articleResult", CommonResult.SUCCESS);
             } else {
                 result.put("articleResult", CommonResult.FAILURE);
@@ -155,7 +142,6 @@ public class ArticleService {
                 // 게시글 작성 성공하면 참여자 테이블 & 공구 지갑 만들기 >> 하나라도 실패하면
                 throw new TransactionalException(CommonResult.FAILURE);
             }
-
         }
         // 홍보 게시판 (promote)
         if ("promote".equals(boardId)) {

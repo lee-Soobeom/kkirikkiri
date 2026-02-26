@@ -23,12 +23,11 @@ public class ParticipantService {
                 : CommonResult.FAILURE;
     }
 
-    public CommonResult modifyParticipants(UserEntity sessionUser, MessageVo messageVo) {
-        if (sessionUser == null
-                || this.userMapper.selectByEmail(sessionUser.getEmail()) == null) {
+    public CommonResult modifyParticipants(UserEntity sessionUser, int articleId, String participant, String participantNickname) {
+        if (sessionUser == null) {
             return CommonResult.FAILURE;
         }
-        ParticipantEntity dbParticipantEntity = this.participantMapper.selectById(messageVo.getArticleId());
+        ParticipantEntity dbParticipantEntity = this.participantMapper.selectById(articleId);
         if (dbParticipantEntity == null) {
             return CommonResult.FAILURE;
         }
@@ -42,12 +41,12 @@ public class ParticipantService {
             break;
         }
         if (count < participants.length) {
-            participants[count] = messageVo.getReceiver();
+            participants[count] = participant;
             count++;
         }
         dbParticipantEntity.setParticipants(String.join(",", participants));
         String[] dbParticipantsNickname = dbParticipantEntity.getParticipantsNickname().split(",", -1);
-        dbParticipantsNickname[count] = messageVo.getReceiverNickname();
+        dbParticipantsNickname[count] = participantNickname;
         dbParticipantEntity.setParticipantsNickname(String.join(",", dbParticipantsNickname));
         dbParticipantEntity.setCount(count + 1);
         return this.participantMapper.update(dbParticipantEntity) > 0

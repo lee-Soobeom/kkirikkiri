@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 @Mapper
 public interface MessageMapper {
-    MessageVo[] selectByEmail(@Param(value = "email") String email,
-                              @Param(value = "timestamp") LocalDateTime timestamp);
+    MessageVo[] selectAllByEmailTimestamp(@Param(value = "email") String email,
+                                          @Param(value = "timestamp") LocalDateTime timestamp);
 
     MessageVo[] selectAllByEmail(@Param(value = "email") String email);
 

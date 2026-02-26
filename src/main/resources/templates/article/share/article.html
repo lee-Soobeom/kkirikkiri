@@ -12,10 +12,10 @@
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=services"></script>
     <script src="https://js.tosspayments.com/v2/standard"></script>
-    <script defer type="text/javascript" src="/article/assets/scripts/article.js"></script>
-    <script defer type="module" src="/article/assets/scripts/websocket.js"></script>
-    <script defer src="/assets/scripts/common.js" type="text/javascript"></script>
     <script defer src="/assets/scripts/dialog.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/common.js" type="text/javascript"></script>
+    <script defer src="/article/assets/scripts/article.js"></script>
+    <script defer type="module" src="/article/assets/scripts/websocket.js"></script>
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
@@ -57,7 +57,7 @@
                 <div class="order-card">
                     <div class="menu-container">
                         <div class="box menu"
-                             th:attr="data-lat=${article.restaurantLat}, data-lng=${article.restaurantLng}">
+                             th:attr="data-lat=${article.pointLat}, data-lng=${article.pointLng}">
                             <div class="title">메뉴</div>
                             <div class="caption" th:text="${article.menu}"></div>
                         </div>
@@ -112,7 +112,12 @@
                     <div class="box bill">
                         <h2 class="title">잔액</h2>
                         <div class="value-container">
-                            <div class="value" th:text="${article.orderPrice + article.deliveryPrice / participants.count}"></div>
+                            <div class="value"
+                                 th:if="${session.sessionUser == null}"
+                                 th:text="${article.orderPrice + article.deliveryPrice / participants.count}"></div>
+                            <div class="value"
+                                 th:if="${session.sessionUser != null}"
+                                 th:text="${#strings.contains(groupWallet.payedParticipants, session.sessionUser.email) ? '0' : article.orderPrice + article.deliveryPrice / participants.count}"></div>
                             <div class="caption">원</div>
                         </div>
                     </div>
@@ -133,23 +138,28 @@
                         </tr>
                         </tbody>
                     </table>
-                    <span th:text="${deadline}"></span>
                     <div class="button-container">
                         <button name="participate" type="button"
                                 th:if="${session.sessionUser == null ? true : session.sessionUser.email != participants.leader && !#strings.contains(participants.participants, session.sessionUser.email)}"
-                                th:class="${deadline ? 'button disabled' : 'button'}"
-                                th:disabled="${!deadline}">
+                                th:class="${deadline ? 'button disabled' : 'button'}">
                             참여하기
                         </button>
                         <button name="pay" type="button"
-                                th:if="${session.sessionUser == null ? false : session.sessionUser.email == participants.leader || #strings.contains(participants.participants, session.sessionUser.email)}"
+                                th:if="${session.sessionUser == null ? false : (session.sessionUser.email == participants.leader || #strings.contains(participants.participants, session.sessionUser.email)) && !#strings.contains(groupWallet.payedParticipants, session.sessionUser.email)}"
                                 th:class="${deadline ? 'button' : 'button disabled'}"
-                                th:disabled="${deadline}">
+                                th:text="${#strings.contains(groupWallet.payedParticipants, session.sessionUser.email) ? '계산완료' : '계산하기'}">
                             계산하기
                         </button>
+                        <button disabled class="button disabled"
+                                th:if="${#strings.contains(groupWallet.payedParticipants, session.sessionUser.email)}">계산완료</button>
+                        <input hidden disabled readonly name="entryCheck" type="hidden" th:value="${article.entryChecked}">
                     </div>
                 </div>
                 <div id="map">
+                    <input hidden disabled readonly name="pointLat" type="hidden"
+                           th:value="${article.pointLat}">
+                    <input hidden disabled readonly name="pointLng" type="hidden"
+                           th:value="${article.pointLng}">
                     <span class="hidden lat"></span>
                     <span class="hidden lng"></span>
                 </div>

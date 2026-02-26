@@ -43,15 +43,13 @@ VALUES ('chicken', '치킨'),
 
 ```
 
-## articles (02.11)
+## articles (02.26)
 ```mariadb
 CREATE TABLE `kkirikkiri`.`articles`
 (
     `id`                INT UNSIGNED   NOT NULL AUTO_INCREMENT,
     `board_id`          VARCHAR(10)    NOT NULL,
     `user_id`           VARCHAR(50)    NOT NULL,
-    `participants_id`   INT UNSIGNED   NULL DEFAULT NULL,
-    `wallet_id`         INT UNSIGNED   NULL DEFAULT NULL,
     `title`             VARCHAR(100)   NOT NULL,
     `menu`              VARCHAR(20)    NULL,
     `menu_name`         VARCHAR(50)    NULL,
@@ -61,8 +59,8 @@ CREATE TABLE `kkirikkiri`.`articles`
     `order_time`        DATETIME       NULL,
     `pickup_time`       DATETIME       NULL,
     `restaurant`        VARCHAR(50)    NULL,
-    `restaurant_lat`    VARCHAR(20)    NULL,
-    `restaurant_lng`    VARCHAR(20)    NULL,
+    `point_lat`         VARCHAR(20)    NULL,
+    `point_lng`         VARCHAR(20)    NULL,
     `address_primary`   VARCHAR(100)   NULL     DEFAULT NULL,
     `address_secondary` VARCHAR(100)   NULL     DEFAULT NULL,
     `content`           VARCHAR(10000) NULL     DEFAULT NULL,
@@ -103,7 +101,7 @@ CREATE TABLE `kkirikkiri`.`participants`
 );
 ```
 
-## files (02.11)
+## files (02.26)
 ````mariadb
 CREATE TABLE `kkirikkiri`.`files`
 (
@@ -111,8 +109,8 @@ CREATE TABLE `kkirikkiri`.`files`
     `user_id`           VARCHAR(20)  NOT NULL,
     `article_id`        INT UNSIGNED NOT NULL,
     `original_filename` VARCHAR(50)  NOT NULL,
-    `saved_name`        VARCHAR(50)  NOT NULL,
-    `saved_filename`    VARCHAR(100) NOT NULL,
+    `saved_filename`    VARCHAR(50)  NOT NULL,
+    `saved_filepath`    VARCHAR(100) NOT NULL,
     `size`              INT UNSIGNED NOT NULL,
     CONSTRAINT PRIMARY KEY (`id`),
     CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `kkirikkiri`.`users` (`email`)

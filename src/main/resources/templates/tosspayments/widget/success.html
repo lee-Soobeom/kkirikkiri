@@ -27,7 +27,7 @@
         <div class="p-grid-col text--right" style="white-space: initial; width: 250px" th:text="${payment.paymentKey}"></div>
     </div>
     <div class="p-grid" style="margin-top: 20px; justify-content: center;">
-        <button class="button p-grid-col10" onclick="window.close();"
+        <button class="button p-grid-col10" onclick="window.opener.location.reload(); window.close();"
                 style="background-color: #e8f3ff; color: #1b64da">닫기
         </button>
     </div>

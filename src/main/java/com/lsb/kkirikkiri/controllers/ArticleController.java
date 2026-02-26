@@ -8,6 +8,7 @@ import com.lsb.kkirikkiri.results.CommonResult;
 import com.lsb.kkirikkiri.services.ArticleService;
 import com.lsb.kkirikkiri.services.BoardService;
 import com.lsb.kkirikkiri.services.ParticipantService;
+import com.lsb.kkirikkiri.services.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.MediaType;
@@ -29,6 +30,7 @@ public class ArticleController {
     private final ArticleService articleService;
     private final BoardService boardService;
     private final ParticipantService participantService;
+    private final WalletService walletService;
 
     // 글 작성 페이지
     @RequestMapping(
@@ -74,6 +76,7 @@ public class ArticleController {
         modelAndView.addObject("article", dbArticle);
         if (boardType.equals("share")) {
             modelAndView.addObject("participants", this.participantService.getParticipantByArticleId(id));
+            modelAndView.addObject("groupWallet", this.walletService.getGroupWalletByArticleId(id));
             long diff = Duration.between(LocalDateTime.now(), dbArticle.getOrderTime()).toMinutes();
             System.out.println(diff);
             if (diff >= 0 && diff <= 20) {
@@ -126,8 +129,6 @@ public class ArticleController {
             @SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser
     ) {
         Map<String, Object> response = new HashMap<>();
-
-//        articleEntity.setNickname(sessionUser.getNickname());
         BoardEntity board = this.boardService.getBoardById(boardType);
 
         if (board != null && board.isAdminOnly() && (sessionUser == null || !sessionUser.isAdmin())) {

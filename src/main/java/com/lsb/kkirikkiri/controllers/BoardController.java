@@ -1,5 +1,6 @@
 package com.lsb.kkirikkiri.controllers;
 
+import com.lsb.kkirikkiri.entities.LocationEntity;
 import com.lsb.kkirikkiri.entities.ServiceEntity;
 import com.lsb.kkirikkiri.services.ServiceService;
 import com.lsb.kkirikkiri.vos.ServiceBoardPageVo;
@@ -33,6 +34,7 @@ public class BoardController {
                                 @RequestParam(value = "page", defaultValue = "1") int requestPage,
                                 @RequestParam(value = "sort", required = false) String sort,
                                 @RequestParam(value = "menu", required = false, defaultValue = "all") String menu,
+                                LocationEntity pos,
                                 BoardSearchVo boardSearchVo, ModelAndView modelAndView) {
         BoardEntity board = this.boardService.getBoardById(id);
         modelAndView.addObject("board", board);

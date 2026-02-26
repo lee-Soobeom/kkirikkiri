@@ -60,7 +60,9 @@ public class UserController extends AbstractGeneralController{
             if (birth.plusYears(age).isAfter(today)) age--;
             session.setAttribute("isAdult", age >= 19);
         }
-        return prepareJsonResponse(result.getLeft());
+        Map<String, Object> response = prepareJsonResponse(result.getLeft());
+        response.put("user", result.getRight());
+        return response;
 
     }
 

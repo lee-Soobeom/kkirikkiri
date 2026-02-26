@@ -47,7 +47,7 @@
         WHERE `t1`.`receiver` = #{email}
           AND `t1`.`isChecked` = 0
     </select>
-    <select id="selectByEmail"
+    <select id="selectAllByEmailTimestamp"
             resultType="com.lsb.kkirikkiri.vos.MessageVo">
         SELECT `t1`.`id`        AS `id`,
                `t1`.`sender`    AS `sender`,
@@ -63,8 +63,8 @@
                  LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`sender`
                  LEFT JOIN `kkirikkiri`.`users` AS `t3` ON `t3`.`email` = `t1`.`receiver`
         WHERE `t1`.`receiver` = #{email}
-#           AND `t1`.`timestamp` >= #{timestamp}
-#           AND `t1`.`isChecked` = 0
+          AND `t1`.`timestamp` >= #{timestamp}
+          AND `t1`.`isChecked` = 0
     </select>
     <select id="selectById"
             resultType="com.lsb.kkirikkiri.entities.MessageEntity">

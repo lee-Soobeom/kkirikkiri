@@ -1,6 +1,5 @@
 package com.lsb.kkirikkiri.services;
 
-import com.lsb.kkirikkiri.entities.ArticleEntity;
 import com.lsb.kkirikkiri.entities.GroupWalletEntity;
 import com.lsb.kkirikkiri.entities.UserWalletEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
@@ -44,6 +43,13 @@ public class WalletService {
                 : CommonResult.FAILURE;
     }
 
+    public GroupWalletEntity getGroupWalletByArticleId(int articleId) {
+        if (articleId <= 0) {
+            return null;
+        }
+        return this.walletMapper.selectGroupWalletByArticleId(articleId);
+    }
+
     public UserWalletEntity getUserWallet(String userEmail) {
         return !UserValidator.validateEmail(userEmail)
                 ? null
@@ -54,8 +60,7 @@ public class WalletService {
 
     @Transactional
     public CommonResult putWallet(UserEntity sessionUser, int articleId) {
-        if (sessionUser == null ||
-                this.userMapper.selectByEmail(sessionUser.getEmail()) == null) {
+        if (sessionUser == null) {
             return CommonResult.FAILURE_SESSION;
         }
         if (articleId <= 0) {

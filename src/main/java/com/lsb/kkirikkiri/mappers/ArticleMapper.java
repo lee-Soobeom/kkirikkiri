@@ -1,6 +1,7 @@
 package com.lsb.kkirikkiri.mappers;
 
 import com.lsb.kkirikkiri.entities.ArticleEntity;
+import com.lsb.kkirikkiri.entities.LocationEntity;
 import com.lsb.kkirikkiri.vos.ArticleVo;
 import com.lsb.kkirikkiri.vos.BoardPageVo;
 import com.lsb.kkirikkiri.vos.BoardSearchVo;
@@ -44,8 +45,9 @@ public interface ArticleMapper {
 
     ArticleVo[] selectImminentShareArticles(
             @Param("boardId") String boardId,
-            @Param("menu") String menu
-    );
+            @Param("menu") String menu,
+            @Param("location")LocationEntity pos
+            );
 
     Integer selectCountByBoardId(@Param("boardId") String boardId);
 
