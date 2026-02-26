@@ -67,7 +67,7 @@ public class ArticleService {
                 boardSearchVo.getKeyword() == null ||
                 boardSearchVo.getId() == null ||
                 boardSearchVo.getBy() == null ||
-                !List.of("titleContent", "title", "nickname").contains(boardSearchVo.getBy())) {
+                !List.of("titleContent", "title", "userId").contains(boardSearchVo.getBy())) {
             return new ArticleVo[0];
         }
         return this.articleMapper.selectAllByBoardSearch(boardPageVo, boardSearchVo);
@@ -88,7 +88,7 @@ public class ArticleService {
         if (boardSearchVo == null ||
                 boardSearchVo.getId() == null ||
                 boardSearchVo.getBy() == null ||
-                !List.of("titleContent", "title", "nickname").contains(boardSearchVo.getBy())) {
+                !List.of("titleContent", "title", "userId").contains(boardSearchVo.getBy())) {
             return 0;
         }
         return this.articleMapper.selectCountByBoardSearch(boardSearchVo);
@@ -98,8 +98,10 @@ public class ArticleService {
 
     @Transactional
     public Pair<Map<String, Object>, ArticleEntity> write(UserEntity sessionUser, ArticleEntity articleEntity, List<MultipartFile> files) {
+        System.out.println("넘어온 boardId = [" + articleEntity.getBoardId() + "]");
         Map<String, Object> result = new HashMap<>();
         if (sessionUser == null) {
+            System.out.println("session");
             result.put("articleResult", CommonResult.FAILURE);
             return Pair.of(result, null);
         }
@@ -107,12 +109,23 @@ public class ArticleService {
                 !ArticleValidator.validateBoardId(articleEntity) ||
                 !ArticleValidator.validateTitle(articleEntity) ||
                 !ArticleValidator.validateContent(articleEntity)) {
+            System.out.println("basic");
             result.put("articleResult", CommonResult.FAILURE);
             return Pair.of(result, null);
         }
         String boardId = articleEntity.getBoardId();
         // 공구 게시판 (share)
         if ("share".equals(boardId)) {
+            System.out.println("boardId: " + articleEntity.getBoardId());
+            System.out.println("title: " + articleEntity.getTitle());
+            System.out.println("menu: " + articleEntity.getMenu());
+            System.out.println("menuName: " + articleEntity.getMenuName());
+            System.out.println("orderPrice: " + articleEntity.getOrderPrice());
+            System.out.println("deliveryPrice: " + articleEntity.getDeliveryPrice());
+            System.out.println("orderTime: " + articleEntity.getOrderTime());
+            System.out.println("pickupTime: " + articleEntity.getPickupTime());
+            System.out.println("restaurant: " + articleEntity.getRestaurant());
+            System.out.println("addressSecondary: " + articleEntity.getAddressSecondary());
             if (!ArticleValidator.validateMenu(articleEntity) ||
                     !ArticleValidator.validateMenuName(articleEntity) ||
                     !ArticleValidator.validateMinOrderPrice(articleEntity) ||
@@ -142,13 +155,29 @@ public class ArticleService {
                 // 게시글 작성 성공하면 참여자 테이블 & 공구 지갑 만들기 >> 하나라도 실패하면
                 throw new TransactionalException(CommonResult.FAILURE);
             }
+
         }
         // 홍보 게시판 (promote)
         if ("promote".equals(boardId)) {
-            if (!ArticleValidator.validateRestaurant(articleEntity) ||
-                    !ArticleValidator.validateAddressSecondary(articleEntity)) {
+            if (!sessionUser.isBoss()) {
                 result.put("articleResult", CommonResult.FAILURE);
                 return Pair.of(result, null);
+            }
+            if (!ArticleValidator.validateRestaurant(articleEntity)) {
+                result.put("articleResult", CommonResult.FAILURE);
+                return Pair.of(result, null);
+            }
+            articleEntity.setUserId(sessionUser.getEmail());
+            articleEntity.setCreatedAt(LocalDateTime.now());
+            articleEntity.setUpdatedAt(LocalDateTime.now());
+            articleEntity.setView(0);
+            articleEntity.setShareChecked(false);
+            articleEntity.setEntryChecked(false);
+
+            if (this.articleMapper.insert(articleEntity) > 0) {
+                result.put("articleResult", CommonResult.SUCCESS);
+            } else {
+                result.put("articleResult", CommonResult.FAILURE);
             }
 
         }

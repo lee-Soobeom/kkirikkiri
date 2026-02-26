@@ -104,8 +104,10 @@ $searchForm['close'].addEventListener('click', () => {
 
 $searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    const lat = geoHandler.lat !== '' ? geoHandler.lat : currentLat;
+    const lng = geoHandler.lng !== '' ? geoHandler.lng : currentLng;
     ps.keywordSearch($searchForm['search'].value, placesSearchCB, {
-        location: new kakao.maps.LatLng(geoHandler.lat, geoHandler.lng),
+        location: new kakao.maps.LatLng(lat, lng),
         radius: 1000
     });
 })
@@ -200,11 +202,14 @@ $writeForm.addEventListener('submit', (e) => {
         return;
     }
 
+    const pathParts = window.location.pathname.split('/');
+    const boardType = pathParts[2];
     const xhr = new XMLHttpRequest();
     const formData = new FormData();
     formData.append('boardId', $writeForm['boardId'].value);
     formData.append('title', $writeForm['title'].value);
     formData.append('restaurant', $writeForm['restaurant'].value);
+    formData.append('addressPrimary', $writeForm['restaurantAddress'].value);
     formData.append('content', $writeForm['content'].value);
     // todo: xhr formData 까지만 함. userId 완성되면 추가해서 DB 시작하기.
     const files = $writeForm['files'].files;
@@ -227,7 +232,7 @@ $writeForm.addEventListener('submit', (e) => {
                 $writeForm['title'].value = '';
                 $writeForm['restaurant'].value = '';
                 $writeForm['content'].value = '';
-                location.href = `/article/?id=${response.id}`;
+                location.href = `/article/${boardType}?id=${response.id}`;
                 break;
             case 'FAILURE':
                 alert('failure');
@@ -240,7 +245,8 @@ $writeForm.addEventListener('submit', (e) => {
                 break;
         }
     };
-    xhr.open('POST', '/article/write');
+
+    xhr.open('POST', `/article/${boardType}/write`);
     xhr.send(formData);
 })
 

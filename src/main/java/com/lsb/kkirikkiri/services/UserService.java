@@ -281,7 +281,6 @@ public class UserService {
                 store.setTermDocSubmissionAt(now);
                 store.setApprovalStatus("PENDING");
                 store.setAppliedAt(now);
-
                 if (licenseFile != null && !licenseFile.isEmpty()) {
                     store.setLicenseUrl(saveFile(licenseFile));
                 }

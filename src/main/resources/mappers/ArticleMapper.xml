@@ -119,31 +119,33 @@
     </select>
 <!--    조회수 조회-->
     <select id="selectAllByBoardId" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
-        SELECT `id`                AS `id`,
-               `board_id`          AS `boardId`,
-               `user_id`           AS `userId`,
-               `participants_id`   AS `participantsId`,
-               `wallet_id`         AS `walletId`,
-               `title`             AS `title`,
-               `menu`              AS `menu`,
-               `menu_name`         AS `menuName`,
-               `min_order_price`   AS `minOrderPrice`,
-               `order_price`       AS `orderPrice`,
-               `delivery_price`    AS `deliveryPrice`,
-               `order_time`        AS `orderTime`,
-               `pickup_time`       AS `pickupTime`,
-               `restaurant`        AS `restaurant`,
-               `point_lat`    AS `pointLat`,
-               `point_lng`    AS `pointLng`,
-               `address_primary`   AS `addressPrimary`,
-               `address_secondary` AS `addressSecondary`,
-               `content`           AS `content`,
-               `isShareChecked`    AS `shareChecked`,
-               `isEntryChecked`    AS `entryChecked`,
-               `created_at`        AS `createdAt`,
-               `updated_at`        AS `updatedAt`,
-               `view`              AS `view`
-        FROM `kkirikkiri`.`articles`
+        SELECT `t1`.`id`                AS `id`,
+               `t1`.`board_id`          AS `boardId`,
+               `t1`.`user_id`           AS `userId`,
+               `t1`.`participants_id`   AS `participantsId`,
+               `t1`.`wallet_id`         AS `walletId`,
+               `t1`.`title`             AS `title`,
+               `t1`.`menu`              AS `menu`,
+               `t1`.`menu_name`         AS `menuName`,
+               `t1`.`min_order_price`   AS `minOrderPrice`,
+               `t1`.`order_price`       AS `orderPrice`,
+               `t1`.`delivery_price`    AS `deliveryPrice`,
+               `t1`.`order_time`        AS `orderTime`,
+               `t1`.`pickup_time`       AS `pickupTime`,
+               `t1`.`restaurant`        AS `restaurant`,
+               `t1`.point_lat    AS `restaurantLat`,
+               `t1`.point_lng    AS `restaurantLng`,
+               `t1`.`address_primary`   AS `addressPrimary`,
+               `t1`.`address_secondary` AS `addressSecondary`,
+               `t1`.`content`           AS `content`,
+               `t1`.`isShareChecked`    AS `shareChecked`,
+               `t1`.`isEntryChecked`    AS `entryChecked`,
+               `t1`.`created_at`        AS `createdAt`,
+               `t1`.`updated_at`        AS `updatedAt`,
+               `t1`.`view`              AS `view`,
+               `t2`.`nickname` AS `nickname`
+        FROM `kkirikkiri`.`articles` AS `t1`
+        LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
         ORDER BY `id` DESC
         LIMIT #{boardPage.rowCount}
@@ -174,8 +176,10 @@
                `t1`.`isEntryChecked`    AS `entryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
-               `t1`.`view`              AS `view`
+               `t1`.`view`              AS `view`,
+               `t2`.`nickname` AS `nickname`
         FROM `kkirikkiri`.`articles` AS `t1`
+        LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `t1`.`board_id` = #{boardSearch.id}
         <if test="boardSearch.by.equals('titleContent')">
             AND (`t1`.`title` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
@@ -186,7 +190,7 @@
             AND `t1`.`title` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
         </if>
         <if test="boardSearch.by.equals('userId')">
-            AND `t1`.`user_id` = #{boardSearch.keyword}
+            AND `t2`.`nickname` LIKE CONCAT ('%', #{boardSearch.keyword}, '%')
         </if>
         ORDER BY `t1`.`id` DESC
         LIMIT #{boardPage.rowCount}
@@ -210,6 +214,7 @@
     <select id="selectCountByBoardSearch" resultType="java.lang.Integer">
         SELECT COUNT(0)
         FROM `kkirikkiri`.`articles` AS `t1`
+        LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `t1`.`board_id` = #{boardSearch.id}
         <if test="boardSearch.by.equals('titleContent')">
             AND (
@@ -224,7 +229,7 @@
         </if>
 
         <if test="boardSearch.by.equals('userId')">
-            AND `t1`.`user_id` = #{boardSearch.keyword}
+            AND `t2`.`nickname` LIKE CONCAT ('%', #{boardSearch.keyword}, '%')
         </if>
     </select>
     <!-- 최신순 -->
@@ -252,10 +257,12 @@
                `t1`.`isEntryChecked`    AS `entryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
-               `t1`.`view`              AS `view`
+               `t1`.`view`              AS `view`,
+               `t2`.nickname            AS `nickname`
         FROM `kkirikkiri`.`articles` AS `t1`
+                 LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
-        ORDER BY `created_at` DESC
+        ORDER BY `t1`.`created_at` DESC
         LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
     </select>
     <!-- 인기순 -->
@@ -283,10 +290,12 @@
                `t1`.`isEntryChecked`    AS `entryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
-               `t1`.`view`              AS `view`
+               `t1`.`view`              AS `view`,
+               `t2`.`nickname`          AS `nickname`
         FROM `kkirikkiri`.`articles` AS `t1`
+                 LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
-        ORDER BY `view` DESC
+        ORDER BY `t1`.`view` DESC
         LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
     </select>
     <select id="selectAllByOrderTime"
@@ -344,11 +353,13 @@
                `t1`.`isEntryChecked`    AS `entryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
-               `t1`.`view`              AS `view`
+               `t1`.`view`              AS `view`,
+               `t2`.`nickname` AS `nickname`
         FROM `kkirikkiri`.`articles` AS `t1`
+        LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
           AND `t1`.`menu` = #{menu}
-        ORDER BY `created_at` DESC
+        ORDER BY `t1`.`created_at` DESC
         LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
     </select>
     <select id="selectAllBoardIdAndMenuOrderByView">
@@ -375,11 +386,13 @@
                `t1`.`isEntryChecked`    AS `entryChecked`,
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
-               `t1`.`view`              AS `view`
+               `t1`.`view`              AS `view`,
+               `t2`.`nickname` AS `nickname`
         FROM `kkirikkiri`.`articles` AS `t1`
+        LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
           AND `t1`.`menu` = #{menu}
-        ORDER BY `view` DESC
+        ORDER BY `t1`.`view` DESC
         LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
     </select>
     <select id="selectImminentShareArticles">
@@ -409,8 +422,8 @@
         `t1`.`view`              AS `view`
         FROM `kkirikkiri`.`articles`AS `t1`
         WHERE `board_id` = #{boardId}
-        AND `order_time` IS NOT NULL
-        AND `order_time` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 60 MINUTE)
+        AND `t1`.`order_time` IS NOT NULL
+        AND `t1`.`order_time` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 60 MINUTE)
         AND `point_lat` BETWEEN #{location.lat} - 3.0/111 AND #{location.lat} + 3.0/111
         AND `point_lng` BETWEEN #{location.lng} - (3.0 / (111 * COS(RADIANS(#{location.lat})))) AND #{location.lng} + (3.0 / (111 * COS(RADIANS(#{location.lat}))))
         AND ST_DISTANCE_SPHERE(POINT(`point_lng`,`point_lat`), POINT(#{location.lng}, #{location.lat})) &lt;= 3000

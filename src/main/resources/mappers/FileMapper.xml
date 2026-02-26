@@ -5,14 +5,14 @@
         INSERT INTO `kkirikkiri`.`files` (`user_id`,
                                           `article_id`,
                                           `original_filename`,
-                                          saved_filepath,
+                                          `saved_filename`,
                                           `saved_filepath`,
                                           `size`)
-        VALUES (#{file.user_id},
-                #{file.article_id},
-                #{file.original_filename},
-                #{file.saved_filename},
-                #{file.saved_filepath},
+        VALUES (#{file.userId},
+                #{file.articleId},
+                #{file.originalFilename},
+                #{file.savedFilename},
+                #{file.savedFilepath},
                 #{file.size})
     </insert>
 </mapper>

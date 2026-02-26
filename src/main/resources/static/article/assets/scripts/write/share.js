@@ -279,22 +279,26 @@ $writeForm.addEventListener('submit', (e) => {
 
     // lat & lng
     if ($radioPrimary.checked) {
-        if ($writeForm['addressPrimary'].dataset['lng'].split('.')[0] < 125
-            || $writeForm['addressPrimary'].dataset['lng'].split('.')[0] > 132) {
-            dialogHandler.simpleYesModal('경고', '올바른 경도가 아닙니다. 다시 검색해 주세요.');
-        }
-        if ($writeForm['addressPrimary'].dataset['lat'].split('.')[0] < 33
-            || $writeForm['addressPrimary'].dataset['lat'].split('.')[0] > 39) {
-            dialogHandler.simpleYesModal('경고', '올바른 위도가 아닙니다. 다시 검색해 주세요.');
+        if ($writeForm['addressPrimary'].dataset['lng']) {
+            if ($writeForm['addressPrimary'].dataset['lng'].split('.')[0] < 125
+                || $writeForm['addressPrimary'].dataset['lng'].split('.')[0] > 132) {
+                dialogHandler.simpleYesModal('경고', '올바른 경도가 아닙니다. 다시 검색해 주세요.');
+            }
+            if ($writeForm['addressPrimary'].dataset['lat'].split('.')[0] < 33
+                || $writeForm['addressPrimary'].dataset['lat'].split('.')[0] > 39) {
+                dialogHandler.simpleYesModal('경고', '올바른 위도가 아닙니다. 다시 검색해 주세요.');
+            }
         }
     } else if ($radioSecondary.checked) {
-        if ($writeForm['addressSecondary'].dataset['lng'].split('.')[0] < 125
-            || $writeForm['addressSecondary'].dataset['lng'].split('.')[0] > 132) {
-            dialogHandler.simpleYesModal('경고', '올바른 경도가 아닙니다. 다시 검색해 주세요.');
-        }
-        if ($writeForm['addressSecondary'].dataset['lat'].split('.')[0] < 33
-            || $writeForm['addressSecondary'].dataset['lat'].split('.')[0] > 39) {
-            dialogHandler.simpleYesModal('경고', '올바른 위도가 아닙니다. 다시 검색해 주세요.');
+        if ($writeForm['addressSecondary'].dataset['lng']) {
+            if ($writeForm['addressSecondary'].dataset['lng'].split('.')[0] < 125
+                || $writeForm['addressSecondary'].dataset['lng'].split('.')[0] > 132) {
+                dialogHandler.simpleYesModal('경고', '올바른 경도가 아닙니다. 다시 검색해 주세요.');
+            }
+            if ($writeForm['addressSecondary'].dataset['lat'].split('.')[0] < 33
+                || $writeForm['addressSecondary'].dataset['lat'].split('.')[0] > 39) {
+                dialogHandler.simpleYesModal('경고', '올바른 위도가 아닙니다. 다시 검색해 주세요.');
+            }
         }
     }
 

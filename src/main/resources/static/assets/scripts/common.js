@@ -8,7 +8,7 @@ const $paymentButton = $my?.querySelector('[name="payment"]');
 const $totalMessages = $topNav?.querySelector(':scope > .button-container > .bell > .total');
 const $messageList = $topNav?.querySelector(':scope > .button-container > .bell > .message-list');
 
-const geoHandler = {
+window.geoHandler = {
     geocoder: new kakao.maps.services.Geocoder(),
     addressName: '',
     timestamp: '',

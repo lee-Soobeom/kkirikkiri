@@ -145,7 +145,10 @@ public class ArticleController {
             response.put("id", result.getRight().getId());
         }
         response.put("articleResult", result.getLeft().get("articleResult"));
-        response.put("participants", this.participantService.getParticipantByArticleId(result.getRight().getId()));
+        if ("share".equals(boardType)) {
+            response.put("participants", this.participantService.getParticipantByArticleId(result.getRight().getId()));
+        }
+        response.put("result", result.getLeft().get("articleResult"));
         response.put("fileResult", result.getLeft().get("fileResult"));
         if (result.getLeft().get("fileResult") == CommonResult.SUCCESS) {
             response.put("fileResultList", result.getLeft().get("fileResultList"));
