@@ -15,4 +15,9 @@
                 #{file.savedFilepath},
                 #{file.size})
     </insert>
+    <select id="selectByArticleId" resultType="com.lsb.kkirikkiri.entities.FileEntity">
+        SELECT *
+        FROM `kkirikkiri`.`files`
+        WHERE `article_id` = #{articleId}
+    </select>
 </mapper>

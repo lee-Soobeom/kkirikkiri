@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>공지글 작성</title>
+    <link rel="stylesheet" href="/assets/styles/fragments.css">
+    <link rel="stylesheet" href="/user/assets/styles/admin.css">
+    <script defer src="/assets/scripts/dialog.js"></script>
+    <script defer src="/user/assets/scripts/admin.js"></script>
+</head>
+<body>
+<th:block th:fragment="noticeSection">
+    <div class="notice-container">
+        <div class="section-header">
+            <h2>공지사항 관리</h2>
+            <button class="btn-write" onclick="openNoticeWrite()">공지 작성</button>
+        </div>
+
+        <!-- 공지 목록 -->
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성일</th>
+                <th>관리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="notice : ${noticeList}">
+                <td th:text="${notice.id}"></td>
+                <td>
+                    <a th:href="@{/article/notice(id=${notice.id})}"
+                       th:text="${notice.title}" target="_blank"></a>
+                </td>
+                <td th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}"></td>
+                <td>
+                    <button class="btn-edit"
+                            th:attr="data-id=${notice.id}, data-title=${notice.title}, data-content=${notice.content}"
+                            onclick="openNoticeEdit(this)">수정</button>
+                    <button class="btn-delete"
+                            th:attr="data-id=${notice.id}"
+                            onclick="deleteNotice(this)">삭제</button>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(noticeList)}">
+                <td colspan="4">공지사항이 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- 공지 작성 모달 -->
+        <div id="noticeWriteModal" style="display:none;">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <h3>공지 작성</h3>
+                <form name="noticeForm">
+                    <label>
+                        <span>제목</span>
+                        <input type="text" name="title" maxlength="100" required>
+                    </label>
+                    <label>
+                        <span>내용</span>
+                        <textarea name="content" rows="10" maxlength="10000" required></textarea>
+                    </label>
+                    <div class="button-container">
+                        <button type="button" onclick="closeNoticeWrite()">취소</button>
+                        <button type="button" onclick="submitNotice()">작성</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="noticeEditModal" style="display:none;">
+            <div class="modal-backdrop" onclick="closeNoticeEdit()"></div>
+            <div class="modal-content">
+                <h3>공지 수정</h3>
+                <input type="hidden" id="editNoticeId">
+                <form name="noticeEditForm">
+                    <label>
+                        <span>제목</span>
+                        <input type="text" name="title" maxlength="100" required>
+                    </label>
+                    <label>
+                        <span>내용</span>
+                        <textarea name="content" rows="10" maxlength="10000" required></textarea>
+                    </label>
+                    <div class="button-container">
+                        <button type="button" onclick="closeNoticeEdit()">취소</button>
+                        <button type="button" onclick="submitNoticeEdit()">수정</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

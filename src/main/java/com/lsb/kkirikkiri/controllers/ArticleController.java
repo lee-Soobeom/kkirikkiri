@@ -5,10 +5,7 @@ import com.lsb.kkirikkiri.entities.BoardEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
 import com.lsb.kkirikkiri.enums.BoardId;
 import com.lsb.kkirikkiri.results.CommonResult;
-import com.lsb.kkirikkiri.services.ArticleService;
-import com.lsb.kkirikkiri.services.BoardService;
-import com.lsb.kkirikkiri.services.ParticipantService;
-import com.lsb.kkirikkiri.services.WalletService;
+import com.lsb.kkirikkiri.services.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.MediaType;
@@ -31,6 +28,7 @@ public class ArticleController {
     private final BoardService boardService;
     private final ParticipantService participantService;
     private final WalletService walletService;
+    private final FileService fileService;
 
     // 글 작성 페이지
     @RequestMapping(
@@ -85,6 +83,10 @@ public class ArticleController {
                 modelAndView.addObject("deadline", false);
             }
         }
+        if (boardType.equals("promote")) {
+            modelAndView.addObject("files", this.fileService.getFilesByArticleId(id));
+        }
+
         modelAndView.setViewName(BoardId.from(boardType).articleView);
         return modelAndView;
     }

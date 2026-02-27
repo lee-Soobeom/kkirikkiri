@@ -38,12 +38,16 @@
         <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
     </div>
     <form novalidate class="form" name="writeForm" enctype="multipart/form-data" th:if="${board != null && sessionUser != null && (!board.isAdminOnly() || board.isAdminOnly && sessionUser.isBoss())}">
-        <h2 class="title">게시글 작성</h2>
+        <h2 class="title" th:text="${article.id != null} ? '게시글 수정' : '게시글 작성'"></h2>
         <input type="hidden" name="boardId" value="promote">
+        <input type="hidden" name="mode" th:value="${article.id != null ? 'modify' : 'write'}">
+        <input type="hidden" name="id" th:value="${article.id}">
         <span class="board"></span>
+        <input type="hidden" name="pointLat">
+        <input type="hidden" name="pointLng">
         <label class="column">
             <span class="caption">제목</span>
-            <input autofocus required autocomplete="off" class="input" maxlength="100" minlength="1" name="title" placeholder="제목을 입력해 주세요." type="text" data-object="input" data-component="label.field">
+            <input autofocus required autocomplete="off" class="input" maxlength="100" minlength="1" name="title" th:value="${article.title}" placeholder="제목을 입력해 주세요." type="text" data-object="input" data-component="label.field">
         </label>
         <label class="column">
             <span class="caption">가게명</span>
@@ -52,6 +56,7 @@
                    maxlength="100"
                    minlength="1"
                    name="restaurant"
+                   th:value="${article.restaurant}"
                    placeholder="가게 이름을 입력해 주세요."
                    type="text"
                    data-object="input"
@@ -59,7 +64,7 @@
         </label>
         <label class="row">
             <span class="caption">가게위치</span>
-            <input readonly class="input" maxlength="100" minlength="1" name="restaurantAddress" type="text"
+            <input readonly class="input" maxlength="100" minlength="1" name="restaurantAddress" type="text" th:value="${article.addressPrimary}"
                    placeholder="'가게찾기' 버튼을 클릭해 주세요." data-object="input" data-component="label.field">
             <button class="button" name="restaurantButton" type="button" data-object="button" data-color="concept">가게찾기
             </button>
@@ -91,6 +96,7 @@
                       maxlength="10000"
                       minlength="1"
                       name="content"
+                      th:text="${article.content}"
                       rows="20"
                       data-object="input"
                       data-component="label.field"></textarea>

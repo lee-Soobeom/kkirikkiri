@@ -318,6 +318,206 @@ $text-muted: #adb5bd;
         }
       }
     }
+    .notice-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.05);
+      min-height: calc(100vh - 5rem);
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 0.125rem solid #eee;
+        padding-bottom: 1rem;
+
+        h2 {
+          margin: 0;
+          color: #333;
+          font-weight: 700;
+          font-size: 1.5rem;
+        }
+
+        .btn-write {
+          padding: 0.5rem 1.25rem;
+          background: $primary-color;
+          color: white;
+          border: none;
+          border-radius: 0.35rem;
+          font-weight: 600;
+          cursor: pointer;
+
+          &:hover {
+            background: darken($primary-color, 10%);
+          }
+        }
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th, td {
+          border-bottom: 0.0625rem solid $border-color;
+          padding: 0.75rem 0.9375rem;
+          text-align: center;
+        }
+
+        th {
+          background-color: #f1f3f9;
+          color: #4e5e6a;
+          font-weight: 600;
+        }
+
+        tr:hover {
+          background-color: rgba($primary-color, 0.05);
+        }
+
+        a {
+          color: $primary-color;
+          font-weight: 600;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        .btn-edit {
+          padding: 0.375rem 0.75rem;
+          background: $primary-color;
+          color: white;
+          border: none;
+          border-radius: 0.25rem;
+          cursor: pointer;
+          font-weight: 500;
+          margin-right: 0.25rem;
+
+          &:hover {
+            background: darken($primary-color, 10%);
+          }
+        }
+
+        .btn-delete {
+          padding: 0.375rem 0.75rem;
+          background: white;
+          color: $danger-color;
+          border: 0.0625rem solid $danger-color;
+          border-radius: 0.25rem;
+          cursor: pointer;
+          font-weight: 500;
+
+          &:hover {
+            background: $danger-color;
+            color: white;
+          }
+        }
+      }
+    }
+
+    // 공지 작성 모달
+    #noticeWriteModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+
+      .modal-backdrop {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        position: relative;
+        z-index: 2001;
+        background: white;
+        padding: 2rem;
+        border-radius: 0.75rem;
+        width: 40rem;
+        box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.2);
+
+        h3 {
+          margin-top: 0;
+          margin-bottom: 1.5rem;
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #333;
+          border-bottom: 0.125rem solid #eee;
+          padding-bottom: 0.75rem;
+        }
+
+        label {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+
+          span {
+            font-weight: 600;
+            color: #4e5e6a;
+            font-size: 0.9rem;
+          }
+
+          input, textarea {
+            padding: 0.5rem 0.75rem;
+            border: 0.0625rem solid $border-color;
+            border-radius: 0.35rem;
+            font-size: 0.9rem;
+            outline: none;
+
+            &:focus {
+              border-color: $primary-color;
+            }
+          }
+        }
+
+        .button-container {
+          display: flex;
+          justify-content: flex-end;
+          gap: 0.75rem;
+          margin-top: 1.5rem;
+
+          button {
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.35rem;
+            font-weight: 600;
+            cursor: pointer;
+
+            &:first-child {
+              background: white;
+              color: #6e707e;
+              border: 0.0625rem solid $border-color;
+
+              &:hover {
+                background: #f1f3f9;
+              }
+            }
+
+            &:last-child {
+              background: $primary-color;
+              color: white;
+              border: none;
+
+              &:hover {
+                background: darken($primary-color, 10%);
+              }
+            }
+          }
+        }
+      }
+    }
+    #noticeEditModal {
+      @extend #noticeWriteModal;
+    }
 
     .dashboard-wrapper {
       .dashboard-grid {

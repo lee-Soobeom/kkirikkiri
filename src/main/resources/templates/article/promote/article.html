@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="/assets/styles/fragments.css">
     <link rel="stylesheet" href="/assets/styles/home.css" type="text/css">
     <link rel="stylesheet" href="/article/assets/styles/article.css">
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=services"></script>
+    <script src="https://js.tosspayments.com/v2/standard"></script>
+    <script defer src="/assets/scripts/dialog.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/common.js" type="text/javascript"></script>
+    <script defer src="/article/assets/scripts/article.js"></script>
 </head>
 <body>
 
@@ -41,15 +47,28 @@
                         <div class="box">
                             <div class="title">주소</div>
                             <div class="caption"
-                                 th:text="${article.addressPrimary + ' ' + article.addressSecondary}"></div>
+                                 th:text="${article.addressPrimary}"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- 지도 영역 (선택) -->
-            <div class="view-container">
-                <div id="map"></div>
+            <div class="view-container promote">
+                <!-- 이미지 -->
+                <div class="image-list-container" th:if="${files != null and !#lists.isEmpty(files)}">
+                    <div class="slide-wrapper">
+                        <div class="slide" th:each="file : ${files}">
+                            <img th:src="${file.savedFilepath}" alt="">
+                        </div>
+                    </div>
+                    <button class="prev" type="button">&#8249;</button>
+                    <button class="next" type="button">&#8250;</button>
+                </div>
+                <div id="map">
+                    <input hidden disabled readonly name="pointLat" type="hidden" th:value="${article.pointLat}">
+                    <input hidden disabled readonly name="pointLng" type="hidden" th:value="${article.pointLng}">
+                </div>
             </div>
 
             <!-- 내용 -->
@@ -58,9 +77,33 @@
                 <div class="text" th:text="${article.content}"></div>
             </div>
         </div>
-        <th:block th:replace="~{fragments/common.html :: #quick}"></th:block>
     </div>
-
+    <div class="action-container"
+         th:if="${session.sessionUser != null and session.sessionUser.email == article.userId}">
+        <form th:if="${session.sessionUser != null and session.sessionUser.email == article.userId}"
+              th:action="@{/article/{boardType}/modify(boardType=${boardType})}"
+              method="get">
+            <input type="hidden" name="id" th:value="${article.id}">
+            <button data-object="button" data-color="concept" type="submit">수정하기</button>
+        </form>
+        <form th:if="${session.sessionUser != null and session.sessionUser.email == article.userId}"
+              th:action="@{/article/{boardType}/delete(boardType=${boardType})}"
+              method="post">
+            <input type="hidden" name="id" th:value="${article.id}">
+            <button data-object="button"
+                    data-color="red"
+                    type="submit"
+                    onclick="return confirm('정말 삭제하시겠습니까?')">삭제하기</button>
+        </form>
+    </div>
+    <!-- 이미지 모달 -->
+    <div id="imageModal">
+        <div class="backdrop"></div>
+        <div class="modal-content">
+            <button class="close" type="button">&#10005;</button>
+            <img class="image" src="" alt="">
+        </div>
+    </div>
 </main>
 
 </body>

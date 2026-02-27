@@ -118,3 +118,100 @@ function updateUserStatus(email, newStatus, actionText) {
             dialogHandler.simpleYesModal('경고', '서버 통신 오류가 발생했습니다.');
     });
 }
+
+function openNoticeWrite() {
+    document.getElementById('noticeWriteModal').style.display = 'flex';
+}
+
+function closeNoticeWrite() {
+    document.getElementById('noticeWriteModal').style.display = 'none';
+}
+
+function submitNotice() {
+    const form = document.forms['noticeForm'];
+    const title = form['title'].value.trim();
+    const content = form['content'].value.trim();
+
+    if (!title) { alert('제목을 입력해주세요.'); return; }
+    if (!content) { alert('내용을 입력해주세요.'); return; }
+
+    const formData = new FormData();
+    formData.append('boardId', 'notice');
+    formData.append('title', title);
+    formData.append('content', content);
+
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        const response = JSON.parse(xhr.responseText);
+        if (response.result === 'SUCCESS') {
+            alert('공지가 작성됐습니다.');
+            location.reload();
+        } else {
+            alert('작성에 실패했습니다.');
+        }
+    };
+    xhr.open('POST', '/article/notice/write');
+    xhr.send(formData);
+}
+
+function openNoticeEdit(btn) {
+    const id = btn.dataset.id;
+    const title = btn.dataset.title;
+    const content = btn.dataset.content;
+
+    document.getElementById('editNoticeId').value = id;
+    document.forms['noticeEditForm']['title'].value = title;
+    document.forms['noticeEditForm']['content'].value = content;
+    document.getElementById('noticeEditModal').style.display = 'flex';
+}
+
+function closeNoticeEdit() {
+    document.getElementById('noticeEditModal').style.display = 'none';
+}
+
+function submitNoticeEdit() {
+    const id = document.getElementById('editNoticeId').value;
+    const form = document.forms['noticeEditForm'];
+    const title = form['title'].value.trim();
+    const content = form['content'].value.trim();
+
+    if (!title) { alert('제목을 입력해주세요.'); return; }
+    if (!content) { alert('내용을 입력해주세요.'); return; }
+
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('boardId', 'notice');
+    formData.append('title', title);
+    formData.append('content', content);
+
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        const response = JSON.parse(xhr.responseText);
+        if (response.result === 'SUCCESS') {
+            alert('수정됐습니다.');
+            location.reload();
+        } else {
+            alert('수정에 실패했습니다.');
+        }
+    };
+    xhr.open('POST', '/article/notice/modify');
+    xhr.send(formData);
+}
+
+function deleteNotice(btn) {
+    if (!confirm('정말 삭제하시겠습니까?')) return;
+    const id = btn.dataset.id;
+    const formData = new FormData();
+    formData.append('id', id);
+
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        alert('삭제됐습니다.');
+        location.reload();
+    };
+    xhr.open('POST', '/article/notice/delete');
+    xhr.send(formData);
+}

@@ -104,14 +104,11 @@ $searchForm['close'].addEventListener('click', () => {
 
 $searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const lat = geoHandler.lat !== '' ? geoHandler.lat : currentLat;
-    const lng = geoHandler.lng !== '' ? geoHandler.lng : currentLng;
     ps.keywordSearch($searchForm['search'].value, placesSearchCB, {
-        location: new kakao.maps.LatLng(lat, lng),
+        location: new kakao.maps.LatLng(geoHandler.lat, geoHandler.lng),
         radius: 1000
     });
 })
-
 
 $writeForm['restaurantButton'].addEventListener('click', () => {
     buttonRef = 'restaurant';
@@ -163,6 +160,7 @@ $writeForm['files'].addEventListener('change', () => {
 
 $writeForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    const isModify = $writeForm['mode'] && $writeForm['mode'].value === 'modify';
     // boardId
     if ($writeForm['boardId'].value === -1) {
         dialogHandler.simpleYesModal('경고', '게시판을 선택해 주세요.');
@@ -211,6 +209,12 @@ $writeForm.addEventListener('submit', (e) => {
     formData.append('restaurant', $writeForm['restaurant'].value);
     formData.append('addressPrimary', $writeForm['restaurantAddress'].value);
     formData.append('content', $writeForm['content'].value);
+    formData.append('pointLat', $writeForm['pointLat'].value);
+    formData.append('pointLng', $writeForm['pointLng'].value);
+    if (isModify) {
+        const idInput = $writeForm.querySelector('input[name="id"]');
+        formData.append('id', idInput.value);
+    }
     // todo: xhr formData 까지만 함. userId 완성되면 추가해서 DB 시작하기.
     const files = $writeForm['files'].files;
     for (let i = 0; i < files.length; i++) {
@@ -218,35 +222,55 @@ $writeForm.addEventListener('submit', (e) => {
     }
 
     xhr.onreadystatechange = () => {
-        if (xhr.readyState !== XMLHttpRequest.DONE) {
-            return;
-        }
+        if (xhr.readyState !== XMLHttpRequest.DONE) return;
         if (xhr.status < 200 || xhr.status >= 400) {
             alert(`error ${xhr.status}`);
             return;
         }
         const response = JSON.parse(xhr.responseText);
-        switch (response.result) {
-            case 'SUCCESS':
-                $writeForm['boardId'].value = '';
-                $writeForm['title'].value = '';
-                $writeForm['restaurant'].value = '';
-                $writeForm['content'].value = '';
-                location.href = `/article/${boardType}?id=${response.id}`;
-                break;
-            case 'FAILURE':
-                alert('failure');
-                break;
-            case 'FAILURE_SESSION':
-                alert('failure_session');
-                break;
-            default:
-                alert('default ???');
-                break;
+        const idInput = $writeForm.querySelector('input[name="id"]');
+        const isModify = idInput && idInput.value !== '';
+
+        if (isModify) {
+            switch (response["result"]) {
+                case 'SUCCESS':
+                    location.href = `/article/promote?id=${idInput.value}`;
+                    break;
+                case 'FAILURE':
+                    alert('수정 실패');
+                    break;
+                case 'FAILURE_SESSION':
+                    alert('세션 만료');
+                    break;
+                default:
+                    alert('알 수 없는 오류');
+                    break;
+            }
+        } else {
+            switch (response["result"]) {
+                case 'SUCCESS':
+                    $writeForm['boardId'].value = '';
+                    $writeForm['title'].value = '';
+                    $writeForm['restaurant'].value = '';
+                    $writeForm['content'].value = '';
+                    location.href = `/article/promote?id=${response.id}`;
+                    break;
+                case 'FAILURE':
+                    alert('failure');
+                    break;
+                case 'FAILURE_SESSION':
+                    alert('failure_session');
+                    break;
+                default:
+                    alert('default ???');
+                    break;
+            }
         }
     };
-
-    xhr.open('POST', `/article/${boardType}/write`);
+    const actionUrl = isModify
+        ? `/article/${boardType}/modify`
+        : `/article/${boardType}/write`;
+    xhr.open('POST', actionUrl);
     xhr.send(formData);
 })
 
@@ -275,6 +299,8 @@ function placesSearchCB(data, status) {
                 if (buttonRef === 'restaurant') {
                     $writeForm['restaurant'].value = data[i]['place_name'];
                     $writeForm['restaurantAddress'].value = data[i]['road_address_name'] || data[i]['address_name'];
+                    $writeForm['pointLat'].value = data[i]['y'];
+                    $writeForm['pointLng'].value = data[i]['x'];
                 }
                 $searchModal.hide();
                 $searchForm['search'].value = '';

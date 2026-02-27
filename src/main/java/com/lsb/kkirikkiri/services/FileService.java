@@ -33,15 +33,15 @@ public class FileService {
         for (MultipartFile file : files) {
             if (file.getContentType() == null || !file.getContentType().startsWith("image")) {
                 System.out.println("content type");
-                return null;
+                continue;
             }
             if (file.isEmpty()) {
                 System.out.println("empty");
-                return null;
+                continue;
             }
             if (file.getOriginalFilename() == null) {
                 System.out.println("original filename");
-                return null;
+                continue;
             }
             // DB fileEntity insert + userEmail + articleId
             String originalFileName = file.getOriginalFilename();
@@ -53,20 +53,21 @@ public class FileService {
             String datePath = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM"));
             Path basePath = firstPath.resolve(datePath);
             Path savedPath = basePath.resolve(savedFileName);
-            if (!Files.exists(basePath)) {
                 try {
-                    Files.createDirectories(savedPath);
-                    file.transferTo(basePath);
+                    if (!Files.exists(basePath)) {
+                        Files.createDirectories(basePath);
+                    }
+                    file.transferTo(savedPath);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+            String webPath = "/upload/image/" + datePath + "/" + savedFileName;
             FileEntity fileEntity = new FileEntity();
             fileEntity.setUserId(userEntity.getEmail());
             fileEntity.setArticleId(articleEntity.getId());
             fileEntity.setOriginalFilename(originalFileName);
             fileEntity.setSavedFilename(savedFileName);
-            fileEntity.setSavedFilepath(savedPath.toString());
+            fileEntity.setSavedFilepath(webPath);
             fileEntity.setSize(size);
             Map<String, CommonResult> result = new HashMap<>();
             if (this.fileMapper.insert(fileEntity) > 0) {
@@ -77,5 +78,8 @@ public class FileService {
             fileResult.add(result);
         }
         return fileResult;
+    }
+    public List<FileEntity> getFilesByArticleId(int articleId) {
+        return this.fileMapper.selectByArticleId(articleId);
     }
 }

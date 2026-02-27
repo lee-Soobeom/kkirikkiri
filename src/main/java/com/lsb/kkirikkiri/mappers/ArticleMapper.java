@@ -8,9 +8,13 @@ import com.lsb.kkirikkiri.vos.BoardSearchVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface ArticleMapper {
     int insert(ArticleEntity articleEntity);
+
+    List<ArticleVo> selectNoticeList(String boardId);
 
     ArticleVo selectById(@Param(value = "id") int id);
 

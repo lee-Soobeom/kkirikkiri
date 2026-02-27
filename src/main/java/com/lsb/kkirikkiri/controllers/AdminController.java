@@ -2,10 +2,13 @@ package com.lsb.kkirikkiri.controllers;
 
 import com.lsb.kkirikkiri.dtos.AdminStoreDTO;
 import com.lsb.kkirikkiri.dtos.AdminUserDTO;
+import com.lsb.kkirikkiri.entities.ArticleEntity;
 import com.lsb.kkirikkiri.entities.UserWalletEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
 import com.lsb.kkirikkiri.services.AdminService;
+import com.lsb.kkirikkiri.services.ArticleService;
 import com.lsb.kkirikkiri.services.WalletService;
+import com.lsb.kkirikkiri.vos.ArticleVo;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -25,6 +28,7 @@ public class AdminController {
 
     private final WalletService walletService;
     private final AdminService adminService;
+    private final ArticleService articleService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getIndex(HttpSession session, @RequestParam(value = "menu", required = false, defaultValue = "dashboard") String menu) {
@@ -45,7 +49,10 @@ public class AdminController {
             mv.addObject("totalUserCount", this.adminService.getTotalUserCount());
             mv.addObject("todayJoinCount", this.adminService.getTodayJoinCount());
         }
-
+        if ("notice".equals(menu)) {
+            List<ArticleVo> noticeList = this.articleService.getNoticeList("notice");
+            mv.addObject("noticeList", noticeList);
+        }
         mv.addObject("wallet", new UserWalletEntity());
 
         return mv;

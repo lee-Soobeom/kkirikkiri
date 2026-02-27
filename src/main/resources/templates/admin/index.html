@@ -38,6 +38,10 @@
                 <p>부적절한 리뷰나 게시글을 필터링합니다. (준비 중)</p>
             </div>
 
+            <div th:case="'notice'">
+                <th:block th:replace="~{admin/sections/notice-table :: noticeSection}"></th:block>
+            </div>
+
             <div th:case="'support'">
                 <h2>문의/고객센터</h2>
                 <p>사용자들의 1:1 문의 내역을 확인하고 답변합니다. (준비 중)</p>

@@ -13,18 +13,19 @@ const options = {
     level: 3
 };
 const map = new kakao.maps.Map(container, options);
-const markerImage = new kakao.maps.MarkerImage(
+const markerImage = $menu ? new kakao.maps.MarkerImage(
     `/assets/images/main/main.menu.${$menu.innerText}.png`,
     new kakao.maps.Size(120, 120),
     {
         offset: new kakao.maps.Point(60, 57)
     }
-);
+) : null;
+
 const marker = new kakao.maps.Marker({
     map: map,
     position: new kakao.maps.LatLng(point.lat, point.lng),
     clickable: false,
-    image: markerImage,
+    image: markerImage ?? undefined,
 });
 
 $participateButton?.addEventListener('click', () => {
@@ -99,6 +100,53 @@ $participateButton?.addEventListener('click', () => {
     }
 });
 
+const $slider = document.querySelector('.image-list-container');
+if ($slider) {
+    const $wrapper = $slider.querySelector('.slide-wrapper');
+    const slides = $slider.querySelectorAll('.slide');
+    let current = 0;
+
+    // 슬라이드 개수 만큼 wrapper 너비 설정
+    $wrapper.style.width = `${slides.length * 100}%`;
+
+    // 각 슬라이드 너비를 전체의 1/n로 설정
+    slides.forEach(slide => {
+        slide.style.minWidth = `${100 / slides.length}%`;
+    });
+
+    $slider.querySelector('.prev')?.addEventListener('click', () => {
+        current = (current - 1 + slides.length) % slides.length;
+        $wrapper.style.transform = `translateX(-${current * (100 / slides.length)}%)`;
+    });
+
+    $slider.querySelector('.next')?.addEventListener('click', () => {
+        current = (current + 1) % slides.length;
+        $wrapper.style.transform = `translateX(-${current * (100 / slides.length)}%)`;
+    });
+}
+
+const $imageModal = document.getElementById('imageModal');
+if ($imageModal) {
+    const $modalImage = $imageModal.querySelector('.image');
+
+    // 슬라이드 이미지 클릭 시 모달 열기
+    document.querySelectorAll('.slide > img').forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', () => {
+            $modalImage.src = img.src;
+            $imageModal.classList.add('visible');
+        });
+    });
+
+    // 배경 or 닫기 버튼 클릭 시 모달 닫기
+    $imageModal.querySelector('.backdrop').addEventListener('click', () => {
+        $imageModal.classList.remove('visible');
+    });
+    $imageModal.querySelector('.close').addEventListener('click', () => {
+        $imageModal.classList.remove('visible');
+    });
+}
+
 $payButton?.addEventListener('click', () => {
     dialogHandler.simpleYesNoModal('결제', '공동구매 1인당 주문금액 잔액을 결제하시겠습니까?', [{
         caption: '취소',
@@ -138,4 +186,25 @@ $payButton?.addEventListener('click', () => {
         }
     }]);
     // todo 내 지갑 kkiri-pay에서 지불
+});
+
+const ps = new kakao.maps.services.Places();
+
+function placesSearchCB(data, status) {
+    if (status === kakao.maps.services.Status.ZERO_RESULT) {
+        // todo 검색 결과 없을때
+    }
+    if (status === kakao.maps.services.Status.OK) {
+        // todo 검색 결과 있을때
+        for (let i = 0; i < data.length; i++) {
+            // 검색 결과
+            console.log(data[i]);
+        }
+    }
+}
+
+// todo 검색할 가게 이름 수정 & location 좌표 수정
+ps.keywordSearch('검색할 가게 이름', placesSearchCB, { // 가게 이름
+    location: new kakao.maps.LatLng(0, 0), // 좌표
+    radius: 1000
 });

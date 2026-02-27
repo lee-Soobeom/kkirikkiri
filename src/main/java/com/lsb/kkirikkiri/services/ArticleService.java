@@ -40,6 +40,13 @@ public class ArticleService {
         return this.articleMapper.selectById(id);
     }
 
+    public List<ArticleVo> getNoticeList (String boardId) {
+        if (boardId == null) {
+            return List.of();
+        }
+        return this.articleMapper.selectNoticeList(boardId);
+    }
+
     public ArticleVo[] getAllByBoardIdAndMenu(BoardPageVo boardPageVo, String boardId, String menu) {
         if (boardId == null) {
             return new ArticleVo[0];

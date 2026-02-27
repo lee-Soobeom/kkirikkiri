@@ -25,6 +25,9 @@
         <li th:classappend="${menu == 'content'} ? 'active'">
             <a th:href="@{/admin/index(menu='content')}">콘텐츠/리뷰 관리</a>
         </li>
+        <li th:classappend="${menu == 'notice'} ? 'active'">
+            <a th:href="@{/admin/index(menu='notice')}">공지글 작성</a>
+        </li>
         <li th:classappend="${menu == 'support'} ? 'active'">
             <a th:href="@{/admin/index(menu='support')}">문의/고객센터</a>
         </li>
