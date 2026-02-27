@@ -151,7 +151,7 @@
                             계산하기
                         </button>
                         <button disabled class="button disabled"
-                                th:if="${#strings.contains(groupWallet.payedParticipants, session.sessionUser.email)}">계산완료</button>
+                                th:if="${session.sessionUser == null ? false : #strings.contains(groupWallet.payedParticipants, session.sessionUser.email)}">계산완료</button>
                         <input hidden disabled readonly name="entryCheck" type="hidden" th:value="${article.entryChecked}">
                     </div>
                 </div>
@@ -160,8 +160,6 @@
                            th:value="${article.pointLat}">
                     <input hidden disabled readonly name="pointLng" type="hidden"
                            th:value="${article.pointLng}">
-                    <span class="hidden lat"></span>
-                    <span class="hidden lng"></span>
                 </div>
             </div>
             <div class="memo-card">

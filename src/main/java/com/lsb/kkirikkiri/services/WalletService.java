@@ -8,6 +8,8 @@ import com.lsb.kkirikkiri.mappers.ArticleMapper;
 import com.lsb.kkirikkiri.mappers.UserMapper;
 import com.lsb.kkirikkiri.mappers.WalletMapper;
 import com.lsb.kkirikkiri.results.CommonResult;
+import com.lsb.kkirikkiri.results.PayResult;
+import com.lsb.kkirikkiri.results.Result;
 import com.lsb.kkirikkiri.validators.UserValidator;
 import com.lsb.kkirikkiri.vos.ArticleVo;
 import com.lsb.kkirikkiri.vos.ParticipantVo;
@@ -59,7 +61,7 @@ public class WalletService {
     }
 
     @Transactional
-    public CommonResult putWallet(UserEntity sessionUser, int articleId) {
+    public Result putWallet(UserEntity sessionUser, int articleId) {
         if (sessionUser == null) {
             return CommonResult.FAILURE_SESSION;
         }
@@ -88,6 +90,9 @@ public class WalletService {
         } else {
             cost = dbArticleVo.getOrderPrice() + dbArticleVo.getDeliveryPrice() / dbParticipantVo.getCount();
         }
+        if (dbUserWallet.getCash() - cost < 0) {
+            return PayResult.FAILURE_NO_BALANCE;
+        }
         dbUserWallet.setCash(dbUserWallet.getCash() - cost);
         dbUserWallet.setLastPay(LocalDateTime.now());
         if (this.walletMapper.modifyUserWallet(dbUserWallet) < 0) {
@@ -101,6 +106,7 @@ public class WalletService {
                 break;
             }
         }
+        System.out.println(payedParticipants.length);
         dbGroupWalletEntity.setPayedParticipants(String.join(",", payedParticipants));
         if (this.walletMapper.modifyGroupWallet(dbGroupWalletEntity) < 0) {
             throw new TransactionalException(CommonResult.FAILURE);

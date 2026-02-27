@@ -35,26 +35,30 @@ $searchModal.addEventListener('mousedown', (e) => {
 });
 
 $searchForm['current'].addEventListener('click', () => {
-    geoHandler.getGeoLocation();
-    switch (geoHandler.error) {
-        case 0:
-            geoHandler.lat !== '' && geoHandler.lng !== ''
-                ? dialogHandler.simpleYesModal('알림', '현재 위치를 저장했습니다.', {onclick: () => $searchFormAddr.textContent = geoHandler.addressName})
-                : dialogHandler.simpleYesModal('경고', '위치정보가 제공되지 않았습니다. 잠시후 다시 시도해 보세요');
-            currentLat = geoHandler.lat;
-            currentLng = geoHandler.lng;
-            break;
-        case 1:
-            dialogHandler.simpleYesModal('경고', '위치정보 제공을 거부하였습니다. 정확한 검색을 위해 위치정보 제공을 허용해 주세요.');
-            break;
-        case 2:
-            dialogHandler.simpleYesModal('경고', '정확한 위치를 알 수 없습니다. 잠시후 다시 시도해 주세요.');
-            break;
-        case 3:
-            dialogHandler.simpleYesModal('경고', '요청시간이 초과되었습니다. 잠시후 다시 시도해 주세요.');
-            break;
-        default:
-    }
+    geoHandler.getGeoLocation()
+        .then(() => {
+            switch (geoHandler.error) {
+                case 0:
+                    geoHandler.lat !== '' && geoHandler.lng !== ''
+                        ? dialogHandler.simpleYesModal('알림', '현재 위치를 저장했습니다.', {onclick: () => $searchFormAddr.textContent = geoHandler.addressName})
+                        : dialogHandler.simpleYesModal('경고', '위치정보가 제공되지 않았습니다. 잠시후 다시 시도해 보세요');
+                    currentLat = geoHandler.lat;
+                    currentLng = geoHandler.lng;
+                    break;
+                case 1:
+                    dialogHandler.simpleYesModal('경고', '위치정보 제공을 거부하였습니다. 정확한 검색을 위해 위치정보 제공을 허용해 주세요.');
+                    break;
+                case 2:
+                    dialogHandler.simpleYesModal('경고', '정확한 위치를 알 수 없습니다. 잠시후 다시 시도해 주세요.');
+                    break;
+                case 3:
+                    dialogHandler.simpleYesModal('경고', '요청시간이 초과되었습니다. 잠시후 다시 시도해 주세요.');
+                    break;
+                default:
+            }
+    })
+        .catch(err => console.error("Error: " + err));
+
 });
 
 $searchForm['select'].addEventListener('click', () => {

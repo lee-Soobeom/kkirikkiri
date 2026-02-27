@@ -23,12 +23,12 @@
         <div class="menu-container">
             <label class="label">
                 <input hidden checked class="input" type="radio" name="menuFilter" value="all"
-                th:checked="${menu == 'null'}"
+                th:checked="${menu == 'all'}"
                 th:onclick="|location.href='/'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.all.png" alt="">
-                    <span class="caption">전체</span>
                 </span>
+                <span class="caption">#전체</span>
             </label>
             <label class="label">
                 <input hidden class="input" type="radio" name="menuFilter" value="chicken"
@@ -36,8 +36,8 @@
                 th:onclick="|location.href='/?menu=chicken'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.chicken.png" alt="">
-                    <span class="caption">#치킨</span>
                 </span>
+                <span class="caption">#치킨</span>
             </label>
             <label class="label">
                 <input hidden class="input" type="radio" name="menuFilter" value="pizza"
@@ -45,8 +45,8 @@
                 th:onclick="|location.href='/?menu=pizza'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.pizza.png" alt="">
-                    <span class="caption">#피자</span>
                 </span>
+                <span class="caption">#피자</span>
             </label>
             <label class="label">
                 <input hidden class="input" type="radio" name="menuFilter" value="hamburger"
@@ -54,8 +54,8 @@
                 th:onclick="|location.href='/?menu=hamburger'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.hamburger.png" alt="">
-                    <span class="caption">#햄버거</span>
                 </span>
+                <span class="caption">#햄버거</span>
             </label>
             <label class="label">
                 <input hidden class="input" type="radio" name="menuFilter" value="stew"
@@ -63,8 +63,8 @@
                 th:onclick="|location.href='/?menu=stew'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.stew.png" alt="">
-                    <span class="caption">#찜/탕</span>
                 </span>
+                <span class="caption">#찜/탕</span>
             </label>
             <label class="label">
                 <input hidden class="input" type="radio" name="menuFilter" value="japanese-food"
@@ -72,8 +72,8 @@
                 th:onclick="|location.href='/?menu=japanese-food'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.japanese-food.png" alt="">
-                    <span class="caption">#회/일식</span>
                 </span>
+                <span class="caption">#회/일식</span>
             </label>
             <label class="label">
                 <input hidden class="input" type="radio" name="menuFilter" value="chinese-food"
@@ -81,8 +81,8 @@
                 th:onclick="|location.href='/?menu=chinese-food'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.chinese-food.png" alt="">
-                    <span class="caption">#중식</span>
                 </span>
+                <span class="caption">#중식</span>
             </label>
             <label class="label">
                 <input hidden class="input" type="radio" name="menuFilter" value="western-food"
@@ -90,8 +90,8 @@
                 th:onclick="|location.href='/?menu=western-food'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.western-food.png" alt="">
-                    <span class="caption">#양식</span>
                 </span>
+                <span class="caption">#양식</span>
             </label>
             <label class="label">
                 <input hidden class="input" type="radio" name="menuFilter" value="dessert"
@@ -99,8 +99,8 @@
                 th:onclick="|location.href='/?menu=dessert'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.dessert.png" alt="">
-                    <span class="caption">#디저트</span>
                 </span>
+                <span class="caption">#디저트</span>
             </label>
             <label class="label">
                 <input hidden class="input" type="radio" name="menuFilter" value="etc"
@@ -108,19 +108,10 @@
                 th:onclick="|location.href='/?menu=etc'|">
                 <span class="menu">
                     <img class="icon" src="/assets/images/main/main.menu.etc.png" alt="">
-                    <span class="caption">#그 외</span>
                 </span>
+                <span class="caption">#그 외</span>
             </label>
         </div>
-        <form class="search" name="listSearch">
-            <h2 class="title">검색으로 찾기</h2>
-            <label class="label">
-                <span class="image-wrapper">
-                    <img class="image" src="/assets/images/main/main.menu.search.png" alt="">
-                </span>
-                <input class="input" type="text" placeholder="가게명, 지역명 등을 검색하세요."/>
-            </label>
-        </form>
     </div>
     <h2 class="title">마감이 30분 남았어요! 빠르게 주문해보세요!</h2>
     <div class="group">
@@ -152,12 +143,5 @@
         </label>
     </li>
 </ol>
-<div id="message">
-    <div class="title">
-        <div class="sender">${message.sender}</div>
-        <span class="created-at">10:36</span>
-    </div>
-    <div class="content">${message.sender}님이 <br> ${message.articleMenuName} 공동구매 참가 요청</div>
-</div>
 </body>
 </html>

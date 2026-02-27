@@ -2,7 +2,7 @@ package com.lsb.kkirikkiri.controllers;
 
 import com.lsb.kkirikkiri.entities.UserWalletEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
-import com.lsb.kkirikkiri.results.CommonResult;
+import com.lsb.kkirikkiri.results.Result;
 import com.lsb.kkirikkiri.services.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -36,7 +36,7 @@ public class WalletController {
     public Map<String, Object> putPay(@SessionAttribute(value = "sessionUser") UserEntity sessionUser,
                                       @RequestParam(value = "articleId", required = false, defaultValue = "0") int articleId) {
         Map<String, Object> response = new HashMap<>();
-        CommonResult result = this.walletService.putWallet(sessionUser, articleId);
+        Result result = this.walletService.putWallet(sessionUser, articleId);
         response.put("result", result.name());
         return response;
     }

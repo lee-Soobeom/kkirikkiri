@@ -177,6 +177,11 @@ $payButton?.addEventListener('click', () => {
                             dialogHandler.simpleYesModal('경고', '결제에 실패하였습니다. 잠시후 다시 시도해 주세요.');
                         }, 500);
                         break;
+                    case 'FAILURE_NO_BALANCE':
+                        setTimeout(() => {
+                            dialogHandler.simpleYesModal('경고','잔액이 부족합니다.\n금액을 충전한 후 다시 결제해주세요.');
+                        });
+                        break;
                     default:
                 }
 
@@ -185,7 +190,6 @@ $payButton?.addEventListener('click', () => {
             xhr.send(formData);
         }
     }]);
-    // todo 내 지갑 kkiri-pay에서 지불
 });
 
 const ps = new kakao.maps.services.Places();

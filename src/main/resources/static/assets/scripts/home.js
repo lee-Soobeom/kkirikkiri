@@ -1,6 +1,5 @@
 /** @type {HTMLElement} */
 const $main = document.getElementById('main');
-const $address = $my.querySelector(':scope > .container > .user > .info > .address');
 const $advertisement = $main.querySelector(':scope > .title');
 const $groupList = $main.querySelector(':scope > .group > .list');
 const $loadingMessage = $main.querySelector(':scope > .group > .list > .loading');

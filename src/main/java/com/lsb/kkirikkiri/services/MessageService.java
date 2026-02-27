@@ -54,7 +54,8 @@ public class MessageService {
                 !MessageValidator.validateUsage(messageVo)) {
             return CommonResult.FAILURE;
         }
-
+        System.out.println("sender" +  messageVo.getSender());
+        System.out.println("receiver" +  messageVo.getReceiver());
 
         if (messageVo.getUsage().equals(MessageType.TALK.code)) {
             if (!MessageValidator.validateContent(messageVo)) {
