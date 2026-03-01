@@ -41,10 +41,16 @@
                 <span class="basis-profile">
                     <span class="title" th:text="${session.sessionUser.nickname}"></span>
                     <span class="myplace"
-                          th:with="rawAddr=${session.sessionUser.addressPrimary},
-               addArray=${#strings.arraySplit(rawAddr, ' ')},
-               dongName=${addArray.length >= 3 ? addArray[2].replaceAll('[0-9-]', '') : (addArray.length > 2 ? addArray[1].replaceAll('[0-9-]', '') : rawAddr)}"
-                          th:text="${#strings.substringBefore(dongName, '0')} ?: ${dongName}"></span>
+                          th:with="rawAddr=${session.sessionUser.addressPrimary}">
+                        <th:block th:if="${rawAddr != null}">
+                           <span th:with="addArray=${#strings.arraySplit(rawAddr, ' ')},
+                               dongName=${addArray.length >= 3 ? addArray[2].replaceAll('[0-9-]', '') : (addArray.length > 2 ? addArray[1].replaceAll('[0-9-]', '') : rawAddr)}" th:text="${#strings.substringBefore(dongName, '0')} ?: ${dongName}">
+                           </span>
+                         </th:block>
+            <th:block th:if="${rawAddr == null}">
+                <span>주소 미등록</span>
+            </th:block>
+        </span>
                     <span class="grade">일반회원</span>
                 </span>
             </section>
@@ -74,7 +80,7 @@
                     <input type="tel" name="contact" class="field" placeholder="'-' 없이 입력해 주세요" maxlength="11" th:value="${session.sessionUser.contact}">
                 </span>
                 </label>
-                <label class="label">
+                <label class="label" th:if="${session.sessionUser != null and !session.sessionUser.boss}">
                     <span class="caption">주소지 변경</span>
                     <span class="row">
                         <input required type="text" name="address" class="field" placeholder="주소 찾기를 이용해 주세요." readonly th:value="${session.sessionUser.addressPrimary}">

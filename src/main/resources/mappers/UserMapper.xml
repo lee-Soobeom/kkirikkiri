@@ -28,6 +28,20 @@
                      #{user.socialTypeCode}
                  )
     </insert>
+    <insert id="insertSocialUser" parameterType="com.lsb.kkirikkiri.entities.user.UserEntity">
+        INSERT INTO `kkirikkiri`.`users` (`email`, `nickname`, `profile_image_path`, `social_type_code`, `social_id`, `status`, `created_at`, `updated_at`, `last_login_at`)
+        VALUES (
+                #{user.email},
+                #{user.nickname},
+                #{user.profileImagePath},
+                #{user.socialTypeCode},
+                #{user.socialId},
+                #{user.status},
+                NOW(),
+                NOW(),
+                NOW()
+               )
+    </insert>
     <update id="update">
         UPDATE `kkirikkiri`.`users`
         SET <if test="user.nickname != null">
@@ -61,6 +75,31 @@
         WHERE `email` = #{user.email}
         LIMIT 1
     </update>
+    <update id="updatePassword">
+        UPDATE `kkirikkiri`.`users`
+        SET `password` = #{password}
+        WHERE `email` = #{email}
+    </update>
+    <update id="updateUserExtraInfo">
+        UPDATE `kkirikkiri`.`users`
+        SET `name` = #{userName},
+            `nickname`  = #{nickname},
+            `birth`  = #{birthday},
+            `telecom`   = #{telecom},
+            `contact`   = #{contact},
+            `address_primary`   = #{addressPrimary},
+            `address_secondary` = #{addressSecondary}
+        WHERE `email` = #{email}
+        LIMIT 1
+    </update>
+    <update id="updateSocialInfo">
+        UPDATE `kkirikkiri`.`users`
+        SET `social_type_code` = #{socialTypeCode},
+            `social_id` = #{socialId},
+            `updated_at` = NOW()
+        WHERE `email` = #{email}
+    </update>
+
     <delete id="deleteUserByEmail">
         DELETE
         FROM `kkirikkiri`.`users`
@@ -92,6 +131,62 @@
         LIMIT 1
     </select>
     <select id="selectByNickname" resultType="com.lsb.kkirikkiri.entities.user.UserEntity">
+        SELECT `email`             AS `email`,
+               `password`          AS `password`,
+               `nickname`          AS `nickname`,
+               `name`              AS `name`,
+               `birth`             AS `birth`,
+               `telecom`           AS `telecom`,
+               `contact`           AS `contact`,
+               `address_primary`   AS `addressPrimary`,
+               `address_secondary` AS `addressSecondary`,
+               `is_admin`          AS `isAdmin`,
+               `is_boss`           AS `isBoss`,
+               `status`            AS `status`,
+               `term_policy_at`    AS `termPolicyAt`,
+               `term_privacy_at`   AS `termPrivacyAt`,
+               `term_location_at`  AS `termLocaitonAt`,
+               `term_marketing_at` AS `termMarketingAt`,
+               `created_at`        AS `createdAt`,
+               `updated_at`        AS `updatedAt`,
+               `last_login_at`     AS `lastLoginAt`,
+               `social_type_code`  AS `socialTypeCode`
+        FROM `kkirikkiri`.`users`
+        WHERE `nickname` = #{nickname}
+        LIMIT 1
+    </select>
+    <select id="selectEmailByContact" resultType="java.lang.String">
+        SELECT `email`
+        FROM `kkirikkiri`.`users`
+        WHERE `contact` = #{contact}
+        LIMIT 1
+    </select>
+    <select id="findBySocialId" resultType="com.lsb.kkirikkiri.entities.user.UserEntity">
+        SELECT `email`             AS `email`,
+               `password`          AS `password`,
+               `nickname`          AS `nickname`,
+               `name`              AS `name`,
+               `birth`             AS `birth`,
+               `telecom`           AS `telecom`,
+               `contact`           AS `contact`,
+               `address_primary`   AS `addressPrimary`,
+               `address_secondary` AS `addressSecondary`,
+               `is_admin`          AS `isAdmin`,
+               `is_boss`           AS `isBoss`,
+               `status`            AS `status`,
+               `term_policy_at`    AS `termPolicyAt`,
+               `term_privacy_at`   AS `termPrivacyAt`,
+               `term_location_at`  AS `termLocaitonAt`,
+               `term_marketing_at` AS `termMarketingAt`,
+               `created_at`        AS `createdAt`,
+               `updated_at`        AS `updatedAt`,
+               `last_login_at`     AS `lastLoginAt`,
+               `social_type_code`  AS `socialTypeCode`
+        FROM `kkirikkiri`.`users`
+        WHERE `social_type_code` = #{socialTypeCode}
+        AND `social_id` = #{socialId}
+    </select>
+    <select id="findByEmail" resultType="com.lsb.kkirikkiri.entities.user.UserEntity">
         SELECT `email`             AS `email`,
                `password`          AS `password`,
                `nickname`          AS `nickname`,

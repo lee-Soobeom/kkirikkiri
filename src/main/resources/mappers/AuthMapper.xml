@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lsb.kkirikkiri.mappers.AuthMapper">
+    <insert id="insertAuth">
+        INSERT INTO `kkirikkiri`.`email_auth` (`email`, `token`)
+        VALUES (#{email},
+                #{token})
+    </insert>
+
+    <update id="updateAuthUsed">
+        UPDATE `kkirikkiri`.`email_auth`
+        SET `is_used` = 1
+        WHERE `email` = #{email}
+          AND `token` = #{token}
+    </update>
+
+    <select id="countValidToken" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `kkirikkiri`.`email_auth`
+        WHERE `email` = #{email}
+          AND `token` = #{token}
+          AND `is_used` = 0
+          AND `created_at` > DATE_SUB(NOW(), INTERVAL 5 MINUTE)
+    </select>
+</mapper>

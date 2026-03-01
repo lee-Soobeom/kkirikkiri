@@ -84,12 +84,11 @@ $loginForm.addEventListener('submit', (e) => {
                  location.href = '/';
              });
       } else {
-         //showWarning($passwordInput, '이메일 또는 비밀번호가 올바르지 않습니다') TODO modal 생성 후 만들기
-         alert('로그인 실패')
+         dialogHandler.simpleYesModal('경고', '이메일 또는 비밀번호가 올바르지 않습니다.')
       }
    }).catch(error => {/*여기도 모달 생성 후에 만들기*/
       console.error('로그인 에러:', error);
-      alert('서버와 통신 중 문제가 발생했습니다.');
+      dialogHandler.simpleYesModal('경고', '서버와 통신 중 문제가 발생했습니다.');
    })
 
 });
@@ -99,5 +98,12 @@ window.addEventListener('DOMContentLoaded', () => {
    if (savedEmail) {
       $emailInput.value = savedEmail;
       $rememberCheck.checked = true;
+   }
+});
+
+window.addEventListener('load', () => {
+   const params = new URLSearchParams(window.location.search);
+   if (params.get('error')) {
+      dialogHandler.simpleYesModal('안내', '이미 다른 방식으로 가입된 계정이거나 로그인 중 오류가 발생했습니다.');
    }
 });

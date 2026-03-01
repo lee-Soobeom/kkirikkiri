@@ -4,6 +4,7 @@ import com.lsb.kkirikkiri.entities.user.EmailTokenEntity;
 import com.lsb.kkirikkiri.entities.user.StoreEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
 import com.lsb.kkirikkiri.exceptions.TransactionalException;
+import com.lsb.kkirikkiri.mappers.AuthMapper;
 import com.lsb.kkirikkiri.mappers.EmailTokenMapper;
 import com.lsb.kkirikkiri.mappers.StoreMapper;
 import com.lsb.kkirikkiri.mappers.UserMapper;
@@ -43,6 +44,7 @@ public class UserService {
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
     private final HttpSession httpSession;
+    private final AuthMapper authMapper;
 
     // 사장님 회원 가입 시, 제출하는 사진 두 장 (사업자 등록증 사본, 영업 신고증 사본) 저장을 위한 것
     private String saveFile(MultipartFile file) throws IOException {
@@ -181,6 +183,82 @@ public class UserService {
         return CommonResult.SUCCESS;
     }
 
+    public String findEmailByContact(String contact) {
+        String cleanContact = contact.replace("-", "");
+        return userMapper.selectEmailByContact(cleanContact);
+    }
+
+    public boolean resetPassword(String email, String token, String rawPassword) {
+        if (authMapper.countValidToken(email, token) == 0) {
+            return false;
+        }
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encryptedPassword = encoder.encode(rawPassword);
+
+        int updated = userMapper.updatePassword(email, encryptedPassword);
+        if (updated > 0) {
+            authMapper.updateAuthUsed(email, token);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean checkToken(String email, String token){
+        return authMapper.countValidToken(email, token) > 0;
+    }
+
+    @Transactional
+    public boolean sendAuthCode(String email) {
+        if (userMapper.selectByEmail(email) == null) {
+            return false;
+        }
+
+        String authCode = String.format("%06d", new Random().nextInt(1000000));
+        authMapper.insertAuth(email, authCode);
+
+        return sendEmail(email, authCode);
+    }
+
+    private boolean sendEmail(String email, String authCode) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+            helper.setFrom("likesuryou@gmail.com");
+            helper.setTo(email);
+            helper.setSubject("[끼리끼리] 비밀번호 재설정 인증번호입니다.");
+
+            // 메일 내용에 인증번호(authCode)를 넣어줍니다.
+            String htmlContent = String.format(
+                    "<h3>비밀번호 재설정 인증번호</h3>" +
+                            "<p>아래의 인증번호 6자리를 화면에 입력해 주세요.</p>" +
+                            "<h2 style='color: #4e73df;'>%s</h2>" +
+                            "<p>이 번호는 5분간만 유효합니다.</p>", authCode
+            );
+
+            helper.setText(htmlContent, true);
+            mailSender.send(message);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Transactional
+    public String verifyCode(String email, String code) {
+        if (authMapper.countValidToken(email, code) > 0) {
+            authMapper.updateAuthUsed(email, code);
+
+            String sessionToken = UUID.randomUUID().toString();
+            authMapper.insertAuth(email, sessionToken);
+            return sessionToken;
+        }
+
+        return null;
+    }
+
     @Transactional
     public Result deleteUser(UserEntity sessionUser, String email) {
         if (sessionUser == null) {
@@ -312,6 +390,24 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public void registerSocialExtraInfo(UserEntity currentUser, UserEntity updatedInfo) throws Exception {
+
+        currentUser.setName(updatedInfo.getName());
+        currentUser.setNickname(updatedInfo.getNickname());
+        currentUser.setBirth(updatedInfo.getBirth());
+        currentUser.setTelecom(updatedInfo.getTelecom());
+        currentUser.setContact(updatedInfo.getContact());
+        currentUser.setAddressPrimary(updatedInfo.getAddressPrimary());
+        currentUser.setAddressSecondary(updatedInfo.getAddressSecondary());
+
+        int result = userMapper.updateUserExtraInfo(currentUser);
+
+        if (result <= 0) {
+            throw new Exception("사용자 정보 업데이트 실패");
+        }
+    }
+
     public Pair<Result, EmailTokenEntity> sendEmail(String email) throws MessagingException {
         if (!UserValidator.validateEmail(email)) {
             return Pair.of(CommonResult.FAILURE, null);
@@ -337,8 +433,8 @@ public class UserService {
 
         MimeMessage message = this.mailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-        messageHelper.setFrom("likesuryou@gmail.com");
         messageHelper.setTo(email);
+        messageHelper.setFrom("likesuryou@gmail.com");
         messageHelper.setSubject("[끼리끼리] 회원가입 인증 번호 안내");
         messageHelper.setText(body, true);
 

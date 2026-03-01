@@ -1,5 +1,7 @@
 package com.lsb.kkirikkiri.controllers;
 
+import com.lsb.kkirikkiri.dtos.ResetPasswordRequestDTO;
+import com.lsb.kkirikkiri.entities.user.EmailAuthEntity;
 import com.lsb.kkirikkiri.entities.user.EmailTokenEntity;
 import com.lsb.kkirikkiri.entities.user.StoreEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
@@ -11,6 +13,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
+import org.json.simple.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -134,6 +137,39 @@ public class UserController extends AbstractGeneralController{
         return response;
     }
 
+    @RequestMapping(value = "/social-register", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String socialRegisterPage(HttpSession session) {
+        if (session.getAttribute("sessionUser") == null) {
+            return "redirect:/user/login";
+        }
+        return "user/social-register";
+    }
+
+    @RequestMapping( value = "/social-register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> postSocialRegister(UserEntity updatedInfo, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        UserEntity currentUser = (UserEntity) session.getAttribute("sessionUser");
+
+        if (currentUser == null) {
+            response.put("result", "FAILURE");
+            return response;
+        }
+
+        try {
+            userService.registerSocialExtraInfo(currentUser, updatedInfo);
+            session.removeAttribute("needsAdditionalInfo");
+            session.setAttribute("sessionUser", currentUser);
+            response.put("result", "SUCCESS");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("result", "FAILURE");
+        }
+
+        return response;
+    }
+
 
     @RequestMapping(value = "/my", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getMyPage(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser, Model model) {
@@ -229,6 +265,91 @@ public class UserController extends AbstractGeneralController{
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @RequestMapping(value = "/find", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String findPage() {
+        return "user/find";
+    }
+
+    @RequestMapping(value = "/find-email", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> findEmail(@RequestParam(value = "contact") String contact) {
+        Map<String, Object> response = new HashMap<>();
+
+        String email = userService.findEmailByContact(contact);
+
+        if (email != null) {
+            response.put("result", "success");
+            response.put("email", email);
+        } else {
+            response.put("result", "error");
+        }
+
+        return response;
+    }
+
+    @RequestMapping(value = "/reset-password", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getResetPassword(@RequestParam(value = "email") String email, @RequestParam(value = "token") String token, Model model) {
+
+        if (!userService.checkToken(email, token)) {
+            return "redirect:/?error=invalid_token";
+        }
+
+        model.addAttribute("email", email);
+        model.addAttribute("token", token);
+
+        return "/user/reset-password";
+    }
+
+    @RequestMapping(value = "/send-auth-code", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> sendAuthCode(@RequestBody ResetPasswordRequestDTO dto) {
+        boolean isSent = userService.sendAuthCode(dto.getEmail());
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (isSent) {
+            response.put("result", "success");
+        } else {
+            response.put("result", "failure");
+        }
+
+        return response;
+    }
+
+    @RequestMapping(value = "/verify-code", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> verifyCode(@RequestBody ResetPasswordRequestDTO dto) {
+        String token = userService.verifyCode(dto.getEmail(), dto.getAuthCode());
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (token != null) {
+            response.put("result", "success");
+            response.put("token", token);
+        } else {
+            response.put("result", "failure");
+            response.put("message", "인증번호가 일치하지 않거나 만료되었습니다.");
+        }
+
+        return response;
+    }
+
+    @RequestMapping(value = "/reset-password", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> resetPassword(@RequestBody ResetPasswordRequestDTO dto) {
+        boolean isSuccess = userService.resetPassword(dto.getEmail(), dto.getToken(), dto.getPassword());
+
+        Map<String, Object> response = new HashMap<>();
+        if (isSuccess) {
+            response.put("result", "success");
+        } else {
+            response.put("result", "failure");
+            response.put("message", "인증 정보가 유효하지 않거나 만료되었습니다.");
+        }
+
+        return response;
     }
 
 }

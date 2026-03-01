@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>계정 찾기 - 끼리끼리</title>
+    <link rel="stylesheet" href="/assets/styles/fragments.css">
+    <link rel="stylesheet" href="/user/assets/styles/find.css">
+    <script defer src="/assets/scripts/dialog.js"></script>
+    <script defer src="/user/assets/scripts/find.js"></script>
+</head>
+<body>
+<th:block th:replace="~{fragments/common :: dialog}"></th:block>
+
+<div class="find-container">
+    <div class="find-box">
+        <h1 class="logo">
+            <a href="/">끼리끼리</a>
+        </h1>
+
+        <div class="tab-menu">
+            <button type="button" class="tab-btn active" data-tab="findEmail">이메일 찾기</button>
+            <button type="button" class="tab-btn" data-tab="findPassword">비밀번호 재설정</button>
+        </div>
+
+        <div id="findEmail" class="tab-content active">
+            <p class="desc">가입 시 등록한 연락처를 입력해 주세요.</p>
+            <div class="input-group">
+                <label>
+                    <span class="screen-reader-only">연락처 입력</span>
+                    <input type="text" id="findEmailContact" placeholder="'-' 없이 입력해 주세요">
+                </label>
+                <button type="button" id="btnFindEmail" class="btn-submit">이메일 찾기</button>
+            </div>
+            <div id="emailResult" class="result-box" style="display: none;">
+                고객님의 이메일은 <strong id="foundedEmail"></strong> 입니다.
+            </div>
+        </div>
+
+        <div id="findPassword" class="tab-content">
+            <p class="desc">가입하신 이메일로 인증번호를 보내드립니다.</p>
+            <div class="input-group">
+                <label>
+                    <span class="screen-reader-only">이메일 주소 입력</span>
+                    <input type="email" id="resetPasswordEmail" placeholder="이메일 주소">
+                </label>
+                <button type="button" id="btnSendAuthCode" class="btn-submit">인증번호 발송</button>
+            </div>
+
+            <div id="authCodeWrapper" class="input-group" style="display: none; margin-top: 1rem;">
+                <label>
+                    <span class="screen-reader-only">인증번호 6자리 입력</span>
+                    <input type="text" id="authCode" placeholder="인증번호 6자리">
+                </label>
+                <button type="button" id="btnVerifyCode" class="btn-submit">인증확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
