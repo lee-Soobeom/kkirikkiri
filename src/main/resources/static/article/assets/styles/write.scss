@@ -523,3 +523,112 @@ body:has(> #searchModal[data-visible]) {
     opacity: 1;
   }
 }
+
+@include tablet {
+  #main {
+    width: 80%;
+
+    > .form {
+      padding: 0 1.5rem 2rem 1.5rem;
+
+      > .title {
+        font-size: 1.75rem;
+      }
+
+      > .row-group {
+        flex-direction: column;
+
+        > .column {
+          width: 100%;
+        }
+      }
+
+      > .image-upload-container {
+        > .list {
+          height: 12rem;
+
+          > .item {
+            min-width: 8rem;
+          }
+        }
+      }
+    }
+  }
+
+  #searchModal {
+    > .modal {
+      width: 26rem;
+      height: 32rem;
+    }
+  }
+}
+
+@include mobile {
+  #main {
+    width: 100%;
+    padding: 0;
+
+    > .form {
+      padding: 0 1rem 1.5rem 1rem;
+      gap: 1.25rem;
+
+      > .title {
+        font-size: 1.4rem;
+        padding: 1.5rem 0;
+      }
+
+      > .row-group {
+        flex-direction: column;
+      }
+
+      > .share-container {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      > .image-upload-container {
+        > .list {
+          height: 10rem;
+
+          > .item {
+            min-width: 7rem;
+          }
+        }
+      }
+
+      label {
+        &.row {
+          flex-wrap: wrap;
+
+          > .caption {
+            width: 100%;
+          }
+        }
+      }
+
+      label:has(textarea) {
+        textarea {
+          min-height: 15rem;
+        }
+      }
+
+      > .button {
+        button {
+          width: 100%;
+          padding: 0.9rem 0;
+        }
+      }
+    }
+  }
+
+  #searchModal {
+    > .modal {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      transform: none;
+      border-radius: 0;
+    }
+  }
+}

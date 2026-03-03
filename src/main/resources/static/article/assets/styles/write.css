@@ -530,4 +530,80 @@ body:has(> #searchModal[data-visible]) {
   opacity: 1;
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  #main {
+    width: 80%;
+  }
+  #main > .form {
+    padding: 0 1.5rem 2rem 1.5rem;
+  }
+  #main > .form > .title {
+    font-size: 1.75rem;
+  }
+  #main > .form > .row-group {
+    flex-direction: column;
+  }
+  #main > .form > .row-group > .column {
+    width: 100%;
+  }
+  #main > .form > .image-upload-container > .list {
+    height: 12rem;
+  }
+  #main > .form > .image-upload-container > .list > .item {
+    min-width: 8rem;
+  }
+  #searchModal > .modal {
+    width: 26rem;
+    height: 32rem;
+  }
+}
+@media (max-width: 767px) {
+  #main {
+    width: 100%;
+    padding: 0;
+  }
+  #main > .form {
+    padding: 0 1rem 1.5rem 1rem;
+    gap: 1.25rem;
+  }
+  #main > .form > .title {
+    font-size: 1.4rem;
+    padding: 1.5rem 0;
+  }
+  #main > .form > .row-group {
+    flex-direction: column;
+  }
+  #main > .form > .share-container {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  #main > .form > .image-upload-container > .list {
+    height: 10rem;
+  }
+  #main > .form > .image-upload-container > .list > .item {
+    min-width: 7rem;
+  }
+  #main > .form label.row {
+    flex-wrap: wrap;
+  }
+  #main > .form label.row > .caption {
+    width: 100%;
+  }
+  #main > .form label:has(textarea) textarea {
+    min-height: 15rem;
+  }
+  #main > .form > .button button {
+    width: 100%;
+    padding: 0.9rem 0;
+  }
+  #searchModal > .modal {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform: none;
+    border-radius: 0;
+  }
+}
+
 /*# sourceMappingURL=write.css.map */

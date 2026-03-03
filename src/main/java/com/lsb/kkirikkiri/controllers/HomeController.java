@@ -33,13 +33,12 @@ public class HomeController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, ArticleVo[]> postHome(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser,
-                                             LocationEntity pos) {
+    public Map<String, ArticleVo[]> postHome(
+            @SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser,
+            @RequestParam(value = "menu", required = false, defaultValue = "all") String menu,
+            LocationEntity pos) {
         Map<String, ArticleVo[]> response = new HashMap<>();
-//        if (sessionUser != null) {
-//
-//        }
-        response.put("articles", this.articleService.getImminentShareArticles("all", pos));
+        response.put("articles", this.articleService.getImminentShareArticles(menu, pos));
         return response;
     }
 }

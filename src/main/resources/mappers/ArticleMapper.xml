@@ -143,7 +143,12 @@
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`,
-               `t2`.`nickname` AS `nickname`
+               `t2`.`nickname` AS `nickname`,
+               (SELECT `saved_filepath`
+                FROM `kkirikkiri`.`files`
+                WHERE `article_id` = `t1`.`id`
+                ORDER BY `id` ASC
+                LIMIT 1) AS `thumbnailPath`
         FROM `kkirikkiri`.`articles` AS `t1`
         LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
@@ -258,7 +263,12 @@
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`,
-               `t2`.nickname            AS `nickname`
+               `t2`.nickname            AS `nickname`,
+               (SELECT `saved_filepath`
+                FROM `kkirikkiri`.`files`
+                WHERE `article_id` = `t1`.`id`
+                ORDER BY `id` ASC
+                LIMIT 1) AS `thumbnailPath`
         FROM `kkirikkiri`.`articles` AS `t1`
                  LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
@@ -291,7 +301,12 @@
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`,
-               `t2`.`nickname`          AS `nickname`
+               `t2`.`nickname`          AS `nickname`,
+               (SELECT `saved_filepath`
+                FROM `kkirikkiri`.`files`
+                WHERE `article_id` = `t1`.`id`
+                ORDER BY `id` ASC
+                LIMIT 1) AS `thumbnailPath`
         FROM `kkirikkiri`.`articles` AS `t1`
                  LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
@@ -354,7 +369,12 @@
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`,
-               `t2`.`nickname` AS `nickname`
+               `t2`.`nickname` AS `nickname`,
+               (SELECT `saved_filepath`
+                FROM `kkirikkiri`.`files`
+                WHERE `article_id` = `t1`.`id`
+                ORDER BY `id` ASC
+                LIMIT 1) AS `thumbnailPath`
         FROM `kkirikkiri`.`articles` AS `t1`
         LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
@@ -387,7 +407,12 @@
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`,
-               `t2`.`nickname` AS `nickname`
+               `t2`.`nickname` AS `nickname`,
+               (SELECT `saved_filepath`
+                FROM `kkirikkiri`.`files`
+                WHERE `article_id` = `t1`.`id`
+                ORDER BY `id` ASC
+                LIMIT 1) AS `thumbnailPath`
         FROM `kkirikkiri`.`articles` AS `t1`
         LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
@@ -395,7 +420,7 @@
         ORDER BY `t1`.`view` DESC
         LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
     </select>
-    <select id="selectImminentShareArticles">
+    <select id="selectImminentShareArticles" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
         SELECT `t1`.`id`                AS `id`,
         `t1`.`board_id`          AS `boardId`,
         `t1`.`user_id`           AS `userId`,

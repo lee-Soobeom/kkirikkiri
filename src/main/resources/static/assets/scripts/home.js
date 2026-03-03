@@ -7,9 +7,11 @@ const $emptyMessage = $main.querySelector(':scope > .group > .list > .empty');
 const homeLocation = JSON.parse(localStorage.getItem("location"));
 
 const xhr = new XMLHttpRequest();
+const selectedMenu = document.querySelector('input[name="menuFilter"]:checked')?.value ?? 'all';
 const formData = new FormData();
 formData.append("lat", homeLocation.lat);
 formData.append("lng", homeLocation.lng);
+formData.append("menu", selectedMenu);
 xhr.onreadystatechange = () => {
     if (xhr.readyState !== XMLHttpRequest.DONE) {
         return;

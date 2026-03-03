@@ -143,39 +143,30 @@
 </div>
 <ol id="quick" th:fragment="quick(board)"
     th:with="boardId=${board != null ? board.id : null}">
-    <li class="item" th:if="${board != null}">
-        <a
-                class="link"
-                th:href="@{/article/{boardId}/write(boardId=${boardId})}"
-        th:if="${board != null
-        && session.sessionUser != null
-        && (!board.isAdminOnly() || session.sessionUser.isAdmin())}">작성하기
+
+    <!-- 공구 게시판: 로그인한 모든 회원 -->
+    <li class="item" th:if="${boardId == 'share' && session.sessionUser != null}">
+        <a class="link"
+           th:href="@{/article/{boardId}/write(boardId=${boardId})}">작성
         </a>
     </li>
 
-    <li class="item">
-        <a
-                class="link"
-                th:href="@{/board/list(id='share')}"
-                target="_self">
-            공구
+    <!-- 홍보 게시판: 로그인한 사장님 또는 관리자 -->
+    <li class="item" th:if="${boardId == 'promote' && session.sessionUser != null && (session.sessionUser.isBoss() || session.sessionUser.isAdmin())}">
+        <a class="link"
+           th:href="@{/article/{boardId}/write(boardId=${boardId})}">작성
         </a>
     </li>
+
+    <!-- 아래 4개는 항상 노출 -->
     <li class="item">
-        <a
-                class="link"
-                th:href="@{/board/list(id='promote')}"
-                target="_self">
-            홍보
-        </a>
+        <a class="link" th:href="@{/board/list(id='share')}" target="_self">공구</a>
     </li>
     <li class="item">
-        <a
-                class="link"
-                th:href="@{/board/list(id='notice')}"
-                target="_self">
-            공지사항
-        </a>
+        <a class="link" th:href="@{/board/list(id='promote')}" target="_self">홍보</a>
+    </li>
+    <li class="item">
+        <a class="link" th:href="@{/board/list(id='notice')}" target="_self">공지</a>
     </li>
     <li class="item">
         <label class="label">

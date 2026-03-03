@@ -29,7 +29,7 @@
             <div class="sub-row">
                 <h2 class="board" th:text="${board.getDisplayText()}"></h2>
                 <div class="right-group">
-                    <div class="menu-filter">
+                    <div class="menu-filter" th:if="${board.id == 'share'}">
                         <select id="menuSelect"
                                 name="menuFilter"
                                 th:onchange="|location.href='@{/board/list(id=${board.id}, sort = ${boardPageVo.sort})}' + (this.value ? '&menu=' + this.value : '')|">
@@ -86,7 +86,7 @@
 
                         </select>
                     </div>
-                    <div class="filter ">
+                    <div class="filter" th:if="${board.id == 'share' || board.id == 'promote'}">
                         <a class="link"
                            th:href="@{/board/list(id=${board.id}, sort='latest', menu=${selectedMenu})}"
                            th:classappend="${boardPageVo.sort == 'latest'} ? ' -active'">
@@ -116,14 +116,23 @@
                 th:each="article : ${articles}"
                 th:onclick="|location.href='@{/article/{boardType}(boardType=${board.id}, id=${article.id})}'|">
 
-                <td class="cell title">
+                <td class="cell title" th:classappend="${article.thumbnailPath == null} ? 'no-thumbnail'">
                     <div class="title-inner">
-                        <div class="thumbnail">
-                            <img src="/board/assets/images/icons8-airplane-50.png" alt="썸네일">
+                        <div class="thumbnail" th:if="${article.thumbnailPath != null}">
+                            <img th:src="${article.thumbnailPath}" alt="썸네일">
                         </div>
                         <div class="text">
                             <span class="link" th:text="${article.title}"></span>
-                            <p class="preview"
+
+                            <!-- 공구 게시판일 때 -->
+                            <p class="preview" th:if="${board.id == 'share'}">
+                                주문: <span th:text="${#temporals.format(article.orderTime, 'HH:mm')}"></span>
+                                &nbsp;|&nbsp;
+                                모임: <span th:text="${#temporals.format(article.pickupTime, 'HH:mm')}"></span>
+                            </p>
+
+                            <!-- 그 외 게시판일 때 -->
+                            <p class="preview" th:if="${board.id != 'share'}"
                                th:text="${#strings.abbreviate(article.content, 50)}"></p>
                         </div>
                     </div>
@@ -180,8 +189,8 @@
             th:class="${page == boardPageVo.requestPage ? 'link -selected' : 'link'}"></a>
         </div>
         <div class="group" th:if="${boardPageVo.requestPage < boardPageVo.maxPage}">
-            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.maxPage}, sort = ${boardPageVo.sort}, menu = ${selectedMenu})}">&gt;&gt;</a>
             <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.requestPage + 1}, sort = ${boardPageVo.sort}, menu = ${selectedMenu})}">&gt;</a>
+            <a class="link" th:href="@{'/board/list' (id = ${board.id}, page = ${boardPageVo.maxPage}, sort = ${boardPageVo.sort}, menu = ${selectedMenu})}">&gt;&gt;</a>
         </div>
     </div>
     <div class="page-container" th:if="${boardSearchVo.getBy() != null || boardSearchVo.getKeyword() != null}">

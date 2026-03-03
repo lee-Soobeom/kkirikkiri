@@ -26,6 +26,7 @@
     .header {
       margin-bottom: 1rem;
       width: 100%;
+      padding-left: 1rem;
 
       .title {
         font-size: 1.8rem;
@@ -130,6 +131,10 @@
               border-top-left-radius: 0.75rem;
               border-bottom-left-radius: 0.75rem;
 
+              &.no-thumbnail {
+                padding-left: 3rem;
+              }
+
               .title-inner {
                 display: flex;
                 align-items: center;
@@ -142,6 +147,13 @@
                 border-radius: 0.75rem;
                 flex-shrink: 0;
                 background-color: #e5ebff;
+                overflow: hidden;
+              }
+
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
               }
 
               .text {
@@ -230,6 +242,85 @@
           background-color: $global-color-concept;
           color: #ffffff;
           pointer-events: none;
+        }
+      }
+    }
+  }
+}
+@include tablet {
+  #main {
+    width: 80%;
+    padding: 2rem 1.5rem;
+
+    .board-table {
+      .cell {
+        &.title {
+          .preview {
+            max-width: 20rem;
+          }
+        }
+
+        &.view {
+          display: none; // 조회수 숨기기
+        }
+      }
+    }
+  }
+}
+
+@include mobile {
+  #main {
+    width: 100%;
+    padding: 1rem 0.75rem;
+
+    .header {
+      .title {
+        font-size: 1.4rem;
+      }
+
+      .board {
+        font-size: 1.2rem;
+      }
+    }
+
+    .board-table {
+      border-spacing: 0 0.5rem;
+
+      .cell {
+        padding: 1rem 0.5rem;
+
+        &.title {
+          padding-left: 1rem;
+
+          &.no-thumbnail {
+            padding-left: 1.5rem;
+          }
+
+          .thumbnail {
+            width: 2.5rem;
+            height: 2.5rem;
+          }
+
+          .link {
+            font-size: 0.9rem;
+          }
+
+          .preview {
+            display: none; // 미리보기 숨기기
+          }
+        }
+
+        &.view {
+          display: none; // 조회수 숨기기
+        }
+
+        &.nickname {
+          display: none; // 작성자 숨기기
+        }
+
+        &.created_at {
+          font-size: 0.7rem;
+          padding-right: 0.75rem;
         }
       }
     }

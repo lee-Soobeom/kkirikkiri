@@ -12,4 +12,5 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class ArticleVo extends ArticleEntity {
     private String nickname;
+    private  String thumbnailPath;
 }

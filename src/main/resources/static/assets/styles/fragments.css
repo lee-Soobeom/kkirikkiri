@@ -774,6 +774,7 @@ body:has(> #dialog[data-visible]) {
   bottom: 4rem;
   right: 4rem;
   position: fixed;
+  z-index: 15;
 }
 #quick > .item {
   align-items: center;
@@ -783,38 +784,37 @@ body:has(> #dialog[data-visible]) {
   justify-content: center;
   width: 4rem;
   height: 4rem;
-  background-color: #E9EFFF;
+  background-color: #4678FF;
   border-radius: 999rem;
-  color: #4a4a4a;
+  color: #FFFFFF;
   font: inherit;
   font-size: 1rem;
   font-weight: 500;
   overflow: hidden;
 }
 #quick > .item:hover {
-  background-color: #4678FF;
-  color: #FFFFFF;
+  background-color: #3A6FFF;
 }
-#quick > .item:nth-child(1), #quick > .item:nth-child(2), #quick > .item:nth-child(3), #quick > .item:nth-child(4) {
+#quick > .item:nth-last-child(2), #quick > .item:nth-last-child(3), #quick > .item:nth-last-child(4), #quick > .item:nth-last-child(5) {
   opacity: 0;
   pointer-events: none;
   transition-duration: 500ms;
   transition-property: transform, opacity, pointer-events;
   transition-timing-function: ease-in-out;
 }
-#quick > .item:nth-child(1) {
-  transform: translateY(calc(400% + 2rem));
-}
-#quick > .item:nth-child(2) {
-  transform: translateY(calc(300% + 1.5rem));
-}
-#quick > .item:nth-child(3) {
-  transform: translateY(calc(200% + 1rem));
-}
-#quick > .item:nth-child(4) {
+#quick > .item:nth-last-child(2) {
   transform: translateY(calc(100% + 0.5rem));
 }
-#quick > .item:nth-child(1):has(~ .item > .label > .input:checked), #quick > .item:nth-child(2):has(~ .item > .label > .input:checked), #quick > .item:nth-child(3):has(~ .item > .label > .input:checked), #quick > .item:nth-child(4):has(~ .item > .label > .input:checked) {
+#quick > .item:nth-last-child(3) {
+  transform: translateY(calc(200% + 1rem));
+}
+#quick > .item:nth-last-child(4) {
+  transform: translateY(calc(300% + 1.5rem));
+}
+#quick > .item:nth-last-child(5) {
+  transform: translateY(calc(400% + 2rem));
+}
+#quick > .item:nth-last-child(2):has(~ .item > .label > .input:checked), #quick > .item:nth-last-child(3):has(~ .item > .label > .input:checked), #quick > .item:nth-last-child(4):has(~ .item > .label > .input:checked), #quick > .item:nth-last-child(5):has(~ .item > .label > .input:checked) {
   transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
@@ -827,7 +827,7 @@ body:has(> #dialog[data-visible]) {
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: #3A6FFF;
+  color: #FFFFFF;
   cursor: pointer;
   font: inherit;
   font-size: 0.875rem;
@@ -844,6 +844,29 @@ body:has(> #dialog[data-visible]) {
 }
 #quick > .item > .label > .input {
   display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  #quick {
+    bottom: 2rem;
+    right: 1.5rem;
+  }
+  #quick > .item {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 0.875rem;
+  }
+}
+@media (max-width: 767px) {
+  #quick {
+    bottom: 1rem;
+    right: 1rem;
+  }
+  #quick > .item {
+    width: 3rem;
+    height: 3rem;
+    font-size: 0.75rem;
+  }
 }
 
 /*# sourceMappingURL=fragments.css.map */
