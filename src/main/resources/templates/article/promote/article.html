@@ -22,23 +22,22 @@
 
 <main id="main">
     <div class="container">
-        <!-- 제목 / 작성자 -->
-        <div class="title-container">
-            <h2 class="title" th:text="${article.title}"></h2>
-            <div class="user">
-                <div class="nickname" th:text="${article.nickname}"></div>
-                <div class="created-at"
-                     th:text="${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}"></div>
-                <div class="view" th:text="${article.view}"></div>
-            </div>
-        </div>
-
         <!-- 홍보 정보 -->
         <div class="context-container">
             <div class="content-container">
                 <div class="order-card">
-                    <div class="caption">가게 정보</div>
+                    <!-- 제목 / 작성자 -->
+                    <div class="title-container">
+                        <h2 class="title" th:text="${article.title}"></h2>
+                        <div class="user">
+                            <div class="nickname" th:text="${article.nickname}"></div>
+                            <div class="created-at"
+                                 th:text="${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}"></div>
+                            <div class="view" th:text="${article.view}"></div>
+                        </div>
+                    </div>
 
+                    <div class="caption">가게 정보</div>
                     <div class="order-container">
                         <div class="box">
                             <div class="title">가게명</div>

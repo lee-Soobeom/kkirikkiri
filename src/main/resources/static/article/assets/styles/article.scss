@@ -235,10 +235,8 @@
         overflow: hidden;
 
         > .caption {
-          padding: 0.75rem 1rem;
+          padding: 1rem 1rem 0rem 1.5rem;
           font-weight: 700;
-          background-color: #EEF2FF;
-          border-bottom: 0.0625rem solid #E9EFFF;
         }
 
         > .title-container {
@@ -246,7 +244,7 @@
           overflow: hidden;
 
           > .title {
-            background-color: #FFFFFF;
+            background-color: #E9EFFF;
             border-bottom: 0.0625rem solid #E9EFFF;
             font-size: 1.5rem;
             font-weight: 700;
