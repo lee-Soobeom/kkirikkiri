@@ -448,7 +448,7 @@
         FROM `kkirikkiri`.`articles`AS `t1`
         WHERE `board_id` = #{boardId}
         AND `t1`.`order_time` IS NOT NULL
-        AND `t1`.`order_time` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 60 MINUTE)
+        AND `t1`.`order_time` BETWEEN DATE_ADD(NOW(), INTERVAL 20 MINUTE) AND DATE_ADD(NOW(), INTERVAL 60 MINUTE)
         AND `point_lat` BETWEEN #{location.lat} - 3.0/111 AND #{location.lat} + 3.0/111
         AND `point_lng` BETWEEN #{location.lng} - (3.0 / (111 * COS(RADIANS(#{location.lat})))) AND #{location.lng} + (3.0 / (111 * COS(RADIANS(#{location.lat}))))
         AND ST_DISTANCE_SPHERE(POINT(`point_lng`,`point_lat`), POINT(#{location.lng}, #{location.lat})) &lt;= 3000

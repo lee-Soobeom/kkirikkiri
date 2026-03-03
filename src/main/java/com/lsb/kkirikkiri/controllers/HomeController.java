@@ -23,8 +23,6 @@ public class HomeController {
     public ModelAndView index(ModelAndView modelAndView,
                               @RequestParam(value = "menu", required = false, defaultValue = "all") String menu,
                               @RequestParam(value = "sort", required = false) String sort) {
-//        ArticleVo[] articles = this.articleService.getImminentShareArticles(menu);
-//        modelAndView.addObject("articles", articles);
         modelAndView.addObject("menu", menu);
         modelAndView.addObject("sort", sort);
         modelAndView.setViewName("home/home");

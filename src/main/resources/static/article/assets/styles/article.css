@@ -223,38 +223,13 @@
   flex-direction: column;
   gap: 0;
   justify-content: flex-start;
-  border: 0.0625rem solid #A5BDFF;
-  padding: 1rem;
-}
-#main > .container > .title-container {
-  align-items: stretch;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  justify-content: flex-start;
-}
-#main > .container > .title-container > .title {
-  font-size: 1.375rem;
-  font-weight: 700;
-  border-bottom: 0.0625rem solid #E9EFFF;
-  padding-bottom: 0.25rem;
-}
-#main > .container > .title-container > .user {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  justify-content: flex-start;
-  font-size: 0.875rem;
-  color: #7d7d7d;
-  border-bottom: 0.0625rem solid #E9EFFF;
-  padding: 0.25rem 0.5rem;
+  border-radius: 0.75rem;
 }
 #main > .container > .context-container {
-  margin-top: 0.5rem;
   display: grid;
   grid-template-rows: auto auto auto;
   gap: 1rem;
+  margin-top: 0.5rem;
 }
 #main > .container > .context-container > .content-container {
   display: block;
@@ -262,7 +237,7 @@
 #main > .container > .context-container > .content-container > .order-card {
   display: grid;
   grid-template-rows: auto auto auto;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   border-radius: 0.75rem;
   border: 0.0625rem solid #E9EFFF;
   overflow: hidden;
@@ -273,12 +248,41 @@
   background-color: #EEF2FF;
   border-bottom: 0.0625rem solid #E9EFFF;
 }
+#main > .container > .context-container > .content-container > .order-card > .title-container {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+#main > .container > .context-container > .content-container > .order-card > .title-container > .title {
+  background-color: #FFFFFF;
+  border-bottom: 0.0625rem solid #E9EFFF;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 0.875rem 1rem 0.375rem 1rem;
+}
+#main > .container > .context-container > .content-container > .order-card > .title-container > .user {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: flex-start;
+  background-color: #FFFFFF;
+  border-bottom: 0.0625rem solid #E9EFFF;
+  color: #7d7d7d;
+  font-size: 0.875rem;
+  padding: 0.5rem 1.125rem;
+}
+#main > .container > .context-container > .content-container > .order-card > .title-container > .user > .-stretch {
+  flex: 1 1 auto;
+}
 #main > .container > .context-container > .content-container > .order-card > .menu-container,
 #main > .container > .context-container > .content-container > .order-card > .order-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem 1rem;
-  padding: 0.75rem;
+  gap: 2rem 1rem;
 }
 #main > .container > .context-container > .content-container > .order-card > .menu-container > .box.menu,
 #main > .container > .context-container > .content-container > .order-card > .order-container > .box.menu {
@@ -293,6 +297,12 @@
 #main > .container > .context-container > .content-container > .order-card > .order-container > .box > .caption {
   font-size: 0.95rem;
 }
+#main > .container > .context-container > .content-container > .order-card > .menu-container {
+  padding: 2rem 1.75rem 1rem 1.75rem;
+}
+#main > .container > .context-container > .content-container > .order-card > .order-container {
+  padding: 1rem 1.75rem 2rem 1.75rem;
+}
 #main > .container > .context-container > .view-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -305,16 +315,19 @@
   flex-direction: column;
   gap: 0.5rem;
   justify-content: center;
-  background-color: #E9EFFF;
+  background-color: #FFFFFF;
   border-radius: 0.5rem;
   border: 0.0625rem solid #E9EFFF;
 }
 #main > .container > .context-container > .view-container > .fund-container > .box {
-  padding: 0.5rem 0;
+  padding: 1rem 0;
+}
+#main > .container > .context-container > .view-container > .fund-container > .box.fund > .value-container {
+  color: #4678FF;
 }
 #main > .container > .context-container > .view-container > .fund-container > .box > .title {
-  font-size: 1.25rem;
-  padding-left: 0.75rem;
+  font-size: 1.5rem;
+  padding-left: 1.25rem;
 }
 #main > .container > .context-container > .view-container > .fund-container > .box > .value-container {
   align-items: center;
@@ -348,7 +361,7 @@
 }
 #main > .container > .context-container > .view-container > .fund-container > .button-container > .button {
   width: 80%;
-  background-color: #FFFFFF;
+  background-color: #E9EFFF;
   border-radius: 0.5rem;
   padding: 0.5rem 0;
 }
@@ -401,7 +414,7 @@
   top: 50%;
   transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.3333333333);
-  color: #ffffff;
+  color: #FFFFFF;
   border-radius: 0.25rem;
   font-size: 2rem;
   padding: 0.25rem 0.5rem;
@@ -419,7 +432,7 @@
 #main > .container > .context-container > .memo-card {
   display: grid;
   grid-template-rows: auto 1fr;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   border-radius: 0.75rem;
   border: 0.0625rem solid #E9EFFF;
   overflow: hidden;
@@ -486,7 +499,7 @@
   right: 0.5rem;
   width: 2rem;
   height: 2rem;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   border-radius: 999rem;
   font-size: 0.875rem;
   cursor: pointer;
@@ -502,8 +515,12 @@
 }
 
 @media (max-width: 767px) {
+  #main > .container > .context-container {
+    gap: 0.5rem;
+  }
   #main > .container > .context-container > .view-container {
     display: grid;
+    gap: 0.5rem;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
   }
