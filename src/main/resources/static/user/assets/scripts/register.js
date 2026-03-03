@@ -511,4 +511,23 @@ document.addEventListener('DOMContentLoaded', () => {
             infoMessage?.setAttribute('data-visible', '');
         }
     }
+
+    const termLinks = document.querySelectorAll('.term .caption a');
+
+    termLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const details = link.closest('.term').nextElementSibling;
+
+            if (details && details.classList.contains('term-details')) {
+
+                document.querySelectorAll('.term-details.active').forEach(el => {
+                    if (el !== details) el.classList.remove('active');
+                });
+
+                details.classList.toggle('active');
+            }
+        });
+    });
 });

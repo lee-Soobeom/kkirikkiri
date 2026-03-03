@@ -38,16 +38,29 @@
         ORDER BY s.`applied_at` DESC
     </select>
     <select id="selectAllUsers" resultType="com.lsb.kkirikkiri.dtos.AdminUserDTO">
-        SELECT `email`            AS `email`,
-               `nickname`         AS `nickname`,
-               `contact`          AS `contact`,
-               `is_admin`         AS `isAdmin`,
-               `is_boss`          AS `isBoss`,
-               `status`           AS `status`,
-               `social_type_code` AS `socialTypeCode`,
-               `created_at`       AS `createdAt`,
-               `last_login_at`    AS `lastLoginAt`
+        SELECT `email` AS `email`,
+        `name` AS `name`,
+        `nickname` AS `nickname`,
+        `contact` AS `contact`,
+        `is_admin` AS `isAdmin`,
+        `is_boss` AS `isBoss`,
+        `status` AS `status`,
+        `social_type_code` AS `socialTypeCode`,
+        `created_at` AS `createdAt`,
+        `last_login_at` AS `lastLoginAt`,
+        (CASE WHEN (YEAR(NOW()) - YEAR(`birth`) + 1) >= 19 THEN 1 ELSE 0 END) AS `isAdult`
         FROM `kkirikkiri`.`users`
+        <where>
+            <if test="searchType == 'nickname' and keyword != null and keyword != ''">
+                AND `nickname` LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'email' and keyword != null and keyword != ''">
+                AND `email` LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'all' and keyword != null and keyword != ''">
+                AND (`nickname` LIKE CONCAT('%', #{keyword}, '%') OR `email` LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
         ORDER BY `created_at` DESC
     </select>
     <select id="countAllUsers" resultType="java.lang.Integer">

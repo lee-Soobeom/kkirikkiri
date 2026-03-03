@@ -82,9 +82,9 @@
     </update>
     <update id="updateUserExtraInfo">
         UPDATE `kkirikkiri`.`users`
-        SET `name` = #{userName},
+        SET `name` = #{name},
             `nickname`  = #{nickname},
-            `birth`  = #{birthday},
+            `birth`  = #{birth},
             `telecom`   = #{telecom},
             `contact`   = #{contact},
             `address_primary`   = #{addressPrimary},
@@ -208,7 +208,7 @@
                `last_login_at`     AS `lastLoginAt`,
                `social_type_code`  AS `socialTypeCode`
         FROM `kkirikkiri`.`users`
-        WHERE `nickname` = #{nickname}
+        WHERE `email` = #{email}
         LIMIT 1
     </select>
 </mapper>

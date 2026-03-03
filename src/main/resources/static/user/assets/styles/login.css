@@ -19,14 +19,15 @@
     top: 0;
     left: 0;
     transform: none;
-    width: 95%;
-    max-width: 450px;
-    height: auto;
-    min-height: 80vh;
-    grid-template-columns: 1fr;
-    margin: 2rem auto;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #4678ff;
+    border-radius: 0;
     display: flex;
     flex-direction: column;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
   }
 }
 #main > .logo {
@@ -39,7 +40,11 @@
 }
 @media screen and (max-width: 768px) {
   #main > .logo {
-    padding: 2.5rem 0;
+    width: 100%;
+    height: auto;
+    padding: 2rem 0;
+    background-color: #4678FF;
+    border-radius: 0;
   }
   #main > .logo::after {
     display: none;
@@ -92,9 +97,14 @@
   #main > .content {
     width: 100%;
     height: auto;
+    flex: 1;
+    background-color: #FDFDFD;
+    backdrop-filter: none;
+    border-radius: 0;
+    padding: 2rem 1.5rem;
+    box-sizing: border-box;
     margin: 0;
-    border-radius: 0 0 0.5rem 0.5rem;
-    padding: 2rem 0;
+    overflow: visible;
   }
 }
 #main > .content > .form {
@@ -215,7 +225,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 0.75rem;
   justify-content: center;
   width: 100%;
 }
@@ -255,7 +265,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 0.75rem;
   justify-content: center;
   width: 75%;
   height: 3.25rem;
@@ -293,6 +303,18 @@
 }
 #main > .content > .form .menu > .caption:hover {
   border-bottom: #4678FF solid 0.0625rem;
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  #main {
+    width: 90%;
+    max-width: 55rem;
+    height: auto;
+    min-height: 40rem;
+    grid-template-columns: 1fr 1.5fr;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 /*# sourceMappingURL=login.css.map */

@@ -181,6 +181,11 @@
               }
             }
 
+            select.field {
+              font-size: 1rem;
+              text-align: left;
+            }
+
             > .addressButton {
               background-color: lighten(#4678FF, 4%);
               border-radius: 0.25rem;
@@ -242,6 +247,7 @@
           }
         }
       }
+
       .deleteBtn {
         width: auto;
         border: #4678FF solid 0.0625rem;
@@ -253,6 +259,266 @@
         font-weight: 600;
         margin-left: auto;
         padding: 0.75rem;
+      }
+    }
+  }
+
+  @include mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: none;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    background-color: #F5F7FF;
+
+    > .modify-form {
+      > .header {
+        min-height: 2rem;
+        padding: 1rem;
+        font-size: 1.25rem;
+        position: relative;
+
+        > .title {
+          flex: 1;
+          margin: 0;
+          text-align: center;
+        }
+      }
+
+      > .profile-modify {
+        padding: 1rem;
+        gap: 1rem;
+
+        > .profile {
+          width: 100%;
+          height: auto;
+          flex-direction: column;
+          gap: 1.5rem;
+          padding: 2rem 1rem;
+          margin: 0.5rem 0;
+          border-radius: 1rem;
+
+          > .upload-button {
+            width: 7rem;
+            height: 7rem;
+
+            > .plus-icon {
+              width: 2.5rem;
+              height: 2.5rem;
+            }
+          }
+
+          > .basis-profile {
+            align-items: center;
+            text-align: center;
+
+            > .title {
+              font-size: 1.2rem;
+            }
+
+            > .myplace {
+              font-size: 0.95rem;
+            }
+          }
+        }
+
+        > .change-container {
+          width: 100%;
+          padding: 1.5rem 1.25rem;
+          border-radius: 1rem;
+          margin: 0;
+
+          > .label {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            gap: 0.6rem;
+
+            > .caption {
+              font-size: 1rem;
+              margin-left: 0;
+            }
+
+            > .row {
+              display: flex;
+              flex-direction: column;
+              align-items: stretch;
+              gap: 0.8rem;
+              padding: 0;
+              width: 100%;
+
+              input[name="addressPrimary"] {
+                order: 1;
+              }
+
+              input[name="addressSecondary"] {
+                order: 2;
+              }
+
+              button[name="addressButton"] {
+                order: 3;
+                height: 3rem;
+                background-color: #4678FF;
+                color: #FFF;
+                border-radius: 0.5rem;
+              }
+
+              button[name="geoAddress"] {
+                order: 4;
+                height: 3rem;
+                background-color: #4678FF;
+                color: #FFF;
+                border-radius: 0.5rem;
+              }
+            }
+          }
+        }
+      }
+
+
+      > .button-container {
+        @include flex(row, center, center, 0.75rem);
+        flex-wrap: wrap;
+        width: 100%;
+        padding: 1.5rem 1.25rem;
+        background-color: #FFFFFF;
+        border-top: 1px solid #EEE;
+
+        .button {
+          flex: 1;
+          height: 3.5rem;
+          font-size: 1.1rem;
+          font-weight: 700;
+          border-radius: 0.75rem;
+          order: 1;
+
+          &[name="cancel"] {
+            background-color: #FF4646;
+          }
+
+          &[name="submit"] {
+            background-color: #7D9DFF;
+          }
+        }
+
+        .deleteBtn {
+          flex: 0 0 100%;
+          order: 2;
+
+          margin-top: 0.8rem;
+          padding: 0.5rem;
+          background: none;
+          border: none;
+          color: #A0A0A0;
+          font-size: 0.85rem;
+          text-decoration: underline;
+          cursor: pointer;
+          text-align: center;
+
+          &:active {
+            color: #FF4646;
+          }
+        }
+      }
+    }
+  }
+
+  @include tablet {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 55rem;
+    height: 85vh;
+    max-height: 48rem;
+    border-radius: 1rem;
+
+    > .modify-form {
+      > .header {
+        padding: 1.25rem 2rem;
+        font-size: 1.4rem;
+      }
+
+      > .profile-modify {
+        padding: 1.5rem;
+        gap: 1.5rem;
+
+        > .profile {
+          width: 95%;
+          height: auto;
+          padding: 2.5rem 2rem;
+          gap: 2.5rem;
+
+          > .upload-button {
+            width: 7.5rem;
+            height: 7.5rem;
+          }
+
+          > .basis-profile {
+            .title {
+              font-size: 1.3rem;
+            }
+
+            .myplace {
+              font-size: 1rem;
+            }
+          }
+        }
+
+        > .change-container {
+          width: 95%;
+          padding: 2.5rem 2rem;
+          margin-top: 0;
+
+          > .label {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+
+            > .row {
+              width: 100%;
+              gap: 1.25rem;
+
+              .input, .field {
+                font-size: 1.05rem;
+                padding: 0.75rem 0.5rem;
+              }
+
+              select.field {
+                &[name^="birth"] {
+                  width: 6.5rem;
+                }
+
+                &[name="telecom"] {
+                  width: 7rem;
+                }
+              }
+
+              > .addressButton {
+                padding: 0.6rem 1rem;
+                font-size: 0.95rem;
+              }
+            }
+          }
+        }
+      }
+
+      > .button-container {
+        padding: 1.5rem 3rem;
+        background-color: #F5F7FF;
+        border-top: 1px solid rgba(70, 120, 255, 0.1);
+
+        .button {
+          width: 7.5rem;
+          height: 3.2rem;
+          font-size: 1.1rem;
+        }
+
+        .deleteBtn {
+          padding: 0.8rem 1.2rem;
+          font-size: 1rem;
+        }
       }
     }
   }

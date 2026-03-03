@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const $cancelButton = $registerForm.querySelector('[name="cancel"]');
     $cancelButton?.addEventListener('click', () => {
         dialogHandler.simpleYesNoModal(
-            '안내 🐕‍🦺',
-            '취소 시 자동으로 로그아웃되며,<br>작성 중인 내용은 저장되지 않습니다.<br>그래도 진행하시겠습니까?',
+            '안내',
+            '취소 시 자동으로 로그아웃되며, 작성 중인 내용은 저장되지 않습니다. 그래도 진행하시겠습니까?',
             [
                 {
                     caption: "계속 작성하기",
@@ -24,11 +24,22 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     });
 
+    const $yearSelect = $registerForm.querySelector('[name="birthYear"]');
+    if ($yearSelect) {
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear; i >= 1950; i--) {
+            const $option = document.createElement('option');
+            $option.value = i;
+            $option.text = i + '년';
+            $yearSelect.appendChild($option);
+        }
+    }
+
     $registerForm.querySelector('[name="addressButton"]')?.addEventListener('click', () => {
         new daum.Postcode({
             oncomplete: function(data) {
-                $registerForm.querySelector('[name="address"]').value = data.address;
-                $registerForm.querySelector('[name="addressDetail"]').focus();
+                $registerForm.querySelector('[name="addressPrimary"]').value = data.address;
+                $registerForm.querySelector('[name="addressSecondary"]').focus();
             }
         }).open();
     });
@@ -36,9 +47,16 @@ document.addEventListener('DOMContentLoaded', () => {
     $registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData($registerForm);
+        const y = $registerForm.querySelector('[name="birthYear"]')?.value;
+        const m = $registerForm.querySelector('[name="birthMonth"]')?.value;
+        const d = $registerForm.querySelector('[name="birthDay"]')?.value;
+
+        if (y && m && d) {
+            formData.set('birth', `${y}-${m}-${d}`);
+        }
 
         fetch('/user/social-register', {
-            method: 'PATCH',
+            method: 'POST',
             body: formData
         }).then(response => response.json())
             .then(data => {

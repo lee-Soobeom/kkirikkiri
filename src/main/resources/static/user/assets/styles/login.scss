@@ -25,14 +25,15 @@
     top: 0;
     left: 0;
     transform: none;
-    width: 95%;
-    max-width: 450px;
-    height: auto;
-    min-height: 80vh;
-    grid-template-columns: 1fr; // 가로 배열에서 세로 배열로 변경
-    margin: 2rem auto;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #4678ff;
+    border-radius: 0;
     display: flex;
     flex-direction: column;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
   }
 
   > .logo {
@@ -40,8 +41,12 @@
     position: relative;
 
     @include mobile {
-      padding: 2.5rem 0;
-      &::after { display: none; } // 구분선 제거
+      width: 100%;
+      height: auto;
+      padding: 2rem 0;
+      background-color: #4678FF;
+      border-radius: 0;
+      &::after { display: none; }
     }
     > .wrapper {
       @include flex(row, flex-start, center, 0.5rem);
@@ -88,10 +93,16 @@
     @include mobile {
       width: 100%;
       height: auto;
+      flex: 1;
+      background-color: #FDFDFD;
+      backdrop-filter: none;
+      border-radius: 0;
+      padding: 2rem 1.5rem;
+      box-sizing: border-box;
       margin: 0;
-      border-radius: 0 0 0.5rem 0.5rem;
-      padding: 2rem 0;
+      overflow: visible;
     }
+
 
     > .form {
       @include flex(column, center, center);
@@ -195,7 +206,7 @@
       }
 
       .login-container {
-        @include flex(column, center, center, 0);
+        @include flex(column, center, center, 0.75rem);
         width: 100%;
 
         .button, .social-login {
@@ -235,7 +246,7 @@
       }
 
       .social-login {
-        @include flex(column, center, center);
+        @include flex(column, center, center, 0.75rem);
         width: 75%;
         height: $button-height;
         align-self: center;
@@ -269,24 +280,19 @@
           }
         }
       }
-      
-      //@media screen and (max-width: 480px) {
-      //  padding: 1rem;
-      //
-      //  > .title {
-      //    align-self: center;
-      //    font-size: 1.75rem;
-      //    margin-left: 0;
-      //  }
-      //
-      //  > .label,
-      //  > .checkLabel, .button {
-      //    width: 90%;
-      //  }
-      //}
     }
   }
 
+  @include tablet {
+    width: 90%;
+    max-width: 55rem;
+    height: auto;
+    min-height: 40rem;
+    grid-template-columns: 1fr 1.5fr;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
+  }
 
 }

@@ -38,7 +38,7 @@ public class UserEntity {
     private LocalDateTime termMarketingAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String socialTypeCode;
+    private String socialTypeCode = "LOCAL";
     private String socialId;
     private LocalDateTime lastLoginAt;
 }

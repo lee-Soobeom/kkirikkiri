@@ -31,11 +31,16 @@ public class AdminController {
     private final ArticleService articleService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getIndex(HttpSession session, @RequestParam(value = "menu", required = false, defaultValue = "dashboard") String menu) {
+    public ModelAndView getIndex(HttpSession session,
+                                 @RequestParam(value = "menu", required = false, defaultValue = "dashboard") String menu,
+                                 @RequestParam(value = "searchType", required = false) String searchType,
+                                 @RequestParam(value = "keyword", required = false) String keyword) {
         UserEntity user = (UserEntity) session.getAttribute("sessionUser");
-        if (user == null || (!"ADMIN".equals(user.getStatus()) && !user.isAdmin())) {
+
+        if (user == null || !user.isAdmin()) {
             return new ModelAndView("redirect:/user/login");
         }
+
         ModelAndView mv = new ModelAndView("admin/index");
         mv.addObject("currentMenu", menu);
 
@@ -44,7 +49,7 @@ public class AdminController {
             mv.addObject("bossList", bossList);
         }
         if ("user".equals(menu)) {
-            List<AdminUserDTO> userList = this.adminService.getUserList();
+            List<AdminUserDTO> userList = this.adminService.getUserList(searchType, keyword);
             mv.addObject("userList", userList);
             mv.addObject("totalUserCount", this.adminService.getTotalUserCount());
             mv.addObject("todayJoinCount", this.adminService.getTodayJoinCount());
@@ -76,6 +81,24 @@ public class AdminController {
         }
 
         return response;
+    }
 
+    @RequestMapping(value = "/user/update-status", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> updateUserStatus(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        String status = payload.get("status");
+
+        Map<String, Object> response = new HashMap<>();
+
+        boolean isSuccess = this.adminService.changeUserStatus(email, status);
+
+        if (isSuccess) {
+            response.put("result", "success");
+        } else {
+            response.put("result", "error");
+        }
+
+        return response;
     }
 }

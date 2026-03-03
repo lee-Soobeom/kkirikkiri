@@ -43,8 +43,9 @@ public class AdminService {
         return storeResult > 0 && userResult > 0;
     }
 
-    public List<AdminUserDTO> getUserList() {
-        return adminMapper.selectAllUsers();
+    // ✅ 컨트롤러의 검색 요청을 받기 위해 매개변수(searchType, keyword)를 추가했습니다.
+    public List<AdminUserDTO> getUserList(String searchType, String keyword) {
+        return adminMapper.selectAllUsers(searchType, keyword);
     }
 
     public int getTotalUserCount() {

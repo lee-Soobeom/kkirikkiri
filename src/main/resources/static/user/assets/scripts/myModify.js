@@ -79,6 +79,7 @@ const deleteAccount = () => {
     )
 };
 
+const geoHandler = new kakao.maps.services.Geocoder();
 
 /** @param {HTMLFormElement} $element */
 const setCurrentLocation = ($element) => {

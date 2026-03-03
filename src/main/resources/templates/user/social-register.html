@@ -5,7 +5,8 @@
     <title>끼리끼리 - 필수 정보 입력</title>
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/assets/styles/fragments.css">
-    <link rel="stylesheet" href="/user/assets/styles/myModify.css"> <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=services"></script>
+    <link rel="stylesheet" href="/user/assets/styles/myModify.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script defer src="/assets/scripts/common.js"></script>
     <script defer src="/assets/scripts/dialog.js"></script>
     <script defer src="/user/assets/scripts/socialRegister.js"></script> </head>
@@ -19,17 +20,34 @@
 
         <div class="profile-modify">
             <div class="change-container">
+                <input type="hidden" name="nickname" th:value="${session.sessionUser.nickname}">
                 <label class="label">
                     <span class="caption">이름</span>
                     <span class="row">
-                        <input class="input" name="userName" type="text" placeholder="실명을 입력해 주세요" required>
+                        <input class="input" name="name" type="text" placeholder="실명을 입력해 주세요" required>
                     </span>
                 </label>
 
                 <label class="label">
                     <span class="caption">생년월일</span>
                     <span class="row">
-                        <input class="input" name="birthday" type="date" required>
+                        <select name="birthYear" class="field" required>
+                        <option value="">년</option>
+                         </select>
+
+                        <select name="birthMonth" class="field" required>
+                            <option value="">월</option>
+                            <option th:each="m : ${#numbers.sequence(1, 12)}"
+                            th:value="${#numbers.formatInteger(m, 2)}"
+                            th:text="${m + '월'}"></option>
+                         </select>
+
+                        <select name="birthDay" class="field" required>
+                            <option value="">일</option>
+                            <option th:each="d : ${#numbers.sequence(1, 31)}"
+                            th:value="${#numbers.formatInteger(d, 2)}"
+                             th:text="${d + '일'} "></option>
+                        </select>
                     </span>
                 </label>
 
@@ -38,9 +56,11 @@
                     <span class="row">
                         <select name="telecom" class="field">
                            <option value="SKT">SKT</option>
-                           <option value="KT">KT</option>
-                           <option value="LG">LG U+</option>
-                           <option value="ETC">알뜰폰</option>
+                            <option value="KT">KT</option>
+                            <option value="LGU">LG U+</option>
+                            <option value="SKM">SKT 알뜰폰</option>
+                            <option value="KTM">KT 알뜰폰</option>
+                            <option value="LGM">LG 알뜰폰</option>
                        </select>
                         <input type="tel" name="contact" class="field" placeholder="'-' 없이 입력해 주세요" maxlength="11" required>
                     </span>
@@ -49,11 +69,11 @@
                 <label class="label">
                     <span class="caption">주소</span>
                     <span class="row">
-                        <input required type="text" name="address" class="field" placeholder="주소 찾기를 이용해 주세요" readonly>
+                        <input required type="text" name="addressPrimary" class="field" placeholder="주소 찾기를 이용해 주세요" readonly>
                         <button class="addressButton" name="addressButton" type="button">주소 찾기</button>
                     </span>
                     <span class="row">
-                        <input type="text" name="addressDetail" class="field" placeholder="상세 주소를 입력해 주세요" required>
+                        <input type="text" name="addressSecondary" class="field" placeholder="상세 주소를 입력해 주세요" required>
                     </span>
                 </label>
             </div>

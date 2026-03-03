@@ -52,25 +52,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const ctx = document.getElementById('visitorChart').getContext('2d');
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['월', '화', '수', '목', '금', '토', '일'],
-        datasets: [{
-            label: '방문자 수',
-            data: [120, 190, 300, 250, 280, 450, 380],
-            borderColor: '#4e73df',
-            backgroundColor: '#4e73df22',
-            fill: true,
-            tension: 0.3
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false
-    }
-});
+const visitorChartCanvas = document.getElementById('visitorChart');
+
+if (visitorChartCanvas) {
+    const ctx = visitorChartCanvas.getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['월', '화', '수', '목', '금', '토', '일'],
+            datasets: [{
+                label: '방문자 수',
+                data: [120, 190, 300, 250, 280, 450, 380],
+                borderColor: '#4e73df',
+                backgroundColor: '#4e73df22',
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const rejectButtons = document.querySelectorAll('.btn-reject');
@@ -93,10 +97,34 @@ document.addEventListener('DOMContentLoaded', () => {
             ])
         })
     })
+
+    const gradeButtons = document.querySelectorAll('.btn-grade');
+
+    gradeButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const tr = e.currentTarget.closest('tr');
+            const rejectBtn = tr.querySelector('.btn-reject');
+            const userEmail = rejectBtn.dataset.email;
+            const currentStatus = rejectBtn.dataset.status;
+
+            const nextStatus = (currentStatus === 'VIP') ? 'GENERAL' : 'VIP';
+            const actionText = (nextStatus === 'VIP') ? '우수 회원 승격' : '일반 회원';
+
+            dialogHandler.simpleYesNoModal('등급 변경 확인', `${userEmail} 회원을 [${actionText}] 하시겠습니까?`, [
+                {
+                    caption: '취소'
+                },
+                {
+                    caption: '확인',
+                    onclick: () => updateUserStatus(userEmail, nextStatus, actionText)
+                }
+            ]);
+        });
+    });
 });
 
 function updateUserStatus(email, newStatus, actionText) {
-    fetch('admin/user/update-status', {
+    fetch('/admin/user/update-status', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -107,7 +135,7 @@ function updateUserStatus(email, newStatus, actionText) {
         })
     }).then(response => response.json())
         .then(data => {
-            if (data.success) {
+            if (data.result === 'success' || data.success) {
                 dialogHandler.simpleYesModal('완료', `${actionText} 처리가 완료되었습니다.`);
                 location.reload();
             } else {
@@ -132,8 +160,8 @@ function submitNotice() {
     const title = form['title'].value.trim();
     const content = form['content'].value.trim();
 
-    if (!title) { alert('제목을 입력해주세요.'); return; }
-    if (!content) { alert('내용을 입력해주세요.'); return; }
+    if (!title) { dialogHandler.simpleYesModal('안내', '제목을 입력해주세요.'); return; }
+    if (!content) { dialogHandler.simpleYesModal('안내', '내용을 입력해주세요.'); return; }
 
     const formData = new FormData();
     formData.append('boardId', 'notice');
@@ -145,10 +173,10 @@ function submitNotice() {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
         const response = JSON.parse(xhr.responseText);
         if (response.result === 'SUCCESS') {
-            alert('공지가 작성됐습니다.');
+            dialogHandler.simpleYesModal('안내', '공지가 작성되었습니다.');
             location.reload();
         } else {
-            alert('작성에 실패했습니다.');
+            dialogHandler.simpleYesModal('안내', '작성에 실패했습니다.');
         }
     };
     xhr.open('POST', '/article/notice/write');
@@ -209,7 +237,7 @@ function deleteNotice(btn) {
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
-        alert('삭제됐습니다.');
+        dialogHandler.simpleYesModal('안내', '삭제 되었습니다.');
         location.reload();
     };
     xhr.open('POST', '/article/notice/delete');

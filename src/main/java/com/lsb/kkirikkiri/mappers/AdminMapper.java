@@ -17,7 +17,7 @@ public interface AdminMapper {
 
     int updateUserStatus(@Param("email") String email, @Param("status") String status);
 
-    List<AdminUserDTO> selectAllUsers();
+    List<AdminUserDTO> selectAllUsers(@Param(value = "searchType") String searchType, @Param(value = "keyword") String keyword);
 
     int countAllUsers();
 

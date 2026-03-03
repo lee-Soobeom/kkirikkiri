@@ -329,28 +329,58 @@
   align-items: center;
   display: flex;
   flex-direction: row;
-  gap: 0.75rem;
+  gap: 0.125rem;
   justify-content: flex-start;
   width: 80%;
   max-width: 35rem;
+  cursor: pointer;
 }
-#main > .content .form .term .checkbox {
+@media (max-width: 767px) {
+  #main > .content .form .term {
+    width: 100%;
+  }
+}
+#main > .content .form .term + .term-details {
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+#main > .content .form .term-details {
+  display: none;
+  width: 75%;
+  background-color: #f1f3f5;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  margin-left: 5%;
+}
+@media (max-width: 767px) {
+  #main > .content .form .term-details {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+#main > .content .form .term-details.active {
+  display: block;
+}
+#main > .content .form .term-details .checkbox {
   width: 1.1rem;
   height: 1.1rem;
   accent-color: #4678FF;
   cursor: pointer;
 }
-#main > .content .form .term .caption {
-  font-size: 0.95rem;
-  color: #666666;
-}
-#main > .content .form .term .caption a {
+#main > .content .form .term-details .caption a {
   color: #4678FF;
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: underline;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
 }
-#main > .content .form .term + .term {
-  margin-top: -0.5rem;
+#main > .content .form .term-details .caption a:hover {
+  background-color: rgb(214.5, 225.3, 255);
+}
+#main > .content .form .term-details + .term {
+  margin-top: -0.125rem;
 }
 #main > .content .form .button-container {
   align-items: center;
@@ -383,6 +413,160 @@
 }
 #main > .content .form .button-container .button[name=cancel]:hover {
   background-color: #E63E3E;
+}
+@media (max-width: 767px) {
+  #main {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    width: 100vw;
+    height: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #FDFDFD;
+    border-radius: 0;
+    margin: 0;
+    overflow-y: visible;
+  }
+  #main > .logo-container {
+    width: 100%;
+    height: auto;
+    padding: 2rem 1.5rem;
+    background-color: #4678FF;
+    border-radius: 0;
+    gap: 1.5rem;
+    box-sizing: border-box;
+  }
+  #main > .logo-container::after {
+    display: none;
+  }
+  #main > .logo-container .switch-container {
+    width: 100%;
+    max-width: 20rem;
+  }
+  #main > .content {
+    width: 100%;
+    height: auto;
+    flex: 1;
+    background-color: #FDFDFD;
+    backdrop-filter: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    align-self: stretch;
+    overflow: visible;
+  }
+  #main > .content .form {
+    display: none;
+  }
+  #main > .content .form[data-visible] {
+    display: flex;
+  }
+  #main > .content .form {
+    padding: 2rem 1.5rem;
+    height: auto;
+    overflow-y: visible;
+  }
+  #main > .content .form > .title {
+    display: none !important;
+  }
+  #main > .content .form .label {
+    width: 100%;
+    max-content: none;
+    margin-bottom: 1.5rem;
+  }
+  #main > .content .form .label .row {
+    gap: 0.75rem;
+  }
+}
+@media screen and (max-width: 767px) and (max-width: 400px) {
+  #main > .content .form .label .row {
+    flex-wrap: wrap;
+  }
+  #main > .content .form .label .row button {
+    width: 100%;
+  }
+}
+@media (max-width: 767px) {
+  #main > .content .form .button-container {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin: 2rem 0 3rem 0;
+  }
+  #main > .content .form .button-container .button {
+    width: 100%;
+    padding: 1rem;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  #main {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 58rem;
+    height: 90vh;
+    max-height: 45rem;
+    grid-template-columns: 1fr 1.6fr;
+  }
+  #main > .logo-container {
+    padding: 2rem 1rem;
+    gap: 1.25rem;
+  }
+  #main > .logo-container .logo-wrapper .icon {
+    width: 2rem;
+    height: 1.2rem;
+  }
+  #main > .logo-container .logo-wrapper .title {
+    font-size: 1.5rem;
+  }
+  #main > .logo-container .switch-container {
+    width: 14rem;
+  }
+  #main > .logo-container .switch-container .switch-btn {
+    font-size: 0.9rem;
+  }
+  #main > .content {
+    width: 95%;
+    height: 95%;
+  }
+  #main > .content .form {
+    padding: 1.5rem 1.25rem;
+  }
+  #main > .content .form > .title {
+    align-self: center;
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    margin-left: 0;
+  }
+  #main > .content .form .label {
+    width: 85%;
+    margin-bottom: 1rem;
+    gap: 0.35rem;
+  }
+  #main > .content .form .label .caption {
+    font-size: 1rem;
+  }
+  #main > .content .form .label .row {
+    gap: 0.5rem;
+  }
+  #main > .content .form .label .row button {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  #main > .content .form .button-container {
+    width: 85%;
+    margin-top: 1rem;
+  }
+  #main > .content .form .button-container .button {
+    font-size: 1.1rem;
+    padding: 0.8rem;
+  }
 }
 
 /*# sourceMappingURL=register.css.map */

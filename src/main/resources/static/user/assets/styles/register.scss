@@ -325,9 +325,36 @@
       }
 
       .term {
-        @include flex(row, flex-start, center, 0.75rem);
+        @include flex(row, flex-start, center, 0.125rem);
         width: 80%;
         max-width: 35rem;
+        cursor: pointer;
+
+        @include mobile { width: 100%; }
+
+        & + .term-details {
+          margin-top: -0.5rem;
+          margin-bottom: 1rem;
+        }
+      }
+
+      .term-details {
+        display: none;
+        width: 75%;
+        background-color: #f1f3f5;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        font-size: 0.8rem;
+        margin-left: 5%;
+
+        @include mobile {
+          width: 100%;
+          margin-left: 0;
+        }
+
+        &.active {
+          display: block;
+        }
 
         .checkbox {
           width: 1.1rem;
@@ -337,18 +364,22 @@
         }
 
         .caption {
-          font-size: 0.95rem;
-          color: #666666;
-
           a {
             color: #4678FF;
-            font-weight: 600;
+            font-weight: 500;
             text-decoration: underline;
+            cursor: pointer;
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+
+            &:hover {
+              background-color: darken(#F0F4FF, 5%);
+            }
           }
         }
 
         & + .term {
-          margin-top: -0.5rem;
+          margin-top: -0.125rem;
         }
       }
 
@@ -382,6 +413,156 @@
               background-color: #E63E3E;
             }
           }
+        }
+      }
+    }
+  }
+
+  @include mobile {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    width: 100vw;
+    height: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #FDFDFD;
+    border-radius: 0;
+    margin: 0;
+    overflow-y: visible;
+
+    > .logo-container {
+      width: 100%;
+      height: auto;
+      padding: 2rem 1.5rem;
+      background-color: #4678FF;
+      border-radius: 0;
+      gap: 1.5rem;
+      box-sizing: border-box;
+
+      &::after { display: none; }
+
+      .switch-container {
+        width: 100%;
+        max-width: 20rem;
+      }
+    }
+
+    > .content {
+      width: 100%;
+      height: auto;
+      flex: 1;
+      background-color: #FDFDFD;
+      backdrop-filter: none;
+      border-radius: 0;
+      margin: 0;
+      padding: 0;
+      align-self: stretch;
+      overflow: visible;
+
+      .form {
+        display: none;
+        &[data-visible] { display: flex; }
+
+        padding: 2rem 1.5rem;
+        height: auto;
+        overflow-y: visible;
+
+        > .title {
+          display: none !important; //모바일에서 제목 제거
+        }
+
+        .label {
+          width: 100%;
+          max-content: none;
+          margin-bottom: 1.5rem;
+
+          .row {
+            gap: 0.75rem;
+
+            @media screen and (max-width: 400px) {
+              flex-wrap: wrap;
+              button { width: 100%; }
+            }
+          }
+        }
+
+        .button-container {
+          width: 100%;
+          flex-direction: column;
+          gap: 0.8rem;
+          margin: 2rem 0 3rem 0; // 👈 최하단 여백 넉넉히 주어 스크롤 끝 확인
+
+          .button {
+            width: 100%;
+            padding: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  @include tablet {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 90vw;
+    max-width: 58rem;
+    height: 90vh;
+    max-height: 45rem;
+    grid-template-columns: 1fr 1.6fr;
+
+    > .logo-container {
+      padding: 2rem 1rem;
+      gap: 1.25rem;
+
+      .logo-wrapper {
+        .icon { width: 2rem; height: 1.2rem; }
+        .title { font-size: 1.5rem; } // 로고 타이틀 살짝 축소
+      }
+
+      .switch-container {
+        width: 14rem; // 스위치 너비 살짝 축소
+        .switch-btn { font-size: 0.9rem; }
+      }
+    }
+
+    > .content {
+      width: 95%; // 내부 여백 확보
+      height: 95%;
+
+      .form {
+        padding: 1.5rem 1.25rem; // 내부 패딩 줄이기
+
+        > .title {
+          align-self: center;
+          font-size: 1.4rem;
+          margin-bottom: 1.2rem;
+          text-align: center;
+          margin-left: 0;
+        }
+
+        .label {
+          width: 85%;
+          margin-bottom: 1rem;
+          gap: 0.35rem;
+
+          .caption { font-size: 1rem; }
+
+          .row {
+            gap: 0.5rem;
+            button { padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+          }
+        }
+
+        .button-container {
+          width: 85%;
+          margin-top: 1rem;
+          .button { font-size: 1.1rem; padding: 0.8rem; }
         }
       }
     }

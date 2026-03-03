@@ -79,7 +79,7 @@ function checkSocialLoginStatus() {
     if (typeof needsInfo !== 'undefined' && needsInfo === true) {
         dialogHandler.simpleYesNoModal(
             '추가 정보 입력 필요',
-            '끼리끼리 공구 서비스를 이용하시려면<br>추가적인 정보 등록이 필요합니다.',
+            '끼리끼리 공구 서비스를 이용하시려면 추가적인 정보 등록이 필요합니다.',
             [
                 {
                     caption: "다음에 하기",
@@ -144,7 +144,7 @@ window.addEventListener('load', () => {
 
         dialogHandler.simpleYesNoModal(
             '안내',
-            '끼리끼리 공구 서비스를 이용하시려면<br>추가적인 정보 등록이 필요합니다.',
+            '끼리끼리 공구 서비스를 이용하시려면 추가적인 정보 등록이 필요합니다.',
             [
                 {
                     caption: "다음에 하기",

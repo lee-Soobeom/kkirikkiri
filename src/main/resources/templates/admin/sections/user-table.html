@@ -55,7 +55,7 @@
                 <th>등급</th>
                 <th>성인 구분</th>
                 <th>이메일 / 연락처</th>
-                <th>닉네임</th>
+                <th>이름 (별명/상호)</th>
                 <th>가입일 (최근접속)</th>
                 <th>상태</th>
                 <th>관리 액션</th>
@@ -64,9 +64,15 @@
             <tbody>
             <tr th:each="user : ${userList}">
                 <td>
-                    <span th:if="${user.socialTypeCode == 'KAKAO'}" class="badge" style="background: #fee500; color: #3c1e1e;">카카오</span>
-                    <span th:if="${user.socialTypeCode == 'NAVER'}" class="badge" style="background: #03c75a; color: white;">네이버</span>
-                    <span th:if="${user.socialTypeCode == 'LOCAL'}" class="badge" style="background: #858796; color: white;">일반</span>
+                    <span th:if="${user.socialTypeCode != null and user.socialTypeCode.toUpperCase() == 'KAKAO'}"
+                          class="badge" style="background: #fee500; color: #3c1e1e;">카카오
+                    </span>
+                    <span th:if="${user.socialTypeCode != null and user.socialTypeCode.toUpperCase() == 'NAVER'}"
+                          class="badge" style="background: #03c75a; color: white;">네이버
+                    </span>
+                    <span th:if="${user.socialTypeCode != null and user.socialTypeCode.toUpperCase() == 'LOCAL'}"
+                          class="badge" style="background: #858796; color: white;">일반
+                    </span>
                 </td>
                 <td th:text="${user.admin ? '관리자' : (user.boss ? '사장님' : '회원')}">회원</td>
                 <td>
@@ -74,14 +80,16 @@
                     <span th:if="${user.status != 'VIP'}" class="badge normal">일반</span>
                 </td>
                 <td>
-                    <span th:class="'badge ' + (${user.isAdult} ? 'adult' : 'minor')"
-                    th:text="${user.isAdult ? '성인' : '미성년'}">성인</span>
+                    <span th:class="'badge ' + (${user.isAdult} ? 'adult' : 'minor')" th:text="${user.isAdult ? '성인' : '미성년'}">성인</span>
                 </td>
                 <td>
                     <div th:text="${user.email}">user@email.com</div>
                     <div style="font-size: 0.75rem; color: #858796;" th:text="${user.contact}">010-1234-5678</div>
                 </td>
-                <td th:text="${user.nickname}">끼리끼리덕후</td>
+                <td>
+                    <div style="font-weight: bold;" th:text="${user.name}">홍길동</div>
+                    <div style="font-size: 0.75rem; color: #858796;" th:text="'(' + ${user.nickname} + ')'"></div>
+                </td>
                 <td>
                     <div th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd')}">2026-02-25</div>
                     <div style="font-size: 0.75rem; color: #858796;" th:text="'(' + ${#temporals.format(user.lastLoginAt, 'MM-dd HH:mm')} + ')'">(02-25 11:30)</div>
@@ -94,7 +102,7 @@
                 <td>
                     <div class="btn-group">
                         <button type="button" class="btn-grade"
-                                th:title="${user.status == 'VIP' ? '일반으로 강등' : '우수로 승격'}">
+                                th:title="${user.status == 'VIP' ? '일반' : '우수로 승격'}">
                             <span th:text="${user.status == 'VIP' ? '🌟' : '⭐'}">⭐</span>
                         </button>
 
