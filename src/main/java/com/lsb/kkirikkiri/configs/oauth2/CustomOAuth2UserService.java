@@ -1,7 +1,10 @@
 package com.lsb.kkirikkiri.configs.oauth2;
 
 import com.lsb.kkirikkiri.entities.user.UserEntity;
+import com.lsb.kkirikkiri.exceptions.TransactionalException;
 import com.lsb.kkirikkiri.mappers.UserMapper;
+import com.lsb.kkirikkiri.results.CommonResult;
+import com.lsb.kkirikkiri.services.WalletService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +14,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -22,7 +26,9 @@ import java.util.Map;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserMapper userMapper;
+    private final WalletService walletService;
 
+    @Transactional
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
@@ -59,6 +65,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                         .build();
 
                 userMapper.insertSocialUser(user);
+
+                if (this.walletService.createUserWallet(user.getEmail()).equals(CommonResult.FAILURE)) {
+                    throw new TransactionalException(CommonResult.FAILURE);
+                }
             }
         }
 

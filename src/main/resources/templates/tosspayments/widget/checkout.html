@@ -69,7 +69,6 @@
 
         // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
         button.addEventListener("click", async function () {
-            // todo payment db 저장
             const formData = new FormData();
             formData.append('customerKey', customerKey);
             formData.append('amount', amount.value);

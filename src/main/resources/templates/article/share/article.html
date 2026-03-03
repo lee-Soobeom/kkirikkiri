@@ -43,18 +43,20 @@
 </div>
 <main id="main">
     <div class="container">
-        <div class="title-container">
-            <h2 class="title" th:text="${article.title}">푸라닭 블랙마요 나눠먹을 사람</h2>
-            <div class="user">
-                <div class="nickname" th:text="${article.nickname}">작성자</div>
-                <div class="created-at"
-                     th:text="${ #temporals.format(article.getCreatedAt(), 'yyyy-MM-dd HH:mm')}"></div>
-                <div class="view" th:text="${article.view}"></div>
-            </div>
-        </div>
+
         <div class="context-container">
             <div class="content-container">
                 <div class="order-card">
+                    <div class="title-container">
+                        <h2 class="title" th:text="${article.title}">푸라닭 블랙마요 나눠먹을 사람</h2>
+                        <div class="user">
+                            <div class="nickname" th:text="${article.nickname}">작성자</div>
+                            <div class="-stretch" role="none"></div>
+                            <div class="created-at"
+                                 th:text="${ #temporals.format(article.getCreatedAt(), 'yyyy-MM-dd HH:mm')}"></div>
+                            <div class="view" th:text="${article.view}"></div>
+                        </div>
+                    </div>
                     <div class="menu-container">
                         <div class="box menu"
                              th:attr="data-lat=${article.pointLat}, data-lng=${article.pointLng}">

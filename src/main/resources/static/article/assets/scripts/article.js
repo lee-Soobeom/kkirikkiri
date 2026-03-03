@@ -196,10 +196,10 @@ const ps = new kakao.maps.services.Places();
 
 function placesSearchCB(data, status) {
     if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        // todo 검색 결과 없을때
+
     }
     if (status === kakao.maps.services.Status.OK) {
-        // todo 검색 결과 있을때
+
         for (let i = 0; i < data.length; i++) {
             // 검색 결과
             console.log(data[i]);
@@ -207,7 +207,6 @@ function placesSearchCB(data, status) {
     }
 }
 
-// todo 검색할 가게 이름 수정 & location 좌표 수정
 ps.keywordSearch('검색할 가게 이름', placesSearchCB, { // 가게 이름
     location: new kakao.maps.LatLng(0, 0), // 좌표
     radius: 1000

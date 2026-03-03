@@ -219,7 +219,6 @@ $writeForm.addEventListener('submit', (e) => {
         const idInput = $writeForm.querySelector('input[name="id"]');
         formData.append('id', idInput.value);
     }
-    // todo: xhr formData 까지만 함. userId 완성되면 추가해서 DB 시작하기.
     const files = $writeForm['files'].files;
     for (let i = 0; i < files.length; i++) {
         formData.append('files', files[i]);

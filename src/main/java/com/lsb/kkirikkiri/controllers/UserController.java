@@ -158,7 +158,7 @@ public class UserController extends AbstractGeneralController{
         }
 
         try {
-            userService.registerSocialExtraInfo(currentUser, updatedInfo);
+            this.userService.registerSocialExtraInfo(currentUser, updatedInfo);
             session.removeAttribute("needsAdditionalInfo");
             session.setAttribute("sessionUser", currentUser);
             response.put("result", "SUCCESS");
