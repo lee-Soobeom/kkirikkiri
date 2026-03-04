@@ -1,3 +1,4 @@
+const $nav = document?.getElementById('top');
 const $my = document?.getElementById('my');
 const $topNav = document?.getElementById('top');
 const $chargeButton = $my?.querySelector('[name="charge"]');
@@ -7,6 +8,7 @@ const $currentLocationButton = $my?.querySelector('[name="location"]');
 const $paymentButton = $my?.querySelector('[name="payment"]');
 const $totalMessages = $topNav?.querySelector(':scope > .button-container > .bell > .total');
 const $messageList = $topNav?.querySelector(':scope > .button-container > .bell > .message-list');
+const $myContainer = $my?.querySelector(':scope > .container');
 
 window.geoHandler = {
     geocoder: new kakao.maps.services.Geocoder(),
@@ -154,6 +156,12 @@ if ($my != null) {
             window.open(`/charge?amount=${amount}`, 'popup', `width=620px,height=${window.screen.height * 2 / 3},left=20,top=40`)
         } else {
             dialogHandler.simpleYesModal('경고', '충전할 금액을 선택 후 결제해 주세요.');
+        }
+    });
+
+    $my?.addEventListener('mouseup', (e) => {
+        if (!$myContainer.contains(e.target) && !$chargeContainer.contains(e.target)) {
+            $nav.querySelector(':scope > .image-wrapper > .input').checked = false;
         }
     });
 }

@@ -41,7 +41,7 @@
         <span class="board"></span>
         <label class="column">
             <span class="caption">제목</span>
-            <input required autocomplete="off" class="input" maxlength="100" minlength="1" th:field="*{title}"
+            <input required autocomplete="off" spellcheck="false" class="input" maxlength="100" minlength="1" th:field="*{title}"
                    placeholder="제목을 입력해 주세요." type="text" data-object="input" data-component="label.field">
         </label>
         <div class="row-group">
@@ -63,24 +63,24 @@
             </label>
             <label class="column">
                 <span class="caption">메뉴이름</span>
-                <input class="input" maxlength="50" minlength="1" th:field="*{menuName}" type="text" placeholder="금액을 입력해 주세요."
+                <input class="input" autocomplete="off" spellcheck="false" maxlength="50" minlength="1" th:field="*{menuName}" type="text" placeholder="금액을 입력해 주세요."
                        data-object="input" data-component="label.field">
             </label>
         </div>
         <div class="row-group">
             <label class="column">
                 <span class="caption">최소주문금액</span>
-                <input class="input" th:field="*{minOrderPrice}" maxlength="5" minlength="1" type="text"
+                <input class="input" autocomplete="off" spellcheck="false" th:field="*{minOrderPrice}" maxlength="5" minlength="1" type="text"
                        placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
             </label>
             <label class="column">
                 <span class="caption">주문금액</span>
-                <input class="input" th:field="*{orderPrice}" maxlength="6" minlength="1" type="text"
+                <input class="input" autocomplete="off" spellcheck="false" th:field="*{orderPrice}" maxlength="6" minlength="1" type="text"
                        placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
             </label>
             <label class="column">
                 <span class="caption">배달비</span>
-                <input class="input" th:field="*{deliveryPrice}" maxlength="5" minlength="1" type="text"
+                <input class="input" autocomplete="off" spellcheck="false" th:field="*{deliveryPrice}" maxlength="5" minlength="1" type="text"
                        placeholder="금액을 입력해 주세요." data-object="input" data-component="label.field">
             </label>
         </div>
