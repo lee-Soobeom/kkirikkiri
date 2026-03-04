@@ -29,9 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
            }
 
            try {
+               loading.show('인증번호를 발송하고 있습니다.');
                const response = await fetch(`/user/find-email?contact=${contact}`);
                const data = await response.json();
-
+               loading.hide();
                const emailResult = document.getElementById('emailResult');
                const foundedEmail = document.getElementById('foundedEmail');
 

@@ -125,13 +125,28 @@
   font-size: 1.025rem;
   font-weight: 500;
 }
-#modifyContent > .modify-form > .profile-modify > .profile > .basis-profile > .grade {
+#modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container > .grade {
   background-color: rgb(80.2, 127.4432432432, 255);
   border-radius: 0.25rem;
   color: #FDFDFD;
   font-size: 1rem;
   font-weight: 400;
   padding: 0.325rem 0.45rem;
+}
+#modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container > .grade.vip {
+  background-color: #FFD700;
+  color: #FFFFFF;
+  font-weight: 400;
+}
+#modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container > .grade.blacklist {
+  background-color: #222222;
+  color: #FDFDFD;
+  font-weight: 400;
+}
+#modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container > .grade.admin {
+  background-color: #FF4646;
+  color: #FDFDFD;
+  font-weight: 400;
 }
 #modifyContent > .modify-form > .profile-modify > .change-container {
   align-items: stretch;
@@ -205,6 +220,10 @@
 }
 #modifyContent > .modify-form > .profile-modify > .change-container > .label > .row > .addressButton:active {
   background-color: #4678FF;
+}
+#modifyContent > .modify-form > .profile-modify > .change-container > .label > .title {
+  font-size: 1.125rem;
+  font-weight: 600;
 }
 #modifyContent > .modify-form > .button-container {
   align-items: center;
@@ -307,6 +326,32 @@
   #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile {
     align-items: center;
     text-align: center;
+  }
+  #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container .grade {
+    background-color: rgb(80.2, 127.4432432432, 255);
+    border-radius: 0.25rem;
+    color: #FDFDFD;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 0.325rem 0.45rem;
+  }
+  #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container .grade.vip {
+    background-color: #FFD700;
+    color: #FFFFFF;
+    font-weight: 400;
+  }
+  #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container .grade.blacklist {
+    background-color: #222222;
+    color: #FDFDFD;
+    font-weight: 400;
+  }
+  #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container .grade.admin {
+    background-color: #FF4646;
+    color: #FDFDFD;
+    font-weight: 400;
+  }
+  #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container .grade.owner {
+    background-color: #7D9DFF;
   }
   #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile > .title {
     font-size: 1.2rem;
@@ -435,6 +480,32 @@
   }
   #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .myplace {
     font-size: 1rem;
+  }
+  #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container .grade {
+    background-color: rgb(80.2, 127.4432432432, 255);
+    border-radius: 0.25rem;
+    color: #FDFDFD;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 0.325rem 0.45rem;
+  }
+  #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container .grade.vip {
+    background-color: #FFD700;
+    color: #FFFFFF;
+    font-weight: 400;
+  }
+  #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container .grade.blacklist {
+    background-color: #222222;
+    color: #FDFDFD;
+    font-weight: 400;
+  }
+  #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container .grade.admin {
+    background-color: #FF4646;
+    color: #FDFDFD;
+    font-weight: 400;
+  }
+  #modifyContent > .modify-form > .profile-modify > .profile > .basis-profile .grade-container .grade.owner {
+    background-color: #7D9DFF;
   }
   #modifyContent > .modify-form > .profile-modify > .change-container {
     width: 95%;

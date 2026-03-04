@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/assets/styles/fragments.css">
     <link rel="stylesheet" href="/article/assets/styles/article.css">
+    <link rel="shortcut icon" href="/assets/images/favicon.png">
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92c55423409f256ecb1626e5dbd939a0&libraries=services"></script>
     <script src="https://js.tosspayments.com/v2/standard"></script>
@@ -16,10 +17,17 @@
     <script defer src="/assets/scripts/common.js" type="text/javascript"></script>
     <script defer src="/article/assets/scripts/article.js"></script>
     <script defer type="module" src="/article/assets/scripts/websocket.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.isLoggedIn = /*[[${session.sessionUser != null}]]*/ false;
+        window.userStatus = /*[[${session.sessionUser?.status}]]*/ null;
+        window.needsInfo = /*[[${needsInfo}]]*/ false;
+        /*]]>*/
+    </script>
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
-<th:block th:replace="~{/fragments/common.html :: sideMypage(${session.sessionUser})}"></th:block>
+<th:block th:replace="~{/fragments/common.html :: sideMypage"></th:block>
 <th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
 <div id="ws" th:if="${session.sessionUser != null && #strings.contains(participants.participantsNickname, session.sessionUser.nickname)}">
     <form class="room-container" name="chatRoom">

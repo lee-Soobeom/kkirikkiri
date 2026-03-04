@@ -93,89 +93,85 @@ public class UserService {
         UserEntity existingUser = this.userMapper.selectByEmail(user.getEmail());
         if (existingUser == null) return CommonResult.FAILURE;
 
-        if (user.getNickname() == null ||
-                user.getNickname().isBlank()) {
-            user.setNickname(null);
-        } else if (user.getNickname().length() < 2 || user.getNickname().length() > 10) {
-            return CommonResult.FAILURE;
+        if (user.getNickname() != null && !user.getNickname().isBlank()) {
+            if (user.getNickname().length() < 2 || user.getNickname().length() > 10) {
+                return CommonResult.FAILURE;
+            }
+            existingUser.setNickname(user.getNickname());
         }
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (user.getPassword() != null && !user.getPassword().isBlank()) {
-            String rawPassword = user.getPassword();
-            String encodedPassword = encoder.encode(rawPassword);
-            user.setPassword(encodedPassword);
-        } else {
-            user.setPassword(null);
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            existingUser.setPassword(encoder.encode(user.getPassword()));
         }
 
-        if (user.getTelecom() == null ||
-                user.getTelecom().isBlank()) {
-            user.setTelecom(null);
-        } else {
+        if (user.getTelecom() != null && !user.getTelecom().isBlank()) {
             if (!UserValidator.validateTelecom(user)) {
                 return CommonResult.FAILURE;
             }
+            existingUser.setTelecom(user.getTelecom());
         }
+
+        if (user.getContact() != null && !user.getContact().isBlank()) {
+            existingUser.setContact(user.getContact());
+        }
+
+        if (user.getAddressPrimary() != null) existingUser.setAddressPrimary(user.getAddressPrimary());
+        if (user.getAddressSecondary() != null) existingUser.setAddressSecondary(user.getAddressSecondary());
 
         try {
             if (profileImage != null && !profileImage.isEmpty()) {
-                user.setProfileImagePath(this.saveFile(profileImage));
+                existingUser.setProfileImagePath(this.saveFile(profileImage));
             }
         } catch (IOException e) {
             throw new RuntimeException("프로필 이미지 저장 실패");
         }
 
 
-        if (this.userMapper.update(user) < 1) {
+        if (this.userMapper.update(existingUser) < 1) {
             return CommonResult.FAILURE;
         }
 
 
-        if (store != null && store.getEmail() != null) {
-            StoreEntity existingStore = this.storeMapper.selectByEmail(store.getEmail());
-
-            try {
-                if (storeImage != null && !storeImage.isEmpty()) {
-                    store.setStoreImagePath(this.saveFile(storeImage));
-                }
-            } catch (IOException e) {
-                throw new RuntimeException("가게 이미지 저장 실패");
-            }
+        if (existingUser.isBoss()) {
+            StoreEntity existingStore = this.storeMapper.selectByEmail(existingUser.getEmail());
 
             if (existingStore != null) {
-                if (store.getStoreName() != null && !store.getStoreName().isBlank()) {
-                    if (!store.getStoreName().matches("^[a-zA-Z0-9가-힣\\s]{2,10}$")) {
-                        return CommonResult.FAILURE;
-                    }
-                } else {
-                    store.setStoreName(existingStore.getStoreName());
-                }
-
-                if (store.getStoreContact() != null && !store.getStoreContact().isBlank()) {
-                    if (!store.getStoreContact().matches("^0\\d{8,10}$")) {
-                        return CommonResult.FAILURE;
-                    }
-                } else {
-                    store.setStoreContact(existingStore.getStoreContact());
-                }
-
-                if (store.getBusinessType() != null && !store.getBusinessType().isBlank()) {
-                    if (!StoreValidate.validateBusinessType(store.getBusinessType())) {
-                        return CommonResult.FAILURE;
+                try {
+                    // 가게 이미지 처리
+                    if (storeImage != null && !storeImage.isEmpty()) {
+                        existingStore.setStoreImagePath(this.saveFile(storeImage));
                     }
 
-                } else {
-                    store.setBusinessType(existingStore.getBusinessType());
-                }
+                    if (store.getStoreName() != null && !store.getStoreName().isBlank()) {
+                        if (!store.getStoreName().matches("^[a-zA-Z0-9가-힣\\s]{2,10}$")) return CommonResult.FAILURE;
+                        existingStore.setStoreName(store.getStoreName());
+                    }
 
-                if (store.getOperatingHours() == null ||
-                        store.getOperatingHours().isBlank()) {
-                    store.setOperatingHours(existingStore.getOperatingHours());
-                }
+                    if (store.getStoreContact() != null && !store.getStoreContact().isBlank()) {
+                        if (!store.getStoreContact().matches("^0\\d{8,10}$")) return CommonResult.FAILURE;
+                        existingStore.setStoreContact(store.getStoreContact());
+                    }
 
-                if (this.storeMapper.update(store) < 1) {
-                    return CommonResult.FAILURE;
+                    if (store.getBusinessType() != null && !store.getBusinessType().isBlank()) {
+                        if (!StoreValidate.validateBusinessType(store.getBusinessType())) return CommonResult.FAILURE;
+                        existingStore.setBusinessType(store.getBusinessType());
+                    }
+
+                    if (store.getOperatingHours() != null && !store.getOperatingHours().isBlank()) {
+                        existingStore.setOperatingHours(store.getOperatingHours());
+                    }
+
+                    if (store.getAddressPrimary() != null && !store.getAddressPrimary().isBlank()) {
+                        existingStore.setAddressPrimary(store.getAddressPrimary());
+                    }
+
+                    // 가게 DB 업데이트 실행
+                    if (this.storeMapper.update(existingStore) < 1) {
+                        return CommonResult.FAILURE;
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException("가게 이미지 저장 실패");
                 }
             }
         }
@@ -229,7 +225,6 @@ public class UserService {
             helper.setTo(email);
             helper.setSubject("[끼리끼리] 비밀번호 재설정 인증번호입니다.");
 
-            // 메일 내용에 인증번호(authCode)를 넣어줍니다.
             String htmlContent = String.format(
                     "<h3>비밀번호 재설정 인증번호</h3>" +
                             "<p>아래의 인증번호 6자리를 화면에 입력해 주세요.</p>" +

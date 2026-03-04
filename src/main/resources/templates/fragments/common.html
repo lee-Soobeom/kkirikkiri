@@ -38,7 +38,7 @@
         </li>
     </ol>
 </nav>
-<div id="my" th:fragment="sideMypage(user)" th:with="isSigned = ${ session.sessionUser != null }">
+<div id="my" th:fragment="sideMypage" th:with="isSigned = ${ session.sessionUser != null }">
     <!--    로그인상태에 따라 보여줄 요소 다르게 해야함-->
     <div class="container">
         <div class="box user">
@@ -48,7 +48,16 @@
                 <span class="caption">현위치</span>
             </button>
             <div class="image-container">
-                <img src="/assets/images/my/my.user.png" alt="user">
+                <img th:if="${session.sessionUser == null}" src="/assets/images/my/my.user.png" alt="guest">
+                <th:block th:if="${session.sessionUser != null}">
+                    <img th:if="${session.sessionUser.isBoss()}"
+                         th:src="${session.store != null && session.store.storeImagePath != null} ? ${session.store.storeImagePath} : '/assets/images/my/my.user.png'"
+                         alt="store">
+
+                    <img th:unless="${session.sessionUser.isBoss()}"
+                         th:src="${session.sessionUser.profileImagePath != null} ? ${session.sessionUser.profileImagePath} : '/assets/images/my/my.user.png'"
+                         alt="user">
+                </th:block>
             </div>
             <div class="info">
                 <div class="nickname"
@@ -59,7 +68,9 @@
                 <div class="address"
                      th:text="${session.sessionUser?.addressPrimary}"></div>
                 <div class="rank"
-                     th:if="${session.sessionUser != null}">일반회원</div>
+                     th:if="${session.sessionUser != null}"
+                     th:classappend="${session.sessionUser.status == 'ADMIN' ? 'admin' : (session.sessionUser.status == 'VIP' ? 'vip' : (session.sessionUser.status == 'BLACKLIST' ? 'blacklist' : ''))}"
+                     th:text="${session.sessionUser.status == 'ADMIN' ? '관리자' : (session.sessionUser.status == 'VIP' ? '우수 회원' : (session.sessionUser.status == 'BLACKLIST' ? '블랙리스트' : '일반 회원'))}">일반회원</div>
                 <div class="rank"
                      th:if="${session.sessionUser == null}">비회원</div>
             </div>
@@ -86,6 +97,14 @@
             <div class="content" th:if="${session.sessionUser != null}">
                 <span class="value">4.21 </span>
                 <span class="caption">/ ★ 5.0</span>
+            </div>
+        </div>
+        <div class="box admin-container" th:if="${session.sessionUser != null && session.sessionUser.status == 'ADMIN'}">
+            <h2 class="title">관리자 메뉴</h2>
+            <div class="content">
+                <a class="admin-link" href="/admin/index" style="display: block; width: 100%; text-align: center; padding: 10px; background-color: #fff; border: 1px solid #ddd; border-radius: 5px; color: #333; text-decoration: none; font-weight: bold;">
+                    관리자 페이지로 이동
+                </a>
             </div>
         </div>
         <div class="-stretch" role="none"></div>
@@ -176,5 +195,10 @@
         </label>
     </li>
 </ol>
+
+<div id="loadingLayer" class="loading-layer">
+    <div class="spinner"></div>
+    <span class="message">잠시만 기다려 주세요</span>
+</div>
 </body>
 </html>

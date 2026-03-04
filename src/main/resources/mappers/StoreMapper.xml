@@ -33,8 +33,7 @@
             `store_contact` = #{store.storeContact},
             `operating_hours` = #{store.operatingHours},
             `store_image_path` = #{store.storeImagePath},
-            `address_primary` = #{store.addressPrimary},
-            `license_url` = #{store.licenseUrl}
+            `address_primary` = #{store.addressPrimary}
         WHERE `email` = #{store.email}
         LIMIT 1
     </update>

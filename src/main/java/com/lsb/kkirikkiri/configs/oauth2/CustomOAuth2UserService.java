@@ -53,6 +53,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             if (user != null) {
                 user.setSocialId(userInfo.getSocialId());
                 user.setSocialTypeCode(registrationId.toUpperCase());
+                if (user.getProfileImagePath() == null || user.getProfileImagePath().startsWith("http")) {
+                    user.setProfileImagePath(userInfo.getProfileImage());
+                }
                 userMapper.updateSocialInfo(user);
             } else  {
                 user = UserEntity.builder()

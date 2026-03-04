@@ -384,3 +384,93 @@ if ($topNav != null) {
 
     setTimeout(() => clearInterval(messageId), 11000);
 }
+
+const applyRestrictions = (isBlacklist = false) => {
+    const restrictedSelectors = [
+        '.item > .link[th\\:href*="write"], .item > .link[href*="write"]',
+        '.box.user > .link',
+        '.point-container > .content > .charge'
+    ];
+    restrictedSelectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+            el.style.opacity = '0.4';
+            el.style.cursor = 'not-allowed';
+
+            el.onclick = null;
+
+            el.addEventListener( 'click', (e) => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const msg = isBlacklist ? '활동 정지 상태이므로 이용이 불가합니다.' : '주소를 등록해야 활동이 가능합니다!';
+                dialogHandler.simpleYesModal('안내', msg);
+                return false;
+            }, {capture: true});
+            if (el.tagName === 'A') {
+                el.setAttribute('data-href', el.getAttribute('href'));
+                el.removeAttribute('href');
+            }
+        });
+    });
+};
+
+const showStatusBar = (message, btnText, targetUrl) => {
+    if (document.getElementById('status-bottom-bar')) return;
+    const bar = document.createElement('div');
+    bar.id = 'status-bottom-bar';
+    bar.style.cssText = `position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 600px; background: #4678FF; color: white; padding: 18px 25px; border-radius: 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 15px 35px #aeaeae50; z-index: 9999;`;
+
+    if (message.includes('정지')) {
+        bar.style.background = '#222';
+        bar.style.boxShadow = '0 15px 35px rgba(0,0,0,0.5)';
+    }
+
+    bar.innerHTML = `<span style="font-weight: 600;">${message}</span>${btnText ? `<button id="status-bar-btn" style="background: white; color: ${message.includes('정지') ? '#222' : '#4678FF'}; border: none; padding: 10px 20px; border-radius: 25px; font-weight: bold; cursor: pointer;">${btnText}</button>` : ''}`;
+    document.body.appendChild(bar);
+    if (btnText && targetUrl) document.getElementById('status-bar-btn').onclick = () => location.href = targetUrl;
+};
+
+const showNeedsInfoModal = () => {
+    dialogHandler.simpleYesNoModal('추가 정보 입력 필요', '끼리끼리 공구 서비스를 이용하시려면 추가적인 정보 등록이 필요합니다.', [
+        { caption: "다음에 하기", onclick: () => { sessionStorage.setItem('hideSocialModal', 'true'); checkUserStatus(); } },
+        { caption: "등록하러 가기", onclick: () => location.href = '/user/social-register' }
+    ]);
+};
+
+function checkUserStatus() {
+    if (typeof isLoggedIn !== 'undefined' && isLoggedIn === false) return;
+
+    const userStatus = window.userStatus;
+    const needsExtraInfo = (typeof needsInfo !== 'undefined' && needsInfo === true);
+    const urlParams = new URLSearchParams(window.location.search);
+    const isRedirectFromSocial = (urlParams.get('mode') === 'social_reg');
+
+    if (userStatus === 'BLACKLIST') {
+        showStatusBar('회원님은 현재 활동 정지 상태입니다.', '문의하기', '/support');
+        applyRestrictions(true);
+        return;
+    }
+
+    if (needsExtraInfo || isRedirectFromSocial || sessionStorage.getItem('hideSocialModal') === 'true') {
+        if (sessionStorage.getItem('hideSocialModal') === 'true') {
+            showStatusBar('주소를 등록하고 모든 기능을 이용해보세요!', '등록하기', '/user/social-register');
+            applyRestrictions(false);
+        } else {
+            showNeedsInfoModal();
+            window.needsInfo = false;
+        }
+    }
+}
+
+window.addEventListener('load', checkUserStatus);
+
+const loading = {
+    show: (msg) => {
+        const layer = document.getElementById('loadingLayer');
+        if (msg) layer.querySelector('.message').innerText = msg;
+        layer.classList.add('visible');
+    },
+    hide: () => {
+        const layer = document.getElementById('loadingLayer');
+        layer.classList.remove('visible');
+    }
+};

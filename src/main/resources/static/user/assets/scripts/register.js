@@ -249,6 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const $emailInput = $form['email'];
         const $nicknameInput = $form['nickname'];
 
+        loading.show('회원 정보를 등록 중입니다. 잠시만 기다려 주세요.')
+
         fetch('/user/register', {
             method: 'POST',
             body: formData
@@ -256,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) throw new Error(response.status.toString());
             return response.json();
         }).then(data => {
+            loading.hide();
             switch (data.result) {
                 case 'SUCCESS':
                     dialogHandler.simpleYesModal('알림', '회원 가입이 완료되었습니다!', {
@@ -275,37 +278,51 @@ document.addEventListener('DOMContentLoaded', () => {
                     dialogHandler.simpleYesModal('경고', '서버 응답 오류');
             }
         }).catch(error => {
+            loading.hide();
             dialogHandler.simpleYesModal('오류', `서버 통신 문제 (${error})`);
         });
     }
 
     const addressButtons = document.querySelectorAll('button[name="addressButton"]');
 
+    const $addressLayer = document.getElementById('addressLayer');
+    const $addressContent = document.getElementById('addressContent');
+    const $btnCloseLayer = document.getElementById('btnCloseLayer');
+
+
+
+    $btnCloseLayer?.addEventListener('click', () => {
+        $addressLayer.style.display = 'none';
+    });
+
+    $addressLayer?.addEventListener('click', (e) => {
+        if (e.target === $addressLayer) {
+            $addressLayer.style.display = 'none';
+        }
+    })
     addressButtons.forEach(button => {
         button.addEventListener('click', () => {
             const currentForm = button.closest('.form');
             const addressInput = currentForm.querySelector('input[name="addressPrimary"]');
             const detailInput = currentForm.querySelector('input[name="addressSecondary"]');
 
+            $addressContent.innerHTML = '';
+            $addressContent.appendChild($btnCloseLayer);
+
             new daum.Postcode({
                 oncomplete: function (data) {
-                    let addr = '';
-                    let extraAddr = '';
-
-                    if (data.userSelectedType === 'R') {
-                        addr = data.roadAddress;
-                    } else {
-                        addr = data.jibunAddress;
-                    }
-
+                    let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
                     addressInput.value = addr;
                     toggleMessage(addressInput.closest('.label'), false);
 
-                    if (detailInput) {
-                        detailInput.focus();
-                    }
-                }
-            }).open();
+                    $addressLayer.style.display = 'none';
+                    if (detailInput) detailInput.focus();
+                },
+                width: '100%',
+                height: '100%'
+            }).embed($addressContent);
+
+            $addressLayer.style.display = 'block';
         });
     });
 
@@ -331,10 +348,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const xhr = new XMLHttpRequest();
             const formData = new FormData();
             formData.append('email', $emailInput.value);
+
+            loading.show('인증 메일을 보내는 중입니다.');
             xhr.onreadystatechange = () => {
                 if (xhr.readyState !== XMLHttpRequest.DONE) {
                     return;
                 }
+                loading.hide();
                 if (xhr.status < 200 || xhr.status >= 400) {
                     dialogHandler.simpleYesModal('오류', `요청을 전송하는 도중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요. (${xhr.status})`);
                     return;
@@ -421,9 +441,11 @@ document.addEventListener('DOMContentLoaded', () => {
     $businessCheckButton.addEventListener('click', () => {
         const $businessNumberInput = document.querySelector('input[name="businessNumber"]');
         const number = $businessNumberInput.value;
+        loading.show('사업자 정보를 확인 중입니다.');
         fetch(`/user/verify-business?businessNumber=${number}`)
             .then(response => response.json())
             .then(data => {
+                loading.hide();
                 if (data.result === 'SUCCESS') {
                     dialogHandler.simpleYesModal('알림', '인증되었습니다.');
                     isBusinessVerified = true;

@@ -2,15 +2,19 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>계정 찾기 - 끼리끼리</title>
+    <title>끼리끼리 - 계정찾기</title>
     <link rel="stylesheet" href="/assets/styles/fragments.css">
     <link rel="stylesheet" href="/user/assets/styles/find.css">
+    <link rel="shortcut icon" href="/assets/images/favicon.png">
     <script defer src="/assets/scripts/dialog.js"></script>
     <script defer src="/user/assets/scripts/find.js"></script>
 </head>
 <body>
 <th:block th:replace="~{fragments/common :: dialog}"></th:block>
-
+<div id="loadingLayer" class="loading-layer">
+    <div class="spinner"></div>
+    <span class="message">잠시만 기다려 주세요</span>
+</div>
 <div class="find-container">
     <div class="find-box">
         <h1 class="logo">

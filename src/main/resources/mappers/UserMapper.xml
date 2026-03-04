@@ -50,7 +50,7 @@
             <if test="user.password != null">
                 `password` = #{user.password},
             </if>
-            <if test="user.telecom">
+            <if test="user.telecom != null">
                 `telecom` = #{user.telecom},
             </if>
             <if test="user.contact != null">
@@ -106,26 +106,27 @@
         WHERE `email` = #{email}
     </delete>
     <select id="selectByEmail" resultType="com.lsb.kkirikkiri.entities.user.UserEntity">
-        SELECT `email`             AS `email`,
-               `password`          AS `password`,
-               `nickname`          AS `nickname`,
-               `name`              AS `name`,
-               `birth`             AS `birth`,
-               `telecom`           AS `telecom`,
-               `contact`           AS `contact`,
-               `address_primary`   AS `addressPrimary`,
-               `address_secondary` AS `addressSecondary`,
-               `is_admin`          AS `isAdmin`,
-               `is_boss`           AS `isBoss`,
-               `status`            AS `status`,
-               `term_policy_at`    AS `termPolicyAt`,
-               `term_privacy_at`   AS `termPrivacyAt`,
-               `term_location_at`  AS `termLocaitonAt`,
-               `term_marketing_at` AS `termMarketingAt`,
-               `created_at`        AS `createdAt`,
-               `updated_at`        AS `updatedAt`,
-               `last_login_at`     AS `lastLoginAt`,
-               `social_type_code`  AS `socialTypeCode`
+        SELECT `email`              AS `email`,
+               `password`           AS `password`,
+               `nickname`           AS `nickname`,
+               `name`               AS `name`,
+               `birth`              AS `birth`,
+               `telecom`            AS `telecom`,
+               `contact`            AS `contact`,
+               `address_primary`    AS `addressPrimary`,
+               `address_secondary`  AS `addressSecondary`,
+               `profile_image_path` AS `profileImagePath`,
+               `is_admin`           AS `isAdmin`,
+               `is_boss`            AS `isBoss`,
+               `status`             AS `status`,
+               `term_policy_at`     AS `termPolicyAt`,
+               `term_privacy_at`    AS `termPrivacyAt`,
+               `term_location_at`   AS `termLocaitonAt`,
+               `term_marketing_at`  AS `termMarketingAt`,
+               `created_at`         AS `createdAt`,
+               `updated_at`         AS `updatedAt`,
+               `last_login_at`      AS `lastLoginAt`,
+               `social_type_code`   AS `socialTypeCode`
         FROM `kkirikkiri`.`users`
         WHERE `email` = #{email}
         LIMIT 1

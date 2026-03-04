@@ -536,9 +536,17 @@ body:has(> #dialog[data-visible]) {
   transition-property: opacity, pointer-events, transform;
 }
 #my > .container > .box.user > .image-container {
+  width: 7rem;
+  height: 7rem;
   border: 0.0625rem solid #E9EFFF;
   border-radius: 999rem;
   overflow: hidden;
+}
+#my > .container > .box.user > .image-container > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 #my > .container > .box.user > .info {
   align-items: center;
