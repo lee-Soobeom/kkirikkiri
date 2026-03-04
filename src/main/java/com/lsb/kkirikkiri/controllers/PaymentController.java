@@ -1,6 +1,5 @@
 package com.lsb.kkirikkiri.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsb.kkirikkiri.entities.PaymentEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
 import com.lsb.kkirikkiri.results.CommonResult;
@@ -24,7 +23,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.print.attribute.standard.Media;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;

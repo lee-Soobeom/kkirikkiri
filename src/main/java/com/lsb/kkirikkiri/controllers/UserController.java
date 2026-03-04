@@ -1,7 +1,6 @@
 package com.lsb.kkirikkiri.controllers;
 
 import com.lsb.kkirikkiri.dtos.ResetPasswordRequestDTO;
-import com.lsb.kkirikkiri.entities.user.EmailAuthEntity;
 import com.lsb.kkirikkiri.entities.user.EmailTokenEntity;
 import com.lsb.kkirikkiri.entities.user.StoreEntity;
 import com.lsb.kkirikkiri.entities.user.UserEntity;
@@ -13,7 +12,6 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
-import org.json.simple.JSONObject;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;

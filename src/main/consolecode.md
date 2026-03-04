@@ -86,11 +86,12 @@ CREATE TABLE `kkirikkiri`.`articles`
 ```mariadb
 CREATE TABLE `kkirikkiri`.`participants`
 (
-    `id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `article_id`   INT UNSIGNED NOT NULL,
-    `leader`       VARCHAR(20)  NOT NULL,
-    `participants` VARCHAR(210) NULL     DEFAULT NULL,
-    `count`        INT UNSIGNED NOT NULL DEFAULT 1,
+    `id`                    INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `article_id`            INT UNSIGNED NOT NULL,
+    `leader`                VARCHAR(20)  NOT NULL,
+    `participants`          VARCHAR(210) NULL     DEFAULT NULL,
+    `count`                 INT UNSIGNED NOT NULL DEFAULT 1,
+    `participants_nickname` VARCHAR(200) NOT NULL,
     CONSTRAINT PRIMARY KEY (`id`),
     CONSTRAINT FOREIGN KEY (`article_id`) REFERENCES `kkirikkiri`.`articles` (`id`)
         ON DELETE CASCADE
@@ -184,7 +185,7 @@ CREATE TABLE `kkirikkiri`.`services`
 );
 ```
 
-##  user_wallet (02.23)
+## user_wallet (02.23)
 ```mariadb
 CREATE TABLE `kkirikkiri`.`user_wallet`
 (
@@ -239,6 +240,7 @@ CREATE TABLE `kkirikkiri`.`payment`
         ON UPDATE CASCADE
 );
 ```
+
 # user
 ## socialTypes
 ```mariadb
@@ -424,3 +426,9 @@ ADD COLUMN `telecom` VARCHAR(10) NOT NULL AFTER `birth`;
 ALTER TABLE `kkirikkiri`.`users`
     MODIFY COLUMN `status` VARCHAR(20) NOT NULL DEFAULT 'GENERAL';
 ```
+
+
+- articles table
+  - participant_id, wallet_id columns 지우기 
+- participants table
+  - participants_nickname 추가하기

@@ -850,6 +850,7 @@ body:has(> #dialog[data-visible]) {
     }
   }
 }
+
 @include tablet {
   #quick {
     bottom: 2rem;
