@@ -15,8 +15,6 @@ public class ArticleEntity {
     private Integer id;
     private String boardId;
     private String userId;
-    private int participantsId;
-    private Integer walletId;
     private String title;
     private String menu;
     private String menuName;

@@ -25,7 +25,7 @@
         </section>
         <div class="profile-modify">
             <section class="profile owner-profile" th:if="${session.sessionUser.isBoss()}">
-                <span class="upload-button store-upload" th:style="${store.storeImagePath != null} ? 'background-image: url(' + ${store.storeImagePath} + ');' : 'background-image: url(/assets/images/my/default-store.png);'">
+                <span class="upload-button store-upload" th:style="${store.storeImagePath != null} ? 'background-image: url(' + ${store.storeImagePath} + ');' : 'background-image: url(/assets/images/my/my.user.png);'">
                     <input accept="image/*" name="storeImage" type="file" class="image-change">
                     <img src="/assets/images/user/profile-update.png" alt="수정" class="plus-icon">
                 </span>

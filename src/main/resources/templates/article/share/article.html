@@ -27,7 +27,7 @@
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
-<th:block th:replace="~{/fragments/common.html :: sideMypage"></th:block>
+<th:block th:replace="~{/fragments/common.html :: sideMypage}"></th:block>
 <th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
 <div id="ws" th:if="${session.sessionUser != null && #strings.contains(participants.participantsNickname, session.sessionUser.nickname)}">
     <form class="room-container" name="chatRoom">

@@ -29,10 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
            }
 
            try {
-               loading.show('인증번호를 발송하고 있습니다.');
                const response = await fetch(`/user/find-email?contact=${contact}`);
                const data = await response.json();
-               loading.hide();
                const emailResult = document.getElementById('emailResult');
                const foundedEmail = document.getElementById('foundedEmail');
 
@@ -60,12 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             try {
+                if (typeof loading !== 'undefined') loading.show('인증번호를 전송 중입니다.')
                 const response = await fetch('/user/send-auth-code', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({email})
+                    body: JSON.stringify({email: email})
                 });
                 const data = await response.json();
+                if (typeof loading !== 'undefined') loading.hide();
 
                 if (data.result === 'success') {
                     dialogHandler.simpleYesModal('알림', '인증번호가 발송되었습니다. 메일함을 확인해 주세요.');
@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     dialogHandler.simpleYesModal('오류', '가입되지 않은 이메일입니다.')
                 }
             } catch (error) {
+                if (typeof loading !== 'undefined') loading.hide();
                 dialogHandler.simpleYesModal('오류', '메일 발송 중 문제가 발생했습니다.');
             }
         });

@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.json.simple.JSONObject;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +29,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -185,15 +189,32 @@ public class UserController extends AbstractGeneralController{
         return "user/my";
     }
 
-    @RequestMapping(value = "/my", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/my", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, Object> patchMyPage(@SessionAttribute(value = "sessionUser") UserEntity sessionUser, UserEntity user, MultipartFile profileImage, HttpSession session) {
+    public Map<String, Object> postMyPage(
+            @SessionAttribute(value = "sessionUser") UserEntity sessionUser,
+            UserEntity user,
+            StoreEntity store,
+            @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
+            @RequestParam(value = "storeImage", required = false) MultipartFile storeImage,
+            HttpSession session) {
+
         user.setEmail(sessionUser.getEmail());
-        Result result = userService.modify(user, null, profileImage, null);
+
+        if (sessionUser.isBoss()) {
+            store.setEmail(sessionUser.getEmail());
+        }
+
+        Result result = userService.modify(user, store, profileImage, storeImage);
 
         if (result == CommonResult.SUCCESS) {
-            UserEntity updatedUser = userService.getUserByEmail(user.getEmail());
+            UserEntity updatedUser = userService.getUserByEmail(sessionUser.getEmail());
             session.setAttribute("sessionUser", updatedUser);
+
+            if (updatedUser.isBoss()) {
+                StoreEntity updatedStore = userService.getStoreByEmail(sessionUser.getEmail());
+                session.setAttribute("store", updatedStore);
+            }
         }
 
         return prepareJsonResponse(result);
@@ -352,4 +373,23 @@ public class UserController extends AbstractGeneralController{
         return response;
     }
 
+    @RequestMapping(value = "/display", method = RequestMethod.GET)
+    public ResponseEntity<Resource> getDisplay(@RequestParam(value = "fileName") String fileName) {
+        String uploadPath = "C:/kkiri/uploads/profiles/";
+        Resource resource = new FileSystemResource(uploadPath + fileName);
+
+        if (!resource.exists()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        try {
+            Path filePath = Paths.get(uploadPath + fileName);
+            headers.add("Content-Type", Files.probeContentType(filePath));
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+    }
 }

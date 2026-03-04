@@ -16,7 +16,7 @@ function loadLists() {
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
-        }ㄱ
+        }
         $loadingMessage.classList.add('-hidden');
         if (xhr.status < 200 || xhr.status >= 400) {
             dialogHandler.simpleYesModal('오류', `공구 게시글을 불러오는 도중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요. (${xhr.status})`);
