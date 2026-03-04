@@ -13,7 +13,7 @@ body:has(> #searchModal[data-visible]) {
   color: inherit;
   font: inherit;
   overflow-y: visible;
-  padding: 1rem 0;
+  padding: 0;
 
   > .error {
     @include flex(column, center, center, 1rem);
@@ -33,8 +33,9 @@ body:has(> #searchModal[data-visible]) {
   > .form {
     @include flex(column, flex-start, stretch, 1.75rem);
     background-color: #ffffff;
-    border: 0.0625rem solid #A5BDFF;
-    padding: 0 2.5rem 2rem 2.5rem;
+    //border: 0.0625rem solid #A5BDFF;
+    padding: 2rem 2.5rem;
+    width: 100%;
 
     > .title {
       color: #212121;
@@ -163,7 +164,7 @@ body:has(> #searchModal[data-visible]) {
       }
 
       &.row {
-        @include flex(row, flex-start, center, 0.25rem);
+        @include flex(row, flex-start, center, 0.5rem);
 
         > .radio {
           margin: 0 0.25rem;
@@ -527,9 +528,14 @@ body:has(> #searchModal[data-visible]) {
 @include tablet {
   #main {
     width: 80%;
+    align-self: center;
+    padding: 0;
+    min-height: calc(100vh - 3.75rem);
+    background-color: #ffffff;
 
     > .form {
-      padding: 0 1.5rem 2rem 1.5rem;
+      flex: 1 1 auto;
+      padding: 2rem 1.5rem;
 
       > .title {
         font-size: 1.75rem;
@@ -567,10 +573,12 @@ body:has(> #searchModal[data-visible]) {
   #main {
     width: 100%;
     padding: 0;
+    min-height: calc(100vh - 3.75rem);
+    background-color: #ffffff;
 
     > .form {
+      flex: 1 1 auto;
       padding: 0 1rem 1.5rem 1rem;
-      gap: 1.25rem;
 
       > .title {
         font-size: 1.4rem;

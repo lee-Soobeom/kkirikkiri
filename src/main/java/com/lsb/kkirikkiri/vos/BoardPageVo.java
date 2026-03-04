@@ -19,11 +19,22 @@ public class BoardPageVo {
 
 
     public BoardPageVo(int requestPage, int totalCount, String sort) {
-        this.requestPage = Math.max(requestPage, this.minPage);
         this.totalCount = totalCount;
         this.sort = (sort == null || sort.isBlank()) ? "latest" : sort;
+        if (totalCount == 0) {
+            this.maxPage = 1;
+            this.requestPage = 1;
+            this.startPage = 1;
+            this.endPage = 1;
+            this.dbOffset = 0;
+            return;
+        }
         this.maxPage = totalCount / this.rowCount + (totalCount % this.rowCount == 0 ? 0 : 1);
-        this.startPage = (requestPage / this.anchorCount) * this.anchorCount + 1;
+        this.requestPage = Math.min(
+                Math.max(requestPage, this.minPage),
+                this.maxPage
+        );
+        this.startPage = ((this.requestPage - 1) / this.anchorCount) * this.anchorCount + 1;
         this.endPage = Math.min(this.maxPage, this.startPage + (this.anchorCount - 1));
         this.dbOffset = (this.requestPage - 1) * this.rowCount;
     }

@@ -10,7 +10,7 @@ const $searchForm = document.forms['searchForm'];
 const $searchFormAddr = $searchModal.querySelector(':scope > .modal > .button-container > .caption > .address')
 /** @type {HTMLElement} */
 const $searchList = $searchForm.querySelector(':scope > .list');
-const $fileList = $writeForm.querySelectorAll(':scope > .image-upload-container > .list > .item');
+const $fileList = $writeForm?.querySelectorAll(':scope > .image-upload-container > .list > .item');
 const ps = new kakao.maps.services.Places();
 const markerImage = new kakao.maps.MarkerImage(
     '/article/assets/images/write/search-modal/marker.png',
@@ -24,6 +24,21 @@ let currentLat = '35.8661';
 let dialogEl;
 let modalEl;
 let buttonRef;
+
+if (!isLoggedIn) {
+    dialogHandler.simpleYesNoModal(
+        '로그인 필요',
+        '게시글은 회원만 작성할 수 있습니다.',
+        [
+            { caption: '취소', onclick: () => { history.back(); } },
+            { caption: '로그인', onclick: () => { location.href = '/user/login'; } }
+        ]
+    );
+} else if (!isBoss) {
+    dialogHandler.simpleYesModal('오류', '해당 게시판에 게시글을 작성할 권한이 없습니다.', {
+        onclick: () => { history.back(); }
+    });
+}
 
 $searchModal.addEventListener('mousedown', (e) => {
     if (!$searchForm.contains(e.target)) {
@@ -114,7 +129,7 @@ $searchForm.addEventListener('submit', (e) => {
     });
 })
 
-$writeForm['restaurantButton'].addEventListener('click', () => {
+$writeForm?.['restaurantButton'].addEventListener('click', () => {
     buttonRef = 'restaurant';
     geoHandler.addressName === ''
         ? $searchFormAddr.textContent = '현 위치를 알 수 없습니다.'
@@ -122,7 +137,7 @@ $writeForm['restaurantButton'].addEventListener('click', () => {
     $searchModal.show();
 });
 
-$writeForm['files'].addEventListener('change', () => {
+$writeForm?.['files'].addEventListener('change', () => {
     if ($writeForm['files'].files.length !== 0) {
         for (let $li of $fileList) {
             $li.innerText = "이미지를 업로드 해주세요.";
@@ -162,7 +177,7 @@ $writeForm['files'].addEventListener('change', () => {
     $writeForm.querySelector(':scope > .image-upload-container > .caption > .count').innerText = filesArray.length;
 });
 
-$writeForm.addEventListener('submit', (e) => {
+$writeForm?.addEventListener('submit', (e) => {
     e.preventDefault();
     const isModify = $writeForm['mode'] && $writeForm['mode'].value === 'modify';
     // boardId

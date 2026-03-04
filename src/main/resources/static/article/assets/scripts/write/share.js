@@ -10,11 +10,11 @@ const $searchForm = document.forms['searchForm'];
 const $searchFormAddr = $searchModal.querySelector(':scope > .modal > .button-container > .caption > .address')
 /** @type {HTMLElement} */
 const $searchList = $searchForm.querySelector(':scope > .list');
-const $addressContainer = $writeForm.querySelector(':scope > .address-container');
+const $addressContainer = $writeForm?.querySelector(':scope > .address-container');
 /** @type {HTMLInputElement} */
-const $radioPrimary = $writeForm.querySelector(':scope > .address-container > .row > .radio.primary');
+const $radioPrimary = $writeForm?.querySelector(':scope > .address-container > .row > .radio.primary');
 /** @type {HTMLInputElement} */
-const $radioSecondary = $writeForm.querySelector(':scope > .address-container > .row > .radio.secondary');
+const $radioSecondary = $writeForm?.querySelector(':scope > .address-container > .row > .radio.secondary');
 const ps = new kakao.maps.services.Places();
 const markerImage = new kakao.maps.MarkerImage(
     '/article/assets/images/write/search-modal/marker.png',
@@ -29,6 +29,22 @@ let dialogEl;
 let modalEl;
 let buttonRef;
 
+if (!isLoggedIn) {
+    dialogHandler.simpleYesNoModal(
+        '로그인 필요',
+        '게시글은 회원만 작성할 수 있습니다.',
+        [
+            {
+                caption: '취소',
+                onclick: () => { history.back(); }
+            },
+            {
+                caption: '로그인',
+                onclick: () => { location.href = '/user/login'; }
+            }
+        ]
+    );
+}
 $searchModal.addEventListener('mousedown', (e) => {
     if (!$searchForm.contains(e.target)) {
         $searchModal.hide();

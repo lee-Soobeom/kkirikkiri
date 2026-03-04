@@ -172,14 +172,18 @@ body:has(> #dialog[data-visible]) {
   gap: 0.5rem;
   justify-content: flex-start;
 }
+#top > .button-container > .divider {
+  color: #E9EFFF;
+}
 #top > .button-container > .button {
   height: 2rem;
-  border: 0.0625rem solid #E9EFFF;
   border-radius: 0.25rem;
   padding: 0.375rem;
 }
 #top > .button-container > .button > .link {
   color: inherit;
+  font-size: 1.125rem;
+  font-weight: 600;
 }
 #top > .button-container > .bell {
   align-items: center;

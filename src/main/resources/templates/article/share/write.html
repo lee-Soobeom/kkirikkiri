@@ -15,18 +15,16 @@
     <script defer src="/assets/scripts/common.js"></script>
     <script defer src="/assets/scripts/dialog.js" type="text/javascript"></script>
     <script defer src="/article/assets/scripts/write/share.js"></script>
+    <script th:inline="javascript">
+        const isLoggedIn = /*[[${session.sessionUser != null}]]*/ false;
+    </script>
 </head>
 <body>
 <th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
 <th:block th:replace="~{/fragments/common.html :: sideMypage(${session.sessionUser})}"></th:block>
 <th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
 <main id="main">
-    <div class="error invalid-board" th:if="${board == null}">
-        <h1 class="title">게시글 작성</h1>
-        <span class="message">존재하지 않는 게시판입니다. 주소를 다시 확인해 주세요.</span>
-        <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>
-    </div>
-    <div class="error empty-session" th:if="${board != null and session.sessionUser == null}">
+    <div class="error empty-session" th:if="${session.sessionUser == null}">
         <h1 class="title">게시글 작성</h1>
         <span class="message">게시글은 회원만 작성할 수 있습니다. <a href="/user/login" target="_self">로그인</a>해 주세요.</span>
         <button name="back" type="button" data-object="button" data-color="concept">돌아가기</button>

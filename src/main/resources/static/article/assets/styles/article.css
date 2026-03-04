@@ -243,7 +243,7 @@
   overflow: hidden;
 }
 #main > .container > .context-container > .content-container > .order-card > .caption {
-  padding: 1rem 1rem 0rem 1.5rem;
+  padding: 1rem 1rem 0 1.5rem;
   font-weight: 700;
 }
 #main > .container > .context-container > .content-container > .order-card > .title-container {
@@ -300,6 +300,15 @@
 }
 #main > .container > .context-container > .content-container > .order-card > .order-container {
   padding: 1rem 1.75rem 2rem 1.75rem;
+}
+#main > .container > .context-container > .content-container > .order-card > .memo-container {
+  padding: 1.75rem 1.75rem 2rem 1.75rem;
+}
+#main > .container > .context-container > .content-container > .order-card > .memo-container > .caption {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #374151;
+  white-space: pre-line;
 }
 #main > .container > .context-container > .view-container {
   display: grid;
