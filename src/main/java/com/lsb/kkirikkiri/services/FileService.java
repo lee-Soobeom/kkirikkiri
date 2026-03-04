@@ -49,7 +49,7 @@ public class FileService {
             String savedFileName = UUID.randomUUID() + extension;
             long size = file.getSize();
 
-            Path firstPath = Paths.get("C:/upload/image");
+            Path firstPath = Paths.get("/home/ljh5898123/upload/image");
             String datePath = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM"));
             Path basePath = firstPath.resolve(datePath);
             Path savedPath = basePath.resolve(savedFileName);
