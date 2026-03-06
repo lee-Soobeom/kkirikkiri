@@ -132,7 +132,7 @@ public class PaymentController {
     public ModelAndView index(ModelAndView modelAndView,
                               @SessionAttribute(value = "sessionUser") UserEntity sessionUser,
                               @RequestParam(value = "amount", defaultValue = "0") int amount) {
-        modelAndView.setViewName("/tosspayments/widget/checkout");
+        modelAndView.setViewName("tosspayments/widget/checkout");
         if (this.paymentService.checkUser(sessionUser)) {
             modelAndView.addObject("sessionUser", sessionUser);
         }
@@ -152,7 +152,7 @@ public class PaymentController {
 
         // 결제 실패
         if (response.containsKey("error")) {
-            modelAndView.setViewName("/tosspayments/fail");
+            modelAndView.setViewName("tosspayments/fail");
             modelAndView.addObject("response", response);
             return modelAndView;
         }
@@ -160,14 +160,14 @@ public class PaymentController {
         //결제 성공 > record update
         Pair<Result, PaymentVo> result = this.paymentService.updateCharge(sessionUser, paymentEntity);
         if (result.getLeft().equals(PaymentResult.FAILURE_CANCEL)) {
-            modelAndView.setViewName("/tosspayments/fail");
+            modelAndView.setViewName("tosspayments/fail");
             modelAndView.addObject("response", response);
             modelAndView.addObject("cancel", result.getRight());
             modelAndView.addObject("result", result.getLeft().name());
             return modelAndView;
         }
 
-        modelAndView.setViewName("/tosspayments/widget/success");
+        modelAndView.setViewName("tosspayments/widget/success");
         modelAndView.addObject("payment", paymentEntity);
         modelAndView.addObject("response", response);
         modelAndView.addObject("result", result.getLeft().name());

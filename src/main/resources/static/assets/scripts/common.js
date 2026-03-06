@@ -8,6 +8,7 @@ const $currentLocationButton = $my?.querySelector('[name="location"]');
 const $paymentButton = $my?.querySelector('[name="payment"]');
 const $totalMessages = $topNav?.querySelector(':scope > .button-container > .bell > .total');
 const $messageList = $topNav?.querySelector(':scope > .button-container > .bell > .message-list');
+const $myCloseButton = $my?.querySelector('[name="myClose"]');
 const $myContainer = $my?.querySelector(':scope > .container');
 
 window.geoHandler = {
@@ -164,6 +165,10 @@ if ($my != null) {
             $nav.querySelector(':scope > .image-wrapper > .input').checked = false;
         }
     });
+
+    $myCloseButton?.addEventListener('click', () => {
+        $nav.querySelector(':scope > .image-wrapper > .input').checked = false;
+    })
 }
 
 function getIp() {

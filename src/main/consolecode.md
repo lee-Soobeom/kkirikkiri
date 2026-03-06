@@ -10,9 +10,7 @@ CREATE TABLE `kkirikkiri`.`boards`
     `is_admin_only` TINYINT(1) NOT NULL DEFAULT 0,
     CONSTRAINT PRIMARY KEY (`id`)
 );
-```
-### board 레코드
-```mariadb
+
 INSERT INTO `kkirikkiri`.`boards` (`id`, `display_text`)
 VALUES ('share', '공구게시판'),
        ('promote', '홍보게시판'),
@@ -28,9 +26,6 @@ CREATE TABLE `kkirikkiri`.`menus`
     CONSTRAINT PRIMARY KEY (`id`)
 );
 
-```
-### menu 레코드
-```mariadb
 INSERT INTO `kkirikkiri`.`menus` (id, display_text)
 VALUES ('chicken', '치킨'),
        ('pizza', '피자'),
@@ -40,10 +35,9 @@ VALUES ('chicken', '치킨'),
        ('japanese-food', '일식'),
        ('chinese-food', '중식'),
        ('western-food', '양식');
-
 ```
 
-## articles (02.26)
+## articles
 ```mariadb
 CREATE TABLE `kkirikkiri`.`articles`
 (
@@ -82,7 +76,7 @@ CREATE TABLE `kkirikkiri`.`articles`
 );
 ```
 
-## participants (02.11)
+## participants
 ```mariadb
 CREATE TABLE `kkirikkiri`.`participants`
 (
@@ -102,7 +96,7 @@ CREATE TABLE `kkirikkiri`.`participants`
 );
 ```
 
-## files (02.26)
+## files
 ````mariadb
 CREATE TABLE `kkirikkiri`.`files`
 (
@@ -124,7 +118,7 @@ CREATE TABLE `kkirikkiri`.`files`
 );
 ````
 
-## messages (02.11)
+## messages
 ```mariadb
 CREATE TABLE `kkirikkiri`.`messages`
 (
@@ -157,15 +151,12 @@ CREATE TABLE `kkirikkiri`.`service_filter`
     `display_text` VARCHAR(20) NOT NULL,
     CONSTRAINT PRIMARY KEY (`code`)
 );
-```
-### serviceFilter 레코드
-```mariadb
+
 INSERT INTO `kkirikkiri`.`service_filter`
 VALUES ('pay', '결제/환불'),
        ('user', '사용자 계정/프로필'),
        ('event', '이벤트/혜택'),
        ('restrict', '이용제한');
-
 ```
 
 ## service
@@ -185,7 +176,7 @@ CREATE TABLE `kkirikkiri`.`services`
 );
 ```
 
-## user_wallet (02.23)
+## user_wallet
 ```mariadb
 CREATE TABLE `kkirikkiri`.`user_wallet`
 (
@@ -241,83 +232,7 @@ CREATE TABLE `kkirikkiri`.`payment`
 );
 ```
 
-# user
-## socialTypes
-```mariadb
-CREATE TABLE `kkirikkiri`.`social_types`
-(
-    `code` VARCHAR(10) NOT NULL,
-    `text` VARCHAR(50) NOT NULL,
-    CONSTRAINT PRIMARY KEY (`code`)
-);
-```
-## users
-```mariadb
-CREATE TABLE `kkirikkiri`.`users`
-(
-    `email`             VARCHAR(50)  NOT NULL,
-    `password`          VARCHAR(150) NOT NULL,
-    `nickname`          VARCHAR(20)  NOT NULL,
-    `name`              VARCHAR(20)  NOT NULL,
-    `birth`             DATE         NOT NULL,
-    `contact`           VARCHAR(15)  NOT NULL,
-    `address_primary`   VARCHAR(200) NOT NULL,
-    `address_secondary` VARCHAR(100) NOT NULL,
-    `is_admin`          BOOLEAN      NOT NULL DEFAULT 0,
-    `is_boss`           BOOLEAN      NOT NULL DEFAULT 0,
-    `store_email`       VARCHAR(50)  NULL,
-    `status`            VARCHAR(10)  NOT NULL DEFAULT 'GENERAL',
-    `my_point`          INT          NOT NULL DEFAULT 0,
-    `review_total`      INT                   DEFAULT 0,
-    `review_count`      INT                   DEFAULT 0,
-    `review_avg`        DOUBLE                DEFAULT 0.0,
-    `created_at`        DATETIME     NOT NULL DEFAULT NOW(),
-    `updated_at`        DATETIME     NOT NULL,
-    `social_type_code`  VARCHAR(10)  NULL     DEFAULT NULL,
-    `social_id`         VARCHAR(50)  NULL     DEFAULT NULL,
-    CONSTRAINT PRIMARY KEY (`email`),
-    CONSTRAINT UNIQUE (`nickname`),
-    CONSTRAINT FOREIGN KEY (`store_email`) REFERENCES `kkirikkiri`.`users` (`email`)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    CONSTRAINT FOREIGN KEY (`social_type_code`) REFERENCES `kkirikkiri`.`social_types` (`code`)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
-);
-```
-## stores
-```mariadb
-CREATE TABLE `kkirikkiri`.`stores`
-(
-    `email`           VARCHAR(50)  NOT NULL,
-    `business_number` VARCHAR(10)  NOT NULL,
-    `store_name`      VARCHAR(50)  NOT NULL,
-    `business_type`   VARCHAR(20)  NOT NULL,
-    `store_address`   VARCHAR(200) NOT NULL,
-    `store_contact`   VARCHAR(15)  NOT NULL,
-    `operating_hours` VARCHAR(100),
-    `license_url`     VARCHAR(255) NOT NULL,
-    `report_card_url` VARCHAR(255) NOT NULL,
-    `approval_status` VARCHAR(20)  NOT NULL DEFAULT 'PENDING',
-    `reject_reason`   VARCHAR(255),
-    `applied_at`      DATETIME     NOT NULL,
-    `approved_at`     DATETIME,
-    CONSTRAINT PRIMARY KEY (`email`),
-    CONSTRAINT FOREIGN KEY (`email`) REFERENCES `users` (`email`) ON DELETE CASCADE
-);
-```
-## admins
-```mariadb
-CREATE TABLE `kkirikkiri`.`admins`
-(
-    `email`     VARCHAR(50) NOT NULL,
-    `access_ip` VARCHAR(45),
-    CONSTRAINT PRIMARY KEY (`email`),
-    CONSTRAINT FOREIGN KEY (`email`) REFERENCES `users` (`email`) ON DELETE CASCADE
-);
-```
-
-## User 관련 테이블 변경 > 이걸로 쓰세용 (02.05)
+## User
 ```mariadb
 CREATE SCHEMA `kkirikkiri`;
 
@@ -328,28 +243,41 @@ CREATE TABLE `kkirikkiri`.`social_types`
     CONSTRAINT PRIMARY KEY (`code`)
 );
 
+INSERT INTO `kkirikkiri`.`social_types`
+VALUES ('KAKAO', '카카오'),
+       ('LOCAL', '일반'),
+       ('NAVER', '네이버');
+;
+
 CREATE TABLE `kkirikkiri`.`users`
 (
-    `email`             VARCHAR(50)  NOT NULL,
-    `password`          VARCHAR(150) NOT NULL,
-    `nickname`          VARCHAR(20)  NOT NULL,
-    `name`              VARCHAR(20)  NOT NULL,
-    `birth`             DATE         NOT NULL,
-    `contact`           VARCHAR(15)  NOT NULL,
-    `address_primary`   VARCHAR(200) NOT NULL,
-    `address_secondary` VARCHAR(100) NOT NULL,
-    `is_admin`          BOOLEAN      NOT NULL DEFAULT 0,
-    `is_boss`           BOOLEAN      NOT NULL DEFAULT 0,
-    `store_email`       VARCHAR(50)  NULL,
-    `status`            VARCHAR(10)  NOT NULL DEFAULT 'GENERAL',
-    `my_point`          INT          NOT NULL DEFAULT 0,
-    `review_total`      INT                   DEFAULT 0,
-    `review_count`      INT                   DEFAULT 0,
-    `review_avg`        DOUBLE                DEFAULT 0.0,
-    `created_at`        DATETIME     NOT NULL DEFAULT NOW(),
-    `updated_at`        DATETIME     NOT NULL,
-    `social_type_code`  VARCHAR(10)  NULL     DEFAULT NULL,
-    `social_id`         VARCHAR(50)  NULL     DEFAULT NULL,
+    `email`              VARCHAR(50)  NOT NULL,
+    `password`           VARCHAR(150) NULL,
+    `nickname`           VARCHAR(20)  NOT NULL,
+    `name`               VARCHAR(20)  NULL,
+    `birth`              DATE         NULL,
+    `telecom`            VARCHAR(10)  NULL,
+    `contact`            VARCHAR(15)  NULL,
+    `address_primary`    VARCHAR(255) NULL,
+    `address_secondary`  VARCHAR(255) NULL,
+    `profile_image_path` VARCHAR(255)          DEFAULT NULL,
+    `is_admin`           BOOLEAN      NOT NULL DEFAULT 0,
+    `is_boss`            BOOLEAN      NOT NULL DEFAULT 0,
+    `store_email`        VARCHAR(50)  NULL,
+    `status`             VARCHAR(20)  NOT NULL DEFAULT 'GENERAL',
+    `my_point`           INT          NOT NULL DEFAULT 0,
+    `review_total`       INT                   DEFAULT 0,
+    `review_count`       INT                   DEFAULT 0,
+    `review_avg`         DOUBLE                DEFAULT 0.0,
+    `created_at`         DATETIME     NOT NULL DEFAULT NOW(),
+    `updated_at`         DATETIME     NOT NULL,
+    `social_type_code`   VARCHAR(10)  NULL     DEFAULT NULL,
+    `social_id`          VARCHAR(50)  NULL     DEFAULT NULL,
+    `term_policy_at`     DATETIME     NULL,
+    `term_privacy_at`    DATETIME     NULL,
+    `term_location_at`   DATETIME     NULL,
+    `term_marketing_at`  DATETIME     NULL,
+    `last_login_at`      DATETIME     NULL,
     CONSTRAINT PRIMARY KEY (`email`),
     CONSTRAINT UNIQUE (`nickname`),
     CONSTRAINT FOREIGN KEY (`store_email`) REFERENCES `kkirikkiri`.`users` (`email`)
@@ -362,19 +290,26 @@ CREATE TABLE `kkirikkiri`.`users`
 
 CREATE TABLE `kkirikkiri`.`stores`
 (
-    `email`           VARCHAR(50)  NOT NULL,
-    `business_number` VARCHAR(10)  NOT NULL,
-    `store_name`      VARCHAR(50)  NOT NULL,
-    `business_type`   VARCHAR(20)  NOT NULL,
-    `store_address`   VARCHAR(200) NOT NULL,
-    `store_contact`   VARCHAR(15)  NOT NULL,
-    `operating_hours` VARCHAR(100),
-    `license_url`     VARCHAR(255) NOT NULL,
-    `report_card_url` VARCHAR(255) NOT NULL,
-    `approval_status` VARCHAR(20)  NOT NULL DEFAULT 'PENDING',
-    `reject_reason`   VARCHAR(255),
-    `applied_at`      DATETIME     NOT NULL,
-    `approved_at`     DATETIME,
+    `email`                   VARCHAR(50)  NOT NULL,
+    `business_number`         VARCHAR(10)  NOT NULL,
+    `store_name`              VARCHAR(50)  NOT NULL,
+    `business_type`           VARCHAR(20)  NOT NULL,
+    `address_primary`         VARCHAR(200) NOT NULL,
+    `store_contact`           VARCHAR(15)  NOT NULL,
+    `operating_hours`         VARCHAR(100),
+    `store_image_path`        VARCHAR(255)          DEFAULT NULL,
+    `license_url`             VARCHAR(255) NOT NULL,
+    `report_card_url`         VARCHAR(255) NOT NULL,
+    `term_policy_at`          DATETIME     NOT NULL,
+    `term_privacy_at`         DATETIME     NOT NULL,
+    `term_third_party_at`     DATETIME     NOT NULL,
+    `term_business_verify_at` DATETIME     NOT NULL,
+    `term_doc_submission_at`  DATETIME     NOT NULL,
+    `term_marketing_at`       DATETIME     NULL,
+    `approval_status`         VARCHAR(20)  NOT NULL DEFAULT 'PENDING',
+    `reject_reason`           VARCHAR(255),
+    `applied_at`              DATETIME     NOT NULL,
+    `approved_at`             DATETIME,
     CONSTRAINT PRIMARY KEY (`email`),
     CONSTRAINT FOREIGN KEY (`email`) REFERENCES `users` (`email`) ON DELETE CASCADE
 );
@@ -386,13 +321,6 @@ CREATE TABLE `kkirikkiri`.`admins`
     CONSTRAINT PRIMARY KEY (`email`),
     CONSTRAINT FOREIGN KEY (`email`) REFERENCES `users` (`email`) ON DELETE CASCADE
 );
-
-
-ALTER TABLE `kkirikkiri`.`stores`
-    RENAME COLUMN address_primary TO `address_primary`;
-
-ALTER TABLE `kkirikkiri`.`stores`
-    ADD COLUMN `address_secondary` VARCHAR(100) NOT NULL AFTER `address_primary`;
 
 CREATE TABLE `kkirikkiri`.`email_tokens`
 (
@@ -406,29 +334,12 @@ CREATE TABLE `kkirikkiri`.`email_tokens`
     CONSTRAINT PRIMARY KEY (`email`, `code`, `salt`)
 );
 
-ALTER TABLE `kkirikkiri`.`users`
-  ADD COLUMN `term_policy_at` DATETIME NOT NULL,
-  ADD COLUMN `term_privacy_at` DATETIME NOT NULL,
-  ADD COLUMN `term_location_at` DATETIME NOT NULL,
-  ADD COLUMN `term_marketing_at` DATETIME NULL;
-
-ALTER TABLE `kkirikkiri`.`stores`
-ADD COLUMN `term_policy_at` DATETIME NOT NULL AFTER `report_card_url`,
-    ADD COLUMN `term_privacy_at` DATETIME NOT NULL AFTER `term_policy_at`,
-    ADD COLUMN `term_third_party_at` DATETIME NOT NULL AFTER `term_privacy_at`,
-    ADD COLUMN `term_business_verify_at` DATETIME NOT NULL AFTER `term_third_party_at`,
-    ADD COLUMN `term_doc_submission_at` DATETIME NOT NULL AFTER `term_business_verify_at`,
-    ADD COLUMN `term_marketing_at` DATETIME NULL AFTER `term_doc_submission_at`;
-
-ALTER TABLE `kkirikkiri`.`users`
-ADD COLUMN `telecom` VARCHAR(10) NOT NULL AFTER `birth`;
-
-ALTER TABLE `kkirikkiri`.`users`
-    MODIFY COLUMN `status` VARCHAR(20) NOT NULL DEFAULT 'GENERAL';
+CREATE TABLE `kkirikkiri`.`email_auth`
+(
+    `email`      VARCHAR(50)  NOT NULL,
+    `token`      VARCHAR(100) NOT NULL,
+    `is_used`    TINYINT(1) DEFAULT 0,
+    `created_at` DATETIME   DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PRIMARY KEY (`email`, `token`)
+);
 ```
-
-
-- articles table
-  - participant_id, wallet_id columns 지우기 
-- participants table
-  - participants_nickname 추가하기

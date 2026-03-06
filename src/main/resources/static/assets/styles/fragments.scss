@@ -488,40 +488,18 @@ body:has(> #dialog[data-visible]) {
         @include flex(column, space-around, center, 0.5rem);
         position: relative;
 
-        > .current {
-          @include flex(row, center, center);
+        > .close {
           top: 0;
           right: 0;
-          width: 1.75rem;
-          height: 1.75rem;
-          border: 0.0625rem solid #E9EFFF;
-          border-radius: 0.25rem;
+          width: 1rem;
+          height: 1rem;
           cursor: pointer;
           position: absolute;
           transform: translate(-50%, 50%);
 
-          &:hover {
-            > .caption {
-              opacity: 1;
-              pointer-events: auto;
-              transform: translateY(calc(100% + 0.25rem));
-            }
-          }
-
-          > .caption {
-            @include flex(row, center, center);
-            bottom: 0;
-            width: 2.5rem;
-            background-color: #E9EFFF;
-            font-size: 0.75rem;
-            font-weight: 500;
-            opacity: 0;
-            padding: 0.125rem;
-            position: absolute;
-            pointer-events: none;
-            transform: translateY(100%);
-            transition-duration: 500ms;
-            transition-property: opacity, pointer-events, transform;
+          > .image {
+            width: 1rem;
+            height: 1rem;
           }
         }
 
@@ -541,7 +519,8 @@ body:has(> #dialog[data-visible]) {
         }
 
         > .info {
-          @include flex(column, flex-stert, center, 0.125rem);
+          @include flex(column, center, center, 0.125rem);
+          width: 100%;
 
           > .nickname {
             color: #232323;
@@ -549,10 +528,57 @@ body:has(> #dialog[data-visible]) {
             font-weight: 700;
           }
 
-          > .address {
-            color: #ababab;
-            font-size: 0.75rem;
-            font-weight: 300;
+          > .address-container {
+            @include flex(row, center, center, 1rem);
+            width: 100%;
+            position: relative;
+
+            > .address {
+              color: #ababab;
+              flex: 1 1 auto;
+              font-size: 1rem;
+              font-weight: 300;
+              text-align: center;
+            }
+
+            > .current {
+              @include flex(row, center, center);
+              right: 0;
+              width: 1.75rem;
+              height: 1.75rem;
+              border: 0.0625rem solid #E9EFFF;
+              border-radius: 0.25rem;
+              cursor: pointer;
+              flex: 0 0 auto;
+              position: absolute;
+              transform: translateX(-110%);
+
+              &:hover {
+                > .caption {
+                  opacity: 1;
+                  pointer-events: auto;
+                  transform: translateX(calc(100% + 0.5rem));
+                }
+              }
+
+              > .caption {
+                @include flex(row, center, center);
+                right: 0;
+                width: 2.75rem;
+                height: 1.75rem;
+                background-color: #E9EFFF;
+                border-radius: 0.25rem;
+                font-size: 0.75rem;
+                font-weight: 500;
+                opacity: 0;
+                padding: 0.125rem;
+                position: absolute;
+                pointer-events: none;
+                transform: translateX(100%);
+                transition-duration: 500ms;
+                transition-property: opacity, pointer-events, transform;
+              }
+            }
           }
 
           > .rank {
@@ -765,6 +791,30 @@ body:has(> #dialog[data-visible]) {
       @include flex(column, flex-start, stretch, 0.5rem);
       width: 90%;
       padding: 3.875rem 0.5rem 0.75rem 0.5rem;
+    }
+
+    > .charge-container {
+      width: 90%;
+      gap: 0;
+      padding: 3.875rem 0.5rem 0.75rem 0.5rem;
+      transform: translateX(-10%);
+
+      &[data-visible]{
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(0%);
+        z-index: 3;
+      }
+
+      > .cost-container {
+        > .title {
+          padding: 1rem 0 0 0;
+        }
+      }
+
+      > .button {
+        margin-top: 1.5rem;
+      }
     }
   }
 }

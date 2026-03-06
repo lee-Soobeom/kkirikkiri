@@ -103,6 +103,7 @@
 }
 
 #main > .title {
+  @include flex(column, center, center);
   align-self: center;
   color: #A5BDFF;
   font-size: 2rem;
@@ -261,8 +262,13 @@
             gap: 1rem;
 
             > .item {
-              > .title { font-size: 0.75rem; }
-              > .caption { font-size: 0.75rem; }
+              > .title {
+                font-size: 0.75rem;
+              }
+
+              > .caption {
+                font-size: 0.75rem;
+              }
             }
           }
         }
@@ -308,89 +314,6 @@
     }
   }
 }
-//
-//@include tablet {
-//  #main > .group {
-//    > .list {
-//      > .row {
-//        height: 5.25rem;
-//
-//        > .content-container {
-//          @include flex(column, space-evenly, flex-start, 0.25rem);
-//          padding: 0.5rem 0.5rem;
-//
-//          > .title {
-//            font-size: 1.25rem;
-//          }
-//
-//          > .content {
-//            @include flex(row, flex-start, center, 1rem);
-//            padding-left: 0.125rem;
-//
-//            > .item {
-//
-//              > .title {
-//                font-size: 0.75rem;
-//              }
-//
-//              > .caption {
-//                font-size: 0.75rem;
-//              }
-//            }
-//          }
-//        }
-//
-//        > .member-container {
-//          font-size: 1rem;
-//          padding: 0 0.875rem;
-//        }
-//      }
-//    }
-//  }
-//}
-//
-//@include mobile {
-//  #main > .group {
-//    > .list {
-//      > .row {
-//        height: 3.75rem;
-//
-//        > .content-container {
-//          @include flex(column, space-evenly, flex-start);
-//          padding: 0.125rem 0.25rem;
-//
-//          > .title {
-//            font-size: 1rem;
-//          }
-//
-//          > .content {
-//            @include flex(column, flex-start, flex-start, 0);
-//
-//            &:nth-child(2) {
-//              display: none;
-//            }
-//
-//            > .item {
-//
-//              > .title {
-//                font-size: 0.75rem;
-//              }
-//
-//              > .caption {
-//                font-size: 0.75rem;
-//              }
-//            }
-//          }
-//        }
-//
-//        > .member-container {
-//          font-size: 0.875rem;
-//          padding: 0 0.375rem;
-//        }
-//      }
-//    }
-//  }
-//}
 
 #quick-nav {
   @include flex(column, flex-start, center, 0.5rem);

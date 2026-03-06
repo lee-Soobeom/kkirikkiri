@@ -495,45 +495,18 @@ body:has(> #dialog[data-visible]) {
   justify-content: space-around;
   position: relative;
 }
-#my > .container > .box.user > .current {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: center;
+#my > .container > .box.user > .close {
   top: 0;
   right: 0;
-  width: 1.75rem;
-  height: 1.75rem;
-  border: 0.0625rem solid #E9EFFF;
-  border-radius: 0.25rem;
+  width: 1rem;
+  height: 1rem;
   cursor: pointer;
   position: absolute;
   transform: translate(-50%, 50%);
 }
-#my > .container > .box.user > .current:hover > .caption {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(calc(100% + 0.25rem));
-}
-#my > .container > .box.user > .current > .caption {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: center;
-  bottom: 0;
-  width: 2.5rem;
-  background-color: #E9EFFF;
-  font-size: 0.75rem;
-  font-weight: 500;
-  opacity: 0;
-  padding: 0.125rem;
-  position: absolute;
-  pointer-events: none;
-  transform: translateY(100%);
-  transition-duration: 500ms;
-  transition-property: opacity, pointer-events, transform;
+#my > .container > .box.user > .close > .image {
+  width: 1rem;
+  height: 1rem;
 }
 #my > .container > .box.user > .image-container {
   width: 7rem;
@@ -553,17 +526,71 @@ body:has(> #dialog[data-visible]) {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
-  justify-content: flex-stert;
+  justify-content: center;
+  width: 100%;
 }
 #my > .container > .box.user > .info > .nickname {
   color: #232323;
   font-size: 1.375rem;
   font-weight: 700;
 }
-#my > .container > .box.user > .info > .address {
+#my > .container > .box.user > .info > .address-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+#my > .container > .box.user > .info > .address-container > .address {
   color: #ababab;
-  font-size: 0.75rem;
+  flex: 1 1 auto;
+  font-size: 1rem;
   font-weight: 300;
+  text-align: center;
+}
+#my > .container > .box.user > .info > .address-container > .current {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  right: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0.0625rem solid #E9EFFF;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  flex: 0 0 auto;
+  position: absolute;
+  transform: translateX(-110%);
+}
+#my > .container > .box.user > .info > .address-container > .current:hover > .caption {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(calc(100% + 0.5rem));
+}
+#my > .container > .box.user > .info > .address-container > .current > .caption {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  right: 0;
+  width: 2.75rem;
+  height: 1.75rem;
+  background-color: #E9EFFF;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0;
+  padding: 0.125rem;
+  position: absolute;
+  pointer-events: none;
+  transform: translateX(100%);
+  transition-duration: 500ms;
+  transition-property: opacity, pointer-events, transform;
 }
 #my > .container > .box.user > .info > .rank {
   color: inherit;
@@ -775,6 +802,24 @@ body:has(> #dialog[data-visible]) {
     justify-content: flex-start;
     width: 90%;
     padding: 3.875rem 0.5rem 0.75rem 0.5rem;
+  }
+  #my > .charge-container {
+    width: 90%;
+    gap: 0;
+    padding: 3.875rem 0.5rem 0.75rem 0.5rem;
+    transform: translateX(-10%);
+  }
+  #my > .charge-container[data-visible] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0%);
+    z-index: 3;
+  }
+  #my > .charge-container > .cost-container > .title {
+    padding: 1rem 0 0 0;
+  }
+  #my > .charge-container > .button {
+    margin-top: 1.5rem;
   }
 }
 #quick {

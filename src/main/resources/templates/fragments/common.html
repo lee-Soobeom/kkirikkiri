@@ -39,13 +39,10 @@
     </ol>
 </nav>
 <div id="my" th:fragment="sideMypage" th:with="isSigned = ${ session.sessionUser != null }">
-    <!--    로그인상태에 따라 보여줄 요소 다르게 해야함-->
     <div class="container">
         <div class="box user">
-            <button class="current" name="location" type="button"
-                th:if="${session.sessionUser != null}">
-                <img src="/article/assets/images/write/search-modal/current.png" alt="">
-                <span class="caption">현위치</span>
+            <button class="close" name="myClose" type="button">
+                <img class="image" src="/assets/images/my/my.charge.close.png" alt="">
             </button>
             <div class="image-container">
                 <img th:if="${session.sessionUser == null}" src="/assets/images/my/my.user.png" alt="guest">
@@ -65,8 +62,15 @@
                      th:text="${session.sessionUser.nickname}"></div>
                 <div class="nickname"
                      th:if="${session.sessionUser == null}">게스트</div>
-                <div class="address"
-                     th:text="${session.sessionUser?.addressPrimary}"></div>
+                <div class="address-container">
+                    <div class="address"
+                         th:text="${session.sessionUser?.addressPrimary}"></div>
+                    <button class="current" name="location" type="button"
+                            th:if="${session.sessionUser != null}">
+                        <img src="/article/assets/images/write/search-modal/current.png" alt="">
+                        <span class="caption">현위치</span>
+                    </button>
+                </div>
                 <div class="rank"
                      th:if="${session.sessionUser != null}"
                      th:classappend="${session.sessionUser.status == 'ADMIN' ? 'admin' : (session.sessionUser.status == 'VIP' ? 'vip' : (session.sessionUser.status == 'BLACKLIST' ? 'blacklist' : ''))}"
