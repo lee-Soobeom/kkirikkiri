@@ -22,7 +22,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // for connection
         registry.addEndpoint("/article-chat")
                 .addInterceptors(new WsHandshakeInterceptor())
-                .setAllowedOrigins("http://localhost:8080")
+                .setAllowedOrigins("*")
                 .withSockJS();
     }
 }

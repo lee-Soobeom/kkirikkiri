@@ -11,4 +11,5 @@ public class BoardSearchVo {
     private String id;
     private String by;
     private String keyword;
+    private String sort;
 }

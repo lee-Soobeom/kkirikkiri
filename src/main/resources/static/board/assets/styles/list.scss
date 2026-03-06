@@ -54,6 +54,12 @@
         align-items: center;
         white-space: nowrap;
         height: 2.2rem;
+
+        select {
+          border: 0.0625rem solid $global-border-color;
+          border-radius: 0.4rem;
+          padding: 0.2rem 0.5rem;
+        }
       }
 
       .board {
@@ -89,6 +95,10 @@
       width: 100%;
       border-collapse: separate;
       border-spacing: 0 0.75rem;
+      border-radius: 0.5rem;
+      outline: 0.0625rem solid $global-border-color;
+      background-color: #a5c1f8;
+      padding: 0 0.75rem;
 
       thead {
         display: none;
@@ -281,6 +291,17 @@
       .board {
         font-size: 1.2rem;
       }
+
+      .sub-row {
+        flex-wrap: wrap;
+      }
+
+      .menu-filter {
+        order: 1;
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+
     }
 
     .board-table {

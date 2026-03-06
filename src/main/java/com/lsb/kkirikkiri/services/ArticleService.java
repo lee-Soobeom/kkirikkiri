@@ -105,7 +105,6 @@ public class ArticleService {
 
     @Transactional
     public Pair<Map<String, Object>, ArticleEntity> write(UserEntity sessionUser, ArticleEntity articleEntity, List<MultipartFile> files) {
-        System.out.println("넘어온 boardId = [" + articleEntity.getBoardId() + "]");
         Map<String, Object> result = new HashMap<>();
         if (sessionUser == null) {
             System.out.println("session");
@@ -123,16 +122,6 @@ public class ArticleService {
         String boardId = articleEntity.getBoardId();
         // 공구 게시판 (share)
         if ("share".equals(boardId)) {
-            System.out.println("boardId: " + articleEntity.getBoardId());
-            System.out.println("title: " + articleEntity.getTitle());
-            System.out.println("menu: " + articleEntity.getMenu());
-            System.out.println("menuName: " + articleEntity.getMenuName());
-            System.out.println("orderPrice: " + articleEntity.getOrderPrice());
-            System.out.println("deliveryPrice: " + articleEntity.getDeliveryPrice());
-            System.out.println("orderTime: " + articleEntity.getOrderTime());
-            System.out.println("pickupTime: " + articleEntity.getPickupTime());
-            System.out.println("restaurant: " + articleEntity.getRestaurant());
-            System.out.println("addressSecondary: " + articleEntity.getAddressSecondary());
             if (!ArticleValidator.validateMenu(articleEntity) ||
                     !ArticleValidator.validateMenuName(articleEntity) ||
                     !ArticleValidator.validateMinOrderPrice(articleEntity) ||

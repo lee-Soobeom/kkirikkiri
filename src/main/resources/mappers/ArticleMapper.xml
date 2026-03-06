@@ -68,14 +68,15 @@
         WHERE `id` = #{id}
         LIMIT 1
     </update>
-<!--    조회수 증가-->
+    <!--    조회수 증가-->
     <update id="incrementView" parameterType="int">
         UPDATE `kkirikkiri`.`articles`
         SET view = view + 1
         WHERE id = #{id}
     </update>
     <delete id="deleteById">
-        DELETE FROM `kkirikkiri`.`articles`
+        DELETE
+        FROM `kkirikkiri`.`articles`
         WHERE `id` = #{id}
         LIMIT 1
     </delete>
@@ -93,8 +94,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`point_lat`    AS `pointLat`,
-               `t1`.`point_lng`    AS `pointLng`,
+               `t1`.`point_lat`         AS `pointLat`,
+               `t1`.`point_lng`         AS `pointLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -109,7 +110,7 @@
         WHERE `t1`.`id` = #{id}
         LIMIT 1
     </select>
-<!--    조회수 조회-->
+    <!--    조회수 조회-->
     <select id="selectAllByBoardId" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
         SELECT `t1`.`id`                AS `id`,
                `t1`.`board_id`          AS `boardId`,
@@ -123,8 +124,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.point_lat    AS `restaurantLat`,
-               `t1`.point_lng    AS `restaurantLng`,
+               `t1`.point_lat           AS `restaurantLat`,
+               `t1`.point_lng           AS `restaurantLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -133,49 +134,53 @@
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`,
-               `t2`.`nickname` AS `nickname`,
+               `t2`.`nickname`          AS `nickname`,
                (SELECT `saved_filepath`
                 FROM `kkirikkiri`.`files`
                 WHERE `article_id` = `t1`.`id`
                 ORDER BY `id` ASC
-                LIMIT 1) AS `thumbnailPath`
+                LIMIT 1)                AS `thumbnailPath`
         FROM `kkirikkiri`.`articles` AS `t1`
-        LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
+                 LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
-        AND (#{boardId} != 'share' OR `t1`.`order_time` > NOW())
+          AND `t1`.`created_at` >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
         ORDER BY `id` DESC
-        LIMIT #{boardPage.rowCount}
-        OFFSET #{boardPage.dbOffset}
+        LIMIT #{boardPage.rowCount} OFFSET #{boardPage.dbOffset}
     </select>
-<!--    검색 목록-->
+    <!--    검색 목록-->
     <select id="selectAllByBoardSearch" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
-        SELECT `t1`.`id`                AS `id`,
-               `t1`.`board_id`          AS `boardId`,
-               `t1`.`user_id`           AS `userId`,
-               `t1`.`title`             AS `title`,
-               `t1`.`menu`              AS `menu`,
-               `t1`.`menu_name`         AS `menuName`,
-               `t1`.`min_order_price`   AS `minOrderPrice`,
-               `t1`.`order_price`       AS `orderPrice`,
-               `t1`.`delivery_price`    AS `deliveryPrice`,
-               `t1`.`order_time`        AS `orderTime`,
-               `t1`.`pickup_time`       AS `pickupTime`,
-               `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`point_lat`    AS `pointLat`,
-               `t1`.`point_lng`    AS `pointLng`,
-               `t1`.`address_primary`   AS `addressPrimary`,
-               `t1`.`address_secondary` AS `addressSecondary`,
-               `t1`.`content`           AS `content`,
-               `t1`.`isShareChecked`    AS `shareChecked`,
-               `t1`.`isEntryChecked`    AS `entryChecked`,
-               `t1`.`created_at`        AS `createdAt`,
-               `t1`.`updated_at`        AS `updatedAt`,
-               `t1`.`view`              AS `view`,
-               `t2`.`nickname` AS `nickname`
+        SELECT `t1`.`id` AS `id`,
+        `t1`.`board_id` AS `boardId`,
+        `t1`.`user_id` AS `userId`,
+        `t1`.`title` AS `title`,
+        `t1`.`menu` AS `menu`,
+        `t1`.`menu_name` AS `menuName`,
+        `t1`.`min_order_price` AS `minOrderPrice`,
+        `t1`.`order_price` AS `orderPrice`,
+        `t1`.`delivery_price` AS `deliveryPrice`,
+        `t1`.`order_time` AS `orderTime`,
+        `t1`.`pickup_time` AS `pickupTime`,
+        `t1`.`restaurant` AS `restaurant`,
+        `t1`.`point_lat` AS `pointLat`,
+        `t1`.`point_lng` AS `pointLng`,
+        `t1`.`address_primary` AS `addressPrimary`,
+        `t1`.`address_secondary` AS `addressSecondary`,
+        `t1`.`content` AS `content`,
+        `t1`.`isShareChecked` AS `shareChecked`,
+        `t1`.`isEntryChecked` AS `entryChecked`,
+        `t1`.`created_at` AS `createdAt`,
+        `t1`.`updated_at` AS `updatedAt`,
+        `t1`.`view` AS `view`,
+        `t2`.`nickname` AS `nickname`,
+        (SELECT `saved_filepath`
+        FROM `kkirikkiri`.`files`
+        WHERE `article_id` = `t1`.`id`
+        ORDER BY `id` ASC
+        LIMIT 1) AS `thumbnailPath`
         FROM `kkirikkiri`.`articles` AS `t1`
         LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `t1`.`board_id` = #{boardSearch.id}
-        AND (#{boardSearch.id} != 'share' OR `t1`.`order_time` > NOW())
+        AND `t1`.`created_at` >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
         <if test="boardSearch.by.equals('titleContent')">
             AND (`t1`.`title` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
             OR `t1`.`content` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
@@ -187,16 +192,24 @@
         <if test="boardSearch.by.equals('userId')">
             AND `t2`.`nickname` LIKE CONCAT ('%', #{boardSearch.keyword}, '%')
         </if>
-        ORDER BY `t1`.`id` DESC
+        ORDER BY
+        <choose>
+            <when test="boardSearch.sort == 'view'">
+                `t1`.`view` DESC
+            </when>
+            <otherwise>
+                `t1`.`created_at` DESC
+            </otherwise>
+        </choose>
         LIMIT #{boardPage.rowCount}
         OFFSET #{boardPage.dbOffset}
     </select>
-<!--    페이지 계산용-->
+    <!--    페이지 계산용-->
     <select id="selectCountByBoardId" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM `kkirikkiri`.`articles`
         WHERE `board_id` = #{boardId}
-          AND (#{boardId} != 'share' OR `order_time` > NOW())
+          AND `created_at` >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
     </select>
     <select id="selectCountByBoardIdAndMenu" resultType="java.lang.Integer">
         SELECT COUNT(*)
@@ -205,15 +218,15 @@
         <if test="menu != null and menu != 'all'">
             AND `menu` = #{menu}
         </if>
-        AND (#{boardId} != 'share' OR `order_time` > NOW())
+        AND `created_at` >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
     </select>
-<!--    검색 개수-->
+    <!--    검색 개수-->
     <select id="selectCountByBoardSearch" resultType="java.lang.Integer">
         SELECT COUNT(0)
         FROM `kkirikkiri`.`articles` AS `t1`
         LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `t1`.`board_id` = #{boardSearch.id}
-        AND (#{boardSearch.id} != 'share' OR `t1`.`order_time` > NOW())
+        AND `t1`.`created_at` >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
         <if test="boardSearch.by.equals('titleContent')">
             AND (
             `t1`.`title` LIKE CONCAT('%', #{boardSearch.keyword}, '%')
@@ -244,8 +257,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`point_lat`    AS `pointLat`,
-               `t1`.`point_lng`    AS `pointLng`,
+               `t1`.`point_lat`         AS `pointLat`,
+               `t1`.`point_lng`         AS `pointLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -259,13 +272,13 @@
                 FROM `kkirikkiri`.`files`
                 WHERE `article_id` = `t1`.`id`
                 ORDER BY `id` ASC
-                LIMIT 1) AS `thumbnailPath`
+                LIMIT 1)                AS `thumbnailPath`
         FROM `kkirikkiri`.`articles` AS `t1`
                  LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
-        AND (#{boardId} != 'share' OR `t1`.`order_time` > NOW())
+          AND `t1`.`created_at` >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
         ORDER BY `t1`.`created_at` DESC
-        LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
+        LIMIT #{boardPageVo.rowCount} OFFSET #{boardPageVo.dbOffset}
     </select>
     <!-- 인기순 -->
     <select id="selectAllByBoardIdOrderByView" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
@@ -281,8 +294,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`point_lat`    AS `pointLat`,
-               `t1`.`point_lng`    AS `pointLng`,
+               `t1`.`point_lat`         AS `pointLat`,
+               `t1`.`point_lng`         AS `pointLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -296,13 +309,13 @@
                 FROM `kkirikkiri`.`files`
                 WHERE `article_id` = `t1`.`id`
                 ORDER BY `id` ASC
-                LIMIT 1) AS `thumbnailPath`
+                LIMIT 1)                AS `thumbnailPath`
         FROM `kkirikkiri`.`articles` AS `t1`
                  LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
-        AND (#{boardId} != 'share' OR `t1`.`order_time` > NOW())
+          AND `t1`.`created_at` >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
         ORDER BY `t1`.`view` DESC
-        LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
+        LIMIT #{boardPageVo.rowCount} OFFSET #{boardPageVo.dbOffset}
     </select>
     <select id="selectAllByOrderTime"
             resultType="com.lsb.kkirikkiri.entities.ArticleEntity">
@@ -318,8 +331,8 @@
                `order_time`        AS `orderTime`,
                `pickup_time`       AS `pickupTime`,
                `restaurant`        AS `restaurant`,
-               `point_lat`    AS `pointLat`,
-               `point_lng`    AS `pointLng`,
+               `point_lat`         AS `pointLat`,
+               `point_lng`         AS `pointLng`,
                `address_primary`   AS `addressPrimary`,
                `address_secondary` AS `addressSecondary`,
                `content`           AS `content`,
@@ -346,8 +359,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`point_lat`    AS `pointLat`,
-               `t1`.`point_lng`    AS `pointLng`,
+               `t1`.`point_lat`         AS `pointLat`,
+               `t1`.`point_lng`         AS `pointLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -356,19 +369,19 @@
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`,
-               `t2`.`nickname` AS `nickname`,
+               `t2`.`nickname`          AS `nickname`,
                (SELECT `saved_filepath`
                 FROM `kkirikkiri`.`files`
                 WHERE `article_id` = `t1`.`id`
                 ORDER BY `id` ASC
-                LIMIT 1) AS `thumbnailPath`
+                LIMIT 1)                AS `thumbnailPath`
         FROM `kkirikkiri`.`articles` AS `t1`
-        LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
+                 LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
           AND `t1`.`menu` = #{menu}
-        AND (#{boardId} != 'share' OR `t1`.`order_time` > NOW())
+          AND `t1`.`created_at` >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
         ORDER BY `t1`.`created_at` DESC
-        LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
+        LIMIT #{boardPageVo.rowCount} OFFSET #{boardPageVo.dbOffset}
     </select>
     <select id="selectAllBoardIdAndMenuOrderByView">
         SELECT `t1`.`id`                AS `id`,
@@ -383,8 +396,8 @@
                `t1`.`order_time`        AS `orderTime`,
                `t1`.`pickup_time`       AS `pickupTime`,
                `t1`.`restaurant`        AS `restaurant`,
-               `t1`.`point_lat`    AS `pointLat`,
-               `t1`.`point_lng`    AS `pointLng`,
+               `t1`.`point_lat`         AS `pointLat`,
+               `t1`.`point_lng`         AS `pointLng`,
                `t1`.`address_primary`   AS `addressPrimary`,
                `t1`.`address_secondary` AS `addressSecondary`,
                `t1`.`content`           AS `content`,
@@ -393,49 +406,50 @@
                `t1`.`created_at`        AS `createdAt`,
                `t1`.`updated_at`        AS `updatedAt`,
                `t1`.`view`              AS `view`,
-               `t2`.`nickname` AS `nickname`,
+               `t2`.`nickname`          AS `nickname`,
                (SELECT `saved_filepath`
                 FROM `kkirikkiri`.`files`
                 WHERE `article_id` = `t1`.`id`
                 ORDER BY `id` ASC
-                LIMIT 1) AS `thumbnailPath`
+                LIMIT 1)                AS `thumbnailPath`
         FROM `kkirikkiri`.`articles` AS `t1`
-        LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
+                 LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `board_id` = #{boardId}
           AND `t1`.`menu` = #{menu}
-        AND (#{boardId} != 'share' OR `t1`.`order_time` > NOW())
+          AND `t1`.`created_at` >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
         ORDER BY `t1`.`view` DESC
-        LIMIT #{boardPageVo.dbOffset}, #{boardPageVo.rowCount}
+        LIMIT #{boardPageVo.rowCount} OFFSET #{boardPageVo.dbOffset}
     </select>
     <select id="selectImminentShareArticles" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
-        SELECT `t1`.`id`                AS `id`,
-        `t1`.`board_id`          AS `boardId`,
-        `t1`.`user_id`           AS `userId`,
-        `t1`.`title`             AS `title`,
-        `t1`.`menu`              AS `menu`,
-        `t1`.`menu_name`         AS `menuName`,
-        `t1`.`min_order_price`   AS `minOrderPrice`,
-        `t1`.`order_price`       AS `orderPrice`,
-        `t1`.`delivery_price`    AS `deliveryPrice`,
-        `t1`.`order_time`        AS `orderTime`,
-        `t1`.`pickup_time`       AS `pickupTime`,
-        `t1`.`restaurant`        AS `restaurant`,
-        `t1`.`point_lat`    AS `pointLat`,
-        `t1`.`point_lng`    AS `pointLng`,
-        `t1`.`address_primary`   AS `addressPrimary`,
+        SELECT `t1`.`id` AS `id`,
+        `t1`.`board_id` AS `boardId`,
+        `t1`.`user_id` AS `userId`,
+        `t1`.`title` AS `title`,
+        `t1`.`menu` AS `menu`,
+        `t1`.`menu_name` AS `menuName`,
+        `t1`.`min_order_price` AS `minOrderPrice`,
+        `t1`.`order_price` AS `orderPrice`,
+        `t1`.`delivery_price` AS `deliveryPrice`,
+        `t1`.`order_time` AS `orderTime`,
+        `t1`.`pickup_time` AS `pickupTime`,
+        `t1`.`restaurant` AS `restaurant`,
+        `t1`.`point_lat` AS `pointLat`,
+        `t1`.`point_lng` AS `pointLng`,
+        `t1`.`address_primary` AS `addressPrimary`,
         `t1`.`address_secondary` AS `addressSecondary`,
-        `t1`.`content`           AS `content`,
-        `t1`.`isShareChecked`    AS `shareChecked`,
-        `t1`.`isEntryChecked`    AS `entryChecked`,
-        `t1`.`created_at`        AS `createdAt`,
-        `t1`.`updated_at`        AS `updatedAt`,
-        `t1`.`view`              AS `view`
+        `t1`.`content` AS `content`,
+        `t1`.`isShareChecked` AS `shareChecked`,
+        `t1`.`isEntryChecked` AS `entryChecked`,
+        `t1`.`created_at` AS `createdAt`,
+        `t1`.`updated_at` AS `updatedAt`,
+        `t1`.`view` AS `view`
         FROM `kkirikkiri`.`articles`AS `t1`
         WHERE `board_id` = #{boardId}
         AND `t1`.`order_time` IS NOT NULL
         AND `t1`.`order_time` BETWEEN DATE_ADD(NOW(), INTERVAL 20 MINUTE) AND DATE_ADD(NOW(), INTERVAL 60 MINUTE)
         AND `point_lat` BETWEEN #{location.lat} - 3.0/111 AND #{location.lat} + 3.0/111
-        AND `point_lng` BETWEEN #{location.lng} - (3.0 / (111 * COS(RADIANS(#{location.lat})))) AND #{location.lng} + (3.0 / (111 * COS(RADIANS(#{location.lat}))))
+        AND `point_lng` BETWEEN #{location.lng} - (3.0 / (111 * COS(RADIANS(#{location.lat})))) AND #{location.lng} +
+        (3.0 / (111 * COS(RADIANS(#{location.lat}))))
         AND ST_DISTANCE_SPHERE(POINT(`point_lng`,`point_lat`), POINT(#{location.lng}, #{location.lat})) &lt;= 3000
         <if test="menu != null and menu != '' and menu != 'all'">
             AND `menu` = #{menu}
@@ -444,15 +458,15 @@
         LIMIT 10
     </select>
     <select id="selectNoticeList" resultType="com.lsb.kkirikkiri.vos.ArticleVo">
-        SELECT `t1`.`id`       AS `id`,
-               `t1`.`board_id` AS `boardId`,
-               `t1`.`user_id`  AS `userId`,
-               `t1`.`title`    AS `title`,
-               `t1`.`content`  AS `content`,
+        SELECT `t1`.`id`         AS `id`,
+               `t1`.`board_id`   AS `boardId`,
+               `t1`.`user_id`    AS `userId`,
+               `t1`.`title`      AS `title`,
+               `t1`.`content`    AS `content`,
                `t1`.`created_at` AS `createdAt`,
                `t1`.`updated_at` AS `updatedAt`,
-               `t1`.`view`     AS `view`,
-               `t2`.`nickname` AS `nickname`
+               `t1`.`view`       AS `view`,
+               `t2`.`nickname`   AS `nickname`
         FROM `kkirikkiri`.`articles` AS `t1`
                  LEFT JOIN `kkirikkiri`.`users` AS `t2` ON `t2`.`email` = `t1`.`user_id`
         WHERE `t1`.`board_id` = #{boardId}

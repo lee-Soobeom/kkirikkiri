@@ -39,7 +39,8 @@ public class BoardController {
         BoardEntity board = this.boardService.getBoardById(id);
         modelAndView.addObject("board", board);
         if (board != null) {
-            boolean isSearching = boardSearchVo.getBy() != null && boardSearchVo.getKeyword() != null;
+            boolean isSearching = boardSearchVo.getBy() != null && !boardSearchVo.getBy().isBlank()
+                    && boardSearchVo.getKeyword() != null && !boardSearchVo.getKeyword().isBlank();
             int totalCount = isSearching
                     ? this.articleService.getCountByBoardSearch(boardSearchVo)
                     : ("all".equals(menu)

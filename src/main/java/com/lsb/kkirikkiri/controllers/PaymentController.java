@@ -178,7 +178,7 @@ public class PaymentController {
     public String failPayment(HttpServletRequest request, Model model) {
         model.addAttribute("code", request.getParameter("code"));
         model.addAttribute("message", request.getParameter("message"));
-        return "/tosspayments/fail";
+        return "tosspayments/fail";
     }
 
     @RequestMapping(value = "/payment/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

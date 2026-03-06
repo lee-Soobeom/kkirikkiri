@@ -484,6 +484,15 @@
           z-index: 1;
         }
       }
+
+      > .view-container.promote {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+
+        > .image-list-container {
+          height: 20rem;
+        }
+      }
     }
   }
 }
@@ -560,6 +569,15 @@
 
         > #map {
           z-index: 1;
+        }
+      }
+
+      > .view-container.promote {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+
+        > .image-list-container {
+          height: 15rem;
         }
       }
     }

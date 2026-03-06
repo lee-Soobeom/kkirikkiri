@@ -212,7 +212,7 @@ $writeForm?.addEventListener('submit', (e) => {
         $writeForm['content'].focus();
         return;
     }
-    if (!/^.{1,10000}$/g.test($writeForm['content'].value)) {
+    if (!/^[\s\S]{1,10000}$/g.test($writeForm['content'].value)) {
         dialogHandler.simpleYesModal('경고', '1-10000자 이내 올바른 내용을 입력해 주세요.');
         $writeForm['content'].focus();
         $writeForm['content'].select();

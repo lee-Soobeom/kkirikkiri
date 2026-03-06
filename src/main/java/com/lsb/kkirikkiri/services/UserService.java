@@ -62,7 +62,7 @@ public class UserService {
         File targetFile = new File(uploadPath, savedFileName);
         file.transferTo(targetFile);
 
-        return "/user/display?fileName=" + savedFileName;
+        return "user/display?fileName=" + savedFileName;
     }
 
     public Pair<Result, UserEntity> login(String email, String password) {

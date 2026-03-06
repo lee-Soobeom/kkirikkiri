@@ -45,7 +45,7 @@ public class UserController extends AbstractGeneralController{
         if (sessionUser != null) {
             return "redirect:/";
         }
-        return "/user/login";
+        return "user/login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -318,7 +318,7 @@ public class UserController extends AbstractGeneralController{
         model.addAttribute("email", email);
         model.addAttribute("token", token);
 
-        return "/user/reset-password";
+        return "user/reset-password";
     }
 
     @RequestMapping(value = "/send-auth-code", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

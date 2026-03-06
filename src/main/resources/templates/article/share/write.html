@@ -21,9 +21,9 @@
     </script>
 </head>
 <body>
-<th:block th:replace="~{/fragments/common.html :: topNavigator}"></th:block>
-<th:block th:replace="~{/fragments/common.html :: sideMypage}"></th:block>
-<th:block th:replace="~{/fragments/common.html :: dialog}"></th:block>
+<th:block th:replace="~{fragments/common.html :: topNavigator}"></th:block>
+<th:block th:replace="~{fragments/common.html :: sideMypage}"></th:block>
+<th:block th:replace="~{fragments/common.html :: dialog}"></th:block>
 <main id="main">
     <div class="error empty-session" th:if="${session.sessionUser == null}">
         <h1 class="title">게시글 작성</h1>
