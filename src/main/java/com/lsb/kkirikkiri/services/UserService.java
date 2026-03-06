@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -46,10 +47,11 @@ public class UserService {
     private final HttpSession httpSession;
     private final AuthMapper authMapper;
 
+    @Value("${custom.upload-path}")
+    private String uploadPath;
+
     // 사장님 회원 가입 시, 제출하는 사진 두 장 (사업자 등록증 사본, 영업 신고증 사본) 저장을 위한 것
     private String saveFile(MultipartFile file) throws IOException {
-        String uploadPath = "C:/kkiri/uploads/profiles/";
-
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();

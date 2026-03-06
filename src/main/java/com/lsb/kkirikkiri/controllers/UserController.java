@@ -12,6 +12,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -39,6 +40,8 @@ import java.util.Map;
 public class UserController extends AbstractGeneralController{
 
     private final UserService userService;
+    @Value("${custom.upload-path}")
+    private String uploadPath;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getLogin(@SessionAttribute(value = "sessionUser", required = false) UserEntity sessionUser) {
@@ -273,8 +276,7 @@ public class UserController extends AbstractGeneralController{
             produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
     @ResponseBody
     public ResponseEntity<byte[]> display(@RequestParam(value = "fileName") String fileName) {
-        String savePath = "C:/kkiri/uploads/profiles/";
-        File file = new File(savePath + fileName);
+        File file = new File(uploadPath + fileName);
 
         try {
             HttpHeaders header = new HttpHeaders();
@@ -373,7 +375,6 @@ public class UserController extends AbstractGeneralController{
 
     @RequestMapping(value = "/display", method = RequestMethod.GET)
     public ResponseEntity<Resource> getDisplay(@RequestParam(value = "fileName") String fileName) {
-        String uploadPath = "C:/kkiri/uploads/profiles/";
         Resource resource = new FileSystemResource(uploadPath + fileName);
 
         if (!resource.exists()) {

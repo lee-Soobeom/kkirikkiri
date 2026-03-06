@@ -27,8 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (data.result === 'success') {
-                dialogHandler.simpleYesModal('완료', '비밀번호가 성공적으로 변경되었습니다. 다시 로그인해 주세요.');
-                location.href = '/user/login';
+                dialogHandler.simpleYesModal('완료', '비밀번호가 성공적으로 변경되었습니다. 다시 로그인해 주세요.', {
+                    onclick: () => {location.href = '/user/login'}
+                });
             } else {
                 dialogHandler.simpleYesModal('오류', data.message || '비밀번호 변경에 실패했습니다.');
             }

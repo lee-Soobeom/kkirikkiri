@@ -466,6 +466,13 @@
   #main > .container > .context-container > .view-container > #map {
     z-index: 1;
   }
+  #main > .container > .context-container > .view-container.promote {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+  #main > .container > .context-container > .view-container.promote > .image-list-container {
+    height: 20rem;
+  }
 }
 #imageModal {
   display: none;
@@ -533,6 +540,13 @@
   }
   #main > .container > .context-container > .view-container > #map {
     z-index: 1;
+  }
+  #main > .container > .context-container > .view-container.promote {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+  #main > .container > .context-container > .view-container.promote > .image-list-container {
+    height: 15rem;
   }
 }
 

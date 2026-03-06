@@ -51,8 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         }).then(data => {
             if (data.result === 'SUCCESS') {
-                dialogHandler.simpleYesModal('알림', '회원 정보가 성공적으로 수정되었습니다.');
-                location.href = '/';
+                dialogHandler.simpleYesModal('알림', '회원 정보가 성공적으로 수정되었습니다.', {
+                    onclick: () => {location.href = '/'}
+                });
+
             } else {
                 dialogHandler.simpleYesModal('경고', '정보 수정에 실패했습니다. 입력값을 확인해 주세요.');
             }
