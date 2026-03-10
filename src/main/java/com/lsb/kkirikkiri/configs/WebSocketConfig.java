@@ -9,6 +9,8 @@ import org.springframework.web.socket.config.annotation.*;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         // for broadcast message
@@ -22,7 +24,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // for connection
         registry.addEndpoint("/article-chat")
                 .addInterceptors(new WsHandshakeInterceptor())
-                .setAllowedOrigins("*")
-                .withSockJS();
+                .setAllowedOriginPatterns("*")
+                .withSockJS()
+                .setSuppressCors(true);
     }
 }

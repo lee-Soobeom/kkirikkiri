@@ -15,7 +15,13 @@ let isConnected = false;
 if ($wsConnectButton !== null && $wsConnectButton !== undefined) {
     $wsConnectButton.addEventListener('click', () => {
         if (!isConnected) {
-            const socket = new SockJS("/article-chat");
+            let socket;
+            try {
+                socket = new SockJS(`/article-chat`);
+            } catch (error) {
+                console.error(error);
+            }
+            window.SockJS = SockJS;
             stompClient = new Client({
                 webSocketFactory: () => socket
             });

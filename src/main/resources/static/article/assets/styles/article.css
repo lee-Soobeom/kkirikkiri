@@ -12,6 +12,7 @@
   border-radius: 999rem;
   cursor: pointer;
   position: fixed;
+  z-index: 2;
 }
 #ws > .room-container {
   align-items: stretch;
@@ -388,6 +389,7 @@
   min-height: 12rem;
   border: 0.0625rem solid #E9EFFF;
   border-radius: 0.5rem;
+  z-index: 1;
 }
 #main > .container > .context-container > .view-container > #map > .hidden {
   display: none;

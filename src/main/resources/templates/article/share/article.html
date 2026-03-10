@@ -141,10 +141,10 @@
                                 <img class="image" src="/article/assets/images/crown.png" alt="">
                                 <span class="caption" th:text="${participants.leaderNickname}"></span>
                             </td>
-                            <td th:text="${participants.firstUserNickname ?: '(빈 자리)'}"></td>
-                            <td th:text="${participants.secondUserNickname ?: '(빈 자리)'}"></td>
-                            <td th:text="${participants.thirdUserNickname ?: '(빈 자리)'}"></td>
-                            <td th:text="${participants.fourthUserNickname ?: '(빈 자리)'}"></td>
+                            <td th:text="${participants.firstUserNickname ?: ''}"></td>
+                            <td th:text="${participants.secondUserNickname ?: ''}"></td>
+                            <td th:text="${participants.thirdUserNickname ?: ''}"></td>
+                            <td th:text="${participants.fourthUserNickname ?: ''}"></td>
                         </tr>
                         </tbody>
                     </table>
